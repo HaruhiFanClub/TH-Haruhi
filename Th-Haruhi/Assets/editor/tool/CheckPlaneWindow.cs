@@ -201,7 +201,6 @@ public class CheckPlaneWindow : EditorWindow
     {
         
         var gameOjbs = Resources.FindObjectsOfTypeAll<GameObject>();
-        var i = 0;
         Dictionary<string, List<GameObject>> dic = new Dictionary<string, List<GameObject>>();
         foreach (var mainObj in gameOjbs)
         {

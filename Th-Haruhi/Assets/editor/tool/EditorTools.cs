@@ -22,9 +22,9 @@ public class EditorTools
     public static void CopyResourcePath()
     {
         string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-        string resourcexPath = "Assets/resourcex/";
-        if (path.StartsWith(resourcexPath))
-            path = path.Remove(0, resourcexPath.Length);
+        string resPath = "Assets/res/";
+        if (path.StartsWith(resPath))
+            path = path.Remove(0, resPath.Length);
         EditorGUIUtility.systemCopyBuffer = path;
     }
 
