@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using DG.Tweening;
+using System.Collections;
 
 public class UIMainView : UiInstance
 {
@@ -26,22 +27,26 @@ public class UIMainView : UiInstance
 
     private void DoOpen(bool playAni)
     {
-        if (playAni)
-            PlayAnimation();
-        else
-            AddBtnEvent();
+        StartCoroutine(PlayAnimation(playAni));
     }
 
-    private void PlayAnimation()
+    private IEnumerator PlayAnimation(bool playAni)
     {
+        if(!playAni)
+        {
+            AddBtnEvent();
+            yield break;
+        }
+
         _compent.Bg.Alpha = 0;
         _compent.MenuCanvasGroup.alpha = 0;
-        _compent.Bg.DOFade(1f, 3f);
 
-        DOVirtual.DelayedCall(1.5f, () =>
-        {
-            _compent.MenuCanvasGroup.DOFade(1f, 0.3f).onComplete = AddBtnEvent;
-        });
+        yield return new WaitForSeconds(2f);
+        _compent.Bg.DOFade(1f, 3f);
+        Sound.PlayMusic(1);
+
+        yield return new WaitForSeconds(1.5f);
+        _compent.MenuCanvasGroup.DOFade(1f, 0.3f).onComplete = AddBtnEvent;
     }
 
     private void AddBtnEvent()
@@ -63,7 +68,8 @@ public class UIMainView : UiInstance
     protected override void OnShow()
     {
         base.OnShow();
-        Sound.PlayMusic(1);
+
+        
     }
 
     private void Btn_GameStart()

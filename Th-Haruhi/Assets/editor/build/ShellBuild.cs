@@ -34,7 +34,7 @@ public static class ShellBuild
 		buildOutPath = PathUtility.ProjectPath + "/build";
 		buidPathIOS = buildOutPath + "/ios";
 		buidPathAndroid = buildOutPath + "/android";
-        buidPathWindows = buildOutPath + "/Haruhi.exe";
+        buidPathWindows = buildOutPath + "/TH-Haruhi.exe";
         buildOption = BuildOptions.None;
 
 
@@ -55,8 +55,9 @@ public static class ShellBuild
 	}
 	
 	public static void SetAndroidBuildSettings(bool bDebug = false)
-	{
-		if (bDebug)
+    {
+        buildOption = BuildOptions.None;
+        if (bDebug)
 		{
 			buildOption |= BuildOptions.Development;
 			buildOption |= BuildOptions.AllowDebugging;
@@ -72,8 +73,9 @@ public static class ShellBuild
 	}
 
 	public static void SetBuildSetting(bool bDebug = false)
-	{
-		if (bDebug)
+    {
+        buildOption = BuildOptions.None;
+        if (bDebug)
 		{
 			buildOption |= BuildOptions.Development;
 			buildOption |= BuildOptions.AllowDebugging;

@@ -75,11 +75,8 @@ public class GameSystem : MonoBehaviour
 
     private void StartGame()
     {
-        UILogo.Show(() =>
-        {
-            UiManager.Show<UIFps>();
-            GameWorld.ShowTitle();
-        });
+        UiManager.Show<UIFps>();
+        GameWorld.ShowTitle();
     }
 
 
