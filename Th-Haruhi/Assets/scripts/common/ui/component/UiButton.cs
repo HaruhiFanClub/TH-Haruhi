@@ -28,6 +28,7 @@ public class UiButton : Button
     public VoidDelegate OnUp;
     public VoidDelegate OnEnter;
     public VoidDelegate OnExit;
+    public bool isDebug;
     private bool m_isEnable = true;
     public bool isEnable
     {
@@ -56,10 +57,6 @@ public class UiButton : Button
         UseTween = b;
     }
 
-    
-   
-    [SerializeField]
-    private bool isDebug;
 
     protected override void Awake()
     {
@@ -252,21 +249,9 @@ public class UiButton : Button
     {
         interactable = enable;
 
-        if (_displayImage == null) return;
-        _displayImage.material = enable ? GameSystem.DefaultRes.UiDefault : GameSystem.DefaultRes.UiGray;
-    }
-
-    public bool CanClick()
-    {
-        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-        var pos = UiManager.UiCamera.WorldToScreenPoint(transform.position);
-        eventDataCurrentPosition.position = new Vector2(pos.x, pos.y);
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-        if (results.Count > 0 && results[0].gameObject == this.gameObject)
+        if (_displayImage != null)
         {
-            return true;
+            _displayImage.material = enable ? GameSystem.DefaultRes.UiDefault : GameSystem.DefaultRes.UiGray;
         }
-        return false;
     }
 }

@@ -4,7 +4,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class SoundListenter : MonoBehaviour {
+public class SoundListenter : MonoBehaviour 
+{
     private static GameObject soundListenter;
     private static AudioReverbZone reverbZone;
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class UIGameViewCompent : MonoBehaviour
+public class UIGameViewCompoent : MonoBehaviour
 {
     public UiButton BtnBack;
 

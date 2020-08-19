@@ -67,10 +67,8 @@ public class BufferReader : XSerializer
         {
             case 1:
                 throw new Exception("<<<!!!!! data buffer read exception accured! [empty buffer]  !!!!!>>>");
-                break;
             case 2:
                 throw new Exception("<<<!!!!! data buffer read exception accured! [index overflow] !!!!!>>>");
-                break;
         }
         return 0;
     }

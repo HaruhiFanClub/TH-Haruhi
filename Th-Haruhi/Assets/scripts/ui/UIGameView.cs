@@ -1,7 +1,7 @@
 ﻿
 public class UIGameView : UiInstance
 {
-    private UIGameViewCompent _compent;
+    private UIGameViewCompoent _compoent;
     public static void Show()
     {
         UiManager.Show<UIGameView>();
@@ -9,14 +9,14 @@ public class UIGameView : UiInstance
     protected override void OnLoadFinish()
     {
         base.OnLoadFinish();
-        _compent = GetComponent<UIGameViewCompent>();
-        _compent.BtnBack.onClick.AddListener(Back);
+        _compoent = GetComponent<UIGameViewCompoent>();
+        _compoent.BtnBack.onClick.AddListener(Back);
 
-        _compent.Haruhi.onClick.AddListener(() => CharacterMgr.SwitchCharacter(CharacterMgr.Haruhi));
-        _compent.Mikuru.onClick.AddListener(() => CharacterMgr.SwitchCharacter(CharacterMgr.Mikuru));
-        _compent.Nagato.onClick.AddListener(() => CharacterMgr.SwitchCharacter(CharacterMgr.Nagato));
-        _compent.Kyon.onClick.AddListener(() => CharacterMgr.SwitchCharacter(CharacterMgr.Kyon));
-        _compent.Koizumi.onClick.AddListener(() => CharacterMgr.SwitchCharacter(CharacterMgr.Koizumi));
+        _compoent.Haruhi.onClick.AddListener(() => CharacterMgr.SwitchCharacter(CharacterMgr.Haruhi));
+        _compoent.Mikuru.onClick.AddListener(() => CharacterMgr.SwitchCharacter(CharacterMgr.Mikuru));
+        _compoent.Nagato.onClick.AddListener(() => CharacterMgr.SwitchCharacter(CharacterMgr.Nagato));
+        _compoent.Kyon.onClick.AddListener(() => CharacterMgr.SwitchCharacter(CharacterMgr.Kyon));
+        _compoent.Koizumi.onClick.AddListener(() => CharacterMgr.SwitchCharacter(CharacterMgr.Koizumi));
     }
 
     private void Back()

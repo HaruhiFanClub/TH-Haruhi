@@ -81,7 +81,6 @@ public class ControllerUtility
                 return "button_keyboard_rmouse";
             case Mouse.MiddleButton:
                 return "button_keyboard_mmouse";
-                break;
         }
         Debug.LogError("CantFind Mouse Button Image, type:" + mouse);
         return null;

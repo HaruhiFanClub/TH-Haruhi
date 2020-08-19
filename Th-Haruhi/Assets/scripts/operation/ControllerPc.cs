@@ -61,7 +61,47 @@ public class ControllerPc : MonoBehaviour
     
     protected void Update()
     {
-        UpdateMove();
+        if(GameWorld.InGameing)
+        {
+            UpdateMove();
+        }
+        else
+        {
+            UpdateMenu();
+        }
+    }
+
+    private void UpdateMenu()
+    {
+        if(_actions.Get(EControllerBtns.Up).WasReleased)
+        {
+            GameEventCenter.Send(GameEvent.UI_Up);
+        }
+
+        if (_actions.Get(EControllerBtns.Down).WasReleased)
+        {
+            GameEventCenter.Send(GameEvent.UI_Down);
+        }
+
+        if (_actions.Get(EControllerBtns.Left).WasReleased)
+        {
+            GameEventCenter.Send(GameEvent.UI_Left);
+        }
+
+        if (_actions.Get(EControllerBtns.Right).WasReleased)
+        {
+            GameEventCenter.Send(GameEvent.UI_Right);
+        }
+
+        if (_actions.Get(EControllerBtns.Sure).WasReleased)
+        {
+            GameEventCenter.Send(GameEvent.UI_Sure);
+        }
+
+        if (_actions.Get(EControllerBtns.Cancel).WasReleased)
+        {
+            GameEventCenter.Send(GameEvent.UI_Cancel);
+        }
     }
 
     private void UpdateMove()

@@ -33,6 +33,8 @@ public class ControllerActions : PlayerActionSet
 	    _joyActions[EControllerBtns.Sure] = CreatePlayerAction("Sure");
 	    _joyActions[EControllerBtns.Cancel] = CreatePlayerAction("Cancel");
 
+
+
         var left = CreatePlayerAction("Move Left");
         var right = CreatePlayerAction("Move Right");
         var up = CreatePlayerAction("Move Up");
@@ -72,18 +74,19 @@ public class ControllerActions : PlayerActionSet
 		var p = new ControllerActions();
 
         //sure
-        p.Get(EControllerBtns.Sure).AddDefaultBinding(Key.E);
-	    p.Get(EControllerBtns.Sure).AddDefaultBinding(InputControlType.Action1);
+        p.Get(EControllerBtns.Sure).AddDefaultBinding(Key.Return);
+		p.Get(EControllerBtns.Sure).AddDefaultBinding(Key.Z);
+		p.Get(EControllerBtns.Sure).AddDefaultBinding(InputControlType.Action1);
 
         //back
         p.Get(EControllerBtns.Cancel).AddDefaultBinding(Key.Escape);
         p.Get(EControllerBtns.Cancel).AddDefaultBinding(InputControlType.Action2);
 
         //move
-        p.Get(EControllerBtns.Up).AddDefaultBinding( Key.W);
-		p.Get(EControllerBtns.Down).AddDefaultBinding( Key.S);
-		p.Get(EControllerBtns.Left).AddDefaultBinding( Key.A);
-		p.Get(EControllerBtns.Right).AddDefaultBinding( Key.D);
+        p.Get(EControllerBtns.Up).AddDefaultBinding( Key.UpArrow);
+		p.Get(EControllerBtns.Down).AddDefaultBinding( Key.DownArrow);
+		p.Get(EControllerBtns.Left).AddDefaultBinding( Key.LeftArrow);
+		p.Get(EControllerBtns.Right).AddDefaultBinding( Key.RightArrow);
 
 	    p.Get(EControllerBtns.Up).AddDefaultBinding(InputControlType.LeftStickUp);
 	    p.Get(EControllerBtns.Down).AddDefaultBinding(InputControlType.LeftStickDown);

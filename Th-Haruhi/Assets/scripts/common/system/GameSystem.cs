@@ -32,22 +32,33 @@ public class GameSystem : MonoBehaviour
             gameObject.AddComponent<SpriteAtlasMgr>();
         }
 
+        //读取存档
         SaveDataMgr.PreloadGameData();
+
+        //初始化游戏设置
         GameSetting.InitSetting();
+
+        //初始化sound模块
         SoundListenter.Init();
+
+        //初始化资源管理器
         ResourceMgr.InitInstance();
+
+        //初始化特效池
         EffectFactory.Init();
-        GamePause.Init();
+
 
         CoroutineStart = StartCoroutine;
         DefaultRes = GetComponent<DefaultRes>();
 
+        //初始化UI
         var uguiRoot = FindObjectOfType<UiRootScript>();
         uguiRoot.Init();
         UiManager.Init(uguiRoot);
         DontDestroyOnLoad(uguiRoot);
         DontDestroyOnLoad(gameObject);
 
+        //清理缓存
         Caching.ClearCache();
         
 
@@ -58,8 +69,19 @@ public class GameSystem : MonoBehaviour
 #endif
         _inited = true;
 
-        GameWorld.ShowTitle();
+
+        StartGame();
     }
+
+    private void StartGame()
+    {
+        UILogo.Show(() =>
+        {
+            UiManager.Show<UIFps>();
+            GameWorld.ShowTitle();
+        });
+    }
+
 
     void OnDestroy()
     {
@@ -84,7 +106,7 @@ public class GameSystem : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        PlayerDataMgr.Data = PlayerDataMgr.Data;
+        PlayerDataMgr.SavePlayerData();
     }
 
     void OnApplicationFocus(bool focusStatus)

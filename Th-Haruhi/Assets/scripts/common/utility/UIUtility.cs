@@ -9,7 +9,7 @@ public enum EImagePath
     Public,
 }
 
-public static class UiTools
+public static class UIUtility
 {
     public static CanvasGroup CreateCanvasGroup(this UIBehaviour uiObject)
     {

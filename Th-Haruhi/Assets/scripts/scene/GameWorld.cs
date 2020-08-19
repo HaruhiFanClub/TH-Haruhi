@@ -5,30 +5,18 @@ using System.Collections.Generic;
 
 public static class GameWorld
 {
-    public static string FirstScene = "scenes/Level_Town.unity";
-    public static string TitleChr = "ui/prefabs/TitleChr.prefab";
-
-   
-    public static void FirstStartGame()
-    {
-        EnterScene(FirstScene);
-    }
+    public static bool InGameing = false;
 
     public static void ShowTitle()
     {
         ClearCache();
-        UIMainView.Show();
+        UIMainView.Show(true);
 
-        GameSystem.CoroutineStart(ShowTitleImpl());
     }
 
     private static IEnumerator ShowTitleImpl()
     {
         yield return GameScene.UnloadCurrentScene();
-        
-        //动态角色
-        var titleChr = ResourceMgr.Instantiate(ResourceMgr.LoadImmediately(TitleChr));
-        titleChr.transform.SetParent(null);
     }
 
     public static void EnterScene(string sceneUrl, string bornId = "1")

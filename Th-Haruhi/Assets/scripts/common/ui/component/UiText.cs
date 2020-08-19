@@ -90,7 +90,16 @@ public class UiText : Text
                 SyncText();
         }
     }
-
+    public float Alpha
+    {
+        get { return color.a; }
+        set
+        {
+            Color c = color;
+            c.a = value;
+            color = c;
+        }
+    }
     public new Color color
     {
         get

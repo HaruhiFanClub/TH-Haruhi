@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.Generic;
 using System;
 using System.Security.Cryptography;
+using UnityEngine;
 
 public static class FileUtility
 {
@@ -114,7 +115,10 @@ public static class FileUtility
                 {
                     File.Delete(path);
                 }
-                catch (Exception ex2) { }
+                catch (Exception ex2) 
+                {
+                    Debug.LogError(ex2);
+                }
                 return "";
             }
 #else
@@ -303,7 +307,7 @@ public static class FileUtility
             if (ver == 5)
             {
                 h = 3 + 4 + 1;  //头+校验位+随机种子
-                rnd = (byte)(new Random()).Next(0, 256);
+                rnd = (byte)(new System.Random()).Next(0, 256);
             }
             var ret = new byte[_blen + h];
             ret[0] = (byte)'P';
