@@ -143,10 +143,10 @@ public class UiTextButton : Button
     //选择逻辑
     public int MenuIndex { set; get; }
     public bool IsSelected { private set; get; } = true;
+    public bool InClick { private set; get; }
 
     private Tween _shakeTween;
     private float _alphaAddFlag;
-    private bool _isClicked;
 
     private const float SelectAlphaSmooth = 0.8f;
     private const float ClickAlphaSmooth = 7f;
@@ -172,7 +172,7 @@ public class UiTextButton : Button
     {
         if (!IsEnable) return;
 
-        if(_isClicked)
+        if(InClick)
         {
             if (_text.Alpha >= 1f)
                 _alphaAddFlag = -1;
@@ -194,12 +194,14 @@ public class UiTextButton : Button
 
     public void DoClick()
     {
-        _isClicked = true;
+        if (InClick) return;
+
+        InClick = true;
         Sound.PlayUiAudioOneShot(1002);
 
         DOVirtual.DelayedCall(ClickWaitTime, () =>
         {
-            _isClicked = false;
+            InClick = false;
             onClick.Invoke();
         });
     }

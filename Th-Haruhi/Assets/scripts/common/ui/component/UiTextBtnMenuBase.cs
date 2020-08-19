@@ -53,6 +53,8 @@ public class UiTextBtnMenuBase : MonoBehaviour
 
     protected void SelectNext()
     {
+        if (CurrSelect.InClick) return;
+
         DisableSelectAll();
 
         var wantStart = CurrSelect.MenuIndex + 1;
@@ -81,6 +83,8 @@ public class UiTextBtnMenuBase : MonoBehaviour
 
     protected void SelectPrev()
     {
+        if (CurrSelect.InClick) return;
+
         DisableSelectAll();
 
         var wantStart = CurrSelect.MenuIndex - 1;
