@@ -2,31 +2,29 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class GameWorld
 {
-    public static bool InGameing = false;
-
     public static void ShowTitle()
     {
-        ClearCache();
         UIMainView.Show(true);
 
     }
 
     private static IEnumerator ShowTitleImpl()
     {
-        yield return GameScene.UnloadCurrentScene();
+        yield return Level.UnloadCurrentScene();
     }
 
-    public static void EnterScene(string sceneUrl, string bornId = "1")
+    public static void EnterLevel(int levelId)
     {
-        GameScene.Load(sceneUrl, finishAction: (scene) =>
+        //显示loading
+        UILoading.Show();
+        Level.Load(levelId, finishAction: (scene) =>
         {
-            UIGameView.Show();
-
-            //创建角色
-            CharacterMgr.MainPlayer.transform.position = RegionRoot.FindBornRegionById(bornId).transform.position;
+            //关闭loading
+            UILoading.Close();
         });
     }
 
@@ -35,10 +33,8 @@ public static class GameWorld
        
     }
 
-    private static void ClearCache()
+    public static void ClearCache()
     {
-        //删除角色
-        CharacterMgr.Clear();
 
         //清理各种池
         EffectFactory.BackAllToPool();

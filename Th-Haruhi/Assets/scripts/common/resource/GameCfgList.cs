@@ -16,6 +16,8 @@ public static class GameCfgList
     private static void InitTableUrl()
     {
         _(typeof(SoundDeploy), "sound");
+        _(typeof(CharacterDeploy), "character");
+        _(typeof(LevelDeploy), "level");
     }
     
     private class RandomIdData

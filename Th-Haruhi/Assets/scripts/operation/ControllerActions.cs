@@ -14,6 +14,10 @@ public enum EControllerBtns
     Up,
     Down,
 
+	Shoot,
+	Explosion,
+	SlowMove,
+
 	TurnLeft,
 	TurnRight,
 	TurnUp,
@@ -33,9 +37,12 @@ public class ControllerActions : PlayerActionSet
 	    _joyActions[EControllerBtns.Sure] = CreatePlayerAction("Sure");
 	    _joyActions[EControllerBtns.Cancel] = CreatePlayerAction("Cancel");
 
+		_joyActions[EControllerBtns.Shoot] = CreatePlayerAction("Shoot");
+		_joyActions[EControllerBtns.Explosion] = CreatePlayerAction("Explosion");
+		_joyActions[EControllerBtns.SlowMove] = CreatePlayerAction("SlowMove");
 
 
-        var left = CreatePlayerAction("Move Left");
+		var left = CreatePlayerAction("Move Left");
         var right = CreatePlayerAction("Move Right");
         var up = CreatePlayerAction("Move Up");
         var down = CreatePlayerAction("Move Down");
@@ -82,8 +89,16 @@ public class ControllerActions : PlayerActionSet
         p.Get(EControllerBtns.Cancel).AddDefaultBinding(Key.Escape);
         p.Get(EControllerBtns.Cancel).AddDefaultBinding(InputControlType.Action2);
 
-        //move
-        p.Get(EControllerBtns.Up).AddDefaultBinding( Key.UpArrow);
+		//shoot
+		p.Get(EControllerBtns.Shoot).AddDefaultBinding(Key.Z);
+		p.Get(EControllerBtns.Shoot).AddDefaultBinding(InputControlType.Action1);
+
+		//slowmove
+		p.Get(EControllerBtns.SlowMove).AddDefaultBinding(Key.LeftShift);
+		p.Get(EControllerBtns.SlowMove).AddDefaultBinding(InputControlType.Action3);
+
+		//move
+		p.Get(EControllerBtns.Up).AddDefaultBinding( Key.UpArrow);
 		p.Get(EControllerBtns.Down).AddDefaultBinding( Key.DownArrow);
 		p.Get(EControllerBtns.Left).AddDefaultBinding( Key.LeftArrow);
 		p.Get(EControllerBtns.Right).AddDefaultBinding( Key.RightArrow);

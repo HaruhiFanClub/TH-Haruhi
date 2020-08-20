@@ -52,9 +52,6 @@ public static class UiManager
     public static void SetDeltaSize2(Vector2 size, float safeHeightRadio, float bottomGiveY)
     {
         SetDeltaInfo2(UiLayer.Main, _uiBind.CanvasList[UiLayer.Main], size, safeHeightRadio, bottomGiveY);
-        SetDeltaInfo2(UiLayer.MainTop, _uiBind.CanvasList[UiLayer.MainTop], size, safeHeightRadio, bottomGiveY);
-        SetDeltaInfo2(UiLayer.PopView, _uiBind.CanvasList[UiLayer.PopView], size, safeHeightRadio, bottomGiveY);
-        SetDeltaInfo2(UiLayer.PopViewTop, _uiBind.CanvasList[UiLayer.PopViewTop], size, safeHeightRadio, bottomGiveY);
         SetDeltaInfo2(UiLayer.Tips, _uiBind.CanvasList[UiLayer.Tips], size, safeHeightRadio, bottomGiveY);
         SetDeltaInfo2(UiLayer.Loding, _uiBind.CanvasList[UiLayer.Loding], size, safeHeightRadio, bottomGiveY);
     }

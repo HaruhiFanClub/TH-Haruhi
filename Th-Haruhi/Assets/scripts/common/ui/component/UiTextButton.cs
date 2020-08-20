@@ -171,6 +171,7 @@ public class UiTextButton : Button
     public void OnUpdate()
     {
         if (!IsEnable) return;
+        if (_shakeTween != null) return;
 
         if(InClick)
         {
@@ -209,7 +210,10 @@ public class UiTextButton : Button
     private void OnSelectEnable()
     {
         _shakeTween = transform.DOShakePosition(0.2F, 8, 50, 90, true);
-
+        _shakeTween.onComplete = () =>
+        {
+            _shakeTween = null;
+        };
         Sound.PlayUiAudioOneShot(1001);
     }
 

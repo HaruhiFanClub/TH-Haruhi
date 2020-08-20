@@ -78,7 +78,7 @@ public class EffectFactory : MonoBehaviour
                     else
                     {
                         effect.InCache = false;
-                        effect.transform.SetParent(GameScene.Root, false);
+                        effect.transform.SetParent(Level.Root, false);
                         effect.SetActiveSafe(true);
                     }
                     notify(effect);

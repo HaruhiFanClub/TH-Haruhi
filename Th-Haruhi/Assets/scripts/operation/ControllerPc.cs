@@ -61,11 +61,7 @@ public class ControllerPc : MonoBehaviour
     
     protected void Update()
     {
-        if(GameWorld.InGameing)
-        {
-            UpdateMove();
-        }
-        else
+        if(!Level.InLevel || GamePause.InPause)
         {
             UpdateMenu();
         }
@@ -104,15 +100,4 @@ public class ControllerPc : MonoBehaviour
         }
     }
 
-    private void UpdateMove()
-    {
-        if(_actions.Move.IsPressed)
-        {
-            GameEventCenter.Send(GameEvent.StartMove, _actions.Move.Value);
-        }
-        else if (_actions.Move.WasReleased)
-        {
-            GameEventCenter.Send(GameEvent.StopMove);
-        }
-    }
 }

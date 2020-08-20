@@ -13,9 +13,6 @@ using System;
 public enum UiLayer
 {
     Main,
-    MainTop,
-    PopView,
-    PopViewTop,
     Loding,
     Tips
 }

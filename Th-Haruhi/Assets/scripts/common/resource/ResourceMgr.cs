@@ -74,7 +74,7 @@ public class ResourceMgr : MonoBehaviour
 
     public new static GameObject Instantiate(Object _object)
     {
-        GameObject result = Object.Instantiate(_object, GameScene.Root) as GameObject;
+        GameObject result = Object.Instantiate(_object, Level.Root) as GameObject;
         return result;
     }
 
@@ -89,7 +89,7 @@ public class ResourceMgr : MonoBehaviour
             Pool.Free(info);
             return;
         }
-        GameObject result = Object.Instantiate(info.Source, GameScene.Root) as GameObject;
+        GameObject result = Object.Instantiate(info.Source, Level.Root) as GameObject;
         if (result == null)
         {
             Debug.LogError("InstantiateGameObjectError, Source:" + info.Source);

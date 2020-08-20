@@ -1,83 +1,113 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Character : EntityBase
 {
-    //角色属性
-    public CharacterProperty Data { private set; get; }
+    [SerializeField] public GameObject JudgePoint;
 
-    public Animator Animator { private set; get; }
+    [SerializeField] public List<Sprite> IdleSprites;
+    [SerializeField] public List<Sprite> LeftSprites;
+    [SerializeField] public List<Sprite> RightSprites;
+    [SerializeField] public List<Sprite> LeftMoveSprites;
+    [SerializeField] public List<Sprite> RightMoveSprites;
 
+    [SerializeField] public Transform ShootSlot1;
+    [SerializeField] public Transform ShootSlot2;
+
+    private enum EMoveStyle
+    {
+        Idle,
+        MoveLeft,
+        MoveRight,
+        IdleLeft,
+        IdleRight,
+    }
+
+    private SpriteRenderer _sr;
     private Rigidbody2D _rg;
+    private Vector3 _moveFoward;
+    private ControllerActions _actions;
+    private bool _inMove;
+    private bool _inSlow;
+    private bool _inShoot;
+    private int _currAniIdx;
+    private Shooter _shooter;
+    private Dictionary<EMoveStyle, float> _aniSpeed = new Dictionary<EMoveStyle, float>();
+
+    private EMoveStyle _aniStyle;
+    private EMoveStyle AniStyle
+    {
+        get { return _aniStyle; }
+        set 
+        {
+            if (_aniStyle != value)
+                _currAniIdx = 0;
+            _aniStyle = value;
+        }
+    }
+
+    
 
     protected override void Awake()
     {
         base.Awake();
-        Animator = GetComponent<Animator>();
         _rg = GetComponent<Rigidbody2D>();
-        Data = GetComponent<CharacterProperty>();
+        _sr = GetComponent<SpriteRenderer>();
+        _actions = ControllerPc.GetActions();
+        _aniStyle = EMoveStyle.Idle;
+        _shooter = new Shooter(this);
 
-        GameEventCenter.AddListener(GameEvent.StartMove, OnStartMove);
-        GameEventCenter.AddListener(GameEvent.StopMove, OnStopMove);
+        //动画速度
+        _aniSpeed[EMoveStyle.Idle] = 0.1f;
+        _aniSpeed[EMoveStyle.MoveLeft] = 0.05f;
+        _aniSpeed[EMoveStyle.MoveRight] = 0.05f;
+        _aniSpeed[EMoveStyle.IdleLeft] = 0.1f;
+        _aniSpeed[EMoveStyle.IdleRight] = 0.1f;
     }
 
-    protected override void OnDestroy()
+
+    private void UpdateOperation()
     {
-        base.OnDestroy();
-        GameEventCenter.RemoveListener(GameEvent.StartMove, OnStartMove);
-        GameEventCenter.RemoveListener(GameEvent.StopMove, OnStopMove);
+        if (_actions == null) return;
+
+        //move
+        if (_actions.Move.IsPressed)
+        {
+            Move(_actions.Move.Value);
+        }
+        else if (_actions.Move.WasReleased)
+        {
+            StopMove();
+        }
+
+        //slow
+        _inSlow = _actions.Get(EControllerBtns.SlowMove).IsPressed;
+        if (JudgePoint)
+            JudgePoint.SetActiveSafe(_inSlow);
+
+
+
+        //shoot
+        var inShoot = _actions.Get(EControllerBtns.Shoot).IsPressed;
+
+        if (!_inShoot && inShoot)
+            _shooter.StartShoot();
+        else if (_inShoot && !inShoot)
+            _shooter.EndShoot();
+
+        _inShoot = inShoot;
     }
 
-
-    //根据摇杆方向决定移动方向
-    private Vector2 _prevMoveFwd;
-    private EMoveDir _lastMoveDir;
-    private EMoveDir GetMoveDir(Vector2 forward)
+    protected override void Update()
     {
-        EMoveDir moveDir;
+        base.Update();
 
-        var absX = Mathf.Abs(forward.x);
-        var absY = Mathf.Abs(forward.y);
-
-        //同时按2个方向, 以后按的为准
-        if (Mathf.Abs(_prevMoveFwd.x) < absX)
+        if (GamePause.InPause == false)
         {
-            _lastMoveDir = forward.x < 0 ? EMoveDir.Left : EMoveDir.Right;
+            UpdateOperation();
+            UpdateAnimation();
+            _shooter.Update();
         }
-        if (Mathf.Abs(_prevMoveFwd.y) < absY)
-        {
-            _lastMoveDir = forward.y < 0 ? EMoveDir.Down : EMoveDir.Up;
-        }
-
-        //left, right
-        if (absX > absY)
-        {
-            moveDir = forward.x < 0 ? EMoveDir.Left : EMoveDir.Right;
-        }
-        //updown
-        else if (absX < absY)
-        {
-            moveDir = forward.y < 0 ? EMoveDir.Down : EMoveDir.Up;
-        }
-        else
-        {
-            //同时按2个方向, 以后按的为准
-            moveDir = _lastMoveDir;
-        }
-        _prevMoveFwd = forward;
-        return moveDir;
-    }
-
-    //收到移动事件
-    private void OnStartMove(object o)
-    {
-        var forward = (Vector2)o;
-        Move(GetMoveDir(forward));
-    }
-
-    private void OnStopMove(object o)
-    {
-        _prevMoveFwd = Vector2.zero;
-        StopMove();
     }
 
     protected override void FixedUpdate()
@@ -86,75 +116,109 @@ public class Character : EntityBase
         UpdateMove();
     }
 
-    private bool _inMove;
-    private Vector3 _moveFoward = Vector3.zero;
 
-    public EMoveDir MoveDir
-    {
-        set
-        {
-            switch (value)
-            {
-                case EMoveDir.Idle:
-                    _moveFoward = Vector3.zero;
-                    break;
-                case EMoveDir.Up:
-                    Animator.Play("MoveUp");
-                    _moveFoward.x = 0;
-                    _moveFoward.y = 1;
-                    break;
-                case EMoveDir.Down:
-                    Animator.Play("MoveDown");
-                    _moveFoward.x = 0;
-                    _moveFoward.y = -1;
-                    break;
-                case EMoveDir.Left:
-                    Animator.Play("MoveLeft");
-                    _moveFoward.x = -1;
-                    _moveFoward.y = 0;
-                    break;
-                case EMoveDir.Right:
-                    Animator.Play("MoveRight");
-                    _moveFoward.x = 1;
-                    _moveFoward.y = 0;
-                    break;
-            }
-        }
-    }
-
-    public void Move(EMoveDir dir)
+    public void Move(Vector3 dir)
     {
         _inMove = true;
-        MoveDir = dir;
+        _moveFoward = dir;
+
+        if(MathUtility.FloatEqual(_moveFoward.x, 0))
+        {
+            AniStyle = EMoveStyle.Idle;
+            return;
+        }
+
+        if (_moveFoward.x > 0 && AniStyle != EMoveStyle.IdleRight)
+            AniStyle = EMoveStyle.MoveRight;
+
+        if (_moveFoward.x < 0 && AniStyle != EMoveStyle.IdleLeft)
+            AniStyle = EMoveStyle.MoveLeft;
     }
 
     public void StopMove()
     {
-        MoveDir = EMoveDir.Idle;
         _inMove = false;
-        Animator.SetFloat("MoveSpeedFactor", 0f);
+        _moveFoward = Vector3.zero;
+        AniStyle = EMoveStyle.Idle;
     }
+
 
     private void UpdateMove()
     {
         var deltaTime = Time.deltaTime;
         if (_inMove)
         {
-            var moveSpeed = GetMoveSpeed();
             var targetPos = transform.position + _moveFoward * deltaTime * GetMoveSpeed();
             _rg.MovePosition(targetPos);
-            Animator.SetFloat("MoveSpeedFactor", moveSpeed  / 8f);
         }
     }
 
     private float GetMoveSpeed()
     {
-        if (_inSand) return Data.MoveSpeed / 2f;
-        return Data.MoveSpeed;
+        return _inSlow ? 7f : 14f;
     }
 
+    private float _nextAnimationTime;
+    private void UpdateAnimation()
+    {
+        if (Time.time < _nextAnimationTime) return;
 
-    private bool _inSand;
+        switch (AniStyle)
+        {
+            case EMoveStyle.Idle:
+                if (IdleSprites.Count > 0)
+                {
+                    _sr.sprite = IdleSprites[_currAniIdx];
+                    _currAniIdx++;
+                    if (_currAniIdx >= IdleSprites.Count)
+                        _currAniIdx = 0;
+                }
+                break;
+            case EMoveStyle.MoveLeft:
+                if (LeftMoveSprites.Count > 0)
+                {
+                    _sr.sprite = LeftMoveSprites[_currAniIdx];
+                    _currAniIdx++;
+                    if (_currAniIdx >= LeftMoveSprites.Count)
+                    {
+                        AniStyle = EMoveStyle.IdleLeft;
+                    }
+                }
+                break;
+            case EMoveStyle.MoveRight:
+                if (RightMoveSprites.Count > 0)
+                {
+                    _sr.sprite = RightMoveSprites[_currAniIdx];
+                    _currAniIdx++;
+                    if (_currAniIdx >= RightMoveSprites.Count)
+                    {
+                        AniStyle = EMoveStyle.IdleRight;
+                    }
+                }
+                break;
+            case EMoveStyle.IdleLeft:
+                if (LeftSprites.Count > 0)
+                {
+                    _sr.sprite = LeftSprites[_currAniIdx];
+                    _currAniIdx++;
+                    if (_currAniIdx >= LeftSprites.Count)
+                        _currAniIdx = 0;
+                }
+                break;
+            case EMoveStyle.IdleRight:
+                if (RightSprites.Count > 0)
+                {
+                    _sr.sprite = RightSprites[_currAniIdx];
+                    _currAniIdx++;
+                    if (_currAniIdx >= RightSprites.Count)
+                        _currAniIdx = 0;
+                }
+                break;
+        }
+
+        _nextAnimationTime = Time.time + _aniSpeed[AniStyle];
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
       
@@ -162,32 +226,41 @@ public class Character : EntityBase
   
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == Layers.Sand)
-        {
-            _inSand = true;
-        }
+       
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == Layers.Sand)
-        {
-            _inSand = false;
-        }
+        
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var region = collision.GetComponent<RegionBase>();
-        if(region)
-        {
-            switch (region.Type)
-            {
-                case ERegionType.Born:
-                    break;
-                case ERegionType.ChangeScene:
-                    GameWorld.EnterScene(region.SceneUrl, region.BornId);
-                    break;
-            }
-        }
+       
     }
+
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+    }
+
+    //static create
+    public static Character CreateCharacter(int chrId)
+    {
+        var chrDeploy = GameCfgList.GetDeploy<CharacterDeploy>(chrId);
+
+        var obj = ResourceMgr.LoadImmediately(chrDeploy.resource);
+        var chrObj = ResourceMgr.Instantiate(obj);
+        chrObj.transform.SetParent(Level.Root);
+        return chrObj.GetComponent<Character>();
+    }
+
+}
+
+
+public class CharacterDeploy : Conditionable
+{
+    public int id;
+    public string name;
+    public string resource;
 }

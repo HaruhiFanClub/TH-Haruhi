@@ -1,0 +1,36 @@
+ManifestFileVersion: 0
+CRC: 1575214742
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c1a52ba58498171ea08d8724532e1219
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cf49df6ed46714e4fbdac6c5d2f68b0b
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/res/effects/prefabs/baozha_huo3.prefab
+- Assets/res/effects/prefabs/baozha_huo4.prefab
+- Assets/res/effects/prefabs/baozha_huo5.prefab
+- Assets/res/effects/prefabs/baozha_huo11.prefab
+- Assets/res/effects/prefabs/baozha_huo10.prefab
+- Assets/res/effects/prefabs/baozha_huo8.prefab
+- Assets/res/effects/prefabs/baozha_huo9.prefab
+- Assets/res/effects/prefabs/baozha_huo1.prefab
+Dependencies:
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/effects_materials_.haruhi

@@ -1,0 +1,195 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Clouds
+  m_Shader: {fileID: 4800000, guid: 7151de39da3feec4298a2f95d0cc6156, type: 3}
+  m_ShaderKeywords: CV_DEPTHBLEND_OFF CV_HORIZONBLEND_OFF CV_LIGHTING_ON
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CloudMap:
+        m_Texture: {fileID: 2800000, guid: 5c6534481ee0fa843bfd33526af03334, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Jitter:
+        m_Texture: {fileID: 2800000, guid: 981a6ac4f3bebbe4b8bd11acaf534c49, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex2:
+        m_Texture: {fileID: 2800000, guid: 981a6ac4f3bebbe4b8bd11acaf534c49, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTexture:
+        m_Texture: {fileID: 2800000, guid: 69d8c3bd664ab4cf0b5a53c18bf0451c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTexture1:
+        m_Texture: {fileID: 2800000, guid: 981a6ac4f3bebbe4b8bd11acaf534c49, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTexture2:
+        m_Texture: {fileID: 2800000, guid: 981a6ac4f3bebbe4b8bd11acaf534c49, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PerlinNormalMap:
+        m_Texture: {fileID: 2800000, guid: 5deb6de6b8c79ff478078e770779a009, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _colorTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _icyNormals:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _mainNormals:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Alpha: 1
+    - _AlphaCut: 0
+    - _BackLightingIntensity: 1.11
+    - _BumpScale: 1
+    - _CloudAlpha: 1.0000119
+    - _CloudAlphaCut: 0.01
+    - _CloudCover: 0.29999703
+    - _CloudDensity: 2
+    - _CloudDepth: 1
+    - _CloudScale: 0.796
+    - _CloudScale1: 1
+    - _CloudScale2: 2
+    - _CloudSharpness: 0.0049999533
+    - _CloudSpeed1: 1
+    - _CloudSpeed2: 1.5
+    - _CloudTime: 1
+    - _CloudTone: 1
+    - _CloudsDepth: 0.5
+    - _Cutoff: 0.5
+    - _Density: 62
+    - _DepthBlendMul: 0.81
+    - _DepthBlendMult: 2
+    - _DepthColor: 0
+    - _DepthIntensity: 0.5
+    - _DetailNormalMapScale: 1
+    - _DirectLightIntensity: 0.2
+    - _DirectLightRange: 5
+    - _Dithering: 0
+    - _DstBlend: 0
+    - _EdgeBlend: 0.75
+    - _Glossiness: 0.5
+    - _HorizontBlending: 1.06
+    - _IndirectContribution: 0
+    - _LightIntensity: 1.799988
+    - _LightIntesity: 1.3
+    - _LightRange: 42.5
+    - _Metallic: 0
+    - _MipLevel: 0
+    - _Mode: 0
+    - _MoonGlow: 9
+    - _Normalized: 1
+    - _ObjectSpaceMapping: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _Scale: 10460
+    - _Speed: 1.9662175
+    - _Speed1: 0.1
+    - _Speed2: 7.827784
+    - _SpeedSecondLayer: 6.49
+    - _SrcBlend: 1
+    - _SunGlow: 3.98
+    - _Tiling: 6000
+    - _TimeMult: 0
+    - _TimeMultSecondLayer: 0
+    - _UVSec: 0
+    - _Weight: 0.5
+    - _ZWrite: 1
+    - _ditherTiling: 1
+    - _glossiness: 0.5
+    - _horizonBlend: 7.5
+    - _icyness: 0.5
+    - _node_2542: 37.62
+    - _node_6051: -0.1
+    - _node_8768: 21.07
+    - _node_8964: 4696.1
+    - _shadowAlpha: 0
+    - _shadowSharpness: 1
+    - _timeV: -0.0015693732
+    m_Colors:
+    - _Ambient: {r: 1, g: 1, b: 1, a: 1}
+    - _BackLighting: {r: 0.84013844, g: 0.83344257, b: 0.8158661, a: 1}
+    - _BaseColor: {r: 0.91177064, g: 0.91177064, b: 0.91177064, a: 1}
+    - _CloudNormals: {r: 1, g: 1, b: -1, a: 0}
+    - _CloudNormalsDirection: {r: 1, g: -1, b: -1, a: 0}
+    - _CloudSpeed: {r: 0.0007938743, g: 0.0039693974, b: 0, a: 0}
+    - _CloudUV: {r: 0.31, g: 0.52, b: 0.12, a: 0}
+    - _Color: {r: 0.9632353, g: 0.9632353, b: 0.9632353, a: 1}
+    - _DirectLightColor: {r: 0.88105536, g: 0.8743595, b: 0.856783, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FirstColor: {r: 0.93381757, g: 0.93381757, b: 0.93381757, a: 1}
+    - _LightColor: {r: 0.84705883, g: 0.80784315, b: 0.79607844, a: 1}
+    - _LightDirection: {r: 0, g: 0, b: 0, a: 0}
+    - _SecondColor: {r: 0.99999404, g: 0.99999404, b: 0.99999404, a: 0.99999404}
+    - _Shading: {r: 0.44117647, g: 0.44117647, b: 0.44117647, a: 0.378}
+    - _ShadingColor: {r: 0.93381757, g: 0.93381757, b: 0.93381757, a: 1}
+    - _ShadingDirection: {r: 1, g: 1, b: -1, a: 0}
+    - _SunDir: {r: 0, g: 0, b: 530, a: 0}
+    - _WindDir: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _WindDirection: {r: 1, g: 0, b: 1, a: 0}
+    - _icyColor: {r: 1, g: 1, b: 1, a: 1}
+    - _node_5873: {r: 0, g: 0, b: 2.64, a: 0}
+    - _specularColor: {r: 1, g: 1, b: 1, a: 1}
+    - cloudColor: {r: 0.5514706, g: 0.5514706, b: 0.5514706, a: 1}
+    - moonColor: {r: 0.6102941, g: 0.6102941, b: 0.6102941, a: 1}
+    - moonDir: {r: 0, g: 0, b: 0, a: 0}
+    - sunColor: {r: 0.5808823, g: 0.42311326, b: 0.14094938, a: 1}
+    - sunDir: {r: 59.91, g: -0.81, b: 0, a: 0}

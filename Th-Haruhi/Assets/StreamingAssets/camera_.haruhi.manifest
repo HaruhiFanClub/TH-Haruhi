@@ -1,0 +1,33 @@
+ManifestFileVersion: 0
+CRC: 380260712
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4bc547441757ccde61c239fa1a90b567
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d5d847986767940791826ebba68725a4
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 60478d960858b3c469c0124a1d236b29, type: 3}
+- Class: 119
+  Script: {instanceID: 0}
+Assets:
+- Assets/res/camera/ProjectorShadow/ProjectorShadow.prefab
+- Assets/res/camera/ProjectorShadow/ProjectorShadow.mat
+- Assets/res/camera/ProjectorShadow/ProjectorShadow_Near.prefab
+- Assets/res/camera/ProjectorShadow/ProjectorShadow_Near.mat
+- Assets/res/camera/ProjectorShadow/shadow_falloff.png
+Dependencies:
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/shaders.haruhi

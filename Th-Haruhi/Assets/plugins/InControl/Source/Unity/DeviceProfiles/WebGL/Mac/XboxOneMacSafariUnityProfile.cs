@@ -11,7 +11,6 @@ namespace InControl.UnityDeviceProfiles
 		public override void Define()
 		{
 			base.Define();
-
 			DeviceName = "Xbox One Controller";
 			DeviceNotes = "Xbox One Controller on Mac Safari";
 

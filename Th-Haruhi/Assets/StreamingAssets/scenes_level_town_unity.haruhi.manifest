@@ -1,0 +1,62 @@
+ManifestFileVersion: 0
+CRC: 1221700055
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e4df70b8822a98a877d68b1c55a2deaa
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 787f76a24400b33affb385eb301e95ad
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 61
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 104
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4e7eb208c059b784481462e432a94b03, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 02d7b0c9bee90514ba663d5ff1cf60c5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3ba9c55c78b27ba459ce20e79c09b722, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 46e2b48f3321b794aa245a6bc9eb6bed, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 157
+  Script: {instanceID: 0}
+- Class: 196
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+- Class: 19719996
+  Script: {instanceID: 0}
+- Class: 156049354
+  Script: {instanceID: 0}
+- Class: 483693784
+  Script: {instanceID: 0}
+- Class: 1839735485
+  Script: {instanceID: 0}
+Assets:
+- Assets/res/scenes/Level_Town.unity
+Dependencies:
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/retain_region_.haruhi
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/common_.haruhi

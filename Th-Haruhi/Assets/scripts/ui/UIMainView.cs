@@ -5,7 +5,6 @@ using System.Collections;
 
 public class UIMainView : UiInstance
 {
-    
     public static void Show(bool showAni)
     {
         var view = UiManager.ImmediatelyShow<UIMainView>();
@@ -41,7 +40,7 @@ public class UIMainView : UiInstance
         _compent.Bg.Alpha = 0;
         _compent.MenuCanvasGroup.alpha = 0;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         _compent.Bg.DOFade(1f, 3f);
         Sound.PlayMusic(1);
 
@@ -74,7 +73,8 @@ public class UIMainView : UiInstance
 
     private void Btn_GameStart()
     {
-        UiTips.Show("Btn_GameStart");
+        GameWorld.EnterLevel(1);
+        //UiTips.Show("Btn_GameStart");
     }
     private void Btn_ExtraStart()
     {

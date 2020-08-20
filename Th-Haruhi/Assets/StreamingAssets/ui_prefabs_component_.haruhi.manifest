@@ -1,0 +1,41 @@
+ManifestFileVersion: 0
+CRC: 3656173438
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 972b9940bf0c3d7b3f0e823e53516146
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 0d3eba4afdcb0c42bffa242667e3ee74
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 243133a65ecf8df4396908e56d51b645, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 111cebd9f68fc964b8d10e3bc6b15e4e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1af40e3c2adf1ae4da9542aaab7bebe9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a6b7e4ee3cdc8cd42a19eb0ef1548080, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/res/ui/prefabs/component/ControllerlIcon.prefab
+- Assets/res/ui/prefabs/component/ColorTemplate.prefab
+Dependencies:
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/ui_fonts_.haruhi
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/ui_controlbtns_.haruhi

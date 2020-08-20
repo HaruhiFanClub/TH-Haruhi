@@ -4,9 +4,12 @@ id	name	resource	volume
 			
 #Bgm(1-10)			
 1	Title	audios/bgm/main.ogg	1
-			
+2	µÚÒ»¹Ø	audios/bgm/level1.ogg	1
 			
 			
 #UI			
 1001	Select	audios/ui/se_select00.wav	1
 1002	OK	audios/ui/se_ok00.wav	1
+			
+#bullet			
+2001	1	audios/bullet/se_plst00.wav	1

@@ -7,10 +7,6 @@ public static class GameEvent
     public const string OnControllerDeviceChanged = "OnControllerDeviceChanged";
     public const string OnSceneChange = "OnSceneChange";
 
-    public const string StartMove = "StartMove";
-    public const string StopMove = "StopMove";
-
-
     public const string UI_Up = "UI_Up";
     public const string UI_Down = "UI_Down";
     public const string UI_Left = "UI_Left";

@@ -1,0 +1,64 @@
+ManifestFileVersion: 0
+CRC: 449649561
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 354c1df6ac2fe382e4660b3c19d6f426
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9e57bb64f09e51d1e7673d1eae52cb8c
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 104
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 83e4dc60d78fd854791395724920d766, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 243133a65ecf8df4396908e56d51b645, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9c4fd8d6634e30b4db6eb53d091ed7fc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: add6b4895f4cba740a03904e6a1fad8b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 60c6b3bbe311f14469fff24da0e048cc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c7b5e8de77c5b4597ae7fbfb49a95e22, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 55d397ee0183fc64e87d67a58c0e4170, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 157
+  Script: {instanceID: 0}
+- Class: 196
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 223
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/gameStart.unity
+Dependencies:
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/common_.assetbundle
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/shaders.assetbundle
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/common_.haruhi
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/ui_prefabs_component_.haruhi

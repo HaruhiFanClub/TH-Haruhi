@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: 1b2723bbdd28ff044b30fff1fc6a559c
+labels:
+- Sky
+- Vegetation
+- Foliage
+- Effect
+- Plant
+- Nature
+- Terrain
+- season
+- spring
+- autumn
+- summer
+- plant
+- winter
+- storm
+- snow
+- rain
+- dynamic
+- Enviroment
+- Weather
+- Grow
+- Day/Night
+- Enviro
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: scenes_plugin_weather.assetbundle
+  assetBundleVariant: 
