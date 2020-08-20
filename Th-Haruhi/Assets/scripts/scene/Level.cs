@@ -115,7 +115,7 @@ public class Level : MonoBehaviour
 #if UNITY_EDITOR
         yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 #else
-        yield return ResourceMgr.LoadScene(sceneUrl, LoadSceneMode.Additive);
+        yield return ResourceMgr.LoadScene(deploy.resource, LoadSceneMode.Additive);
 #endif
         CurrentSceneName = sceneName;
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
