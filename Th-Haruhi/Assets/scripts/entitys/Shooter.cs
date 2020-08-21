@@ -34,17 +34,21 @@ public class Shooter
 
             if(_shootCount == 1)
             {
-                var b1 = ResourceMgr.Instantiate(_source1);
-                b1.GetComponent<Bullet>().Shoot(_master.ShootSlot1.position, Vector2.up);
-                var b2 = ResourceMgr.Instantiate(_source1);
-                b2.GetComponent<Bullet>().Shoot(_master.ShootSlot2.position, Vector2.up);
+                ResourceMgr.Instantiate(_source1).GetComponent<Bullet>().Shoot(_master.ShootSlot1.position, Vector2.up);
+                ResourceMgr.Instantiate(_source1).GetComponent<Bullet>().Shoot(_master.ShootSlot2.position, Vector2.up);
+                ResourceMgr.Instantiate(_source1).GetComponent<Bullet>().Shoot(_master.ShootSlot3.position, Vector2.up);
+                ResourceMgr.Instantiate(_source1).GetComponent<Bullet>().Shoot(_master.ShootSlot4.position, Vector2.up);
+                ResourceMgr.Instantiate(_source1).GetComponent<Bullet>().Shoot(_master.ShootSlot5.position, Vector2.up);
+                ResourceMgr.Instantiate(_source1).GetComponent<Bullet>().Shoot(_master.ShootSlot6.position, Vector2.up);
             }
             else
             {
-                var b1 = ResourceMgr.Instantiate(_source2);
-                b1.GetComponent<Bullet>().Shoot(_master.ShootSlot1.position, Vector2.up);
-                var b2 = ResourceMgr.Instantiate(_source2);
-                b2.GetComponent<Bullet>().Shoot(_master.ShootSlot2.position, Vector2.up);
+                ResourceMgr.Instantiate(_source2).GetComponent<Bullet>().Shoot(_master.ShootSlot1.position, Vector2.up);
+                ResourceMgr.Instantiate(_source2).GetComponent<Bullet>().Shoot(_master.ShootSlot2.position, Vector2.up);
+                ResourceMgr.Instantiate(_source2).GetComponent<Bullet>().Shoot(_master.ShootSlot3.position, Vector2.up);
+                ResourceMgr.Instantiate(_source2).GetComponent<Bullet>().Shoot(_master.ShootSlot4.position, Vector2.up);
+                ResourceMgr.Instantiate(_source2).GetComponent<Bullet>().Shoot(_master.ShootSlot5.position, Vector2.up);
+                ResourceMgr.Instantiate(_source2).GetComponent<Bullet>().Shoot(_master.ShootSlot6.position, Vector2.up);
             }
             _shootCount++;
             if (_shootCount == 2) _shootCount = 0;

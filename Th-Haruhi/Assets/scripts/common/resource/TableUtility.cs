@@ -11,7 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class GameCfgList
+public static class TableUtility
 {
     private static void InitTableUrl()
     {
@@ -161,7 +161,7 @@ public static class GameCfgList
         Paths[type] = url;
     }
 
-    static GameCfgList()
+    static TableUtility()
     {
         InitTableUrl();
     }

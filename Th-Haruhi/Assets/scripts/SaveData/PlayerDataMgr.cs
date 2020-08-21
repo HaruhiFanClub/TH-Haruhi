@@ -45,13 +45,13 @@ public static class PlayerDataMgr
     private static void DoSaveData()
     {
         _data.LastSaveTime = TimeUtility.GetCurrentSeconds() ;
-        LocalStorage.Write(SaveDataMgr.DataNamePlayer, JsonMapper.ToJson(Data));
+        LocalStorage.Write(SaveDataMgr.DataNamePlayer, JsonMapper.ToJson(Data), LocalStorage.EStorageType.SaveData);
         Debug.Log("SavePlayerData!");
     }
 
     public static void LoadPlayerData()
     {
-        var source = LocalStorage.Read<string>(SaveDataMgr.DataNamePlayer);
+        var source = LocalStorage.Read<string>(SaveDataMgr.DataNamePlayer, LocalStorage.EStorageType.SaveData);
         if (string.IsNullOrEmpty(source))
         {
             CreatePlayerData();

@@ -78,19 +78,21 @@ public class UIMainView : UiInstance
     }
     private void Btn_ExtraStart()
     {
+       
+
         UiTips.Show("Btn_ExtraStart");
     }
     private void Btn_ParcticeStart()
     {
-        UiTips.Show("Btn_ParcticeStart");
+        UiTips.Show(Application.persistentDataPath);
     }
     private void Btn_SpellParctice()
     {
-        UiTips.Show("Btn_SpellParctice");
+        UiTips.Show(Application.streamingAssetsPath);
     }
     private void Btn_Replay()
     {
-        UiTips.Show("Btn_Replay");
+        UiTips.Show(Application.dataPath);
     }
     private void Btn_PlayerData()
     {

@@ -19,13 +19,13 @@ public static class SystemDataMgr
 
     public static void SaveSystemData()
     {
-        LocalStorage.Write(SaveDataMgr.DataNameSystem, JsonMapper.ToJson(Data));
+        LocalStorage.Write(SaveDataMgr.DataNameSystem, JsonMapper.ToJson(Data), LocalStorage.EStorageType.SaveData);
         Debug.Log("Save SystemData!");
     }
 
     public static void LoadSystemData()
     {
-        var source = LocalStorage.Read<string>(SaveDataMgr.DataNameSystem);
+        var source = LocalStorage.Read<string>(SaveDataMgr.DataNameSystem, LocalStorage.EStorageType.SaveData);
         if (string.IsNullOrEmpty(source))
         {
             CreateSystemData();

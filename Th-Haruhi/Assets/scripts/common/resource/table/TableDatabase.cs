@@ -29,7 +29,7 @@ public static class TableDatabase
         mainKey = 0;
         fieldDilimiter = '\t';
         fieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-        tablesPath = "cfg/";
+        tablesPath = "/";
         tableExtension = ".sos";
         hashTables = Hashtable.Synchronized(new Hashtable());
     }

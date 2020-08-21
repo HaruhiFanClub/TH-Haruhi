@@ -1,0 +1,4 @@
+#自机配置		
+#	描述	资源路径
+id	name	resource
+1	baka9	character/baka9.prefab

@@ -205,49 +205,15 @@ public class ResourceMgr : MonoBehaviour
 #endif
 
 
-    public static byte[] GetResourceData(string resource)
+    public static byte[] GetTableData(string resource)
     {
-        //Debug.Log("the !!!!!!!!!GetResourceData the resource is " + resource);
         byte[] data = null;
-
-#if !UNITY_EDITOR && UNITY_ANDROID
-        try
-        {
-            resource = PathUtility.GetUniquePath(resource);
-            using (ZipFile zip = new ZipFile(PathUtility.AssetsPath))
-                if (zip != null)
-                {
-                    ZipEntry entry = zip.GetEntry("assets/" + resource + ".haruhi");
-                    if (entry != null)
-                        using (Stream stm = zip.GetInputStream(entry))
-                            if (stm != null)
-                            {
-                                MemoryStream mem = new MemoryStream();
-                                const int bufsz = 4096;
-                                byte[] buf = new byte[bufsz];
-
-                                while (true)
-                                {
-                                    int readsz = stm.Read(buf, 0, bufsz);
-                                    if (readsz > 0)
-                                        mem.Write(buf, 0, readsz);
-                                    if (readsz < bufsz)
-                                        break;
-                                }
-                                data = mem.ToArray();
-                            }
-                }
-        }
-        catch (System.Exception)
-        {
-            Debug.Log("GetResourceData the resource is " + resource);
-        }			
-#else
 #if UNITY_EDITOR
-        string path = PathUtility.NativePath + resource;
+        string path = PathUtility.TablePath + resource;
 #else
-        string path = PathUtility.NativePath + PathUtility.GetUniquePath(resource) + ".haruhi";
+        string path = PathUtility.TablePath + "/" + PathUtility.GetUniquePath(resource) + ".haruhi_table";
 #endif
+        Debug.LogError("path:" + path);
         if (File.Exists(path))
         {
             try
@@ -264,8 +230,6 @@ public class ResourceMgr : MonoBehaviour
                 return data;
             }
         }
-
-#endif
         return data;
     }
 
@@ -276,17 +240,17 @@ public class ResourceMgr : MonoBehaviour
         Encoding encoding = null;
 #pragma warning restore
 
-        byte[] buffer = GetResourceData(resource);
+        byte[] buffer = GetTableData(resource);
         if (buffer != null)
         {
-            buffer = FileUtility.CopyTo(buffer);	//尝试解密
+            //buffer = FileUtility.CopyTo(buffer);	//尝试解密
             Encoding encode = Encoding.GetEncoding("GBK");
             if (buffer.Length >= 3 && buffer[0] == 0xEF && buffer[1] == 0xBB && buffer[2] == 0xBF)
                 encode = Encoding.UTF8;
             else if (buffer.Length >= 2 && buffer[0] == 0xFF && buffer[1] == 0xFE)
                 encode = Encoding.Unicode;
             byte[] result = Encoding.Convert(encode, Encoding.UTF8, buffer);
-            string text = "";
+            string text;
             if (result.Length >= 3 && result[0] == 0xEF && result[1] == 0xBB && result[2] == 0xBF)
                 text = Encoding.UTF8.GetString(result, 3, result.Length - 3);
             else

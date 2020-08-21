@@ -9,39 +9,6 @@ using UnityEngine;
 
 public static class FileUtility
 {
-    public static TextReader OpenReader(string path, Encoding encoding = null)
-    {
-        try
-        {
-            FileStream stm = 
-                new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            if (encoding == null)
-                encoding = Encoding.Default;
-            if (stm != null)
-                return new StreamReader(stm, encoding);
-            
-        }
-        catch (System.Exception)
-        {
-        }
-        return null;
-    }
-
-    public static TextWriter OpenWriter(string path)
-    {
-        try
-        {
-            FileStream stm =
-               new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read);
-            if (stm != null)
-                return new StreamWriter(stm);
-        }
-        catch (System.Exception)
-        {
-        }
-        return null;
-    }
-
     public static byte[] ReadAllBytes(string path)
     {
         using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -68,28 +35,6 @@ public static class FileUtility
         }
 
     }
-
-    public static List<string> GetFileList(string directory, string extension)
-    {
-        List<string> _list = new List<string>();
-        if (!System.IO.Directory.Exists(directory))
-            return _list;
-        GetFileListImpl(_list, directory, extension);
-        return _list;
-    }
-
-    static void GetFileListImpl(List<string> _list, string path, string extension)
-    {
-        string[] fileList = System.IO.Directory.GetFiles(path, "*" + extension);
-        for (int i = 0; i < fileList.Length; ++i)
-            _list.Add(fileList[i]);
-
-        string[] dirtList = System.IO.Directory.GetDirectories(path);
-        for (int i = 0; i < dirtList.Length; ++i)
-            GetFileListImpl(_list, dirtList[i], extension);
-    }
-
-
 
     public static string GetTextFromFile(string fileName)
     {
@@ -128,7 +73,7 @@ public static class FileUtility
         byte[] buffer = new byte[stream.Length];
         stream.Read(buffer, 0, (int)stream.Length);
         stream.Close();
-        buffer = CopyTo(buffer);			//尝试解密
+        //buffer = CopyTo(buffer);			//尝试解密
         if (path != "")
         {
             File.Delete(path);
@@ -388,7 +333,6 @@ public static class FileUtility
         else
             return buffer;
     }
-
 
     public static string ComputeHash(string str)
     {

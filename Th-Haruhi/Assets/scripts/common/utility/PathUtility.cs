@@ -7,36 +7,60 @@ using System.IO;
 
 public class PathUtility
 {
-    public static readonly string StoragePath;
     public static readonly string AssetsPath;
     public static readonly string ProjectPath;
     public static readonly string ResourcesPath;
-    public static readonly string SerializablePath;
-    public static readonly string UpdatePath;
     public static readonly string AssetBundlePath;
     private static readonly string ResourcesPathToProjectPath;
-    public static string NativePath
+
+
+
+    public static readonly string BulletConfigPath;
+    public static readonly string SaveDataPath;
+    public static readonly string CommonStoragePath;
+
+   
+    public static readonly string BulletConfigName = "/userdata/bullets";
+    public static readonly string SaveDataName = "/userdata/save";
+    public static readonly string CommonStorageName = "/userdata/storage";
+
+    public static string TablePath
     {
         get
         {
 #if UNITY_EDITOR
-            return PathUtility.ResourcesPath + "/";
+            return AssetsPath + "/tables";
 #else
-            return AssetBundlePath + "/";
+            return AssetBundlePath + "/tables";
 #endif
         }
     }
-
     static PathUtility()
     {
         AssetsPath = FormatPath(Application.dataPath);
         ResourcesPath = AssetsPath + "/res";
-        SerializablePath = FormatPath(Application.persistentDataPath);
         AssetBundlePath = FormatPath(Application.streamingAssetsPath);
-        StoragePath = SerializablePath + "/localstorage";
-        UpdatePath = SerializablePath + "/update";
-        if (!Directory.Exists(UpdatePath))
-            Directory.CreateDirectory(UpdatePath);
+
+        var serializablePath = FormatPath(Application.persistentDataPath);
+
+#if UNITY_STANDALONE_WIN 
+        BulletConfigPath = AssetsPath + BulletConfigName;
+        SaveDataPath = AssetsPath + SaveDataName;
+        CommonStoragePath = AssetsPath + CommonStorageName;
+#else
+        BulletConfigPath = serializablePath + BulletConfigName;
+        SaveDataPath = serializablePath + SaveDataName;
+        CommonStoragePath = serializablePath + CommonStorageName;
+#endif
+
+        if (!Directory.Exists(BulletConfigPath))
+            Directory.CreateDirectory(BulletConfigPath);
+
+        if (!Directory.Exists(SaveDataPath))
+            Directory.CreateDirectory(SaveDataPath);
+
+        if (!Directory.Exists(CommonStoragePath))
+            Directory.CreateDirectory(CommonStoragePath);
 
         int p = AssetsPath.LastIndexOf('/');
         ProjectPath = p != -1 ? AssetsPath.Remove(p) : AssetsPath;
@@ -105,9 +129,7 @@ public class PathUtility
 
     private static readonly string[] CustomPath =
     {
-        "audios/",
-        "camera/",
-        "common/",
+        
     };
 
     private static string CheckCustomPath(string path)
@@ -180,9 +202,6 @@ public class PathUtility
 
     public static string GetAbPath(string resource)
     {
-        var updateRet = Path.Combine(UpdatePath, resource);
-        if (File.Exists(updateRet))
-            return updateRet;
         return Path.Combine(AssetBundlePath, resource);
     }
     public static string GetDivPlatformNativeUrlPath(string _path)

@@ -13,6 +13,10 @@ public class Character : EntityBase
 
     [SerializeField] public Transform ShootSlot1;
     [SerializeField] public Transform ShootSlot2;
+    [SerializeField] public Transform ShootSlot3;
+    [SerializeField] public Transform ShootSlot4;
+    [SerializeField] public Transform ShootSlot5;
+    [SerializeField] public Transform ShootSlot6;
 
     private enum EMoveStyle
     {
@@ -247,7 +251,7 @@ public class Character : EntityBase
     //static create
     public static Character CreateCharacter(int chrId)
     {
-        var chrDeploy = GameCfgList.GetDeploy<CharacterDeploy>(chrId);
+        var chrDeploy = TableUtility.GetDeploy<CharacterDeploy>(chrId);
 
         var obj = ResourceMgr.LoadImmediately(chrDeploy.resource);
         var chrObj = ResourceMgr.Instantiate(obj);

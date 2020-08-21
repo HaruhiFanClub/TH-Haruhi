@@ -93,7 +93,7 @@ public class Level : MonoBehaviour
 
     public static void Load(int levelId, Action<Level> finishAction = null)
     {
-        var deploy = GameCfgList.GetDeploy<LevelDeploy>(levelId);
+        var deploy = TableUtility.GetDeploy<LevelDeploy>(levelId);
         if (string.IsNullOrEmpty(deploy.resource))
         {
             if (finishAction != null) finishAction.Invoke(null);

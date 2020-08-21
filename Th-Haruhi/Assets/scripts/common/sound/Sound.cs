@@ -87,7 +87,7 @@ public static class Sound
         _uiVolume = 1f;
         GlobalMusicVolume = 1f;
         GlobalAudioVolume = 1f;
-        _soundTableT = GameCfgList.GetTable<SoundDeploy>();
+        _soundTableT = TableUtility.GetTable<SoundDeploy>();
     }
 
     public static AudioSource Create3DAudioSource(GameObject parent, float maxDistance = 30, bool useLinear = false)

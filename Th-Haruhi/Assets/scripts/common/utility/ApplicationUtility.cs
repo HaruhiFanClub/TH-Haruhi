@@ -14,11 +14,7 @@ public static class ApplicationUtility
 {
     public static string GetDeviceId()
     {
-        string device_id = LocalStorage.Read<string>("device_id");
-        if (!string.IsNullOrEmpty(device_id))
-        {
-            return device_id;
-        }
+        string device_id = "unknown device";
 
 #if UNITY_IOS
         device_id = "idfa_" + Device.advertisingIdentifier;
@@ -38,7 +34,6 @@ public static class ApplicationUtility
             device_id = SystemInfo.deviceUniqueIdentifier;
         if(device_id.TrimEnd(new char[]{'0', ':'}) == "mac_")
             device_id = SystemInfo.deviceUniqueIdentifier;    
-        LocalStorage.Write("device_id", device_id);
         return device_id;
     }
 
