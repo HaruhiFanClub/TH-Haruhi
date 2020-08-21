@@ -216,10 +216,9 @@ public static class ShellBuild
 
 		if (Directory.Exists(buildPath))
 			Directory.Delete(buildPath,true);
+
 		if (!Directory.Exists(buildOutPath))
 			Directory.CreateDirectory(buildOutPath);
-		
-		string pathname = PathUtility.FullPathToProjectPath(PathUtility.ResourcesPath);
 
 		var resourceList = ResourceBuildTool.GetBuildResources(PathUtility.FullPathToProjectPath(PathUtility.ResourcesPath));
         BuildGame(buildPath, target, buildOption, resourceList);
@@ -307,9 +306,8 @@ public static class ShellBuild
         //编player
         if (!ShellBuild.g_bSkipBuildPlayer)
         {
-            Debug.Log("Build ResourcesBuilder.Build end");
-            EditorAssist.RenameAllManifestFiles();//删除除 目录名.manifest以外的所有manifest文件 by dzh
-            Debug.Log("Build EditorAssist.DeleteAllManifestFiles end in path:" + Application.streamingAssetsPath);
+            //删除除 目录名.manifest以外的所有manifest文件
+            EditorAssist.RenameAllManifestFiles();
             var msgBuild = BuildPipeline.BuildPlayer(scenes, buildPath, target, options);
             EditorAssist.RestoreAllManifestFiles();
             Debug.Log(string.Format("build info : {0}  {1}  {2}  {3}  {4}", msgBuild, scenes, buildPath, target, options));

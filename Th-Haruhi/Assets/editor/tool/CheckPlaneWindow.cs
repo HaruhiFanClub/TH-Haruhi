@@ -73,16 +73,6 @@ public class CheckPlaneWindow : EditorWindow
 		{
 			ProcessFbxMaterial();
 		}
-
-	    if (GUILayout.Button("优化减少Animation的精度"))
-	    {
-            ProcessCompressAnimClip();
-	    }
-
-	    if (GUILayout.Button("设置表情动作的精度"))
-	    {
-	        ProcessExpressAnimation();
-	    }
         if (GUILayout.Button("检查所有ui中状态机的引用"))
 		{
 			FindAllAnimatorInUIPrefabs();
@@ -800,57 +790,7 @@ public class CheckPlaneWindow : EditorWindow
         AssetDatabase.SaveAssets();
         EditorUtility.ClearProgressBar();
     }
-    public static void ProcessExpressAnimation()
-    {
-        try
-        {
-            string[] ids = AssetDatabase.FindAssets("t:Animation", new[] { "Assets/res/retain/expression" });
-
-            for (int g = 0; g < ids.Length; g++)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(ids[g]);
-                AnimationClip mainObj = AssetDatabase.LoadAssetAtPath(path, typeof(AnimationClip)) as AnimationClip;
-                if (!mainObj) continue;
-
-                EditorUtility.DisplayProgressBar("CompressAnimClip", mainObj.name + " Compressing...", (float)g / ids.Length);
-                EditorUtility.SetDirty(mainObj);
-                ModelMatTool.CompressAnim2(mainObj);
-            }
-        }
-        catch (Exception e)
-        {
-            EditorUtility.ClearProgressBar();
-            Debug.LogError(e);
-        }
-        AssetDatabase.SaveAssets();
-        EditorUtility.ClearProgressBar();
-    }
-    public static void ProcessCompressAnimClip()
-    {
-        try
-        {
-            string[] ids = AssetDatabase.FindAssets("t:Animation", new[] { "Assets/res" });
-
-            for (int g = 0; g < ids.Length; g++)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(ids[g]);
-                AnimationClip mainObj = AssetDatabase.LoadAssetAtPath(path, typeof(AnimationClip)) as AnimationClip;
-                if (!mainObj) continue;
-
-                EditorUtility.DisplayProgressBar("CompressAnimClip", mainObj.name + " Compressing...",(float)g / ids.Length);
-                EditorUtility.SetDirty(mainObj);
-                ModelMatTool.CompressAnim(mainObj);
-            }
-        }
-        catch (Exception e)
-        {
-            EditorUtility.ClearProgressBar();
-            Debug.LogError(e);
-        }
-        AssetDatabase.SaveAssets();
-        EditorUtility.ClearProgressBar();
-    }
-
+  
     /// <summary>
     /// 获取GameObject上的AnimationClips
     /// </summary>
