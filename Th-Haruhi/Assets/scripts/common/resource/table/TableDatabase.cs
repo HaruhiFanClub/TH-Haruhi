@@ -13,7 +13,6 @@ public static class TableDatabase
     static readonly char fieldDilimiter;
     static readonly BindingFlags fieldFlags;
     static readonly int mainKey;
-    static string tablesPath;
     static string tableExtension;
     static Hashtable hashTables;
     
@@ -29,7 +28,6 @@ public static class TableDatabase
         mainKey = 0;
         fieldDilimiter = '\t';
         fieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-        tablesPath = "/";
         tableExtension = ".sos";
         hashTables = Hashtable.Synchronized(new Hashtable());
     }
@@ -158,9 +156,9 @@ public static class TableDatabase
 
         try
         {
-            string tabPath = tablesPath + tableName + tableExtension;
+            string tabPath =  tableName + tableExtension;
             string code = ResourceMgr.GetResourceText(tabPath);
-            string k = (tablesPath + tableName).Replace("/", "_") + ".sos";
+            string k = (tableName).Replace("/", "_") + ".sos";
 
             if (code != null)
             {

@@ -209,11 +209,10 @@ public class ResourceMgr : MonoBehaviour
     {
         byte[] data = null;
 #if UNITY_EDITOR
-        string path = PathUtility.TablePath + resource;
+        string path = PathUtility.TablePath + "/" + resource;
 #else
         string path = PathUtility.TablePath + "/" + PathUtility.GetUniquePath(resource) + ".haruhi_table";
 #endif
-        Debug.LogError("path:" + path);
         if (File.Exists(path))
         {
             try

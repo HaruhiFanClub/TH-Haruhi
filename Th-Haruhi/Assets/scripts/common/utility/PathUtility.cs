@@ -103,6 +103,16 @@ public class PathUtility
         int len = "Assets/res".Length;
         return path.StartsWith("Assets/res") ? path.Remove(0, len + 1) : path;
     }
+    public static string ProjectPathToTablePath(string path)
+    {
+        path = FormatPath(path);
+        int len = "Assets/tables".Length;
+        return path.StartsWith("Assets/tables") ? path.Remove(0, len + 1) : path;
+    }
+    public static string GetUniqueTablePathByProjectPath(string path)
+    {
+        return GetUniquePath(ProjectPathToTablePath(path));
+    }
 
     public static string GetResourcesPathToProjectPath(string path)
     {

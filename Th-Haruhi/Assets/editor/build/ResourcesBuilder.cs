@@ -199,20 +199,21 @@ public static class ResourcesBuilder
         list.AddRange(Directory.GetFiles("Assets/", "*.cfg", SearchOption.AllDirectories));
 
 
-        var p = PathUtility.AssetBundlePath + "/tables/";
-        if (!Directory.Exists(p))
-            Directory.CreateDirectory(p);
+        var tablePath = PathUtility.AssetBundlePath + "/tables/";
+        if (!Directory.Exists(tablePath))
+            Directory.CreateDirectory(tablePath);
 
         foreach (string path in list)
         {
-            string text = FileUtility.GetTextFromFile(PathUtility.ProjectPathToFullPath(path)) + ".haruhi_table";
+            string text = FileUtility.GetTextFromFile(PathUtility.ProjectPathToFullPath(path));
             /* RemoveComment
             if (path.ToLower().EndsWith(".sos"))
             {
                 text = TableDatabase.RemoveComment(text);
             }*/
 
-            var outpath = p + PathUtility.GetUniquePathByProjectPath(path);
+            var outPutName = PathUtility.GetUniqueTablePathByProjectPath(path);
+            var outpath = tablePath + outPutName + ".haruhi_table";
 
             string oldText = "";
             if (File.Exists(outpath))
