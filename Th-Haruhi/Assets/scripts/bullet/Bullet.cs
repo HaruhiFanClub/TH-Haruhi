@@ -11,6 +11,16 @@ public class Bullet : EntityBase
     private Vector3 _forward;
     private bool _bShooted;
 
+    public static int TotalBulletCount;
+    private void OnEnable()
+    {
+        TotalBulletCount++;
+    }
+
+    private void OnDisable()
+    {
+        TotalBulletCount--;
+    }
 
     public virtual void Init(BulletDeploy deploy, Transform master, GameObject model)
     {
