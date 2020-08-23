@@ -248,10 +248,5 @@ public class UiButton : Button
     private void SetButtonEnable(bool enable)
     {
         interactable = enable;
-
-        if (_displayImage != null)
-        {
-            _displayImage.material = enable ? GameSystem.DefaultRes.UiDefault : GameSystem.DefaultRes.UiGray;
-        }
     }
 }

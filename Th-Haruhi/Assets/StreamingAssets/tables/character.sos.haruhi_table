@@ -1,0 +1,4 @@
+﻿#自机配置					"[左待机,左移,待机,右移,右待机]"	"[左待机,左移,待机,右移,右待机]"	
+#	描述	缩放	快速速度	慢速速度	待机动画帧率{60为基准)	图片切割方式，对应texture_cut表ID	资源路径
+id	name	scale	speed	slowSpeed	frameSpeed	curTextureId	texture
+1	魔理沙	4	14	6	"[6,2,6,2,6]"	"[3,2,1,4,5]"	character/marisa/marisa.png

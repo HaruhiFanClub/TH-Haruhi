@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 2116726286
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4ea9ff950faad22e60a635b69b210e86
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9d9e83e255938d523b2aa63322721cf8
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+Assets:
+- Assets/res/scenes/sky/AllSky_Skyboxdust.mat
+- Assets/res/scenes/sky/Day Sun High Summersky 2.png
+Dependencies:
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/shaders.haruhi

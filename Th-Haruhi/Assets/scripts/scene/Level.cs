@@ -9,15 +9,17 @@ public class Level : MonoBehaviour
 {
     public static bool InLevel => ActiveScene != null;
     public LevelDeploy Deploy { private set; get; }
-    public Character MainChr { private set; get; }
+    public Player Player { private set; get; }
 
     protected IEnumerator Init()
     {
         yield return Yielders.Frame;
 
         //创建角色
-        MainChr = Character.CreateCharacter(1);
-        MainChr.transform.position = new Vector3(-4.11f, -6.82f);
+        yield return Player.Create(1, p=> { Player = p; });
+        yield return Yielders.Frame;
+
+        Player.transform.position = new Vector3(-4.11f, -6.82f);
         Sound.PlayMusic(Deploy.bgmId);
 
         yield return new WaitForSeconds(2f);
@@ -44,19 +46,6 @@ public class Level : MonoBehaviour
     #region static
     public static Level ActiveScene { get; protected set; }
     public static string CurrentSceneName;
-
-    public static Transform Root
-    {
-        get
-        {
-            if (ActiveScene == null || ActiveScene.gameObject == null)
-                return null;
-            else
-                return ActiveScene.transform;
-        }
-    }
-
-
 
     private static Type GetSceneType(string sceneClass)
     {

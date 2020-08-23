@@ -301,7 +301,7 @@ public static class ShellBuild
 
         //编配置表
         ResourcesBuilder.BuildText();
-
+        ResourcesBuilder.CopyImage();
 
         //编player
         if (!ShellBuild.g_bSkipBuildPlayer)

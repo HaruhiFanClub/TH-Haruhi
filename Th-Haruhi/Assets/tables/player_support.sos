@@ -1,0 +1,6 @@
+#自机僚机配置							0表示激光类型
+#	描述	资源ID	僚机效果	慢速子弹ID	慢速射击间隔	快速子弹ID	快速射击间隔
+id	name	resourceId	idleEffect	slowBulletId	slowFrame	fastBulletId	fastFrame
+1	魔理沙	10	AutoScale	101	16	102	0
+2	灵梦	106	AutoRotation		4		
+3	sakuya	9			4		

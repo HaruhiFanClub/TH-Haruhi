@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 2513260863
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: a99e8c6f7f17e2511b777505e653e431
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 55d48f4ad9c3b13330b9eb5ee5686477
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/res/Shaders/Enviro/EnviroMobileAtmosphere.shader
+- Assets/res/Shaders/AdditiveNoFog.shader
+- Assets/res/Shaders/AlphaBlendAdjust.shader
+- Assets/res/Shaders/Skybox-Cubed.shader
+- Assets/res/Shaders/AddtiveAlways.shader
+- Assets/res/Shaders/Distortion.shader
+- Assets/res/Shaders/RFX4_Particle.shader
+Dependencies: []

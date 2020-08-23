@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 2320641823
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4eefd82283612bc92dc64f1aa182dcb6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3f7d0c5e0986ec71841622bcb2f9be1c
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+Assets:
+- Assets/res/audios/bullet/se_plst00.wav
+- Assets/res/audios/bullet/se_item00.wav
+- Assets/res/audios/bullet/se_graze.wav
+Dependencies: []

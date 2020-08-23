@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class DefaultRes : MonoBehaviour
 {
-    public Shader ShadowCaster;
+    public Mesh QuadMesh;
+
+    public Shader BulletShader;
     public Material UiGray;
-    public Material UiDefault;
     public Material UiTop;
 }

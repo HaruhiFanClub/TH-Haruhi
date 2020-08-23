@@ -192,6 +192,11 @@ public static class ResourcesBuilder
         return true;
     }
 
+    public static void CopyImage()
+    {
+
+    }
+
     public static void BuildText()
     {
         List<string> list = new List<string>();
@@ -206,6 +211,7 @@ public static class ResourcesBuilder
         foreach (string path in list)
         {
             string text = FileUtility.GetTextFromFile(PathUtility.ProjectPathToFullPath(path));
+
             /* RemoveComment
             if (path.ToLower().EndsWith(".sos"))
             {
@@ -222,6 +228,7 @@ public static class ResourcesBuilder
             }
             if (text != oldText)
             {
+                text = text.Replace("\"", "");
                 MemoryStream ms = new MemoryStream();
                 using (StreamWriter writer = new StreamWriter(ms,new System.Text.UTF8Encoding(true)))
                 {
@@ -245,6 +252,5 @@ public static class ResourcesBuilder
         }
         Debug.LogWarning("build text ok. " + list.Count + " items.");
     }
-    
 }
 

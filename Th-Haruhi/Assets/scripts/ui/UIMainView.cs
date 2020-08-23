@@ -2,6 +2,8 @@
 using UnityEngine;
 using DG.Tweening;
 using System.Collections;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class UIMainView : UiInstance
 {
@@ -80,12 +82,15 @@ public class UIMainView : UiInstance
     {
        
 
-        UiTips.Show("Btn_ExtraStart");
     }
     private void Btn_ParcticeStart()
     {
-        UiTips.Show(Application.persistentDataPath);
+      
     }
+
+   
+
+
     private void Btn_SpellParctice()
     {
         UiTips.Show(Application.streamingAssetsPath);

@@ -1,0 +1,47 @@
+#ÙYÔ´ÅäÖÃ			#ÇĞ¸î·½Ê½ÅäÖÃ					
+#								
+id	texture	name	startX	startY	width	height	xCount	yCount
+1	player/marisa/marisa.png	Ä§ÀíÉ³_´ı»ú	0	0	32	48	8	1
+2	player/marisa/marisa.png	Ä§ÀíÉ³_×óÒÆ	0	48	32	48	4	1
+3	player/marisa/marisa.png	Ä§ÀíÉ³_×ó´ı»ú	128	48	32	48	4	1
+4	player/marisa/marisa.png	Ä§ÀíÉ³_ÓÒÒÆ	0	96	32	48	4	1
+5	player/marisa/marisa.png	Ä§ÀíÉ³_ÓÒ´ı»ú	128	96	32	48	4	1
+6	player/marisa/marisa.png	Ä§ÀíÉ³_ÆÕÍ¨×Óµ¯	0	144	32	16	4	1
+7	player/marisa/marisa.png	Ä§ÀíÉ³_µ¼µ¯	192	224	32	16	1	1
+8	player/marisa/marisa.png	Ä§ÀíÉ³_µ¼µ¯±¬Õ¨ÌØĞ§	64	224	32	32	4	1
+9	player/marisa/marisa.png	Ä§ÀíÉ³_ÁÅ»ú1	144	144	16	16	1	1
+10	player/marisa/marisa.png	Ä§ÀíÉ³_ÁÅ»ú2	160	144	16	16	1	1
+11	player/marisa/marisa.png	Ä§ÀíÉ³_ÁÅ»ú3	176	144	16	16	1	1
+12	player/marisa/marisa.png	Ä§ÀíÉ³_ÁÅ»ú4	192	144	16	16	1	1
+13	player/marisa/marisa.png	Ä§ÀíÉ³_¼¤¹â·¢Éäµã	224	224	32	32	1	1
+14	player/marisa/marisa_spark.png	Ä§ÀíÉ³_´óÕĞ	0	64	256	128	1	1
+15	player/marisa/marisa_spark.png	Ä§ÀíÉ³_´óÕĞ2	256	0	96	256	1	1
+16	player/marisa/marisa.png	Ä§ÀíÉ³_¼¤¹â	0	176	256	16	1	1
+								
+								
+101	player/reimu/reimu.png	ÁéÃÎ_´ı»ú	0	0	32	48	8	1
+102	player/reimu/reimu.png	ÁéÃÎ_×óÒÆ	0	48	32	48	4	1
+103	player/reimu/reimu.png	ÁéÃÎ_×ó´ı»ú	128	48	32	48	4	1
+104	player/reimu/reimu.png	ÁéÃÎ_ÓÒÒÆ	0	96	32	48	4	1
+105	player/reimu/reimu.png	ÁéÃÎ_ÓÒ´ı»ú	128	96	32	48	4	1
+106	player/reimu/reimu.png	ÁéÃÎ_ÁÅ»ú	64	144	16	16	1	1
+107	player/reimu/reimu.png	reimu_bullet_red	192	160	64	16	1	1
+108	player/reimu/reimu.png	reimu_bullet_red_ef	0	144	16	16	4	1
+109	player/reimu/reimu.png	reimu_bullet_ef_img	48	144	16	16	1	1
+110	player/reimu/reimu.png	reimu_bullet_blue	0	160	64	16	1	1
+111	player/reimu/reimu.png	reimu_bullet_blue_ef	0	160	16	16	4	1
+112	player/reimu/reimu.png	reimu_bullet_orange	64	176	64	16	4	1
+113	player/reimu/reimu.png	Ä§ÀíÉ³_¼¤¹â·¢Éäµã	224	224	32	32	1	1
+								
+								
+								
+								
+								
+								
+								
+								
+201	player/sakuya/sakuya.png	sakuya__´ı»ú	0	0	32	48	8	1
+202	player/sakuya/sakuya.png	sakuya__×óÒÆ	0	48	32	48	4	1
+203	player/sakuya/sakuya.png	sakuya__×ó´ı»ú	128	48	32	48	4	1
+204	player/sakuya/sakuya.png	sakuya__ÓÒÒÆ	0	96	32	48	4	1
+205	player/sakuya/sakuya.png	sakuya__ÓÒ´ı»ú	128	96	32	48	4	1

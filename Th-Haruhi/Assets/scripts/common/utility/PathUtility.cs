@@ -14,24 +14,24 @@ public class PathUtility
     private static readonly string ResourcesPathToProjectPath;
 
 
-
+    public static readonly string ImagesPath;
     public static readonly string BulletConfigPath;
     public static readonly string SaveDataPath;
     public static readonly string CommonStoragePath;
 
-   
-    public static readonly string BulletConfigName = "/userdata/bullets";
-    public static readonly string SaveDataName = "/userdata/save";
-    public static readonly string CommonStorageName = "/userdata/storage";
+    private static readonly string ImagesName = "/images/";
+    private static readonly string BulletConfigName = "/userdata/bullets/";
+    private static readonly string SaveDataName = "/userdata/save/";
+    private static readonly string CommonStorageName = "/userdata/storage/";
 
     public static string TablePath
     {
         get
         {
 #if UNITY_EDITOR
-            return AssetsPath + "/tables";
+            return AssetsPath + "/tables/";
 #else
-            return AssetBundlePath + "/tables";
+            return AssetBundlePath + "/tables/";
 #endif
         }
     }
@@ -43,15 +43,19 @@ public class PathUtility
 
         var serializablePath = FormatPath(Application.persistentDataPath);
 
-#if UNITY_STANDALONE_WIN 
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR
         BulletConfigPath = AssetsPath + BulletConfigName;
         SaveDataPath = AssetsPath + SaveDataName;
         CommonStoragePath = AssetsPath + CommonStorageName;
+        ImagesPath = AssetsPath + ImagesName;
 #else
         BulletConfigPath = serializablePath + BulletConfigName;
         SaveDataPath = serializablePath + SaveDataName;
         CommonStoragePath = serializablePath + CommonStorageName;
+        ImagesPath = serializablePath + ImagesName;
 #endif
+        if (!Directory.Exists(ImagesPath))
+            Directory.CreateDirectory(ImagesPath);
 
         if (!Directory.Exists(BulletConfigPath))
             Directory.CreateDirectory(BulletConfigPath);

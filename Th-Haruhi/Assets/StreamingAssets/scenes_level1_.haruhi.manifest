@@ -1,0 +1,29 @@
+ManifestFileVersion: 0
+CRC: 1317738719
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d5d302e4967b3de95cd045b8367b7fd9
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5678241641794813c2c5abc1654e95b9
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/res/scenes/Level1/ui_bg.png
+- Assets/res/scenes/Level1/st01a.png
+- Assets/res/scenes/Level1/st01c.png
+- Assets/res/scenes/Level1/st01b.png
+- Assets/res/scenes/Level1/back1.mat
+- Assets/res/scenes/Level1/sky.mat
+- Assets/res/scenes/Level1/cloud.mat
+Dependencies:
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/shaders.haruhi

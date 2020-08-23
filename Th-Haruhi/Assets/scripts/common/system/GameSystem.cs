@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameSystem : MonoBehaviour
 {
+    public static float FrameTime = 0.016666f; //基准帧率时间
+
     public static GameSystem Instance;
     private static bool _inited;
 

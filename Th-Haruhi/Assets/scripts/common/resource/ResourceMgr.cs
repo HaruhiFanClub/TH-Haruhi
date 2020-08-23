@@ -74,7 +74,7 @@ public class ResourceMgr : MonoBehaviour
 
     public new static GameObject Instantiate(Object _object)
     {
-        GameObject result = Object.Instantiate(_object, Level.Root) as GameObject;
+        GameObject result = Object.Instantiate(_object, null) as GameObject;
         return result;
     }
 
@@ -89,7 +89,7 @@ public class ResourceMgr : MonoBehaviour
             Pool.Free(info);
             return;
         }
-        GameObject result = Object.Instantiate(info.Source, Level.Root) as GameObject;
+        GameObject result = Object.Instantiate(info.Source, null) as GameObject;
         if (result == null)
         {
             Debug.LogError("InstantiateGameObjectError, Source:" + info.Source);
@@ -209,9 +209,9 @@ public class ResourceMgr : MonoBehaviour
     {
         byte[] data = null;
 #if UNITY_EDITOR
-        string path = PathUtility.TablePath + "/" + resource;
+        string path = PathUtility.TablePath + resource;
 #else
-        string path = PathUtility.TablePath + "/" + PathUtility.GetUniquePath(resource) + ".haruhi_table";
+        string path = PathUtility.TablePath + PathUtility.GetUniquePath(resource) + ".haruhi_table";
 #endif
         if (File.Exists(path))
         {

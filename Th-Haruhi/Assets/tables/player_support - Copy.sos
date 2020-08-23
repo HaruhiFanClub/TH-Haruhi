@@ -1,0 +1,10 @@
+#自机攻击方案配置				
+#	描述		射击间隔	位置
+id	name	sound	frame	shootPos
+1	魔理沙Normal	plst00	4	"[[6,0],[-6,0]]"
+2	魔理沙Fast_Power2			
+3	魔理沙Fast_Power3			
+4	魔理沙Fast_Power4			
+	魔理沙Slow_Power1	msl		
+	魔理沙Slow_Power2			
+	魔理沙Slow_Power3			

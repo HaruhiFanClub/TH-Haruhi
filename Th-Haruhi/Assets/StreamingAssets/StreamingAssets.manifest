@@ -1,0 +1,94 @@
+ManifestFileVersion: 0
+CRC: 256303274
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: ui_prefabs_.haruhi
+      Dependencies:
+        Dependency_0: ui_fonts_.haruhi
+        Dependency_1: scenes_level1_.haruhi
+    Info_1:
+      Name: ui_fonts_.haruhi
+      Dependencies: {}
+    Info_2:
+      Name: common_.assetbundle
+      Dependencies:
+        Dependency_0: shaders.assetbundle
+    Info_3:
+      Name: shaders.assetbundle
+      Dependencies: {}
+    Info_4:
+      Name: character_.haruhi
+      Dependencies: {}
+    Info_5:
+      Name: common_.haruhi
+      Dependencies: {}
+    Info_6:
+      Name: shaders.haruhi
+      Dependencies: {}
+    Info_7:
+      Name: retain_icon_.haruhi
+      Dependencies: {}
+    Info_8:
+      Name: ui_prefabs_component_.haruhi
+      Dependencies:
+        Dependency_0: ui_fonts_.haruhi
+        Dependency_1: ui_controlbtns_.haruhi
+    Info_9:
+      Name: launcher_launcher_unity.assetbundle
+      Dependencies:
+        Dependency_0: common_.assetbundle
+        Dependency_1: ui_prefabs_component_.haruhi
+    Info_10:
+      Name: atlas_public_.haruhi
+      Dependencies: {}
+    Info_11:
+      Name: ui_controlbtns_.haruhi
+      Dependencies: {}
+    Info_12:
+      Name: scenes_sceneobjects_sky_.assetbundle
+      Dependencies:
+        Dependency_0: shaders.haruhi
+        Dependency_1: scenes_sky_.haruhi
+    Info_13:
+      Name: scenes_plugin_weather.assetbundle
+      Dependencies:
+        Dependency_0: shaders.assetbundle
+        Dependency_1: common_.haruhi
+        Dependency_2: shaders.haruhi
+    Info_14:
+      Name: atlas_bullet_.haruhi
+      Dependencies:
+        Dependency_0: bullet_.haruhi
+    Info_15:
+      Name: bullet_.haruhi
+      Dependencies: {}
+    Info_16:
+      Name: scenes_level1_.haruhi
+      Dependencies:
+        Dependency_0: shaders.haruhi
+    Info_17:
+      Name: scenes_sky_.haruhi
+      Dependencies:
+        Dependency_0: shaders.haruhi
+    Info_18:
+      Name: scenes_level1_unity.haruhi
+      Dependencies:
+        Dependency_0: common_.haruhi
+        Dependency_1: scenes_level1_.haruhi
+        Dependency_2: scenes_sky_.haruhi
+    Info_19:
+      Name: audios_bgm_.haruhi
+      Dependencies: {}
+    Info_20:
+      Name: audios_bullet_.haruhi
+      Dependencies: {}
+    Info_21:
+      Name: audios_ui_.haruhi
+      Dependencies: {}
+    Info_22:
+      Name: scenes_texturecuttest_unity.haruhi
+      Dependencies: {}
+    Info_23:
+      Name: character_marisa_.haruhi
+      Dependencies: {}

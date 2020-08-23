@@ -16,8 +16,12 @@ public static class TableUtility
     private static void InitTableUrl()
     {
         _(typeof(SoundDeploy), "sound");
-        _(typeof(CharacterDeploy), "character");
+        _(typeof(PlayerDeploy), "player");
+        _(typeof(PlayerSupportDeploy), "player_support");
         _(typeof(LevelDeploy), "level");
+        _(typeof(BulletDeploy), "bullet");
+        _(typeof(TextureResourceDeploy), "texture_resource");
+        
     }
     
     private class RandomIdData

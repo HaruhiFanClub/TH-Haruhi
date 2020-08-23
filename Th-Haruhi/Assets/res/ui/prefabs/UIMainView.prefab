@@ -2176,6 +2176,7 @@ MonoBehaviour:
   Btn_Option: {fileID: 9201395739627537209}
   Btn_Manual: {fileID: 1399122096912664916}
   Btn_Quit: {fileID: 3656416648320736640}
+  r: {fileID: 0}
 --- !u!1 &6824631860115369118
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,59 @@
+ManifestFileVersion: 0
+CRC: 2587573664
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 9a96e68555fc16c59b663b55b6543036
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 47fcd1c093d1d22c80cdf7bbb94dfa59
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8ba0ed223ae21784cac05deae570e771, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 58a080b2cf4532b4bad212f52d62abdc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 905b05d2f0046744ab9bfdb2c1be1cd3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 55c898f241d02cb4b9a8007ebae55d5e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4b762e938003adc4f8ee9b698666f21c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 97410857318ccec4c87b74081a29a527, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 42641818311bc5342b5597fd106d85c8, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: bfc1d74b51c4b864696af7d2833fdce8, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1af40e3c2adf1ae4da9542aaab7bebe9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a6b7e4ee3cdc8cd42a19eb0ef1548080, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+- Class: 225
+  Script: {instanceID: 0}
+Assets:
+- Assets/res/ui/prefabs/UIFps.prefab
+- Assets/res/ui/prefabs/UILogoAnimation.prefab
+- Assets/res/ui/prefabs/UIGameView.prefab
+- Assets/res/ui/prefabs/UITips.prefab
+- Assets/res/ui/prefabs/UILoading.prefab
+- Assets/res/ui/prefabs/UIMainView.prefab
+Dependencies:
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/ui_fonts_.haruhi
+- C:/TH-Haruhi/Th-Haruhi/Assets/StreamingAssets/scenes_level1_.haruhi
