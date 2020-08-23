@@ -45,30 +45,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Back1
-    uniqueID: 1706200519
-    locked: 0
-  - name: Back2
-    uniqueID: 1008902415
-    locked: 0
-  - name: Back3
-    uniqueID: 2973798599
-    locked: 0
-  - name: Back4
-    uniqueID: 4263498085
-    locked: 0
-  - name: Enemy
-    uniqueID: 2793506941
-    locked: 0
-  - name: Chr
-    uniqueID: 1805483559
-    locked: 0
-  - name: Effect1
-    uniqueID: 3237831009
-    locked: 0
-  - name: Effect2
-    uniqueID: 242932603
-    locked: 0
   - name: UI
     uniqueID: 1337030239
     locked: 0
