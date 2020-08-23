@@ -2,6 +2,7 @@
 
 public class Bullet : EntityBase
 {
+    public override EEntityType EntityType => EEntityType.Bullet;
     public BulletDeploy Deploy { private set; get; }
     protected Transform Master { private set; get; }
     protected GameObject Model { private set; get; }

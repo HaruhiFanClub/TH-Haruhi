@@ -69,31 +69,67 @@ public class GameSystem : MonoBehaviour
         _inited = true;
 
 
-        StartGame();
+        FirstStartGame();
     }
 
-    private void StartGame()
+    private void FirstStartGame()
     {
         UILogo.Show(() =>
         {
-            GameWorld.ShowTitle();
+            ShowTitle();
             UiManager.Show<UIFps>();
         });
     }
 
-
-    void OnDestroy()
+    public static void ShowTitle()
     {
-        UiManager.Destory();
+        UIMainView.Show(true);
     }
 
+    private static IEnumerator ShowTitleImpl()
+    {
+        yield return Level.UnloadCurrentScene();
+    }
+
+
+    public static void EnterLevel(int levelId)
+    {
+        //显示loading
+        UILoading.Show(() =>
+        {
+            Level.Load(levelId, finishAction: (scene) =>
+            {
+                //关闭loading
+                UILoading.Close();
+            });
+        });
+    }
+
+    public static void ClearCache()
+    {
+
+        //清理各种池
+        //EffectFactory.BackAllToPool();
+
+        //清理UI
+        UiManager.Clear();
+
+        //清理音效
+        Sound.StopEnvironmentMusic();
+        Sound.StopMusic();
+        Sound.ClearSoundCache();
+
+        //清理UI图集
+        SpriteAtlasMgr.ClearCache();
+    }
+
+  
     void Update()
     {
         if (!_inited) return;
         TimeScaleManager.Update();
         SaveDataMgr.Update();
         UiManager.Update();
-        GameWorld.Update();
         
     }
     private void LateUpdate()
@@ -116,4 +152,10 @@ public class GameSystem : MonoBehaviour
     void OnApplicationFocus(bool focusStatus)
     {
     }
+
+    void OnDestroy()
+    {
+        UiManager.Destory();
+    }
+
 }

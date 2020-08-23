@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Enemy : EntityBase
 {
+    public override EEntityType EntityType => EEntityType.Enemy;
     public Dictionary<EnemyMoveStyle, List<Sprite>> SpriteDic = new Dictionary<EnemyMoveStyle, List<Sprite>>();
    
     public enum EnemyMoveStyle

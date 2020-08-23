@@ -47,12 +47,12 @@ public class Level : MonoBehaviour
 
     public virtual void OnEnter()
     {
-        GameWorld.ClearCache();
+        GameSystem.ClearCache();
     }
 
     public virtual void OnLeave()
     {
-        GameWorld.ClearCache();
+        GameSystem.ClearCache();
     }
 
     #region static

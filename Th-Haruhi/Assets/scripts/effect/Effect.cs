@@ -5,6 +5,8 @@ using Random = UnityEngine.Random;
 
 public class Effect : EntityBase
 {
+    public override EEntityType EntityType => EEntityType.Effect;
+
     public MeshRenderer Renderer { set; get; }
     public EffectDeploy Deploy;
     public virtual void Init(EffectDeploy deploy)

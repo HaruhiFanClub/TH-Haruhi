@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Player : EntityBase
 {
+    public override EEntityType EntityType => EEntityType.Player;
+
     public Dictionary<PlayerMoveStyle, List<Sprite>> SpriteDic = new Dictionary<PlayerMoveStyle, List<Sprite>>();
    
     public enum PlayerMoveStyle
@@ -23,13 +25,8 @@ public class Player : EntityBase
     public bool InSlow { private set; get; }
     public bool InShoot { private set; get; }
 
-    private Vector3 _moveFoward;
     private ControllerActions _actions;
     private SlowPoint _redPoint;
-
-    private bool _inMove;
-   
-   
     private int _currAniIdx;
 
 
@@ -137,30 +134,25 @@ public class Player : EntityBase
 
     public void Move(Vector3 dir)
     {
-        _inMove = true;
-        _moveFoward = dir;
-
         var moveSpeed = InSlow ? Deploy.slowSpeed : Deploy.speed;
-        var targetPos = transform.position + _moveFoward * Time.fixedDeltaTime * moveSpeed;
+        var targetPos = transform.position + dir * Time.fixedDeltaTime * moveSpeed;
         Rigid2D.MovePosition(targetPos);
 
-        if (MathUtility.FloatEqual(_moveFoward.x, 0))
+        if (MathUtility.FloatEqual(dir.x, 0))
         {
             AniStyle = PlayerMoveStyle.Idle;
             return;
         }
 
-         if (_moveFoward.x > 0 && AniStyle != PlayerMoveStyle.RightIdle)
+         if (dir.x > 0 && AniStyle != PlayerMoveStyle.RightIdle)
             AniStyle = PlayerMoveStyle.RightMove;
 
-        if (_moveFoward.x < 0 && AniStyle != PlayerMoveStyle.LeftIdle)
+        if (dir.x < 0 && AniStyle != PlayerMoveStyle.LeftIdle)
             AniStyle = PlayerMoveStyle.LeftMove;
     }
 
     public void StopMove()
     {
-        _inMove = false;
-        _moveFoward = Vector3.zero;
         AniStyle = PlayerMoveStyle.Idle;
     }
 
@@ -194,29 +186,12 @@ public class Player : EntityBase
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-      
-    }
-  
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-       
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        
-    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
        
     }
 
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-    }
+
 
     //static create
     public static IEnumerator Create(int playerId, Action<Player> callBack)

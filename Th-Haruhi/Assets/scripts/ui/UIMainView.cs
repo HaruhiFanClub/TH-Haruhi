@@ -77,7 +77,7 @@ public class UIMainView : UiInstance
 
     private void Btn_GameStart()
     {
-        GameWorld.EnterLevel(1);
+        GameSystem.EnterLevel(1);
     }
 
     private void Btn_ExtraStart()
