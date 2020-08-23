@@ -786,9 +786,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c4fd8d6634e30b4db6eb53d091ed7fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShadowCaster: {fileID: 4800000, guid: 8f3accd90795b724d8485afe6def0572, type: 3}
+  QuadMesh: {fileID: 4300000, guid: 32b4f96e8808e3c459531f6ec1d482f1, type: 2}
+  BulletShader: {fileID: 4800000, guid: e7edfe3a6edfce045a304dc5e3b99a3b, type: 3}
   UiGray: {fileID: 2100000, guid: 53ba1bab2d092954896be0389146e82f, type: 2}
-  UiDefault: {fileID: 2100000, guid: 4225904143f37bf4796509e36ffc04db, type: 2}
   UiTop: {fileID: 2100000, guid: bf115b2b2e663364e9d6cd310d4eba6f, type: 2}
 --- !u!1001 &2116364631
 PrefabInstance:

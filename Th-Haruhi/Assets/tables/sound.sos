@@ -1,0 +1,16 @@
+#Sound表			
+#	描述	资源路径	"音量[0.0,1.0]"
+id	name	resource	volume
+			
+#Bgm(1-10)			
+1	Title	audios/bgm/main.ogg	1
+2	第一关	audios/bgm/level1.ogg	1
+			
+			
+#UI			
+1001	Select	audios/se/se_select00.wav	1
+1002	OK	audios/se/se_ok00.wav	1
+			
+#bullet			
+2001	普攻	audios/se/se_plst00.wav	0.4
+2002	激光	audios/se/se_lazer02.wav	0.3

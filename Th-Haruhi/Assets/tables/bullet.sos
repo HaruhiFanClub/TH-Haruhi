@@ -1,0 +1,41 @@
+#子弹配置												
+#		类型	资源ID	缩放	图集序号	底部为中心	碰撞半径比例，如果为-1则为boxCollider	透明度	默认旋转方向	速度		
+id	name	classType	resourceId	scale	spriteIdx	bottomCenter	radius	alpha	rota	speed	eventTime	eventWait
+1	魔理沙普攻	Bullet	6	5	0		1	0.5	90	60		
+2	灵梦普攻	Bullet	107	5	0		1	0.7	90	80		
+101	魔理沙导弹	Bullet	7	5	0		1	0.8	90	30		
+102	魔理沙激光	MarisaLaser	16	3	0	TRUE	-1	0.8	90	0		
+												
+1001	arrow_big	Bullet	1005	5	0		0.2	1	90	7		
+1002	arrow_big	Bullet	1005	5	1		0.2	1	90	7		
+1003	arrow_big	Bullet	1005	5	2		0.2	1	90	7		
+1004	arrow_big	Bullet	1005	5	3		0.2	1	90	7		
+												
+1005	arrow_big	Bullet	1002	5	0		0.2	1	90	5		
+1006	arrow_big	Bullet	1002	5	1		0.2	1	90	5		
+1007	arrow_big	Bullet	1002	5	2		0.2	1	90	5		
+1008	arrow_big	Bullet	1002	5	3		0.2	1	90	5		
+1009	arrow_big	Bullet	1003	5	0		0.2	1	90	2	3	2
+1010	arrow_big	Bullet	1003	5	1		0.2	1	90	2	3	2
+1011	arrow_big	Bullet	1003	5	2		0.2	1	90	2	3	2
+1012	arrow_big	Bullet	1003	5	3		0.2	1	90	2	3	2
+												
+1013	arrow_big	Bullet	1006	5	0		0.2	1	90	8	2	1
+1014	arrow_big	Bullet	1006	5	1		0.2	1	90	8	2	1
+1015	arrow_big	Bullet	1006	5	2		0.2	1	90	8	2	1
+1016	arrow_big	Bullet	1006	5	3		0.2	1	90	8	2	1
+												
+1017	arrow_big	Bullet	1007	5	0		0.2	1	90	4		
+1018	arrow_big	Bullet	1007	5	1		0.2	1	90	4		
+1019	arrow_big	Bullet	1007	5	2		0.2	1	90	4		
+1020	arrow_big	Bullet	1007	5	3		0.2	1	90	4		
+												
+1021	arrow_big	Bullet	1008	5	0		0.2	1	90	6		
+1022	arrow_big	Bullet	1008	5	1		0.2	1	90	6		
+1023	arrow_big	Bullet	1008	5	2		0.2	1	90	6		
+1024	arrow_big	Bullet	1008	5	3		0.2	1	90	6		
+												
+1025	arrow_big	Bullet	1009	5	0		0.2	1	90	7	4	1
+1026	arrow_big	Bullet	1009	5	1		0.2	1	90	7	4	1
+1027	arrow_big	Bullet	1009	5	2		0.2	1	90	7	4	1
+1028	arrow_big	Bullet	1009	5	3		0.2	1	90	7	4	1
