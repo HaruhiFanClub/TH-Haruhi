@@ -10,9 +10,34 @@ public class PlayerSupport : MonoBehaviour
 
     public PlayerSupportDeploy Deploy { private set; get; }
 
-    public void Init(PlayerSupportDeploy deploy)
+    public Effect _slowEffect;
+    public Effect _fastEffect;
+
+    public void Init(PlayerSupportDeploy deploy, GameObject renderObj)
     {
         Deploy = deploy;
+
+        if(deploy.slowShootEffectId > 0)
+        {
+            EffectFactory.CreateEffect(deploy.slowShootEffectId, SortingOrder.Effect, obj =>
+            {
+                _slowEffect = obj;
+                _slowEffect.transform.Bind(renderObj.transform);
+                _slowEffect.SetActiveSafe(false);
+
+            });
+        }
+
+        if (deploy.fastShootEffectId > 0)
+        {
+            EffectFactory.CreateEffect(deploy.fastShootEffectId, SortingOrder.Effect, obj =>
+            {
+                _fastEffect = obj;
+                _fastEffect.transform.Bind(renderObj.transform);
+                _fastEffect.SetActiveSafe(false);
+
+            });
+        }
     }
 
     private bool _prevInLoopShoot;
@@ -34,8 +59,11 @@ public class PlayerSupport : MonoBehaviour
                 _currBullet = null;
             }
             _prevInLoopShoot = false;
+            NextShootTime = Time.time + shootFrame * GameSystem.FrameTime;
         }
 
+        _slowEffect?.SetActiveSafe(inShoot && isSlow);
+        _fastEffect?.SetActiveSafe(inShoot && !isSlow);
 
         if (shootFrame > 0)
         {
@@ -49,7 +77,6 @@ public class PlayerSupport : MonoBehaviour
                     {
                         bullet.Shoot(transform.position, MathUtility.SwapYZ(transform.forward));
                     });
-                    //Sound.PlayUiAudioOneShot(Deploy.shootSound);
                 }
             }
         }
@@ -61,12 +88,12 @@ public class PlayerSupport : MonoBehaviour
                 BulletFactory.CreateBullet(bulletId, transform, layer, bullet =>
                 {
                     _currBullet = bullet;
-                    bullet.Shoot(transform.position, MathUtility.SwapYZ(transform.forward), true);
+                    bullet.Shoot(transform.position, transform.up, true);
                 });
             }
             if(_prevInLoopShoot && !inShoot)
             {
-                if(_currBullet != null)
+                if (_currBullet != null)
                 {
                     BulletFactory.DestroyBullet(_currBullet);
                     _currBullet = null;

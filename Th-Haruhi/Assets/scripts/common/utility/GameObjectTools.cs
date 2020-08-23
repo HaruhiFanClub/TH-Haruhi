@@ -128,7 +128,7 @@ public static class GameObjectTools
 
     public static void Bind(this Transform t, Transform parent)
     {
-        t.SetParent(parent);
+        t.SetParent(parent, false);
         t.localPosition = Vector3.zero;
         t.localRotation = Quaternion.identity;
     }

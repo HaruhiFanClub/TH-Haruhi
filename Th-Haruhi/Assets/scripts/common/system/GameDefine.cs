@@ -17,6 +17,7 @@ public static class SortingOrder
 {
     public const int Player = 5;
     public const int PlayerSupport = 6;
+    public const int Effect = 10;
     public const int Bullet = 0;
 }
 public static class LayersMask

@@ -407,10 +407,29 @@ public static class Sound
 
     #endregion
 
-    public static void PlayUiAudioOneShot(int soundId)
+    public static void LateUpdate()
     {
-        Load(soundId, PlayUiAudioOneShot);
+        _oneFrameDic.Clear();
     }
+
+    private static Dictionary<int, bool> _oneFrameDic = new Dictionary<int, bool>();
+    public static void PlayUiAudioOneShot(int soundId, bool oneFrameOnce = false)
+    {
+        Load(soundId, soundClip=>
+        {
+            if (oneFrameOnce)
+            {
+                if (_oneFrameDic.ContainsKey(soundId))
+                {
+                    return;
+                }
+                _oneFrameDic[soundId] = true;
+            }
+            PlayUiAudioOneShot(soundClip);
+        });
+    }
+
+  
 
     private static void PlayUiAudioOneShot(SoundClip soundClip)
     {

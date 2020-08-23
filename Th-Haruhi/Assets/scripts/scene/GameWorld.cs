@@ -37,7 +37,7 @@ public static class GameWorld
     {
 
         //清理各种池
-        EffectFactory.BackAllToPool();
+        //EffectFactory.BackAllToPool();
 
         //清理UI
         UiManager.Clear();    

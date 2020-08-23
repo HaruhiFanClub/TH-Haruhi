@@ -4,4 +4,4 @@ id	name	resourceId	classType	scale	bottomCenter	alpha	rota	lifeTime	speed	sound	
 1	魔理沙普攻	6	Bullet	5		0.5	90	0.4	60		
 2	灵梦普攻	107	Bullet	5		0.7	90	0.4	80		
 101	魔理沙导弹	7	Bullet	5		0.8	90	3	30		
-102	魔理沙激光	16	MarisaLaser	5	TRUE	0.8	90	3	0		
+102	魔理沙激光	16	MarisaLaser	3	TRUE	0.8	90	3	0		

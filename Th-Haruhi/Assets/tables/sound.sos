@@ -1,5 +1,5 @@
 #Sound表			
-#	描述	资源路径	音量[0.0,1.0]
+#	描述	资源路径	"音量[0.0,1.0]"
 id	name	resource	volume
 			
 #Bgm(1-10)			
@@ -13,4 +13,4 @@ id	name	resource	volume
 			
 #bullet			
 2001	普攻	audios/se/se_plst00.wav	0.4
-2002	激光	audios/se/se_lazer02.wav	0.1
+2002	激光	audios/se/se_lazer02.wav	0.3

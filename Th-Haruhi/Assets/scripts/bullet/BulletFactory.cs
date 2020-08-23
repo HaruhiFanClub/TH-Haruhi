@@ -169,6 +169,7 @@ public static class BulletFactory
 
         var mr = model.AddComponent<MeshRenderer>();
         mr.sharedMaterial = material;
+        mr.sortingOrder = SortingOrder.Bullet;
 
         model.transform.localEulerAngles = new Vector3(0, 0, deploy.rota);
 

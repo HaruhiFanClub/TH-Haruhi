@@ -26,12 +26,13 @@ public class Bullet : EntityBase
         Master = t;
     }
 
-    public void Shoot(Vector3 startPos, Vector3 forward, bool noLifeTime = false)
+    public void Shoot(Vector3 startPos, Vector3 up, bool noLifeTime = false)
     {
         transform.position = startPos;
+        transform.up = up;    
         _bNoLifeTime = noLifeTime;
         _startTime = Time.time;
-        _forward = forward;
+        _forward = up;
         _bShooted = true;
     }
 

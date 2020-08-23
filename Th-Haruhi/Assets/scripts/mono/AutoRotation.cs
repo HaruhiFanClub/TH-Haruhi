@@ -5,12 +5,12 @@ using DG.Tweening;
 public class AutoRotation : MonoBehaviour
 {
     private float _curEuler;
-    public int RotaFoward = -1;
+    public float RotaFoward = -1;
     public float TurnSpeed = 300f;
 
     private void Update()
     {
-        if(RotaFoward == 1)
+        if(RotaFoward > 0)
         {
             _curEuler += Time.deltaTime * TurnSpeed;
             if (_curEuler > 360) _curEuler = 0;

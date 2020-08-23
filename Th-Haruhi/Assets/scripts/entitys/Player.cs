@@ -285,5 +285,7 @@ public class PlayerDeploy : Conditionable
     public float[] supportDown;
     public float[] supportUpSlow;
     public float[] supportDownSlow;
+    public float supportDownRota;
+    public float supportDownRotaSlow;
 }
 

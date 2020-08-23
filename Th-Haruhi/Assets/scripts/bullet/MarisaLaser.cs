@@ -4,8 +4,8 @@ public class MarisaLaser : Bullet
 {
     private Material _material;
     private float _defaultScaleY;
-    private float _scaleSpeed = 6f;
-    private float _maxScaleMultiple = 2f;
+    private float _scaleSpeed = 10f;
+    private float _maxScaleMultiple = 3f;
     private float _uvSpeed = 1f;
     
     public override void Init(BulletDeploy deploy, Transform master, GameObject model)
@@ -68,8 +68,8 @@ public class MarisaLaser : Bullet
 
         if (Time.time > _nextSoundTime)
         {
-            //Sound.PlayUiAudioOneShot(2002);
-           // _nextSoundTime = Time.time + GameSystem.FrameTime * 12;
+            Sound.PlayUiAudioOneShot(2002, true);
+           _nextSoundTime = Time.time + GameSystem.FrameTime * 12;
         }
     }
 }

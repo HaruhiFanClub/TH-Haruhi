@@ -34,7 +34,7 @@ public class PlayerSupportMgr
         _slots.Clear();
         var spacingUp = _master.InSlow ? _master.Deploy.supportUpSlow : _master.Deploy.supportUp;
         var spacingDown = _master.InSlow ? _master.Deploy.supportDownSlow : _master.Deploy.supportDown;
-
+        var downRota = _master.InSlow ? _master.Deploy.supportDownRotaSlow : _master.Deploy.supportDownRota;
 
         //单数情况，先放一个在上面
         var maxCount = count;
@@ -67,12 +67,12 @@ public class PlayerSupportMgr
             if (i % 4 == 2)
             {
                 slot.Pos = new Vector3(-spacingDown[0] * loopCount, spacingDown[1]);
-                slot.Rota = 30;
+                slot.Rota = downRota;
             }
             if (i % 4 == 3)
             {
                 slot.Pos = new Vector3(spacingDown[0] * loopCount, spacingDown[1]);
-                slot.Rota = -30;
+                slot.Rota = -downRota;
             }
             _slots.Add(slot);
         }
@@ -96,40 +96,21 @@ public class PlayerSupportMgr
             return;
         }
 
-        GameSystem.CoroutineStart(LoadSupport(deploy));
-    }
-
-    private IEnumerator LoadSupport(PlayerSupportDeploy deploy)
-    {
-        Sprite sprite = null;
-        yield return TextureUtility.LoadResourceById(deploy.resourceId, sprites =>
-        {
-            sprite = sprites[0];
-        });
 
         var gameObj = new GameObject("support");
         gameObj.transform.SetParent(null, false);
         gameObj.transform.position = _master.transform.position;
         gameObj.transform.localScale = _master.transform.localScale;
 
-        var rendererObj = new GameObject("SpriteRenderer");
-        var renderer = rendererObj.AddComponent<SpriteRenderer>();
-        renderer.sprite = sprite;
-        renderer.sortingOrder = SortingOrder.PlayerSupport;
-        rendererObj.transform.SetParent(gameObj.transform, false);
-
-        //待机效果
-        var effectClass = deploy.idleEffect;
-        Type type = null;
-        if (!string.IsNullOrEmpty(effectClass) && (type = Common.GetType(effectClass)) != null)
+        EffectFactory.CreateEffect(deploy.idleEffectId, SortingOrder.PlayerSupport, effect =>
         {
-            rendererObj.AddComponent(type);
-        }
-
-        var script = gameObj.AddComponent<PlayerSupport>();
-        script.Init(deploy);
-        _supportList.Add(script);
+            effect.transform.Bind(gameObj.transform);
+            var script = gameObj.AddComponent<PlayerSupport>();
+            script.Init(deploy, effect.gameObject);
+            _supportList.Add(script);
+        });
     }
+
 
     public void Update()
     {
@@ -182,13 +163,15 @@ public class PlayerSupportMgr
 public class PlayerSupportDeploy : Conditionable
 {
     public int id;
-    public int resourceId;
+
+    public int idleEffectId;
+    public int slowShootEffectId;
+    public int fastShootEffectId;
+
     public int slowBulletId;
     public int slowFrame;
     public int fastBulletId;
     public int fastFrame;
-
-    public string idleEffect;
 }
 
 
