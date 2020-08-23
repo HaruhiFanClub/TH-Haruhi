@@ -101,11 +101,13 @@ public class Enemy : EntityBase
             if(Time.time > _nextMoveTime)
             {
                 _textMoveLeft = !_textMoveLeft;
-                _nextMoveTime = Time.time + 3f;
-                if(_textMoveLeft)
-                    Move(new Vector3(-8f, 5f), 0.3f);
+                _nextMoveTime = Time.time + 5f;
+                if (_textMoveLeft)
+                {
+                    Move(Vector2Fight.New(-75f, 80f), 0.3f);
+                }
                 else
-                    Move(new Vector3(0f, 5f), 0.3f);
+                    Move(Vector2Fight.New(75f, 80f), 0.3f);
             }
 
         }
@@ -148,7 +150,7 @@ public class Enemy : EntityBase
             _currPos = Vector3.Lerp(_currPos, _moveTarget, GameSystem.FrameTime * _moveSpeed);
             Rigid2D.MovePosition(_currPos);
 
-            if(Mathf.Abs(_currPos.magnitude - _moveTarget.magnitude) < 0.1f)
+            if(MathUtility.DistanceXY(_currPos, _moveTarget) < 0.05f)
             {
                 StopMove();
             }
@@ -205,7 +207,7 @@ public class Enemy : EntityBase
     }
 
     //static create
-    public static IEnumerator Create(int enemyId, Vector3 startPos, Action<Enemy> callBack)
+    public static IEnumerator Create(int enemyId, Vector2 startPos, Action<Enemy> callBack)
     {
         var deploy = TableUtility.GetDeploy<EnemyDeploy>(enemyId);
 

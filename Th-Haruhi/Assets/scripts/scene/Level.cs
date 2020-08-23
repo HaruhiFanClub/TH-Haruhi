@@ -19,7 +19,7 @@ public class Level : MonoBehaviour
         yield return Player.Create(1, p=> { Player = p; });
         yield return Yielders.Frame;
 
-        Player.transform.position = new Vector3(-4.11f, -6.82f);
+        Player.transform.position = Vector2Fight.New(0, -80f);
         Sound.PlayMusic(Deploy.bgmId);
 
         yield return new WaitForSeconds(2f);
@@ -31,9 +31,9 @@ public class Level : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        yield return Enemy.Create(1, new Vector3(-4.11f, 10f), enemy => 
+        yield return Enemy.Create(1, Vector2Fight.New(0, 130), enemy => 
         {
-            enemy.Move(new Vector3(-4.11f, 5f), 0.2f);
+            enemy.Move(Vector2Fight.New(0, 80), 0.4f);
         });
 
     }
