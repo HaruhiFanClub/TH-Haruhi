@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Player : EntityBase
 {
-    public Dictionary<EMoveStyle, List<Sprite>> SpriteDic = new Dictionary<EMoveStyle, List<Sprite>>();
+    public Dictionary<PlayerMoveStyle, List<Sprite>> SpriteDic = new Dictionary<PlayerMoveStyle, List<Sprite>>();
    
-    public enum EMoveStyle
+    public enum PlayerMoveStyle
     {
         LeftIdle,
         LeftMove,
@@ -33,8 +33,8 @@ public class Player : EntityBase
     private int _currAniIdx;
 
 
-    private EMoveStyle _aniStyle;
-    private EMoveStyle AniStyle
+    private PlayerMoveStyle _aniStyle;
+    private PlayerMoveStyle AniStyle
     {
         get { return _aniStyle; }
         set 
@@ -60,7 +60,7 @@ public class Player : EntityBase
 
         _redPoint = point;
         _actions = ControllerPc.GetActions();
-        _aniStyle = EMoveStyle.Idle;
+        _aniStyle = PlayerMoveStyle.Idle;
 
         transform.localScale = Vector3.one * deploy.scale;
 
@@ -112,8 +112,7 @@ public class Player : EntityBase
         for (int i = 0; i < Deploy.shootPos.Length; i++)
         {
             var pos = transform.position + new Vector3(Deploy.shootPos[i][0], Deploy.shootPos[i][1]);
-
-            BulletFactory.CreateBullet(Deploy.normalBulletId, transform, gameObject.layer,  bullet =>
+            BulletFactory.CreateBullet(Deploy.normalBulletId, transform, Layers.PlayerBullet,  bullet =>
             {
                 bullet.Shoot(pos, Vector3.up);
             });
@@ -141,27 +140,27 @@ public class Player : EntityBase
         _moveFoward = dir;
 
         var moveSpeed = InSlow ? Deploy.slowSpeed : Deploy.speed;
-        var targetPos = transform.position + _moveFoward * GameSystem.FrameTime * moveSpeed;
+        var targetPos = transform.position + _moveFoward * Time.fixedDeltaTime * moveSpeed;
         Rigid2D.MovePosition(targetPos);
 
         if (MathUtility.FloatEqual(_moveFoward.x, 0))
         {
-            AniStyle = EMoveStyle.Idle;
+            AniStyle = PlayerMoveStyle.Idle;
             return;
         }
 
-         if (_moveFoward.x > 0 && AniStyle != EMoveStyle.RightIdle)
-            AniStyle = EMoveStyle.RightMove;
+         if (_moveFoward.x > 0 && AniStyle != PlayerMoveStyle.RightIdle)
+            AniStyle = PlayerMoveStyle.RightMove;
 
-        if (_moveFoward.x < 0 && AniStyle != EMoveStyle.LeftIdle)
-            AniStyle = EMoveStyle.LeftMove;
+        if (_moveFoward.x < 0 && AniStyle != PlayerMoveStyle.LeftIdle)
+            AniStyle = PlayerMoveStyle.LeftMove;
     }
 
     public void StopMove()
     {
         _inMove = false;
         _moveFoward = Vector3.zero;
-        AniStyle = EMoveStyle.Idle;
+        AniStyle = PlayerMoveStyle.Idle;
     }
 
     private float _nextAnimationTime;
@@ -180,10 +179,10 @@ public class Player : EntityBase
 
                 if (_currAniIdx >= sprites.Count)
                 {
-                    if (AniStyle == EMoveStyle.LeftMove)
-                        AniStyle = EMoveStyle.LeftIdle;
-                    else if(AniStyle == EMoveStyle.RightMove)
-                        AniStyle = EMoveStyle.RightIdle;
+                    if (AniStyle == PlayerMoveStyle.LeftMove)
+                        AniStyle = PlayerMoveStyle.LeftIdle;
+                    else if(AniStyle == PlayerMoveStyle.RightMove)
+                        AniStyle = PlayerMoveStyle.RightIdle;
                     else
                         _currAniIdx = 0;
                 }
@@ -243,7 +242,7 @@ public class Player : EntityBase
             var resourceId = deploy.resoureIds[i];
             yield return TextureUtility.LoadResourceById(resourceId, sprites =>
             {
-                player.SpriteDic[(EMoveStyle)i] = sprites;
+                player.SpriteDic[(PlayerMoveStyle)i] = sprites;
             });
         }
 

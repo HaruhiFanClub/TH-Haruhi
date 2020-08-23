@@ -123,7 +123,7 @@ public class PlayerSupportMgr
         for (int i = 0; i < _supportList.Count; i++)
         {
             var support = _supportList[i];
-            support.UpdateShoot(_master.InSlow, _master.gameObject.layer, _master.InShoot);
+            support.UpdateShoot(_master.InSlow, Layers.PlayerBullet, _master.InShoot);
         }
     }
 

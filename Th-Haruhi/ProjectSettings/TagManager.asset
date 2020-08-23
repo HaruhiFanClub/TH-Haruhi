@@ -17,14 +17,14 @@ TagManager:
   - UI
   - 
   - 
-  - Character
+  - Player
   - Enemy
   - Obstacle
   - BackGround
+  - BulletDestroy
   - 
-  - 
-  - 
-  - 
+  - PlayerBullet
+  - EnemyBullet
   - 
   - 
   - 

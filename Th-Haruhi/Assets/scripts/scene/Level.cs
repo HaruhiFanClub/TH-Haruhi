@@ -23,7 +23,21 @@ public class Level : MonoBehaviour
         Sound.PlayMusic(Deploy.bgmId);
 
         yield return new WaitForSeconds(2f);
+
+        StartCoroutine(LoopLevel());
     }
+
+    private IEnumerator LoopLevel()
+    {
+        yield return new WaitForSeconds(3f);
+
+        yield return Enemy.Create(1, new Vector3(-4.11f, 10f), enemy => 
+        {
+            enemy.Move(new Vector3(-4.11f, 5f), 0.2f);
+        });
+
+    }
+
 
     public void OnDestroy()
     {
@@ -40,8 +54,6 @@ public class Level : MonoBehaviour
     {
         GameWorld.ClearCache();
     }
-
-
 
     #region static
     public static Level ActiveScene { get; protected set; }

@@ -13,6 +13,7 @@ public class MarisaLaser : Bullet
         _material = model.GetComponent<Renderer>().material;
         _defaultScaleY = transform.localScale.y;
         base.Init(deploy, master, model);
+        AutoDestroy = false;
     }
 
     public override void ReInit(Transform t)

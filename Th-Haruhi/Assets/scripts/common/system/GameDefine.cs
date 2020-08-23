@@ -11,14 +11,20 @@ public static class Layers
     public const int Enemy = 9;
     public const int Obstacle = 10;
     public const int BackGround = 11;
+
+    public const int BulletDestroy = 12;
+    public const int PlayerBullet = 14;
+    public const int EnemyBullet = 15;
 }
 
 public static class SortingOrder
 {
     public const int Player = 5;
     public const int PlayerSupport = 6;
+    public const int Enemy = 15;
     public const int Effect = 10;
-    public const int Bullet = 0;
+    public const int PlayerBullet = 0;
+    public const int EnemyBullet = 11;
 }
 public static class LayersMask
 {

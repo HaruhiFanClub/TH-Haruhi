@@ -88,7 +88,7 @@ public class PlayerSupport : MonoBehaviour
                 BulletFactory.CreateBullet(bulletId, transform, layer, bullet =>
                 {
                     _currBullet = bullet;
-                    bullet.Shoot(transform.position, transform.up, true);
+                    bullet.Shoot(transform.position, transform.up);
                 });
             }
             if(_prevInLoopShoot && !inShoot)

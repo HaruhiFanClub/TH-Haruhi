@@ -46,6 +46,14 @@ public static class BulletFactory
         BulletTab = TableUtility.GetTable<BulletDeploy>();
     }
 
+    public static void CreateBulletAndShoot(int id, Transform master, int layer, Vector3 startPos, Vector3 forward)
+    {
+        CreateBullet(id, master, layer, bullet =>
+        {
+            bullet.Shoot(startPos, forward);
+        });
+    }
+
     public static void CreateBullet(int id, Transform master, int layer, CreatedNotify notify)
     {
         var deploy = BulletTab[id];
@@ -74,7 +82,7 @@ public static class BulletFactory
                 }
                 else
                 {
-                    CreateBulletDirect(holder.Resource,  deploy, master, layer, bulletObj =>
+                    CreateBulletDirect(holder.Resource,deploy, master, layer, bulletObj =>
                     {
                         bullet = bulletObj;
                         notify(bullet);
@@ -83,16 +91,21 @@ public static class BulletFactory
             }
             else
             {
-                CreateNewBullet(id, master, layer, deploy, notify);
+                CreateNewBullet(id, master, layer,  deploy, notify);
             }
         }
     }
 
-    private static void CreateNewBullet(int id, Transform master, int layer, BulletDeploy deploy, CreatedNotify notify)
+    private static void CreateNewBullet(int id, Transform master, int layer,BulletDeploy deploy, CreatedNotify notify)
     {
         GameSystem.CoroutineStart(TextureUtility.LoadResourceById(deploy.resourceId, spriteList =>
         {
-            var sprite = spriteList[0];
+            int spriteIdx = deploy.spriteIdx;
+            if(deploy.spriteIdx > spriteList.Count)
+            {
+                spriteIdx = 0;
+            }
+            var sprite = spriteList[spriteIdx];
             Holder holder;
             if (!CachePool.TryGetValue(id, out holder))
             {
@@ -169,7 +182,7 @@ public static class BulletFactory
 
         var mr = model.AddComponent<MeshRenderer>();
         mr.sharedMaterial = material;
-        mr.sortingOrder = SortingOrder.Bullet;
+        mr.sortingOrder = layer == Layers.PlayerBullet ? SortingOrder.PlayerBullet : SortingOrder.EnemyBullet;
 
         model.transform.localEulerAngles = new Vector3(0, 0, deploy.rota);
 
@@ -186,9 +199,20 @@ public static class BulletFactory
         }
 
         //加collider
-        var collider = _object.AddComponent<BoxCollider2D>();
-        collider.size = new Vector2(bRota ? sizeY : sizeX, bRota ? sizeX : sizeY);
-        collider.offset = new Vector2(0, model.transform.localPosition.y);
+        if(deploy.radius <= 0)
+        {
+            var collider = _object.AddComponent<BoxCollider2D>();
+            collider.size = new Vector2(bRota ? sizeY : sizeX, bRota ? sizeX : sizeY);
+            collider.offset = new Vector2(0, model.transform.localPosition.y);
+            collider.isTrigger = true;
+        }
+        else
+        {
+            var collider = _object.AddComponent<CircleCollider2D>();
+            collider.radius = sizeX * deploy.radius;
+            collider.offset = new Vector2(0, model.transform.localPosition.y);
+            collider.isTrigger = true;
+        }
 
         var bullet = _object.AddComponent(type) as Bullet;
         if (!bullet)
