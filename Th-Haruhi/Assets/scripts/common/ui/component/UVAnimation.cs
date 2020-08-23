@@ -16,10 +16,11 @@ public class UVAnimation : MonoBehaviour
     void Update()
     {
        if(_material != null)
-        {
+       {
+            var delteTime = Time.deltaTime;
             var t = _material.mainTextureOffset;
-            t.x += Time.deltaTime * XSpeed;
-            t.y += Time.deltaTime * YSpeed;
+            t.x += delteTime * XSpeed;
+            t.y += delteTime * YSpeed;
             _material.mainTextureOffset = t;
         }
     }

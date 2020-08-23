@@ -1,15 +1,12 @@
 ﻿
 
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public static class GameWorld
 {
     public static void ShowTitle()
     {
         UIMainView.Show(true);
-
     }
 
     private static IEnumerator ShowTitleImpl()
@@ -20,11 +17,13 @@ public static class GameWorld
     public static void EnterLevel(int levelId)
     {
         //显示loading
-        UILoading.Show();
-        Level.Load(levelId, finishAction: (scene) =>
+        UILoading.Show(()=>
         {
-            //关闭loading
-            UILoading.Close();
+            Level.Load(levelId, finishAction: (scene) =>
+            {
+                //关闭loading
+                UILoading.Close();
+            });
         });
     }
 
@@ -37,7 +36,7 @@ public static class GameWorld
     {
 
         //清理各种池
-        EffectFactory.BackAllToPool();
+        //EffectFactory.BackAllToPool();
 
         //清理UI
         UiManager.Clear();    

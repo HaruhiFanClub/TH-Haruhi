@@ -63,7 +63,8 @@ public class ControllerPc : MonoBehaviour
     {
         if(!Level.InLevel || GamePause.InPause)
         {
-            UpdateMenu();
+            if (!UILoading.InLoading) 
+                UpdateMenu();
         }
     }
 

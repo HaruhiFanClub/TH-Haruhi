@@ -87,7 +87,7 @@ public static class ResourceBuildTool
             {
                 filter = CollectionUtility.Remove(filter, sceneFilterRemoves);
             }
-            else if (pathname.StartsWith("Assets/res/retain"))
+            else if (pathname.StartsWith("Assets/res/player") || pathname.StartsWith("Assets/res/bullet") || pathname.StartsWith("Assets/res/enemy"))
             {
                 filter = buildFilter;
             }

@@ -20,11 +20,13 @@ public class UiTextBtnMenuVert : UiTextBtnMenuBase
 
     private void OnClickDown(object argument)
     {
-        SelectNext();
+        if(Enable)
+            SelectNext();
     }
 
     private void OnClickUp(object argument)
     {
-        SelectPrev();
+        if (Enable)
+            SelectPrev();
     }
 }

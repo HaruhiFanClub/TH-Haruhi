@@ -9,19 +9,35 @@ public class Level : MonoBehaviour
 {
     public static bool InLevel => ActiveScene != null;
     public LevelDeploy Deploy { private set; get; }
-    public Character MainChr { private set; get; }
+    public Player Player { private set; get; }
 
     protected IEnumerator Init()
     {
         yield return Yielders.Frame;
 
         //创建角色
-        MainChr = Character.CreateCharacter(1);
-        MainChr.transform.position = new Vector3(-4.11f, -6.82f);
+        yield return Player.Create(1, p=> { Player = p; });
+        yield return Yielders.Frame;
+
+        Player.transform.position = new Vector3(-4.11f, -6.82f);
         Sound.PlayMusic(Deploy.bgmId);
 
         yield return new WaitForSeconds(2f);
+
+        StartCoroutine(LoopLevel());
     }
+
+    private IEnumerator LoopLevel()
+    {
+        yield return new WaitForSeconds(3f);
+
+        yield return Enemy.Create(1, new Vector3(-4.11f, 10f), enemy => 
+        {
+            enemy.Move(new Vector3(-4.11f, 5f), 0.2f);
+        });
+
+    }
+
 
     public void OnDestroy()
     {
@@ -39,24 +55,9 @@ public class Level : MonoBehaviour
         GameWorld.ClearCache();
     }
 
-
-
     #region static
     public static Level ActiveScene { get; protected set; }
     public static string CurrentSceneName;
-
-    public static Transform Root
-    {
-        get
-        {
-            if (ActiveScene == null || ActiveScene.gameObject == null)
-                return null;
-            else
-                return ActiveScene.transform;
-        }
-    }
-
-
 
     private static Type GetSceneType(string sceneClass)
     {
@@ -93,7 +94,7 @@ public class Level : MonoBehaviour
 
     public static void Load(int levelId, Action<Level> finishAction = null)
     {
-        var deploy = GameCfgList.GetDeploy<LevelDeploy>(levelId);
+        var deploy = TableUtility.GetDeploy<LevelDeploy>(levelId);
         if (string.IsNullOrEmpty(deploy.resource))
         {
             if (finishAction != null) finishAction.Invoke(null);
@@ -115,7 +116,7 @@ public class Level : MonoBehaviour
 #if UNITY_EDITOR
         yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 #else
-        yield return ResourceMgr.LoadScene(sceneUrl, LoadSceneMode.Additive);
+        yield return ResourceMgr.LoadScene(deploy.resource, LoadSceneMode.Additive);
 #endif
         CurrentSceneName = sceneName;
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));

@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
+using System.Collections;
 
 public static class Sound
 {
@@ -87,7 +88,7 @@ public static class Sound
         _uiVolume = 1f;
         GlobalMusicVolume = 1f;
         GlobalAudioVolume = 1f;
-        _soundTableT = GameCfgList.GetTable<SoundDeploy>();
+        _soundTableT = TableUtility.GetTable<SoundDeploy>();
     }
 
     public static AudioSource Create3DAudioSource(GameObject parent, float maxDistance = 30, bool useLinear = false)
@@ -407,14 +408,30 @@ public static class Sound
 
     #endregion
 
-    public static void PlayUiAudioOneShot(int soundId)
+    public static void LateUpdate()
     {
-        Load(soundId, PlayUiAudioOneShot);
+        _oneFrameDic.Clear();
+    }
+
+    private static Dictionary<int, bool> _oneFrameDic = new Dictionary<int, bool>();
+    public static void PlayUiAudioOneShot(int soundId, bool oneFrameOnce = false)
+    {
+        Load(soundId, soundClip=>
+        {
+            if (oneFrameOnce)
+            {
+                if (_oneFrameDic.ContainsKey(soundId))
+                {
+                    return;
+                }
+                _oneFrameDic[soundId] = true;
+            }
+            PlayUiAudioOneShot(soundClip);
+        });
     }
 
     private static void PlayUiAudioOneShot(SoundClip soundClip)
     {
-        //Debug.Log("PlayUiAudioOneShot:" + soundClip.clip.name + " volume:" + soundClip.volume + " uiv:" + _uiVolume + "_globalv:" + _globalAudioVolume);
         if (_globalAudioVolume <= 0 || _uiVolume <= 0)
         {
 
@@ -466,6 +483,33 @@ public static class Sound
     private static void LoadSoundResource(string soundName, Action<AudioClip> notify)
     {
         LoadSoundResourceImpl(soundName, notify);
+    }
+
+    public static IEnumerator CacheSound(int soundId)
+    {
+        var soundName = _soundTableT.GetSection(soundId).resource;
+        if(CachePool.ContainsKey(soundName))
+        {
+            yield break;
+        }
+
+        ResourceMgr.Load(soundName, _object =>
+        {
+            var resource = _object as AudioClip;
+            if (!resource)
+            {
+                Debug.LogError("加载声音失败:" + soundName);
+            }
+            else
+            {
+                if (!CachePool.ContainsKey(soundName))
+                    CachePool.Add(soundName, resource);
+            }
+        });
+        yield return Yielders.Frame;
+        yield return Yielders.Frame;
+        yield return Yielders.Frame;
+        yield return Yielders.Frame;
     }
 
     private static void LoadSoundResourceImpl(string soundName, Action<AudioClip> notify)

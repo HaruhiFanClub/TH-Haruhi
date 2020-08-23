@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameSystem : MonoBehaviour
 {
+    public static float FrameTime = 0.016666f; //基准帧率时间
+
     public static GameSystem Instance;
     private static bool _inited;
 
@@ -44,9 +46,6 @@ public class GameSystem : MonoBehaviour
         //初始化资源管理器
         ResourceMgr.InitInstance();
 
-        //初始化特效池
-        EffectFactory.Init();
-
 
         CoroutineStart = StartCoroutine;
         DefaultRes = GetComponent<DefaultRes>();
@@ -77,8 +76,8 @@ public class GameSystem : MonoBehaviour
     {
         UILogo.Show(() =>
         {
-            UiManager.Show<UIFps>();
             GameWorld.ShowTitle();
+            UiManager.Show<UIFps>();
         });
     }
 
@@ -95,6 +94,11 @@ public class GameSystem : MonoBehaviour
         SaveDataMgr.Update();
         UiManager.Update();
         GameWorld.Update();
+        
+    }
+    private void LateUpdate()
+    {
+        Sound.LateUpdate();
     }
 
     public static bool PauseStatus { private set; get; }

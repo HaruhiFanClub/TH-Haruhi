@@ -162,7 +162,7 @@ public class UiTextButton : Button
         if (!b && IsSelected)
             OnSelectDisable();
 
-        interactable = IsSelected;
+        //interactable = IsSelected;
         IsSelected = b;
         _text.color = IsSelected ? _textDefaultColor : new Color(0.5f, 0.5f, 0.5f, _textDefaultColor.a);
     }

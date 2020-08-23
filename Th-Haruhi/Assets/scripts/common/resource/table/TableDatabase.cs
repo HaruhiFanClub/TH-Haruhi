@@ -13,30 +13,20 @@ public static class TableDatabase
     static readonly char fieldDilimiter;
     static readonly BindingFlags fieldFlags;
     static readonly int mainKey;
-    static string tablesPath;
     static string tableExtension;
     static Hashtable hashTables;
-    
-    class FieldInfoEx
-    {
-        public FieldInfo filedinfo;
-        public int TypeAttrCount;
-        public int FieldAttrCount;
-    }
 
     static TableDatabase()
     {
         mainKey = 0;
         fieldDilimiter = '\t';
         fieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-        tablesPath = "cfg/";
         tableExtension = ".sos";
         hashTables = Hashtable.Synchronized(new Hashtable());
     }
 
     public static Table LoadByString(Type type, string reader, string tableName, string md5 = "")
     {
-
         string textAll = reader;
 
         int lineIndex = 0;
@@ -78,27 +68,20 @@ public static class TableDatabase
             }
         }
 
-        FieldInfoEx[] fieldInfos = new FieldInfoEx[count];
+        FieldInfo[] fieldInfos = new FieldInfo[count];
         for (int i = 0; i < count; ++i)
         {
-            FieldInfoEx filedinfoex = new FieldInfoEx { filedinfo = type.GetField(fieldNames[i], fieldFlags) };
-            if (filedinfoex.filedinfo != null)
-            {
-                filedinfoex.TypeAttrCount =
-                    filedinfoex.filedinfo.FieldType.GetCustomAttributes(typeof(JsonObjectAttribute), false).Length;
-                filedinfoex.FieldAttrCount = filedinfoex.filedinfo.GetCustomAttributes(typeof(JsonObjectAttribute), false).Length;
-            }
-            fieldInfos[i] = filedinfoex;
+            fieldInfos[i] = type.GetField(fieldNames[i], fieldFlags);
         }
 
-        FieldInfoEx keyField = fieldInfos[mainKey];
-        if (keyField.filedinfo == null)
+        FieldInfo keyField = fieldInfos[mainKey];
+        if (keyField == null)
         {
             UnityEngine.Debug.LogError(string.Format("{0} mainkey 不存在!!!", tableName));
             return null;
         }
-        Table table = new Table();
 
+        Table table = new Table();
         while (true)
         {
             int n = textAll.IndexOf(sep, lineIndex, StringComparison.Ordinal);
@@ -118,20 +101,19 @@ public static class TableDatabase
             for (int i = 0; i < valueStrs.Length && i < fieldInfos.Length; ++i)
             {
                 string str = valueStrs[i];
-                FieldInfoEx info = fieldInfos[i];
-                if (info.filedinfo != null && !string.IsNullOrEmpty(str))
+                FieldInfo info = fieldInfos[i];
+                if (info != null && !string.IsNullOrEmpty(str))
                 {
                     str = str.Replace("\\n", "\n").Replace("\\t", "\t");
                     SetField(section, info, str);
                 }
             }
 
-            object key = keyField.filedinfo.GetValue(section);
+            object key = keyField.GetValue(section);
             if (key != null)
             {
                 //若已有key存在，则报错
-#if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
-#else
+#if UNITY_EDITOR
                 if (table.GetSection(key) != null)
                     UnityEngine.Debug.LogError("Table Key is not the only! {\"tableName\": " + tableName + ",  \"key\": " + key + "}" + "");
 #endif
@@ -153,20 +135,15 @@ public static class TableDatabase
             table = (Table)cacheObj;
             return table;
         }
-
-        //   Debug.Log("Load Table : " + tableName);
-
         try
         {
-            string tabPath = tablesPath + tableName + tableExtension;
+            string tabPath =  tableName + tableExtension;
             string code = ResourceMgr.GetResourceText(tabPath);
-            string k = (tablesPath + tableName).Replace("/", "_") + ".sos";
+            string k = (tableName).Replace("/", "_") + ".sos";
 
             if (code != null)
             {
-#if UNITY_EDITOR
                 code = RemoveComment(code);
-#endif
                 table = LoadByString(type, code, tableName);
                 hashTables[tableName] = table;
             }
@@ -198,54 +175,17 @@ public static class TableDatabase
         hashTables.Remove(tableName);
     }
 
-    static void SetField(object section, FieldInfoEx fieldInfoex, string valueStr, bool mainThread = true)
+    static void SetField(object section, FieldInfo fieldInfo, string valueStr)
     {
-        FieldInfo fieldInfo = fieldInfoex.filedinfo;
         Type type = fieldInfo.FieldType;
-
-        if (type == typeof(LitJson.JsonData))
-        {
-            try
-            {
-                LitJson.JsonData value = LitJson.JsonMapper.ToObject(valueStr);
-                fieldInfo.SetValue(section, value);
-            }
-            catch (Exception)
-            {
-                UnityEngine.Debug.LogError("error json format: " + section.ToString() + " " + fieldInfo.ToString() + " " + valueStr);
-            }
-            return;
-        }
-
-        //GetCustomAttributes函數太耗，先在循環外緩存.lq
-        //if (type.GetCustomAttributes(typeof(JsonObjectAttribute), false).Length > 0 || fieldInfo.GetCustomAttributes(typeof(JsonObjectAttribute), false).Length > 0)
-        if (fieldInfoex.TypeAttrCount > 0 || fieldInfoex.FieldAttrCount > 0)
-        {
-            try
-            {
-                Object value = LitJson.JsonMapper.ToObject(type, valueStr);
-                fieldInfo.SetValue(section, value);
-            }
-            catch (Exception)
-            {
-                UnityEngine.Debug.LogError("error json format: " + section.ToString() + " " + fieldInfo.ToString() + " " + valueStr);
-            }
-            return;
-        }
-
         if (type.IsArray || typeof(IList).IsAssignableFrom(type))
         {
-            valueStr = trimSpace(valueStr, "[", "]");
-        }
-        else if ((type.IsClass && type != typeof(string)) ||
-                 (type.IsValueType && !type.IsPrimitive && !type.IsEnum))
-        {
-            valueStr = trimSpace(valueStr, "{", "}");
+            valueStr = TrimSpace(valueStr, "[", "]");
         }
         Formatter.AssignObject(section, fieldInfo, valueStr);
     }
 
-    private static string trimSpace(string valueStr, string splitCh1, string splitCh2)
+    private static string TrimSpace(string valueStr, string splitCh1, string splitCh2)
     {
         int i = 0;
         int length = valueStr.Length;
@@ -302,6 +242,7 @@ public static class TableDatabase
         sb.Replace("\"", "");
         return sb.ToString();
     }
+
     public static string CalcMD5CRC(string input)
     {
         // step 1, calculate MD5 hash from input  

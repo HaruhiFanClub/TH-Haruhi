@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UiTextBtnMenuBase : MonoBehaviour
 {
+    public bool Enable { set; get; }
+
     private readonly List<UiTextButton> _buttonList = new List<UiTextButton>();
     public UiTextButton CurrSelect { private set; get; }
 
@@ -48,7 +50,8 @@ public class UiTextBtnMenuBase : MonoBehaviour
 
     private void OnClickSure(object argument)
     {
-        CurrSelect.DoClick();
+        if(Enable)
+            CurrSelect.DoClick();
     }
 
     protected void SelectNext()

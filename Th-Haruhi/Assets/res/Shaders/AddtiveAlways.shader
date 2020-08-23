@@ -1,6 +1,7 @@
 
 Shader "Fps/Effects/AdditiveAlways" {
 Properties {
+
 	_MainTex ("Particle Texture", 2D) = "white" {}
 }
 

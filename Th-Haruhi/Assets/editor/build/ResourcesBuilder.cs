@@ -10,119 +10,27 @@ using System.IO;
 using System.Collections.Generic;
 using Debug = UnityEngine.Debug;
 
-public class ModelMatTool : AssetPostprocessor
-{
-    /*
-    private void OnPostprocessModel(GameObject model)
-    {
-        string path = assetPath.ToLower();
-        if (path.EndsWith(".fbx"))
-        {
-            Debug.LogWarning("process fbx " + path);
-            Renderer[] renderComs = model.GetComponentsInChildren<Renderer>();
-            for (int i = 0; i < renderComs.Length; i++)
-            {
-                renderComs[i].sharedMaterial = null;
-
-                if (renderComs[i].sharedMaterials != null)
-                {
-                    renderComs[i].sharedMaterials = new Material[renderComs[i].sharedMaterials.Length];
-                }
-            }
-
-            List<AnimationClip> clips = new List<AnimationClip>(AnimationUtility.GetAnimationClips(model));
-
-            if (clips.Count == 0)
-            {
-                AnimationClip[] objectList = UnityEngine.Object.FindObjectsOfType(typeof(AnimationClip)) as AnimationClip[];
-                if (objectList != null)
-                {
-                    clips.AddRange(objectList);
-                }
-            }
-
-            for (int i = 0; i < clips.Count; i++)
-            {
-                CompressAnim(clips[i]);
-            }
-        }
-    }
-    */
-    public const string ScaleKeyName = "localscale";
-    public static void CompressAnim(AnimationClip clip)
-    {
-        //ReduceScaleKey(clip, ScaleKeyName);
-        ReduceFloatPrecision(clip);
-    }
-
-    public static void CompressAnim2(AnimationClip clip)
-    {
-        ReduceScaleKey(clip, ScaleKeyName);
-        ReduceFloatPrecision(clip,"f2");
-    }
-    private static void ReduceScaleKey(AnimationClip clip, string keyName)
-    {
-        EditorCurveBinding[] curves = AnimationUtility.GetCurveBindings(clip);
-
-        for (int j = 0; j < curves.Length; j++)
-        {
-            EditorCurveBinding curveBinding = curves[j];
-
-            if (curveBinding.propertyName.ToLower().Contains(keyName))
-            {
-                AnimationUtility.SetEditorCurve(clip, curveBinding, null);
-            }
-        }
-    }
-    public static void ReduceFloatPrecision(AnimationClip clip, string str = "f3")
-    {
-        EditorCurveBinding[] bindings = AnimationUtility.GetCurveBindings(clip);
-
-        for (int j = 0; j < bindings.Length; j++)
-        {
-            EditorCurveBinding curveBinding = bindings[j];
-            AnimationCurve curve = AnimationUtility.GetEditorCurve(clip, curveBinding);
-
-            if (curve == null || curve.keys == null)
-            {
-                continue;
-            }
-
-            Keyframe[] keys = curve.keys;
-            for (int k = 0; k < keys.Length; k++)
-            {
-                Keyframe key = keys[k];
-                key.value = float.Parse(key.value.ToString(str));
-                key.inTangent = float.Parse(key.inTangent.ToString(str));
-                key.outTangent = float.Parse(key.outTangent.ToString(str));
-                keys[k] = key;
-            }
-            curve.keys = keys;
-
-            AnimationUtility.SetEditorCurve(clip, curveBinding, curve);
-        }
-    }
-}
-
 public static class ResourcesBuilder
 {
-    static string buildPath;
+    static string _assetPath;
     static BuildTarget buildTarget;
     static BuildAssetBundleOptions buildAssetOptions;
     static readonly HashSet<string> resourceSet = new HashSet<string>();
 
-    public static bool Build(string _buildPath, BuildTarget target, List<string> resourceList)
+    public static bool Build(string assetPath, BuildTarget target, List<string> resourceList)
     {
         //var resourceList = ResourceBuildTool.GetBuildResources(PathUtility.FullPathToProjectPath(PathUtility.ResourcesPath));
 
-        if (string.IsNullOrEmpty(_buildPath)) return false;
+        if (string.IsNullOrEmpty(assetPath)) return false;
         if(resourceList.Count == 0) return false;
 
         AssetDatabase.SaveAssets();
 
-        buildPath = _buildPath;
+        _assetPath = assetPath;
 
-        if (!Directory.Exists(buildPath)) Directory.CreateDirectory(buildPath);
+        if (!Directory.Exists(_assetPath)) 
+            Directory.CreateDirectory(_assetPath);
+
 
         buildTarget = target;
 
@@ -147,14 +55,14 @@ public static class ResourcesBuilder
         }
 
         EditorUtility.ClearProgressBar();
-        AssetBundleManifest assetManifest = BuildPipeline.BuildAssetBundles(buildPath, buildAssetOptions, buildTarget);
+        AssetBundleManifest assetManifest = BuildPipeline.BuildAssetBundles(_assetPath, buildAssetOptions, buildTarget);
 
         if (assetManifest != null)
         {
-            if (File.Exists(buildPath + "/StreamingAssets"))
+            if (File.Exists(_assetPath + "/StreamingAssets"))
             {
-                FileInfo file = new FileInfo(buildPath + "/StreamingAssets");
-                string path = buildPath + "/StreamingAssets.haruhi";
+                FileInfo file = new FileInfo(_assetPath + "/StreamingAssets");
+                string path = _assetPath + "/StreamingAssets.haruhi";
                 if (File.Exists(path))
                     File.Delete(path);
                 file.MoveTo(path);
@@ -162,7 +70,7 @@ public static class ResourcesBuilder
         }
         else
         {
-            Debug.LogError("Error assetManifest is null, buildPath:" + buildPath + " buildAssetOptions:" +
+            Debug.LogError("Error assetManifest is null, buildPath:" + _assetPath + " buildAssetOptions:" +
                                         buildAssetOptions + " buildTarget:" + buildTarget);
 
         }
@@ -284,25 +192,43 @@ public static class ResourcesBuilder
         return true;
     }
 
+    public static void CopyImage()
+    {
+
+    }
+
     public static void BuildText()
     {
         List<string> list = new List<string>();
         list.AddRange(Directory.GetFiles("Assets/", "*.sos", SearchOption.AllDirectories));
         list.AddRange(Directory.GetFiles("Assets/", "*.cfg", SearchOption.AllDirectories));
+
+
+        var tablePath = PathUtility.AssetBundlePath + "/tables/";
+        if (!Directory.Exists(tablePath))
+            Directory.CreateDirectory(tablePath);
+
         foreach (string path in list)
         {
             string text = FileUtility.GetTextFromFile(PathUtility.ProjectPathToFullPath(path));
+
+            /* RemoveComment
             if (path.ToLower().EndsWith(".sos"))
             {
                 text = TableDatabase.RemoveComment(text);
-            }
+            }*/
 
-            var outpath = PathUtility.AssetBundlePath + "/" + PathUtility.GetUniquePathByProjectPath(path) + ".haruhi";
+            var outPutName = PathUtility.GetUniqueTablePathByProjectPath(path);
+            var outpath = tablePath + outPutName + ".haruhi_table";
+
             string oldText = "";
-            if(File.Exists(outpath))
+            if (File.Exists(outpath))
+            {
                 oldText = FileUtility.GetTextFromFile(outpath);
+            }
             if (text != oldText)
             {
+                text = text.Replace("\"", "");
                 MemoryStream ms = new MemoryStream();
                 using (StreamWriter writer = new StreamWriter(ms,new System.Text.UTF8Encoding(true)))
                 {
@@ -310,10 +236,14 @@ public static class ResourcesBuilder
                     writer.Close();
                 }
                 var buff = ms.ToArray();
+                
+                /*
                 if (path.ToLower().EndsWith(".sos"))
                 {
                     buff = FileUtility.CopyFrom(buff, 3);                //保存资源加密
                 }
+                */
+
                 File.Delete(outpath);
                 FileStream fs = new FileStream(outpath, FileMode.OpenOrCreate);
                 fs.Write(buff, 0, buff.Length);
@@ -322,6 +252,5 @@ public static class ResourcesBuilder
         }
         Debug.LogWarning("build text ok. " + list.Count + " items.");
     }
-    
 }
 

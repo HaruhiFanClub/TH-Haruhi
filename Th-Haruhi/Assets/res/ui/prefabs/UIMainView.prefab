@@ -2166,6 +2166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Bg: {fileID: 5414165028530113287}
   MenuCanvasGroup: {fileID: 2080226042106884358}
+  Menu: {fileID: 603818349515989471}
   Btn_GameStart: {fileID: 872126042332987895}
   Btn_ExtraStart: {fileID: 1978278404501095249}
   Btn_ParcticeStart: {fileID: 6929175541389149962}
@@ -2549,10 +2550,10 @@ RectTransform:
   m_Father: {fileID: 6722555241914015934}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1280, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7881984363972249800
 CanvasRenderer:

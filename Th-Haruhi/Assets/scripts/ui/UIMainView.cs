@@ -2,6 +2,8 @@
 using UnityEngine;
 using DG.Tweening;
 using System.Collections;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class UIMainView : UiInstance
 {
@@ -26,13 +28,15 @@ public class UIMainView : UiInstance
 
     private void DoOpen(bool playAni)
     {
+        _compent.Menu.Enable = false;
         StartCoroutine(PlayAnimation(playAni));
     }
 
     private IEnumerator PlayAnimation(bool playAni)
     {
-        if(!playAni)
+        if (!playAni)
         {
+            Sound.PlayMusic(1);
             AddBtnEvent();
             yield break;
         }
@@ -41,8 +45,9 @@ public class UIMainView : UiInstance
         _compent.MenuCanvasGroup.alpha = 0;
 
         yield return new WaitForSeconds(1f);
-        _compent.Bg.DOFade(1f, 3f);
+        yield return Sound.CacheSound(1);
         Sound.PlayMusic(1);
+        _compent.Bg.DOFade(1f, 3f);
 
         yield return new WaitForSeconds(1.5f);
         _compent.MenuCanvasGroup.DOFade(1f, 0.3f).onComplete = AddBtnEvent;
@@ -50,6 +55,7 @@ public class UIMainView : UiInstance
 
     private void AddBtnEvent()
     {
+        _compent.Menu.Enable = true;
         if (_inited) return;
         _compent.Btn_GameStart.onClick.AddListener(Btn_GameStart);
         _compent.Btn_ExtraStart.onClick.AddListener(Btn_ExtraStart);
@@ -67,30 +73,30 @@ public class UIMainView : UiInstance
     protected override void OnShow()
     {
         base.OnShow();
-
-        
     }
 
     private void Btn_GameStart()
     {
         GameWorld.EnterLevel(1);
-        //UiTips.Show("Btn_GameStart");
     }
+
     private void Btn_ExtraStart()
     {
-        UiTips.Show("Btn_ExtraStart");
+       
+
     }
     private void Btn_ParcticeStart()
     {
-        UiTips.Show("Btn_ParcticeStart");
+      
     }
+
     private void Btn_SpellParctice()
     {
-        UiTips.Show("Btn_SpellParctice");
+        UiTips.Show(Application.streamingAssetsPath);
     }
     private void Btn_Replay()
     {
-        UiTips.Show("Btn_Replay");
+        UiTips.Show(Application.dataPath);
     }
     private void Btn_PlayerData()
     {

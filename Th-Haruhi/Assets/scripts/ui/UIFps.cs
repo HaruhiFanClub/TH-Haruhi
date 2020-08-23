@@ -33,9 +33,9 @@ public class UIFps : UiInstance
         if (!(currtime - _lasttime > 1f)) return;
 
         _fps = _frames / (currtime - _lasttime);
-        _fps = Mathf.Round(_fps);
+        _fps = Mathf.Ceil(_fps);
         _frames = 0;
         _lasttime = currtime;
-        _compoent.Fps.text = _fps.ToString(CultureInfo.InvariantCulture) + "fps";
+        _compoent.Fps.text = _fps.ToString(CultureInfo.InvariantCulture) + "fps" +" 子弹数量:"+ Bullet.TotalBulletCount;
     }
 }
