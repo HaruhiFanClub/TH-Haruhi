@@ -111,6 +111,8 @@ public class GameSystem : MonoBehaviour
         //清理各种池
         //EffectFactory.BackAllToPool();
 
+        UiTextBtnMenuBase.ClearSelectStatus();
+
         //清理UI
         UiManager.Clear();
 

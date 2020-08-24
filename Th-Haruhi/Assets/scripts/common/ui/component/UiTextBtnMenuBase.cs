@@ -1,42 +1,67 @@
 ﻿
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UiTextBtnMenuBase : MonoBehaviour
 {
+    //当前选中第几个的状态记录
+    private static Dictionary<Type, int> SelectStatus = new Dictionary<Type, int>();
+    public static void ClearSelectStatus()
+    {
+        SelectStatus.Clear();
+    }
+
+
     public bool Enable { set; get; }
 
     private readonly List<UiTextButton> _buttonList = new List<UiTextButton>();
     public UiTextButton CurrSelect { private set; get; }
+    private Type _parentUIType;
 
     protected virtual void Start()
     {
         var btns = GetComponentsInChildren<UiTextButton>();
         var bSelectFirst = false;
-        DisableSelectAll();
 
+        //根据父UI节点类型，拿到默认选项
+        var parentUi = GetComponentInParent<UiInstance>();
+        int defaultIdx = 0;
+        if (parentUi != null) 
+        {
+            _parentUIType = parentUi.GetType();
+            SelectStatus.TryGetValue(_parentUIType, out defaultIdx);
+        }
+
+        //初始化
         for (int i = 0; i < btns.Length; i++)
         {
             var btn = btns[i];
-            btn.MenuIndex = i;
+            btn.SetMenu(this, i);   
 
-            //自动选中第一个按钮
+            _buttonList.Add(btn);
+        }
+
+        //自动选中
+        for (int i = 0; i < btns.Length; i++)
+        {
+            
+            var btn = btns[i];
             if (!bSelectFirst)
             {
-                if (btn.IsEnable)
+                if (btn.IsEnable && i == defaultIdx)
+                {
                     btn.SetSelect(true);
-
-                CurrSelect = btn;
-                bSelectFirst = true;
+                    CurrSelect = btn;
+                    bSelectFirst = true;
+                }
             }
             else
             {
                 btn.SetSelect(false);
             }
-
-            _buttonList.Add(btn);
         }
 
 
@@ -46,6 +71,15 @@ public class UiTextBtnMenuBase : MonoBehaviour
     protected virtual void OnDestroy()
     {
         GameEventCenter.RemoveListener(GameEvent.UI_Sure, OnClickSure);
+    }
+
+
+    public void OnBtnSelected(UiTextButton btn)
+    {
+        if(_parentUIType != null)
+        {
+            SelectStatus[_parentUIType] = btn.MenuIndex;
+        }
     }
 
     private void OnClickSure(object argument)

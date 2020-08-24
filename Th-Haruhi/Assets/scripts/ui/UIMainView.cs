@@ -5,8 +5,10 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class UIMainView : UiInstance
+public class UIMainView : UiFullView
 {
+    public static int PrevSelected = 0;
+
     public static void Show(bool showAni)
     {
         var view = UiManager.ImmediatelyShow<UIMainView>();
@@ -14,7 +16,6 @@ public class UIMainView : UiInstance
     }
 
     private UIMainViewCompoent _compent;
-    private bool _inited;
 
     protected override void OnLoadFinish()
     {
@@ -22,41 +23,7 @@ public class UIMainView : UiInstance
 
         _compent = GetComponent<UIMainViewCompoent>();
        
-        //test
         _compent.Btn_ExtraStart.IsEnable = false;
-    }
-
-    private void DoOpen(bool playAni)
-    {
-        _compent.Menu.Enable = false;
-        StartCoroutine(PlayAnimation(playAni));
-    }
-
-    private IEnumerator PlayAnimation(bool playAni)
-    {
-        if (!playAni)
-        {
-            Sound.PlayMusic(1);
-            AddBtnEvent();
-            yield break;
-        }
-
-        _compent.Bg.Alpha = 0;
-        _compent.MenuCanvasGroup.alpha = 0;
-
-        yield return new WaitForSeconds(1f);
-        yield return Sound.CacheSound(1);
-        Sound.PlayMusic(1);
-        _compent.Bg.DOFade(1f, 3f);
-
-        yield return new WaitForSeconds(1.5f);
-        _compent.MenuCanvasGroup.DOFade(1f, 0.3f).onComplete = AddBtnEvent;
-    }
-
-    private void AddBtnEvent()
-    {
-        _compent.Menu.Enable = true;
-        if (_inited) return;
         _compent.Btn_GameStart.onClick.AddListener(Btn_GameStart);
         _compent.Btn_ExtraStart.onClick.AddListener(Btn_ExtraStart);
         _compent.Btn_ParcticeStart.onClick.AddListener(Btn_ParcticeStart);
@@ -67,8 +34,42 @@ public class UIMainView : UiInstance
         _compent.Btn_Option.onClick.AddListener(Btn_Option);
         _compent.Btn_Manual.onClick.AddListener(Btn_Manual);
         _compent.Btn_Quit.onClick.AddListener(Btn_Quit);
-        _inited = true;
     }
+
+    private void DoOpen(bool playAni)
+    {
+        _compent.Menu.Enable = false;
+        if(playAni)
+        {
+            _compent.Animator.Play("FirstOpen");
+            StartCoroutine(PlayAnimation(playAni));
+        }
+        else
+        {
+            _compent.Animator.Play("ReOpen");
+            //Sound.PlayMusic(1);
+        }
+    }
+
+    private IEnumerator PlayAnimation(bool playAni)
+    {
+        yield return Sound.CacheSound(1);
+        Sound.PlayMusic(1);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if(!_compent.Menu.Enable)
+        {
+            if (_compent.Animator.GetCurrentAnimatorStateInfo(0).IsName("Loop"))
+            {
+                _compent.Menu.Enable = true;
+            }
+        }
+    }
+
 
     protected override void OnShow()
     {
@@ -82,12 +83,12 @@ public class UIMainView : UiInstance
 
     private void Btn_ExtraStart()
     {
-       
+        
 
     }
     private void Btn_ParcticeStart()
     {
-      
+        UiManager.Show<UIChooseDiffult>();
     }
 
     private void Btn_SpellParctice()

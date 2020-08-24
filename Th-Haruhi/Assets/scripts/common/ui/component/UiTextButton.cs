@@ -141,16 +141,25 @@ public class UiTextButton : Button
     }
 
     //选择逻辑
-    public int MenuIndex { set; get; }
+    private UiTextBtnMenuBase _menu;
+    public int MenuIndex { private set; get; }
+
     public bool IsSelected { private set; get; } = true;
     public bool InClick { private set; get; }
 
     private Tween _shakeTween;
     private float _alphaAddFlag;
 
-    private const float SelectAlphaSmooth = 0.8f;
+    private const float SelectAlphaSmooth = 0.6f;
     private const float ClickAlphaSmooth = 7f;
     private const float ClickWaitTime = 0.7f;
+
+    public void SetMenu(UiTextBtnMenuBase menu, int menuIdx)
+    {
+        _menu = menu;
+        MenuIndex = menuIdx;
+        SetSelect(false);
+    }
 
     public void SetSelect(bool b)
     {
@@ -164,7 +173,12 @@ public class UiTextButton : Button
 
         //interactable = IsSelected;
         IsSelected = b;
-        _text.color = IsSelected ? _textDefaultColor : new Color(0.5f, 0.5f, 0.5f, _textDefaultColor.a);
+        _text.color = IsSelected ? _textDefaultColor : new Color(0.55f, 0.55f, 0.55f, _textDefaultColor.a);
+
+        if(IsSelected)
+        {
+            _menu?.OnBtnSelected(this);
+        }
     }
 
 
@@ -186,7 +200,7 @@ public class UiTextButton : Button
         {
             if (_text.Alpha >= 1f)
                 _alphaAddFlag = -1;
-            if(_text.Alpha < 0.7f)
+            if(_text.Alpha < 0.8f)
                 _alphaAddFlag = 1;
 
             _text.Alpha += SelectAlphaSmooth * Time.deltaTime * _alphaAddFlag;

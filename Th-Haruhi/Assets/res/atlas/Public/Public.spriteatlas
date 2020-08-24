@@ -79,18 +79,30 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: c02048db67f7f034fbd3ec0a5caba77e, type: 3}
-    totalSpriteSurfaceArea: 2921160
+    totalSpriteSurfaceArea: 3044262
     bindAsDefault: 0
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: c10b0280e34268247b3ef4e11cac1e97, type: 3}
+  - {fileID: 21300000, guid: 81975eb05a39f2443840c4abeca34130, type: 3}
+  - {fileID: 21300000, guid: 44e46311036622747b5b763f2e66b135, type: 3}
   - {fileID: 21300000, guid: 9d0938634d38a794da91bf7b4bd9c2d5, type: 3}
-  - {fileID: 21300000, guid: f988c40478b4a8144b0abd5838a24742, type: 3}
   - {fileID: 21300000, guid: 71367c84df9f4c14e98766971986026d, type: 3}
+  - {fileID: 21300000, guid: 0ac54a669279005428d11697da71da46, type: 3}
+  - {fileID: 21300000, guid: 64d34286e2df4bd48ae4ee345f0c31fe, type: 3}
   - {fileID: 21300000, guid: 139f622923fe35844b7b85438577c5a8, type: 3}
+  - {fileID: 21300000, guid: 92aceccb82e11664fa6424d6c61d151c, type: 3}
+  - {fileID: 21300000, guid: db62861f372e4e44d8fb0d82ef6054ee, type: 3}
   m_PackedSpriteNamesToIndex:
+  - author
+  - main_logo
+  - main_mark
   - logo
-  - mainview
   - loading_bg
+  - main_bg
+  - beta
   - title_page
+  - main_logo2
+  - icon_haruhi
   m_Tag: Public
   m_IsVariant: 0

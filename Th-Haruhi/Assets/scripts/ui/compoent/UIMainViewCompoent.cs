@@ -3,7 +3,7 @@
 public class UIMainViewCompoent : MonoBehaviour
 {
     public UiImage Bg;
-    public CanvasGroup MenuCanvasGroup;
+    public Animator Animator;
     public UiTextBtnMenuBase Menu;
     public UiTextButton Btn_GameStart;
     public UiTextButton Btn_ExtraStart;

@@ -63,8 +63,10 @@ public class ControllerPc : MonoBehaviour
     {
         if(!Level.InLevel || GamePause.InPause)
         {
-            if (!UILoading.InLoading) 
+            if (!UILoading.InLoading)
+            {
                 UpdateMenu();
+            }
         }
     }
 
@@ -98,6 +100,11 @@ public class ControllerPc : MonoBehaviour
         if (_actions.Get(EControllerBtns.Cancel).WasReleased)
         {
             GameEventCenter.Send(GameEvent.UI_Cancel);
+        }
+
+        if (_actions.Get(EControllerBtns.Cancel).WasReleased)
+        {
+            GameEventCenter.Send(GameEvent.UI_Back);
         }
     }
 
