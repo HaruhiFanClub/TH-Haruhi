@@ -161,15 +161,18 @@ public class UiTextButton : Button
         SetSelect(false);
     }
 
-    public void SetSelect(bool b)
+    public void SetSelect(bool b, bool fromAuto = false)
     {
         if (!IsEnable) return;
         if (IsSelected == b) return;
 
-        if (b && !IsSelected)
-            OnSelectEnable();
-        if (!b && IsSelected)
-            OnSelectDisable();
+        if(!fromAuto)
+        {
+            if (b && !IsSelected)
+                OnSelectEnable();
+            if (!b && IsSelected)
+                OnSelectDisable();
+        }
 
         //interactable = IsSelected;
         IsSelected = b;
@@ -180,7 +183,6 @@ public class UiTextButton : Button
             _menu?.OnBtnSelected(this);
         }
     }
-
 
     public void OnUpdate()
     {

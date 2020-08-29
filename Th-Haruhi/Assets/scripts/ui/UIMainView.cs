@@ -65,6 +65,7 @@ public class UIMainView : UiFullView
         {
             if (_compent.Animator.GetCurrentAnimatorStateInfo(0).IsName("Loop"))
             {
+              
                 _compent.Menu.Enable = true;
             }
         }

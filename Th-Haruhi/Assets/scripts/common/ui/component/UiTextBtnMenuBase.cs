@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UiTextBtnMenuBase : MonoBehaviour
 {
@@ -13,7 +12,6 @@ public class UiTextBtnMenuBase : MonoBehaviour
     {
         SelectStatus.Clear();
     }
-
 
     public bool Enable { set; get; }
 
@@ -53,7 +51,7 @@ public class UiTextBtnMenuBase : MonoBehaviour
             {
                 if (btn.IsEnable && i == defaultIdx)
                 {
-                    btn.SetSelect(true);
+                    btn.SetSelect(true, true);
                     CurrSelect = btn;
                     bSelectFirst = true;
                 }
