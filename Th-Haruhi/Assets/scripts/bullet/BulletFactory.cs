@@ -191,23 +191,10 @@ public static class BulletFactory
 
         model.transform.localScale = new Vector3(sizeX, sizeY, 1);
 
-        var bRota = (int)deploy.rota % 90 == 0;
-
-        if (deploy.bottomCenter)
-        {
-            model.transform.localPosition = new Vector3(0, bRota ? sizeX / 2f : sizeY / 2f, 0); 
-        }
-
         //加collider
-        if(deploy.radius <= 0)
+        if(deploy.radius  > 0)
         {
-            var collider = _object.AddComponent<BoxCollider2D>();
-            collider.size = new Vector2(bRota ? sizeY : sizeX, bRota ? sizeX : sizeY);
-            collider.offset = new Vector2(0, model.transform.localPosition.y);
-            collider.isTrigger = true;
-        }
-        else
-        {
+
             var collider = _object.AddComponent<CircleCollider2D>();
             collider.radius = sizeX * deploy.radius;
             collider.offset = new Vector2(0, model.transform.localPosition.y);

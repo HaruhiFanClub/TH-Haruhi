@@ -37,6 +37,7 @@ public static class LayersMask
     public const int Creature = Player | Enemy;
     public const int Ground = 1 << Layers.BackGround;
     public const int Obstacle = 1 << Layers.Obstacle;
+    public const int BulletDestroy = 1 << Layers.BulletDestroy;
     public const int All = 0x0fffffff;
 
     public static int GetLayerMask(int layer)

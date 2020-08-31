@@ -18,6 +18,7 @@ id	texture	name	startX	startY	width	height	xCount	yCount
 14	player/marisa/marisa_spark.png	魔理沙_大招	0	64	256	128	1	1
 15	player/marisa/marisa_spark.png	魔理沙_大招2	256	0	96	256	1	1
 16	player/marisa/marisa.png	魔理沙_激光	0	176	256	16	1	1
+17	player/marisa/marisa.png	魔理沙_激光命中	96	192	32	32	4	1
 								
 #reimu								
 101	player/reimu/reimu.png	灵梦_待机	0	0	32	48	8	1

@@ -13,6 +13,7 @@ public class Bullet : EntityBase
     private bool _bShooted;
 
     public static int TotalBulletCount;
+
     private void OnEnable()
     {
         TotalBulletCount++;
@@ -75,6 +76,28 @@ public class Bullet : EntityBase
 
         transform.position += _forward * Time.deltaTime * Deploy.speed;
     }
+ 
+    public virtual void OnBulletHitEnemy()
+    {
+        if (!InCache)
+        {
+            PlayBombEffect(transform.position);
+            BulletFactory.DestroyBullet(this);
+        }
+    }
+
+    private void PlayBombEffect(Vector3 pos)
+    {
+        if (Deploy.bombEffectId > 0)
+        {
+            EffectFactory.CreateEffect(Deploy.bombEffectId, SortingOrder.EnemyBullet, effect =>
+            {
+                effect.transform.position = pos;
+                effect.AutoDestroy();
+            });
+        }
+    }
+
 
     public override void OnRecycle()
     {
@@ -97,7 +120,8 @@ public class BulletDeploy : Conditionable
     public float alpha;
     public float radius;
     public int spriteIdx;
-    public bool bottomCenter;
+    public int atk;
+    public int bombEffectId;
 
     public float eventTime;
     public float eventWait;

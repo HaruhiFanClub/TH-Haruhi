@@ -79,7 +79,7 @@ public static class TextureUtility
                 Texture2D tx2d = new Texture2D(width, height, TextureFormat.RGBA32, false);
                 tx2d.SetPixels(tex.GetPixels(x, y, width, height));
                 tx2d.Apply();
-                var sprite = Sprite.Create(tx2d, new Rect(0, 0, tx2d.width, tx2d.height), new Vector2(0.5f, 0.5f), 24);
+                var sprite = Sprite.Create(tx2d, new Rect(0, 0, tx2d.width, tx2d.height), new Vector2(0.5f, 0.5f), 25);
                 list.Add(sprite);
             }
         }

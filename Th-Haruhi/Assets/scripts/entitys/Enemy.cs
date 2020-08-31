@@ -7,7 +7,8 @@ public class Enemy : EntityBase
 {
     public override EEntityType EntityType => EEntityType.Enemy;
     public Dictionary<EnemyMoveStyle, List<Sprite>> SpriteDic = new Dictionary<EnemyMoveStyle, List<Sprite>>();
-   
+    public int HP = 1000;
+
     public enum EnemyMoveStyle
     {
         Idle,
@@ -21,9 +22,10 @@ public class Enemy : EntityBase
     
     public bool InShoot { private set; get; }
 
+    public Material Material { private set; get; }
+
     private bool _inMove;
     private int _currAniIdx;
-    
 
 
     private EnemyMoveStyle _aniStyle;
@@ -64,6 +66,7 @@ public class Enemy : EntityBase
             var f1 = Quaternion.Euler(0, 0, _shootIdx * 29) * transform.up;
             BulletFactory.CreateBulletAndShoot(1001 + _shootIdx % 4, transform, Layers.EnemyBullet, transform.position, f1);
 
+            /*
             var f2 = Quaternion.Euler(0, 0, _shootIdx * 13) * transform.up;
             BulletFactory.CreateBulletAndShoot(1005 + _shootIdx % 4, transform, Layers.EnemyBullet, transform.position, f2);
 
@@ -77,7 +80,7 @@ public class Enemy : EntityBase
             BulletFactory.CreateBulletAndShoot(1021 + _shootIdx % 4, transform, Layers.EnemyBullet, transform.position, Quaternion.Euler(0, 0, _shootIdx * 17) * transform.up);
 
             BulletFactory.CreateBulletAndShoot(1025 + _shootIdx % 4, transform, Layers.EnemyBullet, transform.position, Quaternion.Euler(0, 0, _shootIdx * 23) * transform.up);
-
+            */
             _shootIdx++;
             if (_shootIdx > 10000000)
                 _shootIdx = 0;
@@ -91,6 +94,7 @@ public class Enemy : EntityBase
     protected override void Update()
     {
         base.Update();
+        UpdateHitBrightness();
 
         if (GamePause.InPause == false)
         {
@@ -112,6 +116,46 @@ public class Enemy : EntityBase
             }
 
         }
+    }
+
+
+    /// <summary>
+    /// 敌人被击高亮闪白相关
+    /// </summary>
+    private float _curBrightness = 1f;
+    private void UpdateHitBrightness()
+    {
+        Material.SetFloat("_Brightness", _curBrightness);
+        _curBrightness = Mathf.Lerp(_curBrightness, 1f, Time.deltaTime * 30f);
+    }
+
+    private void SetBrightness()
+    {
+        _curBrightness = 1.5f;
+        Material.SetFloat("_Brightness", 1.5f);
+    }
+
+    /// <summary>
+    /// 敌人被子弹击中时
+    /// </summary>
+    /// <param name="atk"></param>
+    public void OnEnemyHit(int atk)
+    {
+        //闪白
+        SetBrightness();
+
+        //扣血
+        HP -= atk;
+
+        if (HP < 0) 
+        {
+            OnEmemyDie();
+        }
+    }
+
+    private void OnEmemyDie()
+    {
+        Destroy(gameObject);
     }
 
     private Vector3 _moveTarget;
@@ -197,14 +241,15 @@ public class Enemy : EntityBase
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        //Debug.LogError("on trigger enter");
-    }
+        //玩家子弹击中怪物逻辑
+        if (collider.gameObject.layer != Layers.PlayerBullet)
+            return;
 
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
+        var playerBullet = collider.GetComponent<Bullet>();
+        OnEnemyHit(playerBullet.Deploy.atk);
+        playerBullet.OnBulletHitEnemy();
     }
 
     //static create
@@ -221,7 +266,7 @@ public class Enemy : EntityBase
         var model = new GameObject(deploy.name + "_model");
         var mainSprite = model.AddComponent<SpriteRenderer>();
         mainSprite.sortingOrder = SortingOrder.Enemy;
-
+        mainSprite.material = new Material(GameSystem.DefaultRes.BulletShader);
         model.transform.SetParent(gameObj.transform, false);
         yield return Yielders.Frame;
 
@@ -240,6 +285,7 @@ public class Enemy : EntityBase
         var collider = gameObj.AddComponent<CircleCollider2D>();
         collider.radius = deploy.radius;
         gameObj.transform.position = startPos;
+        enemy.Material = mainSprite.material;
         enemy.Init(mainSprite, deploy);
         gameObj.SetActiveSafe(true);
         callBack(enemy);

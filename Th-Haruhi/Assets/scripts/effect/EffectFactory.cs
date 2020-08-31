@@ -11,7 +11,7 @@ public static class EffectFactory
     public class Holder
     {
         public EffectDeploy Deploy;
-        public Sprite Resource;
+        public List<Sprite> Resource;
         public Queue<Effect> Queue;
         public float BackToPoolTime;
     }
@@ -87,24 +87,23 @@ public static class EffectFactory
         }
     }
 
-    private static void CreateNewEffect(int id,  int sortingOrder, EffectDeploy deploy, CreatedNotify notify)
+    private static void CreateNewEffect(int id, int sortingOrder, EffectDeploy deploy, CreatedNotify notify)
     {
         GameSystem.CoroutineStart(TextureUtility.LoadResourceById(deploy.resourceId, spriteList =>
         {
-            var sprite = spriteList[0];
             Holder holder;
             if (!CachePool.TryGetValue(id, out holder))
             {
                 holder = new Holder
                 {
                     Deploy = deploy,
-                    Resource = sprite,
+                    Resource = spriteList,
                     Queue = new Queue<Effect>()
                 };
                 CachePool.Add(id, holder);
             }
 
-            CreateEffectDirect(sprite, sortingOrder, deploy, effect =>
+            CreateEffectDirect(spriteList, sortingOrder, deploy, effect =>
             {
                 notify(effect);
             });
@@ -138,9 +137,10 @@ public static class EffectFactory
     }
 
 
-    private static void CreateEffectDirect(Sprite resource, int sortingOrder, EffectDeploy deploy,  Action<Effect> notify)
+    private static void CreateEffectDirect(List<Sprite> spriteList, int sortingOrder, EffectDeploy deploy,  Action<Effect> notify)
     {
         var type = typeof(Effect);
+        var resource = spriteList[0];
 
         var _object = new GameObject("effect_" + deploy.id);
         _object.transform.localScale = deploy.scale * Vector3.one;
@@ -185,7 +185,7 @@ public static class EffectFactory
         {
             effect.Renderer = mr;
             effect.Renderer.sortingOrder = sortingOrder;
-            effect.Init(deploy);
+            effect.Init(deploy, spriteList);
         }
 
         notify(effect);
