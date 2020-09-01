@@ -10,6 +10,11 @@ id	name	resource	volume
 #UI			
 1001	Select	audios/se/se_select00.wav	1
 1002	OK	audios/se/se_ok00.wav	1
+1003	À¿Õˆ	audios/se/se_pldead00.wav	1
+1004	damage00	audios/se/se_damage00.wav	0.4
+1005	damage01	audios/se/se_damage01.wav	0.6
+1006	enemydie	audios/se/se_enep00.wav	0.3
+			
 			
 #bullet			
 2001	∆’π•	audios/se/se_plst00.wav	0.4

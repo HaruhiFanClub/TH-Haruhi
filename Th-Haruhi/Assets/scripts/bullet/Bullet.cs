@@ -90,14 +90,13 @@ public class Bullet : EntityBase
     {
         if (Deploy.bombEffectId > 0)
         {
-            EffectFactory.CreateEffect(Deploy.bombEffectId, SortingOrder.EnemyBullet, effect =>
+            TextureEffectFactroy.CreateEffect(Deploy.bombEffectId, SortingOrder.EnemyBullet, effect =>
             {
                 effect.transform.position = pos;
                 effect.AutoDestroy();
             });
         }
     }
-
 
     public override void OnRecycle()
     {

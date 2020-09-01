@@ -436,7 +436,7 @@ public static class UiManager
     /// </summary>
     /// <param name="effect"></param>
     /// <param name="layerName"></param>
-    public static void ShowEffect(Effect effect, UiLayer layerName = UiLayer.Loding)
+    public static void ShowEffect(TextureEffect effect, UiLayer layerName = UiLayer.Loding)
     {
         string layer = Enum.GetName(typeof(UiLayer), layerName);
         Transform parent = _uiBind.CanvasParentList[layerName];

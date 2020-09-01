@@ -79,7 +79,7 @@ public class UIMainView : UiFullView
 
     private void Btn_GameStart()
     {
-        GameSystem.EnterLevel(1);
+        LevelMgr.StartNewGame(1);
     }
 
     private void Btn_ExtraStart()

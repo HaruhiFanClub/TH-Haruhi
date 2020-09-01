@@ -8,7 +8,7 @@ public class MarisaLaser : Bullet
     private float _uvSpeed = 1f;
 
     private const int HitEffectId = 5;
-    private Effect _hitEffect;
+    private TextureEffect _hitEffect;
 
     private float _lastHurtEnemyTime;
 
@@ -27,7 +27,7 @@ public class MarisaLaser : Bullet
         model.transform.localPosition = new Vector3(0, bRota ? localScale.x / 2f : localScale.y / 2f, 0);
 
         //初始化被击特效
-        EffectFactory.CreateEffect(HitEffectId, SortingOrder.Effect, e => 
+        TextureEffectFactroy.CreateEffect(HitEffectId, SortingOrder.Effect, e => 
         { 
             _hitEffect = e;
             _hitEffect.SetActiveSafe(false);
@@ -58,6 +58,7 @@ public class MarisaLaser : Bullet
     {
         base.Update();
         if (InCache) return;
+        if (Master == null) return;
 
         transform.position = Master.position;
 

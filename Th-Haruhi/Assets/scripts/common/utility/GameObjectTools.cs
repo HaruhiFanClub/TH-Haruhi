@@ -42,46 +42,6 @@ public static class GameObjectTools
         return target.AddComponent(type);
     }
 
-    public static void AddComponent(GameObject target, params System.Type[] types)
-    {
-        foreach (System.Type type in types)
-            AddComponent(target, type);
-    }
-
-    public static T AddComponent<T>(GameObject target) where T : Component
-    {
-        return target.AddComponent(typeof(T)) as T;
-    }
-
-    public static void RemoveComponent(Component component)
-    {
-        Object.Destroy(component);
-    }
-
-    public static void RemoveComponent(GameObject gameObject, System.Type type)
-    {
-        Component component = gameObject.GetComponent(type);
-        if (component)
-            Object.Destroy(component);
-    }
-
-    public static void RemoveComponent(GameObject gameObject, params System.Type[] types)
-    {
-        foreach (System.Type type in types)
-        {
-            Component component = gameObject.GetComponent(type);
-            if (component)
-                Object.Destroy(component);
-        }
-    }
-
-    public static void RemoveComponent<T>(GameObject gameObject) where T : Component
-    {
-        Component component = gameObject.GetComponent<T>();
-        if (component)
-            Object.Destroy(component);
-    }
-
     public static T Find<T>(string path) where T : Component
     {
         T targetT = null;
@@ -254,28 +214,6 @@ public static class GameObjectTools
             }
         }
     }
-
-#if UNITY_EDITOR && UNITY_EDITOR_WIN
-    public static bool HasStaticFlags(GameObject gameObject, UnityEditor.StaticEditorFlags flags)
-    {
-        return (UnityEditor.GameObjectUtility.GetStaticEditorFlags(gameObject) & flags) == flags;
-    }
-
-    public static void AddStaticFlags(GameObject gameObject, UnityEditor.StaticEditorFlags flags)
-    {
-        UnityEditor.GameObjectUtility.SetStaticEditorFlags(
-            gameObject,
-            UnityEditor.GameObjectUtility.GetStaticEditorFlags(gameObject) | flags);
-    }
-
-    public static void RemoveStaticFlags(GameObject gameObject, UnityEditor.StaticEditorFlags flags)
-    {
-        UnityEditor.GameObjectUtility.SetStaticEditorFlags(
-            gameObject,
-            UnityEditor.GameObjectUtility.GetStaticEditorFlags(gameObject) & ~flags);
-    }
-
-#endif
 
     public static GameObject InstantiateGO(Object _object)
     {
@@ -471,6 +409,15 @@ public static class GameObjectTools
     public static bool GetActiveState(this UiImage c)
     {
         return c.CanvasGroup.alpha > 0;
+    }
+
+    public static void RemoveComponent<T>(this GameObject gameobject) where T: MonoBehaviour
+    {
+        var component = gameobject.GetComponent<T>();
+        if(component != null)
+        {
+            Object.Destroy(component);
+        }
     }
 
     public static void DestroyGameObject(MonoBehaviour obj)

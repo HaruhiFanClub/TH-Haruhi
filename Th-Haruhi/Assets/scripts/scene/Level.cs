@@ -7,19 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class Level : MonoBehaviour
 {
-    public static bool InLevel => ActiveScene != null;
+    public static bool InLevel => ActiveLevel != null;
+
     public LevelDeploy Deploy { private set; get; }
-    public Player Player { private set; get; }
 
     protected IEnumerator Init()
     {
         yield return Yielders.Frame;
 
-        //创建角色
-        yield return Player.Create(1, p=> { Player = p; });
-        yield return Yielders.Frame;
-
-        Player.transform.position = Vector2Fight.New(0, -80f);
         Sound.PlayMusic(Deploy.bgmId);
 
         yield return new WaitForSeconds(2f);
@@ -31,19 +26,9 @@ public class Level : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        yield return Enemy.Create(1, Vector2Fight.New(0, 130), enemy => 
-        {
-            enemy.Move(Vector2Fight.New(0, 80), 0.4f);
-        });
-
+        yield return Enemy.Create(2);
     }
 
-
-    public void OnDestroy()
-    {
-        OnLeave();
-        ActiveScene = null;
-    }
 
     public virtual void OnEnter()
     {
@@ -56,7 +41,7 @@ public class Level : MonoBehaviour
     }
 
     #region static
-    public static Level ActiveScene { get; protected set; }
+    public static Level ActiveLevel { get; protected set; }
     public static string CurrentSceneName;
 
     private static Type GetSceneType(string sceneClass)
@@ -92,17 +77,17 @@ public class Level : MonoBehaviour
         }
     }
 
-    public static void Load(int levelId, Action<Level> finishAction = null)
+    public static IEnumerator Load(int levelId, Action<Level> finishAction = null)
     {
         var deploy = TableUtility.GetDeploy<LevelDeploy>(levelId);
         if (string.IsNullOrEmpty(deploy.resource))
         {
             if (finishAction != null) finishAction.Invoke(null);
             Debug.LogError(string.Format("sceneId url : {0} not exist", deploy.resource));
-            return;
+            yield break;
         }
 
-        GameSystem.CoroutineStart(LoadImpl(deploy, finishAction));
+        yield return LoadImpl(deploy, finishAction);
     }
 
     private static IEnumerator LoadImpl(LevelDeploy deploy, Action<Level> finishAction)
@@ -130,23 +115,30 @@ public class Level : MonoBehaviour
         yield return scene.Init();
         finishAction?.Invoke(gameScene);
     }
-    void Awake()
+
+    private static void SceneEnter(Level gameScene)
+    {
+        if (ActiveLevel != null)
+            ActiveLevel.OnDestroy();
+
+        ActiveLevel = gameScene;
+    }
+
+    public void Awake()
     {
         SceneEnter(this);
         OnEnter();
     }
-    private static void SceneEnter(Level gameScene)
+
+    public void OnDestroy()
     {
-        if (ActiveScene != null)
-            ActiveScene.OnDestroy();
-
-        ActiveScene = gameScene;
+        OnLeave();
+        ActiveLevel = null;
     }
-
     #endregion
-
-
 }
+
+
 public class LevelDeploy : Conditionable
 {
     public int id;

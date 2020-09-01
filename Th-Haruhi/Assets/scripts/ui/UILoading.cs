@@ -1,11 +1,26 @@
 ﻿using DG.Tweening;
 using System;
+using System.Collections;
+using UnityEngine;
 
 public class UILoading : UiInstance
 {
     private UILoadingCompoent _compoent;
     private Action _showOver;
     public static bool InLoading;
+
+    public static IEnumerator YieldShow()
+    {
+        var bShowOver = false;
+        UiManager.Show<UILoading>(view => 
+        { 
+            view._showOver = ()=>
+            {
+                bShowOver = true;
+            }; 
+        });
+        yield return new WaitUntil(() => bShowOver);
+    }
 
     public static void Show(Action showOver)
     {

@@ -10,8 +10,12 @@ public class PlayerSupport : MonoBehaviour
 
     public PlayerSupportDeploy Deploy { private set; get; }
 
-    public Effect _slowEffect;
-    public Effect _fastEffect;
+    private TextureEffect _slowEffect;
+    private TextureEffect _fastEffect;
+    private Bullet _currBullet;
+
+    private bool _prevInLoopShoot;
+    private bool _prevInSlow;
 
     public void Init(PlayerSupportDeploy deploy, GameObject renderObj)
     {
@@ -19,7 +23,7 @@ public class PlayerSupport : MonoBehaviour
 
         if(deploy.slowShootEffectId > 0)
         {
-            EffectFactory.CreateEffect(deploy.slowShootEffectId, SortingOrder.Effect, obj =>
+            TextureEffectFactroy.CreateEffect(deploy.slowShootEffectId, SortingOrder.Effect, obj =>
             {
                 _slowEffect = obj;
                 _slowEffect.transform.Bind(renderObj.transform);
@@ -30,7 +34,7 @@ public class PlayerSupport : MonoBehaviour
 
         if (deploy.fastShootEffectId > 0)
         {
-            EffectFactory.CreateEffect(deploy.fastShootEffectId, SortingOrder.Effect, obj =>
+            TextureEffectFactroy.CreateEffect(deploy.fastShootEffectId, SortingOrder.Effect, obj =>
             {
                 _fastEffect = obj;
                 _fastEffect.transform.Bind(renderObj.transform);
@@ -40,9 +44,6 @@ public class PlayerSupport : MonoBehaviour
         }
     }
 
-    private bool _prevInLoopShoot;
-    private bool _prevInSlow;
-    private Bullet _currBullet;
    
 
     public void UpdateShoot(bool isSlow, int layer, bool inShoot)
@@ -101,6 +102,26 @@ public class PlayerSupport : MonoBehaviour
             }
             _prevInLoopShoot = inShoot;
         }
+    }
+
+    public void Destroy()
+    {
+        if (_currBullet != null)
+        {
+            BulletFactory.DestroyBullet(_currBullet);
+            _currBullet = null;
+        }
+        if (_slowEffect != null)
+        {
+            TextureEffectFactroy.DestroyEffect(_slowEffect);
+            _slowEffect = null;
+        }
+        if (_fastEffect != null)
+        {
+            TextureEffectFactroy.DestroyEffect(_fastEffect);
+            _fastEffect = null;
+        }
+        Destroy(gameObject);
     }
 }
 

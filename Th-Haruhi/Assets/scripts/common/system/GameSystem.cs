@@ -92,19 +92,7 @@ public class GameSystem : MonoBehaviour
     }
 
 
-    public static void EnterLevel(int levelId)
-    {
-        //显示loading
-        UILoading.Show(() =>
-        {
-            Level.Load(levelId, finishAction: (scene) =>
-            {
-                //关闭loading
-                UILoading.Close();
-            });
-        });
-    }
-
+  
     public static void ClearCache()
     {
 

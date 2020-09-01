@@ -102,7 +102,7 @@ public class PlayerSupportMgr
         gameObj.transform.position = _master.transform.position;
         gameObj.transform.localScale = _master.transform.localScale;
 
-        EffectFactory.CreateEffect(deploy.idleEffectId, SortingOrder.PlayerSupport, effect =>
+        TextureEffectFactroy.CreateEffect(deploy.idleEffectId, SortingOrder.PlayerSupport, effect =>
         {
             effect.transform.Bind(gameObj.transform);
             var script = gameObj.AddComponent<PlayerSupport>();
@@ -153,8 +153,12 @@ public class PlayerSupportMgr
         }
     }
 
-    private void Clear()
+    public void Clear()
     {
+        for(int i = 0; i < _supportList.Count; i++)
+        {
+            _supportList[i].Destroy();
+        }
         _supportList.Clear();
         _slots.Clear();
     }

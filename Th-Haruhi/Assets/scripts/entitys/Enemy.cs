@@ -5,16 +5,18 @@ using UnityEngine;
 
 public class Enemy : EntityBase
 {
-    public override EEntityType EntityType => EEntityType.Enemy;
-    public Dictionary<EnemyMoveStyle, List<Sprite>> SpriteDic = new Dictionary<EnemyMoveStyle, List<Sprite>>();
-    public int HP = 1000;
-
     public enum EnemyMoveStyle
     {
         Idle,
         Move,
         MoveIdle,
     }
+
+    public override EEntityType EntityType => EEntityType.Enemy;
+    public Dictionary<EnemyMoveStyle, List<Sprite>> SpriteDic = new Dictionary<EnemyMoveStyle, List<Sprite>>();
+
+    //血量
+    public int HP { private set; get; }
 
     public SpriteRenderer MainRenderer { private set; get; }
     
@@ -24,8 +26,12 @@ public class Enemy : EntityBase
 
     public Material Material { private set; get; }
 
-    private bool _inMove;
-    private int _currAniIdx;
+    public bool InMove { private set; get; }
+
+    public bool IsDead { private set; get; }
+
+    private MoveAI_Base MoveAI;
+    private ShootAI_Base ShootAI;
 
 
     private EnemyMoveStyle _aniStyle;
@@ -52,72 +58,52 @@ public class Enemy : EntityBase
 
         Deploy = deploy;
         MainRenderer = renderer;
+
+        HP = deploy.maxHp;
+
         _aniStyle = EnemyMoveStyle.Idle;
         _currPos = transform.position;
-    }
 
+        InitRigid(); 
 
-    private float _nextShootTime;
-    private int _shootIdx;
-    private void UpdateShoot()
-    {
-        if(Time.time > _nextShootTime)
+        //初始化AI模块
+        MoveAI =  Common.CreateInstance(deploy.MoveAI) as MoveAI_Base;
+        if(MoveAI != null)
         {
-            var f1 = Quaternion.Euler(0, 0, _shootIdx * 29) * transform.up;
-            BulletFactory.CreateBulletAndShoot(1001 + _shootIdx % 4, transform, Layers.EnemyBullet, transform.position, f1);
-
-            /*
-            var f2 = Quaternion.Euler(0, 0, _shootIdx * 13) * transform.up;
-            BulletFactory.CreateBulletAndShoot(1005 + _shootIdx % 4, transform, Layers.EnemyBullet, transform.position, f2);
-
-            var f3 = Quaternion.Euler(0, 0, _shootIdx * 11) * transform.up;
-            BulletFactory.CreateBulletAndShoot(1009 + _shootIdx % 4, transform, Layers.EnemyBullet, transform.position, f3);
-
-            BulletFactory.CreateBulletAndShoot(1013 + _shootIdx % 4, transform, Layers.EnemyBullet, transform.position, Quaternion.Euler(0, 0, _shootIdx * 9) * transform.up);
-
-            BulletFactory.CreateBulletAndShoot(1017 + _shootIdx % 4, transform, Layers.EnemyBullet, transform.position, Quaternion.Euler(0, 0, _shootIdx * 7) * transform.up);
-
-            BulletFactory.CreateBulletAndShoot(1021 + _shootIdx % 4, transform, Layers.EnemyBullet, transform.position, Quaternion.Euler(0, 0, _shootIdx * 17) * transform.up);
-
-            BulletFactory.CreateBulletAndShoot(1025 + _shootIdx % 4, transform, Layers.EnemyBullet, transform.position, Quaternion.Euler(0, 0, _shootIdx * 23) * transform.up);
-            */
-            _shootIdx++;
-            if (_shootIdx > 10000000)
-                _shootIdx = 0;
-
-            _nextShootTime = Time.time + GameSystem.FrameTime;
+            MoveAI.Init(this);
+        }
+        ShootAI = Common.CreateInstance(deploy.ShootAI) as ShootAI_Base;
+        if (ShootAI != null)
+        {
+            ShootAI.Init(this);
         }
     }
-
-    private float _nextMoveTime;
-    private bool _textMoveLeft;
+   
     protected override void Update()
     {
         base.Update();
         UpdateHitBrightness();
 
-        if (GamePause.InPause == false)
+        if (GamePause.InPause != false)
         {
-            UpdateAnimation();
-            UpdateMove();
-            UpdateShoot();
+            return;
+        }
 
-            //test
-            if(Time.time > _nextMoveTime)
-            {
-                _textMoveLeft = !_textMoveLeft;
-                _nextMoveTime = Time.time + 5f;
-                if (_textMoveLeft)
-                {
-                    Move(Vector2Fight.New(-75f, 80f), 0.3f);
-                }
-                else
-                    Move(Vector2Fight.New(75f, 80f), 0.3f);
-            }
+        UpdateAnimation();
+        UpdateMove();
 
+        
+
+        if (MoveAI != null)
+        {
+            MoveAI.OnUpdate();
+        }
+
+        if(ShootAI != null)
+        {
+            ShootAI.OnUpdate();
         }
     }
-
 
     /// <summary>
     /// 敌人被击高亮闪白相关
@@ -139,38 +125,52 @@ public class Enemy : EntityBase
     /// 敌人被子弹击中时
     /// </summary>
     /// <param name="atk"></param>
+
+    private RelayInterval _hitSoundInterval = new RelayInterval(0.05f);
     public void OnEnemyHit(int atk)
     {
+        if (IsDead) return;
+
         //闪白
         SetBrightness();
 
         //扣血
         HP -= atk;
 
+        //死亡
         if (HP < 0) 
         {
-            OnEmemyDie();
+            IsDead = true;
+            OnDead();
         }
     }
 
-    private void OnEmemyDie()
+    private void OnDead()
     {
+        //特效
+        EffectFactory.PlayEffectOnce(Deploy.deadEffect, transform.position);
+
+        Sound.PlayUiAudioOneShot(1006);
+
+        GameEventCenter.Send(GameEvent.OnEnemyDie);
+
         Destroy(gameObject);
     }
 
     private Vector3 _moveTarget;
     private Vector3 _currPos;
     private float _moveSpeed;
+
     public void Move(Vector3 targetPoint, float moveSpeed)
     {
-        _inMove = true;
+        InMove = true;
         _moveTarget = targetPoint;
         _moveSpeed = moveSpeed;
     }
 
     private void UpdateMove()
     {
-        if(_inMove)
+        if(InMove)
         {
             var moveX = (_moveTarget - transform.position).normalized.x;
 
@@ -206,13 +206,14 @@ public class Enemy : EntityBase
         }
     }
 
-    public void StopMove()
+    private void StopMove()
     {
-        _inMove = false;
+        InMove = false;
         AniStyle = EnemyMoveStyle.Idle;
     }
 
     private float _nextAnimationTime;
+    private int _currAniIdx;
 
     private void UpdateAnimation()
     {
@@ -238,7 +239,6 @@ public class Enemy : EntityBase
         }
 
         _nextAnimationTime = Time.time + Deploy.frameSpeed[(int)AniStyle] * GameSystem.FrameTime;
-
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -252,8 +252,23 @@ public class Enemy : EntityBase
         playerBullet.OnBulletHitEnemy();
     }
 
-    //static create
-    public static IEnumerator Create(int enemyId, Vector2 startPos, Action<Enemy> callBack)
+    protected override void OnDestroy()
+    {
+        if (MoveAI != null)
+        {
+            MoveAI.OnDestroy();
+        }
+
+        if (ShootAI != null)
+        {
+            ShootAI.OnDestroy();
+        }
+        base.OnDestroy();
+    }
+
+
+    //创建怪物
+    public static IEnumerator Create(int enemyId)
     {
         var deploy = TableUtility.GetDeploy<EnemyDeploy>(enemyId);
 
@@ -284,11 +299,12 @@ public class Enemy : EntityBase
         //Collider
         var collider = gameObj.AddComponent<CircleCollider2D>();
         collider.radius = deploy.radius;
-        gameObj.transform.position = startPos;
+
+        //init
         enemy.Material = mainSprite.material;
+        enemy.transform.position = Vector2Fight.New(0, 150);
         enemy.Init(mainSprite, deploy);
         gameObj.SetActiveSafe(true);
-        callBack(enemy);
     }
 }
 
@@ -301,5 +317,9 @@ public class EnemyDeploy : Conditionable
     public float radius;
     public int[] frameSpeed;
     public int[] resoureIds;
+    public int maxHp;
+    public string MoveAI;
+    public string ShootAI;
+    public string deadEffect;
 }
 

@@ -1,75 +1,101 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class Effect : EntityBase
+public class Effect : MonoBehaviour
 {
-    public override EEntityType EntityType => EEntityType.Effect;
+    private bool _destroyOnNotalive;
+    private Action<Effect> _playFinishNotify;
+    public bool InCache;
+    public string CacheName;
+    private Vector3 _originScale;
 
-    public MeshRenderer Renderer { set; get; }
-    public EffectDeploy Deploy { private set; get; }
-    public List<Sprite> SpriteList { private set; get; }
 
+    private ParticleSystem[] _particleSystems;
 
-    private float _lastChangeSpriteTime;
-    private int _currSpriteIndex;
-
-    public virtual void Init(EffectDeploy deploy, List<Sprite> spriteList)
+    public ParticleSystem[] ParticleSystemList
     {
-        Deploy = deploy;
-        SpriteList = spriteList;
-        ReInit();
-    }
-
-    public virtual void ReInit()
-    {
-        _lastChangeSpriteTime = Time.time;
-        _currSpriteIndex = 0;
-        _bAutoDestroy = false;
-    }
-
-    private bool _bAutoDestroy;
-    public void AutoDestroy()
-    {
-        _bAutoDestroy = true;
-    }
-
-
-    protected override void Update()
-    {
-        base.Update();
-        if (SpriteList.Count <= 1) return;
-        if (Deploy.frame <= 0) return;
-
-        if(Time.time - _lastChangeSpriteTime > GameSystem.FrameTime * Deploy.frame)
+        get
         {
-            _lastChangeSpriteTime = Time.time;
-            _currSpriteIndex++;
-            if (_currSpriteIndex >= SpriteList.Count)
+            if (_particleSystems == null && gameObject != null)
+                _particleSystems = gameObject.GetComponentsInChildren<ParticleSystem>();
+            return _particleSystems;
+        }
+    }
+    public void Init()
+    {
+        _destroyOnNotalive = false;
+        _originScale = transform.localScale;
+    }
+
+    
+    private bool _hasFinishedNotify;
+    public virtual void Play(Action<Effect> finishNotify = null, bool playSound = true)
+    {
+        _playFinishNotify = finishNotify;
+        _hasFinishedNotify = finishNotify != null;
+        for (int i = 0; i < ParticleSystemList.Length; i++)
+        {
+            var pSystem = ParticleSystemList[i];
+            if (pSystem)
             {
-                if(_bAutoDestroy)
-                {
-                    EffectFactory.DestroyEffect(this);
-                    return;
-                }
-                _currSpriteIndex = 0;
+                pSystem.Play(false);
             }
-            Renderer.material.mainTexture = SpriteList[_currSpriteIndex].texture;
         }
     }
 
-}
 
-public class EffectDeploy : Conditionable
-{
-    public int id;
-    public int resourceId;
-    public float scale;
-    public float alpha;
-    public int frame;
-    public int rota;
-    public float[] AutoScale;
-    public float[] AutoRotation;
-    public float[] AutoGamma;
+    private bool IsAlive()
+    {
+        for (int i = 0; i < ParticleSystemList.Length; i++)
+        {
+            if (!ParticleSystemList[i].isStopped)
+                return true;
+        }
+        return false;
+    }
+
+    public void AutoDestory(bool enable = true)
+    {
+        _destroyOnNotalive = enable;
+    }
+
+    private float _lastCheckTime;
+    protected virtual void Update()
+    {
+        if (!_destroyOnNotalive && !_hasFinishedNotify) return;
+
+        if (Time.time - _lastCheckTime < 1f)
+        {
+            return;
+        }
+        _lastCheckTime = Time.time;
+
+        if (!IsAlive())
+        {
+            if (_hasFinishedNotify)
+            {
+                _playFinishNotify(this);
+                _playFinishNotify = null;
+                _hasFinishedNotify = false;
+            }
+            if (_destroyOnNotalive)
+            {
+                EffectFactory.DestroyEffect(this);
+            }
+        }
+    }
+
+
+    public void OnPreDestroy()
+    {
+        transform.localScale = _originScale;
+    }
+
+    void OnDestroy()
+    {
+        _particleSystems = null;
+        _playFinishNotify = null;
+    }
 }

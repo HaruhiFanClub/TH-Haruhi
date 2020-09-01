@@ -57,22 +57,43 @@ id	texture	name	startX	startY	width	height	xCount	yCount
 								
 								
 #enemy								
-2001	enemy/enemy1.png	enemy1待机	0	192	64	64	4	1
-2002	enemy/enemy1.png	enemy1移动	0	256	64	64	4	1
-2003	enemy/enemy1.png	enemy1移动待机	0	320	64	64	4	1
+2001	enemy/enemy1.png	大蝴蝶-待机	0	192	64	64	4	1
+2002	enemy/enemy1.png	大蝴蝶-移动	0	256	64	64	4	1
+2003	enemy/enemy1.png	大蝴蝶-移动待机	0	320	64	64	4	1
 								
+2011	enemy/enemy1.png	小红-待机	0	384	32	32	4	1
+2012	enemy/enemy1.png	小红-移动	128	384	32	32	4	1
+2013	enemy/enemy1.png	小红-移动待机	256	384	32	32	4	1
 								
+2021	enemy/enemy1.png	小绿-待机	0	416	32	32	4	1
+2022	enemy/enemy1.png	小绿-移动	128	416	32	32	4	1
+2023	enemy/enemy1.png	小绿-移动待机	256	416	32	32	4	1
 								
+2031	enemy/enemy1.png	小蓝-待机	0	416	32	32	4	1
+2032	enemy/enemy1.png	小蓝-移动	128	416	32	32	4	1
+2033	enemy/enemy1.png	小蓝-移动待机	256	416	32	32	4	1
 								
-2004	enemy/enemy1.png	enemy1	0	384	32	32	12	1
-2005	enemy/enemy1.png	enemy2	0	416	32	32	12	1
-2006	enemy/enemy1.png	enemy3	0	448	32	32	12	1
-2007	enemy/enemy1.png	enemy4	0	480	32	32	12	1
-2008	enemy/enemy1.png	enemy5	0	0	48	32	4	3
-2009	enemy/enemy1.png	enemy6	0	96	48	32	4	3
-2010	enemy/enemy1.png	enemy7	320	0	48	48	4	3
-2011	enemy/enemy1.png	enemy8	320	144	48	48	4	3
-2012	enemy/enemy1.png	kedama	256	320	32	32	2	2
-2013	enemy/enemy1.png	enemy_orb	192	64	32	32	4	1
-2014	enemy/enemy1.png	enemy_orb_ring	192	96	32	32	4	1
-2015	enemy/enemy1.png	enemy_aura	192	32	32	32	4	1
+2041	enemy/enemy1.png	小黄-待机	0	480	32	32	4	1
+2042	enemy/enemy1.png	小黄-移动	128	480	32	32	4	1
+2043	enemy/enemy1.png	小黄-移动待机	256	480	32	32	4	1
+								
+2051	enemy/enemy1.png	翅膀中蓝-待机	0	0	48	32	4	1
+2052	enemy/enemy1.png	翅膀中蓝-移动	0	32	48	32	4	1
+2053	enemy/enemy1.png	翅膀中蓝-移动待机	0	64	48	32	4	1
+								
+2061	enemy/enemy1.png	翅膀中红-待机	0	96	48	32	4	1
+2062	enemy/enemy1.png	翅膀中红-移动	0	128	48	32	4	1
+2063	enemy/enemy1.png	翅膀中红-移动待机	0	160	48	32	4	1
+								
+2071	enemy/enemy1.png	翅膀大红-待机	320	0	48	48	4	1
+2072	enemy/enemy1.png	翅膀大红-移动	320	48	48	48	4	1
+2073	enemy/enemy1.png	翅膀大红-移动待机	320	96	48	48	4	1
+								
+2081	enemy/enemy1.png	翅膀大蓝-待机	320	144	48	48	4	1
+2082	enemy/enemy1.png	翅膀大蓝-移动	320	192	48	48	4	1
+2083	enemy/enemy1.png	翅膀大蓝-移动待机	320	240	48	48	4	1
+								
+#2012	enemy/enemy1.png	kedama	256	320	32	32	2	2
+#2013	enemy/enemy1.png	enemy_orb	192	64	32	32	4	1
+#2014	enemy/enemy1.png	enemy_orb_ring	192	96	32	32	4	1
+#2015	enemy/enemy1.png	enemy_aura	192	32	32	32	4	1

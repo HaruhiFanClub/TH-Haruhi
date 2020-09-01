@@ -2,13 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class Player : EntityBase
 {
-    public override EEntityType EntityType => EEntityType.Player;
-
-    public Dictionary<PlayerMoveStyle, List<Sprite>> SpriteDic = new Dictionary<PlayerMoveStyle, List<Sprite>>();
-   
     public enum PlayerMoveStyle
     {
         LeftIdle,
@@ -18,16 +16,42 @@ public class Player : EntityBase
         RightIdle,
     }
 
-    public SpriteRenderer MainRenderer { private set; get; }
+    public override EEntityType EntityType => EEntityType.Player;
+
+    //动画帧缓存
+    public Dictionary<PlayerMoveStyle, List<Sprite>> SpriteDic = new Dictionary<PlayerMoveStyle, List<Sprite>>();
+
+    public SpriteRenderer SpriteRenderer { private set; get; }
     
+    //配置
     public PlayerDeploy Deploy { private set; get; }
 
+    //是否慢速移动
     public bool InSlow { private set; get; }
+
+    //是否在射击
     public bool InShoot { private set; get; }
 
-    private ControllerActions _actions;
-    private SlowPoint _redPoint;
+    //操作指令控制
+    public ControllerActions Actions { private set; get; }
+
+    //判定点
+    public SlowPoint RedPoint { private set; get; }
+
+    //僚机管理器
+    public PlayerSupportMgr SupportMgr { private set; get; }
+
+    //是否无敌
+    public bool Invincible { private set; get; }
+
+    //当前动画帧id
     private int _currAniIdx;
+
+    //下一帧动画时间
+    private float _nextAnimationTime;
+
+    //下次射击时间
+    private float _nextShootTime;
 
 
     private PlayerMoveStyle _aniStyle;
@@ -45,61 +69,95 @@ public class Player : EntityBase
         }
     }
 
-    //僚机管理器
-    private PlayerSupportMgr _supportMgr;
-
     public void Init(SpriteRenderer renderer, SlowPoint point, PlayerDeploy deploy)
     {
         transform.SetLayer(Layers.Player);
 
         Deploy = deploy;
-        MainRenderer = renderer;
+        SpriteRenderer = renderer;
+       // Material = renderer.material;
 
-        _redPoint = point;
-        _actions = ControllerPc.GetActions();
+        RedPoint = point;
+        Actions = ControllerPc.GetActions();
         _aniStyle = PlayerMoveStyle.Idle;
 
         transform.localScale = Vector3.one * deploy.scale;
+        InitRigid();
 
-        _supportMgr = new PlayerSupportMgr();
-        _supportMgr.Init(this);
+        SupportMgr = new PlayerSupportMgr();
+        SupportMgr.Init(this);
         AddSupport();
     }
 
-    public void AddSupport()
+    protected override void Update()
     {
-        _supportMgr.AddSupport();
-        _supportMgr.AddSupport();
-        _supportMgr.AddSupport();
-        _supportMgr.AddSupport();
+        base.Update();
+
+        if (GamePause.InPause != false)
+        {
+            return;
+        }
+
+        UpdateOperation();
+        UpdateAnimation();
+        UpdateShoot();
+        UpdateInvicibleTime();
+        SupportMgr.Update();
     }
 
+    //设置X秒无敌时间
+    private float _recoverInvicibleTime;
+    public void SetInvincibleTime(float sec)
+    {
+        _recoverInvicibleTime = Time.time + sec;
+
+        if (!Invincible)
+        {
+            Invincible = true;
+            SpriteRenderer.gameObject.AddComponent<AutoBrightness>().Speed = 3;
+        }
+    }
+
+    private void UpdateInvicibleTime()
+    {
+        if(Invincible && Time.time > _recoverInvicibleTime)
+        {
+            Invincible = false;
+            SpriteRenderer.gameObject.RemoveComponent<AutoBrightness>();
+        }
+    }
+
+    //增加一个僚机
+    public void AddSupport()
+    {
+        SupportMgr.AddSupport();
+    }
+
+    //操作按钮逻辑
     private void UpdateOperation()
     {
         if (UILoading.InLoading) return;
-        if (_actions == null) return;
+        if (Actions == null) return;
 
         //move
-        if (_actions.Move.IsPressed)
+        if (Actions.Move.IsPressed)
         {
-            Move(_actions.Move.Value.normalized);
+            Move(Actions.Move.Value.normalized);
         }
-        else if (_actions.Move.WasReleased)
+        else if (Actions.Move.WasReleased)
         {
             StopMove();
         }
 
         //slow
-        InSlow = _actions.Get(EControllerBtns.SlowMove).IsPressed;
-        _redPoint.SetVisible(InSlow);
-
+        InSlow = Actions.Get(EControllerBtns.SlowMove).IsPressed;
+        RedPoint.SetVisible(InSlow);
 
         //shoot
-        InShoot = _actions.Get(EControllerBtns.Shoot).IsPressed;
+        InShoot = Actions.Get(EControllerBtns.Shoot).IsPressed;
     }
 
-
-    private float _nextShootTime = 0;
+    //射击逻辑
     private void UpdateShoot()
     {
         if (!InShoot) return;
@@ -119,20 +177,8 @@ public class Player : EntityBase
         Sound.PlayUiAudioOneShot(Deploy.shootSound);
     }
 
-    protected override void Update()
-    {
-        base.Update();
-
-        if (GamePause.InPause == false)
-        {
-            UpdateOperation();
-            UpdateAnimation();
-            UpdateShoot();
-            _supportMgr.Update();
-        }
-    }
-
-    public void Move(Vector3 dir)
+    //移动
+    private void Move(Vector3 dir)
     {
         var moveSpeed = InSlow ? Deploy.slowSpeed : Deploy.speed;
         var targetPos = transform.position + dir * Time.fixedDeltaTime * moveSpeed;
@@ -151,12 +197,13 @@ public class Player : EntityBase
             AniStyle = PlayerMoveStyle.LeftMove;
     }
 
-    public void StopMove()
+    //停止移动
+    private void StopMove()
     {
         AniStyle = PlayerMoveStyle.Idle;
     }
 
-    private float _nextAnimationTime;
+    //移动动画处理
     private void UpdateAnimation()
     {
         if (Time.time < _nextAnimationTime) return;
@@ -166,7 +213,7 @@ public class Player : EntityBase
         {
             if (sprites.Count > 0)
             {
-                MainRenderer.sprite = sprites[_currAniIdx];
+                SpriteRenderer.sprite = sprites[_currAniIdx];
                 _currAniIdx++;
 
 
@@ -186,14 +233,39 @@ public class Player : EntityBase
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    //死亡处理
+    private void OnDead()
     {
-       
+        //音效
+        Sound.PlayUiAudioOneShot(Deploy.deadSound);
+
+        //特效
+        EffectFactory.PlayEffectOnce(Deploy.deadEffect, transform.position);
+
+        //销毁僚机
+        SupportMgr.Clear();
+
+        //销毁自己
+        Destroy(gameObject);
+
+        //发事件
+        GameEventCenter.Send(GameEvent.OnPlayerDead);
     }
 
+    //伤害判定
+    private void OnTriggerEnter2D(Collider2D c)
+    {
+        //无敌中不处理
+        if (Invincible) return;
 
+        //碰到怪或怪物子弹就死
+        if(c.gameObject.layer == Layers.EnemyBullet || c.gameObject.layer == Layers.Enemy)
+        {
+            OnDead();
+        }
+    }
 
-    //static create
+    //创建角色 static
     public static IEnumerator Create(int playerId, Action<Player> callBack)
     {
         var deploy = TableUtility.GetDeploy<PlayerDeploy>(playerId);
@@ -207,9 +279,10 @@ public class Player : EntityBase
         var model = new GameObject(deploy.name + "_model");
         var mainSprite = model.AddComponent<SpriteRenderer>();
         mainSprite.sortingOrder = SortingOrder.Player;
-
+        mainSprite.material = new Material(GameSystem.DefaultRes.BulletShader);
         model.transform.SetParent(playerObject.transform, false);
         yield return Yielders.Frame;
+
 
         //设置贴图
         var player = playerObject.AddComponent<Player>();
@@ -221,13 +294,12 @@ public class Player : EntityBase
                 player.SpriteDic[(PlayerMoveStyle)i] = sprites;
             });
         }
-
         yield return Yielders.Frame;
+
 
         //Collider
         var collider = playerObject.AddComponent<CircleCollider2D>();
-        collider.radius = 0.04f;
-
+        collider.radius = 0.2f;
 
         //判定点
         var pointObj = ResourceMgr.LoadImmediately("player/point.prefab");
@@ -262,5 +334,7 @@ public class PlayerDeploy : Conditionable
     public float[] supportDownSlow;
     public float supportDownRota;
     public float supportDownRotaSlow;
+    public string deadEffect;
+    public int deadSound;
 }
 

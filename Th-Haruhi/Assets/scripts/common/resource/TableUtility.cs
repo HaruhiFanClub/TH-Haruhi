@@ -21,7 +21,7 @@ public static class TableUtility
         _(typeof(LevelDeploy), "level");
         _(typeof(BulletDeploy), "bullet");
         _(typeof(TextureResourceDeploy), "texture_resource");
-        _(typeof(EffectDeploy), "effect");
+        _(typeof(TextureEffectDeploy), "effect");
         _(typeof(EnemyDeploy), "enemy");
     }
     
