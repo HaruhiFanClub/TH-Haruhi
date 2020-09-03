@@ -5,23 +5,22 @@ using DG.Tweening;
 public class ParticleFade : MonoBehaviour
 {
     public float FadeTime = 10f;
+    public float TargetAlpha = 0.7f;
     private Material _material;
     private void Awake()
     {
         _material = GetComponent<Renderer>().material;
-        var currColor = _material.GetColor("_TintColor");
-        currColor.a = 0;
-        _material.SetColor("_TintColor", currColor);
+        _material.SetFloat("_AlphaScale", 0);
     }
 
     private void Update()
     {
-        var currColor =  _material.GetColor("_TintColor");
-        if (currColor.a < 1f)
+        var currAlpha =  _material.GetFloat("_AlphaScale");
+        if (currAlpha < TargetAlpha)
         {
             var delta = Time.deltaTime / FadeTime;
-            currColor.a += delta;
-            _material.SetColor("_TintColor", currColor);
+            currAlpha += delta;
+            _material.SetFloat("_AlphaScale", currAlpha);
         }
     }
 }

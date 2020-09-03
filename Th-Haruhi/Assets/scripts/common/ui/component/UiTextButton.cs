@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 
 [RequireComponent(typeof(UiImage))]
-public class UiTextButton : Button
+public class UiTextButton : Button, ISelectAble
 {
     private RectTransform _rectTransform;
     public RectTransform RectTransform
@@ -140,10 +140,6 @@ public class UiTextButton : Button
         _text.color = enable ? _textDefaultColor : new Color(0.3f, 0.3f, 0.3f, _textDefaultColor.a);
     }
 
-    //选择逻辑
-    private UiTextBtnMenuBase _menu;
-    public int MenuIndex { private set; get; }
-
     public bool IsSelected { private set; get; } = true;
     public bool InClick { private set; get; }
 
@@ -151,15 +147,8 @@ public class UiTextButton : Button
     private float _alphaAddFlag;
 
     private const float SelectAlphaSmooth = 0.6f;
-    private const float ClickAlphaSmooth = 7f;
-    private const float ClickWaitTime = 0.7f;
-
-    public void SetMenu(UiTextBtnMenuBase menu, int menuIdx)
-    {
-        _menu = menu;
-        MenuIndex = menuIdx;
-        SetSelect(false);
-    }
+    private const float ClickAlphaSmooth = 12f;
+    private const float ClickWaitTime = 0.5f;
 
     public void SetSelect(bool b, bool fromAuto = false)
     {
@@ -177,11 +166,6 @@ public class UiTextButton : Button
         //interactable = IsSelected;
         IsSelected = b;
         _text.color = IsSelected ? _textDefaultColor : new Color(0.55f, 0.55f, 0.55f, _textDefaultColor.a);
-
-        if(IsSelected)
-        {
-            _menu?.OnBtnSelected(this);
-        }
     }
 
     public void OnUpdate()
@@ -230,7 +214,6 @@ public class UiTextButton : Button
         {
             _shakeTween = null;
         };
-        Sound.PlayUiAudioOneShot(1001);
     }
 
     private void OnSelectDisable()

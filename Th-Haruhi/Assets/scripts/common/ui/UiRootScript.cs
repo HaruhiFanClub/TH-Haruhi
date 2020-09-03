@@ -9,6 +9,7 @@ public class UiRootScript : MonoBehaviour
     public RectTransform Main;
     public RectTransform Loding;
     public RectTransform Tips;
+    public UiBackGround BackGround;
 
     public Dictionary<UiLayer, RectTransform> CanvasParentList = new Dictionary<UiLayer, RectTransform>();
     public Dictionary<UiLayer, Canvas> CanvasList = new Dictionary<UiLayer, Canvas>();

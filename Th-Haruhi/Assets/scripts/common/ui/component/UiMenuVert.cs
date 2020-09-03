@@ -2,7 +2,7 @@
 
 using System;
 
-public class UiTextBtnMenuVert : UiTextBtnMenuBase
+public class UiMenuVert : UiMenuBase
 {
     protected override void Start()
     {

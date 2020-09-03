@@ -4,10 +4,19 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UiTextBtnMenuBase : MonoBehaviour
+public class UiMenuBase : MonoBehaviour
 {
     //当前选中第几个的状态记录
     private static Dictionary<Type, int> SelectStatus = new Dictionary<Type, int>();
+
+    public static void SetDefultIndex(Type type, int idx)
+    {
+        if(!SelectStatus.ContainsKey(type))
+        {
+            SelectStatus[type] = idx;
+        }
+    }
+
     public static void ClearSelectStatus()
     {
         SelectStatus.Clear();
@@ -15,13 +24,16 @@ public class UiTextBtnMenuBase : MonoBehaviour
 
     public bool Enable { set; get; }
 
-    private readonly List<UiTextButton> _buttonList = new List<UiTextButton>();
-    public UiTextButton CurrSelect { private set; get; }
     private Type _parentUIType;
+
+    public int CurrSelectIdx { private set; get; }
+    public readonly List<ISelectAble> ItemList = new List<ISelectAble>();
+    public event Action OnInitOver;
+    public event Action OnSelectChange;
 
     protected virtual void Start()
     {
-        var btns = GetComponentsInChildren<UiTextButton>();
+        var btns = GetComponentsInChildren<ISelectAble>();
         var bSelectFirst = false;
 
         //根据父UI节点类型，拿到默认选项
@@ -37,22 +49,20 @@ public class UiTextBtnMenuBase : MonoBehaviour
         for (int i = 0; i < btns.Length; i++)
         {
             var btn = btns[i];
-            btn.SetMenu(this, i);   
-
-            _buttonList.Add(btn);
+            btn.SetSelect(false);   
+            ItemList.Add(btn);
         }
 
         //自动选中
         for (int i = 0; i < btns.Length; i++)
         {
-            
             var btn = btns[i];
             if (!bSelectFirst)
             {
                 if (btn.IsEnable && i == defaultIdx)
                 {
                     btn.SetSelect(true, true);
-                    CurrSelect = btn;
+                    CurrSelectIdx = i;
                     bSelectFirst = true;
                 }
             }
@@ -62,6 +72,7 @@ public class UiTextBtnMenuBase : MonoBehaviour
             }
         }
 
+        OnInitOver?.Invoke();
 
         GameEventCenter.AddListener(GameEvent.UI_Sure, OnClickSure);
     }
@@ -72,45 +83,57 @@ public class UiTextBtnMenuBase : MonoBehaviour
     }
 
 
-    public void OnBtnSelected(UiTextButton btn)
+    public void OnSelected(ISelectAble btn)
     {
-        if(_parentUIType != null)
+        btn.SetSelect(true);
+        Sound.PlayUiAudioOneShot(1001);
+
+        if (_parentUIType != null)
         {
-            SelectStatus[_parentUIType] = btn.MenuIndex;
+            SelectStatus[_parentUIType] = CurrSelectIdx;
         }
+
+        OnSelectChange?.Invoke();
+    }
+
+    public void OnUnSelected(ISelectAble btn)
+    {
+        btn.SetSelect(false);
     }
 
     private void OnClickSure(object argument)
     {
         if(Enable)
-            CurrSelect.DoClick();
+        {
+            ItemList[CurrSelectIdx].DoClick();
+        }
     }
 
     protected void SelectNext()
     {
-        if (CurrSelect.InClick) return;
+        if (ItemList[CurrSelectIdx].InClick) return;
 
         DisableSelectAll();
 
-        var wantStart = CurrSelect.MenuIndex + 1;
-        var startIdx = wantStart > _buttonList.Count ? 0 : wantStart;
+        var wantStart = CurrSelectIdx + 1;
+        var startIdx = wantStart > ItemList.Count ? 0 : wantStart;
 
-        for(int i = startIdx; i < _buttonList.Count; i++)
+        for(int i = startIdx; i < ItemList.Count; i++)
         {
-            if (_buttonList[i].IsEnable)
+            if (ItemList[i].IsEnable)
             {
-                CurrSelect = _buttonList[i];
-                CurrSelect.SetSelect(true);
+                CurrSelectIdx = i;
+                OnSelected(ItemList[i]);
                 return;
             }
         }
 
-        for (int i = 0; i < _buttonList.Count; i++)
+        for (int i = 0; i < ItemList.Count; i++)
         {
-            if (_buttonList[i].IsEnable)
+            if (ItemList[i].IsEnable)
             {
-                CurrSelect = _buttonList[i];
-                CurrSelect.SetSelect(true);
+                CurrSelectIdx = i;
+                OnSelected(ItemList[i]);
                 return;
             }
         }
@@ -118,29 +141,29 @@ public class UiTextBtnMenuBase : MonoBehaviour
 
     protected void SelectPrev()
     {
-        if (CurrSelect.InClick) return;
+        if (ItemList[CurrSelectIdx].InClick) return;
 
         DisableSelectAll();
 
-        var wantStart = CurrSelect.MenuIndex - 1;
-        var startIdx = wantStart < 0 ? _buttonList.Count - 1 : wantStart;
+        var wantStart = CurrSelectIdx - 1;
+        var startIdx = wantStart < 0 ? ItemList.Count - 1 : wantStart;
 
         for (int i = startIdx; i >= 0; i--)
         {
-            if (_buttonList[i].IsEnable)
+            if (ItemList[i].IsEnable)
             {
-                CurrSelect = _buttonList[i];
-                CurrSelect.SetSelect(true);
+                CurrSelectIdx = i;
+                OnSelected(ItemList[i]);
                 return;
             }
         }
 
-        for (int i = _buttonList.Count - 1; i >= 0; i--)
+        for (int i = ItemList.Count - 1; i >= 0; i--)
         {
-            if (_buttonList[i].IsEnable)
+            if (ItemList[i].IsEnable)
             {
-                CurrSelect = _buttonList[i];
-                CurrSelect.SetSelect(true);
+                CurrSelectIdx = i;
+                OnSelected(ItemList[i]);
                 return;
             }
         }
@@ -149,18 +172,21 @@ public class UiTextBtnMenuBase : MonoBehaviour
     
     private void DisableSelectAll()
     {
-        for(int i = 0; i < _buttonList.Count; i++)
+        for(int i = 0; i < ItemList.Count; i++)
         {
-            _buttonList[i].SetSelect(false);
+            if (CurrSelectIdx == i)
+            {
+                OnUnSelected(ItemList[i]);
+            }
         }
     }
 
     private void Update()
     {
-        for (int i = 0; i < _buttonList.Count; i++)
+        for (int i = 0; i < ItemList.Count; i++)
         {
-            if (_buttonList[i])
-                _buttonList[i].OnUpdate();
+            if (ItemList[i] != null)
+                ItemList[i].OnUpdate();
         }
     }
 

@@ -1,28 +1,26 @@
 ﻿
-using UnityEngine;
-using DG.Tweening;
 using System.Collections;
-using UnityEngine.Networking;
-using UnityEngine.UI;
+using UnityEngine;
 
 public class UIMainView : UiFullView
 {
     public static int PrevSelected = 0;
 
-    public static void Show(bool showAni)
+    public static void Show(bool isFirst)
     {
-        var view = UiManager.ImmediatelyShow<UIMainView>();
-        view.DoOpen(showAni);
+        var view = UiManager.ImmediatelyShow<UIMainView>(!isFirst);
+        view.DoOpen(isFirst);
     }
 
     private UIMainViewCompoent _compent;
+
+    protected override Animator Animator => _compent.Animator;
 
     protected override void OnLoadFinish()
     {
         base.OnLoadFinish();
 
         _compent = GetComponent<UIMainViewCompoent>();
-       
         _compent.Btn_ExtraStart.IsEnable = false;
         _compent.Btn_GameStart.onClick.AddListener(Btn_GameStart);
         _compent.Btn_ExtraStart.onClick.AddListener(Btn_ExtraStart);
@@ -36,13 +34,15 @@ public class UIMainView : UiFullView
         _compent.Btn_Quit.onClick.AddListener(Btn_Quit);
     }
 
-    private void DoOpen(bool playAni)
+    private void DoOpen(bool bFisstOpen)
     {
         _compent.Menu.Enable = false;
-        if(playAni)
+        UiManager.BackGround.BgMask.Alpha = 0f;
+
+        if (bFisstOpen)
         {
             _compent.Animator.Play("FirstOpen");
-            StartCoroutine(PlayAnimation(playAni));
+            StartCoroutine(FirstOpen());
         }
         else
         {
@@ -51,35 +51,27 @@ public class UIMainView : UiFullView
         }
     }
 
-    private IEnumerator PlayAnimation(bool playAni)
+    private IEnumerator FirstOpen()
     {
         yield return Sound.CacheSound(1);
         Sound.PlayMusic(1);
+        UiManager.BackGround.FadeBg(3f);
+        yield return new WaitForSeconds(3f);
+        UiManager.BackGround.EnableEffect(true);
     }
 
-    protected override void Update()
+    protected override void OnOpenOver()
     {
-        base.Update();
-
-        if(!_compent.Menu.Enable)
+        if (!_compent.Menu.Enable)
         {
-            if (_compent.Animator.GetCurrentAnimatorStateInfo(0).IsName("Loop"))
-            {
-              
-                _compent.Menu.Enable = true;
-            }
+            _compent.Menu.Enable = true;
         }
-    }
-
-
-    protected override void OnShow()
-    {
-        base.OnShow();
     }
 
     private void Btn_GameStart()
     {
-        LevelMgr.StartNewGame(1);
+        LevelMgr.Data = new LevelData();
+        UiManager.Show<UIChooseDifficult>();
     }
 
     private void Btn_ExtraStart()
@@ -89,7 +81,8 @@ public class UIMainView : UiFullView
     }
     private void Btn_ParcticeStart()
     {
-        UiManager.Show<UIChooseDiffult>();
+        LevelMgr.Data = new LevelData();
+        LevelMgr.StartNewGame(1);
     }
 
     private void Btn_SpellParctice()

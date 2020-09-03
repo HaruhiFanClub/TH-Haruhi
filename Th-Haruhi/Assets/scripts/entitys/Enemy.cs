@@ -150,7 +150,7 @@ public class Enemy : EntityBase
         //特效
         EffectFactory.PlayEffectOnce(Deploy.deadEffect, transform.position);
 
-        Sound.PlayUiAudioOneShot(1006);
+        Sound.PlayUiAudioOneShot(104);
 
         GameEventCenter.Send(GameEvent.OnEnemyDie);
 

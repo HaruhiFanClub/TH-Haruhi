@@ -1,44 +1,111 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class UiFullView : UiInstance
 {
     public static UiFullView CurrentView { private set; get; }
-    public static Type PrevViewType { private set; get; }
-
+    public static List<Type> PrevViewTypes { private set; get; }
 
     static UiFullView()
     {
+        PrevViewTypes = new List<Type>();
         GameEventCenter.AddListener(GameEvent.UI_Back, OnBack);
+    }
+
+    public static void Clear()
+    {
+        PrevViewTypes.Clear();
+        CurrentView = null;
     }
 
     private static void OnBack(object o)
     {
-        if (PrevViewType == null || CurrentView.GetType() == typeof(UIMainView))
+        if (CurrentView.GetType() == typeof(UIMainView))
             return;
 
-        CurrentView.Close();
+        var prevViewType = PrevViewTypes[PrevViewTypes.Count - 1];
+        CurrentView.Close(()=>
+        {
+            if (prevViewType == typeof(UIMainView))
+            {
+                UIMainView.Show(false);
+            }
+            else
+            {
+                UiManager.ShowUIFromBack(prevViewType, null);
+            }
 
-        if(PrevViewType == typeof(UIMainView))
+            PrevViewTypes.Remove(prevViewType);
+        });
+        Sound.PlayUiAudioOneShot(1003);
+    }
+
+    protected abstract Animator Animator { get; }
+
+    protected abstract void OnOpenOver();
+
+    private bool _bOpening;
+    private bool _bClosing;
+    protected override void Update()
+    {
+        base.Update();
+
+        if (_bOpening && Animator.GetCurrentAnimatorStateInfo(0).IsName("Loop"))
         {
-            UIMainView.Show(false);
+            OnOpenOver();
+            _bOpening = false;
         }
-        else
+
+        if (_bClosing && Animator.GetCurrentAnimatorStateInfo(0).IsName("CloseOver"))
         {
-            UiManager.Show(PrevViewType, null);
+            RealClose();
+            _bClosing = false;
         }
     }
 
+
     //记录上一个选择的界面
-    protected override void OnShow()
+    protected override void OnFullViewShow(bool fromBack)
     {
-        base.OnShow();
-        if(CurrentView != null)
+        _bOpening = true;
+
+        if (GetType() != typeof(UIMainView))
         {
-            PrevViewType = CurrentView.GetType();
+            Animator.Play("Open");
+        }
+
+        if (CurrentView != null)
+        {
+            if(!fromBack)
+            {
+                PrevViewTypes.Add(CurrentView.GetType());
+            }
             CurrentView.Close();
         }
+
         CurrentView = this;
+    }
+
+    private Action<UiInstance> _closeNotify;
+    public override void OnClose(Action<UiInstance> notify)
+    {
+        if (GetType() != typeof(UIMainView))
+        {
+            _bClosing = true;
+            _closeNotify = notify;
+            Animator.Play("Close");
+        }
+        else
+        {
+            base.OnClose(notify);
+        }
+    }
+
+    protected virtual void RealClose()
+    {
+        base.OnClose(_closeNotify);
     }
 }

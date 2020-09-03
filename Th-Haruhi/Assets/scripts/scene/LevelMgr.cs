@@ -1,13 +1,12 @@
-﻿
-using System;
-using UnityEngine;
+﻿using DG.Tweening;
 using System.Collections;
-using UnityEngine.Networking;
-using System.Collections.Generic;
-using DG.Tweening;
+using UnityEngine;
 
 public class LevelData
 {
+    //关卡难度
+    public ELevelDifficult Difficult;
+
     //出生坐标
     public Vector2 PlayerBornPos = Vector2Fight.New(0, -80f);
 
@@ -18,6 +17,13 @@ public class LevelData
     public int CurLevelId;
 }
 
+public enum ELevelDifficult
+{
+    Easy,
+    Normal,
+    Hard,
+    Lunatic
+}
 
 /// <summary>
 /// 关卡数据管理，管理进出关卡，数据存储，例如命数，分数等
@@ -38,7 +44,6 @@ public static class LevelMgr
         int levelId = 1;
 
         //初始化数据
-        Data = new LevelData();
         Data.PlayerId = playerId;
         Data.CurLevelId = levelId;
 

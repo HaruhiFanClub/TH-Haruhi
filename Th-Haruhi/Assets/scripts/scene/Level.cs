@@ -33,11 +33,13 @@ public class Level : MonoBehaviour
     public virtual void OnEnter()
     {
         GameSystem.ClearCache();
+        UiManager.BackGround.SetActiveSafe(false);
     }
 
     public virtual void OnLeave()
     {
         GameSystem.ClearCache();
+        UiManager.BackGround.SetActiveSafe(true);
     }
 
     #region static

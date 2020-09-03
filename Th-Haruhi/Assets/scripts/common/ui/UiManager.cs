@@ -127,6 +127,7 @@ public static class UiManager
         return _uiBind;
     }
 
+    public static UiBackGround BackGround { private set; get; }
     public static void Init(UiRootScript uiBind)
     {
         UguiRoot = uiBind.gameObject;
@@ -135,6 +136,8 @@ public static class UiManager
 
         //注册UI
         UiList.RegisterUI();
+
+        BackGround = _uiBind.BackGround;
     }
 
     private static void ClearAllUi()
@@ -211,7 +214,7 @@ public static class UiManager
         enumerator.Dispose();
     }
 
-    private static T CacheShowInstanceUi<T>(UiInfo uiInfo, Type classType = null) where T : UiInstance
+    private static T CacheShowInstanceUi<T>(UiInfo uiInfo, bool fromBack, Type classType = null) where T : UiInstance
     {
         Type typeKey = classType ?? typeof(T);
 
@@ -221,7 +224,7 @@ public static class UiManager
             UiInstance inst = InstDic[typeKey];
             if (inst != null)
             {
-                AfterLoadInstanceNoCallBack<T>(inst, uiInfo);
+                AfterLoadInstanceNoCallBack<T>(inst, fromBack, uiInfo);
                 return inst as T;
             }
             else
@@ -248,7 +251,7 @@ public static class UiManager
                 {
                     InstLoadState[uiInfo.ViewPath] = false;
                     InstDic[typeKey] = inst;
-                    AfterLoadInstanceNoCallBack<T>(inst, uiInfo);
+                    AfterLoadInstanceNoCallBack<T>(inst, fromBack, uiInfo);
                     return inst as T;
                 }
                 else
@@ -260,7 +263,7 @@ public static class UiManager
         return null;
     }
 
-    private static void ShowInstanceUi<T>(UiInfo uiInfo, Action<T> notify = null, Type classType = null) where T : UiInstance
+    private static void ShowInstanceUi<T>(UiInfo uiInfo, bool fromBack, Action<T> notify = null, Type classType = null) where T : UiInstance
     {
         Type typeKey = classType ?? typeof(T);
 
@@ -268,7 +271,7 @@ public static class UiManager
         if (InstDic.ContainsKey(typeKey))
         {
             UiInstance inst = InstDic[typeKey];
-            AfterLoadInstance(inst, uiInfo, notify);
+            AfterLoadInstance(inst, uiInfo, fromBack, notify);
         }
         else
         {
@@ -286,25 +289,25 @@ public static class UiManager
                 {
                     InstLoadState[uiInfo.ViewPath] = false;
                     InstDic[typeKey] = inst;
-                    AfterLoadInstance(inst, uiInfo, notify);
+                    AfterLoadInstance(inst, uiInfo, fromBack, notify);
                 });
             }
         }
     }
 
-    private static void AfterLoadInstance<T>(UiInstance inst, UiInfo uiInfo, Action<T> notify) where T : UiInstance
+    private static void AfterLoadInstance<T>(UiInstance inst, UiInfo uiInfo, bool fromBack, Action<T> notify) where T : UiInstance
     {
         inst.UiInfo = uiInfo;
         ShowUiView(inst, uiInfo.Layer);
-        inst.AfterOnShow();
+        inst.AfterOnShow(fromBack);
         if (notify != null) notify.Invoke(inst as T);
     }
 
-    private static void AfterLoadInstanceNoCallBack<T>(UiInstance inst, UiInfo uiInfo) where T : UiInstance
+    private static void AfterLoadInstanceNoCallBack<T>(UiInstance inst, bool fromBack, UiInfo uiInfo) where T : UiInstance
     {
         inst.UiInfo = uiInfo;
         ShowUiView(inst, uiInfo.Layer);
-        inst.AfterOnShow();
+        inst.AfterOnShow(fromBack);
     }
 
 
@@ -325,7 +328,7 @@ public static class UiManager
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="notify"></param>
-    public static T ImmediatelyShow<T>() where T : UiInstance
+    public static T ImmediatelyShow<T>(bool fromBack = false) where T : UiInstance
     {
         var uiInfo = GetUiInfo<T>();
         if (uiInfo == null)
@@ -337,7 +340,7 @@ public static class UiManager
         //单例UI
         if (uiInfo.LoadType == UiLoadType.Single)
         {
-            return CacheShowInstanceUi<T>(uiInfo);
+            return CacheShowInstanceUi<T>(uiInfo, fromBack);
         }
 
         //非单例
@@ -345,12 +348,11 @@ public static class UiManager
 
         inst.UiInfo = uiInfo;
         ShowUiView(inst, uiInfo.Layer);
-        inst.AfterOnShow();
+        inst.AfterOnShow(fromBack);
         return inst as T;
     }
 
-    //这个函数给xlua用
-    public static void Show(System.Type type, Action<UiInstance> notify)
+    public static void ShowUIFromBack(Type type, Action<UiInstance> notify)
     {
         var uiInfo = GetUiInfo(type);
         if (uiInfo == null)
@@ -362,7 +364,7 @@ public static class UiManager
         //单例UI
         if (uiInfo.LoadType == UiLoadType.Single)
         {
-            ShowInstanceUi(uiInfo, notify);
+            ShowInstanceUi(uiInfo, true, notify);
         }
         //非单例
         else
@@ -371,10 +373,9 @@ public static class UiManager
             {
                 inst.UiInfo = uiInfo;
                 ShowUiView(inst, uiInfo.Layer);
-
                 if (notify != null) notify.Invoke(inst);
 
-                inst.AfterOnShow();
+                inst.AfterOnShow(true);
             });
         }
     }
@@ -396,7 +397,7 @@ public static class UiManager
         //单例UI
         if (uiInfo.LoadType == UiLoadType.Single)
         {
-            ShowInstanceUi<T>(uiInfo, notify);
+            ShowInstanceUi<T>(uiInfo, false, notify);
         }
         //非单例
         else
@@ -410,25 +411,6 @@ public static class UiManager
             });
         }
 
-    }
-
-    public static void Show(UiInfo uiInfo, UiInfo prevInfo)
-    {
-        //单例UI
-        if (uiInfo.LoadType == UiLoadType.Single)
-        {
-            ShowInstanceUi<UiInstance>(uiInfo, null, uiInfo.Type);
-        }
-        //非单例
-        else
-        {
-            UiInstance.LoadUi(uiInfo, uiInfo.ViewPath, uiInfo.Type, inst =>
-            {
-                inst.UiInfo = uiInfo;
-                ShowUiView(inst, uiInfo.Layer);
-                inst.AfterOnShow();
-            });
-        }
     }
 
     /// <summary>
@@ -529,6 +511,7 @@ public static class UiManager
 
     public static void Clear()
     {
+        UiFullView.Clear();
         UiCacheInstance.BackAllToPool();
         ClearAllUi();
     }

@@ -2,11 +2,11 @@
 #								
 id	texture	name	startX	startY	width	height	xCount	yCount
 #marisa								
-1	player/marisa/marisa.png	魔理沙_待机	0	0	32	48	8	1
-2	player/marisa/marisa.png	魔理沙_左移	0	48	32	48	4	1
-3	player/marisa/marisa.png	魔理沙_左待机	128	48	32	48	4	1
-4	player/marisa/marisa.png	魔理沙_右移	0	96	32	48	4	1
-5	player/marisa/marisa.png	魔理沙_右待机	128	96	32	48	4	1
+1	player/marisa/marisa_self.png	魔理沙_待机	0	0	32	48	8	1
+2	player/marisa/marisa_self.png	魔理沙_左移	0	48	32	48	4	1
+3	player/marisa/marisa_self.png	魔理沙_左待机	128	48	32	48	4	1
+4	player/marisa/marisa_self.png	魔理沙_右移	0	96	32	48	4	1
+5	player/marisa/marisa_self.png	魔理沙_右待机	128	96	32	48	4	1
 6	player/marisa/marisa.png	魔理沙_普通子弹	0	144	32	16	4	1
 7	player/marisa/marisa.png	魔理沙_导弹	192	224	32	16	1	1
 8	player/marisa/marisa.png	魔理沙_导弹爆炸特效	64	224	32	32	4	1

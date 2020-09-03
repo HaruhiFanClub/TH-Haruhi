@@ -2,9 +2,8 @@
 
 public class UIMainViewCompoent : MonoBehaviour
 {
-    public UiImage Bg;
     public Animator Animator;
-    public UiTextBtnMenuBase Menu;
+    public UiMenuBase Menu;
     public UiTextButton Btn_GameStart;
     public UiTextButton Btn_ExtraStart;
     public UiTextButton Btn_ParcticeStart;

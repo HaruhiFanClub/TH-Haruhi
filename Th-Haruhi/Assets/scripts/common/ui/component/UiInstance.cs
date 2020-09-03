@@ -88,8 +88,14 @@ public abstract class UiInstance : UiGameObject
         ViewOpenTime = Time.time;
     }
 
-    public void AfterOnShow()
+    protected virtual void OnFullViewShow(bool fromBack)
     {
+
+    }
+
+    public void AfterOnShow(bool fromBack = false)
+    {
+        OnFullViewShow(fromBack);
         OnShow();
     }
 

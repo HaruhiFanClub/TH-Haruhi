@@ -87,7 +87,8 @@ public class ControllerActions : PlayerActionSet
 
         //back
         p.Get(EControllerBtns.Cancel).AddDefaultBinding(Key.Escape);
-        p.Get(EControllerBtns.Cancel).AddDefaultBinding(InputControlType.Action2);
+		p.Get(EControllerBtns.Cancel).AddDefaultBinding(Key.X);
+		p.Get(EControllerBtns.Cancel).AddDefaultBinding(InputControlType.Action2);
 
 		//shoot
 		p.Get(EControllerBtns.Shoot).AddDefaultBinding(Key.Z);
