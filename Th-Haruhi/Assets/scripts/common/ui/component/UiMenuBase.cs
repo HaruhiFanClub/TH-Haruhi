@@ -29,11 +29,11 @@ public class UiMenuBase : MonoBehaviour
     public int CurrSelectIdx { private set; get; }
     public readonly List<ISelectAble> ItemList = new List<ISelectAble>();
     public event Action OnInitOver;
-    public event Action OnSelectChange;
+    public event Action<ISelectAble, ISelectAble, bool> OnSelectChange;
 
     protected virtual void Start()
     {
-        var btns = GetComponentsInChildren<ISelectAble>();
+        var btns = GetComponentsInChildren<ISelectAble>(true);
         var bSelectFirst = false;
 
         //根据父UI节点类型，拿到默认选项
@@ -83,9 +83,9 @@ public class UiMenuBase : MonoBehaviour
     }
 
 
-    public void OnSelected(ISelectAble btn)
+    public void OnSelected(ISelectAble selected, ISelectAble unSelect, bool bNext)
     {
-        btn.SetSelect(true);
+        selected.SetSelect(true);
         Sound.PlayUiAudioOneShot(1001);
 
         if (_parentUIType != null)
@@ -93,7 +93,7 @@ public class UiMenuBase : MonoBehaviour
             SelectStatus[_parentUIType] = CurrSelectIdx;
         }
 
-        OnSelectChange?.Invoke();
+        OnSelectChange?.Invoke(selected, unSelect, bNext);
     }
 
     public void OnUnSelected(ISelectAble btn)
@@ -113,7 +113,8 @@ public class UiMenuBase : MonoBehaviour
     {
         if (ItemList[CurrSelectIdx].InClick) return;
 
-        DisableSelectAll();
+        var unSelectItem = ItemList[CurrSelectIdx];
+        OnUnSelected(unSelectItem);
 
         var wantStart = CurrSelectIdx + 1;
         var startIdx = wantStart > ItemList.Count ? 0 : wantStart;
@@ -123,7 +124,7 @@ public class UiMenuBase : MonoBehaviour
             if (ItemList[i].IsEnable)
             {
                 CurrSelectIdx = i;
-                OnSelected(ItemList[i]);
+                OnSelected(ItemList[i], unSelectItem, true);
                 return;
             }
         }
@@ -133,7 +134,7 @@ public class UiMenuBase : MonoBehaviour
             if (ItemList[i].IsEnable)
             {
                 CurrSelectIdx = i;
-                OnSelected(ItemList[i]);
+                OnSelected(ItemList[i], unSelectItem, true);
                 return;
             }
         }
@@ -143,7 +144,8 @@ public class UiMenuBase : MonoBehaviour
     {
         if (ItemList[CurrSelectIdx].InClick) return;
 
-        DisableSelectAll();
+        var unSelectItem = ItemList[CurrSelectIdx];
+        OnUnSelected(unSelectItem);
 
         var wantStart = CurrSelectIdx - 1;
         var startIdx = wantStart < 0 ? ItemList.Count - 1 : wantStart;
@@ -153,7 +155,7 @@ public class UiMenuBase : MonoBehaviour
             if (ItemList[i].IsEnable)
             {
                 CurrSelectIdx = i;
-                OnSelected(ItemList[i]);
+                OnSelected(ItemList[i], unSelectItem, false);
                 return;
             }
         }
@@ -163,20 +165,8 @@ public class UiMenuBase : MonoBehaviour
             if (ItemList[i].IsEnable)
             {
                 CurrSelectIdx = i;
-                OnSelected(ItemList[i]);
+                OnSelected(ItemList[i], unSelectItem, false);
                 return;
-            }
-        }
-    }
-
-    
-    private void DisableSelectAll()
-    {
-        for(int i = 0; i < ItemList.Count; i++)
-        {
-            if (CurrSelectIdx == i)
-            {
-                OnUnSelected(ItemList[i]);
             }
         }
     }

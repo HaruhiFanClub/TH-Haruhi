@@ -14,6 +14,8 @@ public enum EControllerBtns
     Up,
     Down,
 
+	Pause,
+
 	Shoot,
 	Explosion,
 	SlowMove,
@@ -36,7 +38,8 @@ public class ControllerActions : PlayerActionSet
 	{
 	    _joyActions[EControllerBtns.Sure] = CreatePlayerAction("Sure");
 	    _joyActions[EControllerBtns.Cancel] = CreatePlayerAction("Cancel");
-
+		_joyActions[EControllerBtns.Pause] = CreatePlayerAction("Pause");
+		
 		_joyActions[EControllerBtns.Shoot] = CreatePlayerAction("Shoot");
 		_joyActions[EControllerBtns.Explosion] = CreatePlayerAction("Explosion");
 		_joyActions[EControllerBtns.SlowMove] = CreatePlayerAction("SlowMove");
@@ -89,6 +92,10 @@ public class ControllerActions : PlayerActionSet
         p.Get(EControllerBtns.Cancel).AddDefaultBinding(Key.Escape);
 		p.Get(EControllerBtns.Cancel).AddDefaultBinding(Key.X);
 		p.Get(EControllerBtns.Cancel).AddDefaultBinding(InputControlType.Action2);
+
+		//pause
+		p.Get(EControllerBtns.Pause).AddDefaultBinding(Key.Escape);
+		p.Get(EControllerBtns.Pause).AddDefaultBinding(InputControlType.Action4);
 
 		//shoot
 		p.Get(EControllerBtns.Shoot).AddDefaultBinding(Key.Z);

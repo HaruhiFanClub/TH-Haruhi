@@ -39,14 +39,8 @@ public static class LevelMgr
     public static LevelData Data;
 
     //从第一关开始游戏
-    public static void StartNewGame(int playerId)
+    public static void StartGame()
     {
-        int levelId = 1;
-
-        //初始化数据
-        Data.PlayerId = playerId;
-        Data.CurLevelId = levelId;
-
         GameSystem.CoroutineStart(EnterMission());
     }
 
@@ -86,6 +80,8 @@ public static class LevelMgr
         else
         {
             //无剩余生命数量，弹出结算
+            DOVirtual.DelayedCall(1f, () => { UiManager.Show<UIDeadView>(); });
+            
         }
     }
 
@@ -102,9 +98,9 @@ public static class LevelMgr
         yield return Enemy.Create(enemyId);
     }
 
-    private static IEnumerator PlayerReborn()
+    private static IEnumerator PlayerReborn(float sec = 1f)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(sec);
         yield return Player.Create(Data.PlayerId, p =>
         {
             //从屏幕外移动进来
@@ -114,6 +110,23 @@ public static class LevelMgr
             //给5秒无敌时间
             p.SetInvincibleTime(5f);
         });
+    }
+
+    //续关
+    public static void Retry()
+    {
+        //1秒后复活
+        GameSystem.CoroutineStart(PlayerReborn(0.2f));
+        Data.LeftLifeCount = Data.MaxLifeCount;
+    }
+
+
+    //从头开始
+    public static void ReStart()
+    {
+        Data.CurLevelId = 1;
+        Data.TotalScore = 0;
+        Data.LeftLifeCount = Data.MaxLifeCount;
     }
 
 }

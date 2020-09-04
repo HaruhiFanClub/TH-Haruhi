@@ -21,12 +21,16 @@ public abstract class UiFullView : UiInstance
         CurrentView = null;
     }
 
+    private static bool _inClose;
     private static void OnBack(object o)
     {
+        if (CurrentView == null) return;
         if (CurrentView.GetType() == typeof(UIMainView))
             return;
 
         var prevViewType = PrevViewTypes[PrevViewTypes.Count - 1];
+        if (_inClose) return;
+
         CurrentView.Close(()=>
         {
             if (prevViewType == typeof(UIMainView))
@@ -37,10 +41,12 @@ public abstract class UiFullView : UiInstance
             {
                 UiManager.ShowUIFromBack(prevViewType, null);
             }
-
             PrevViewTypes.Remove(prevViewType);
+            _inClose = false;
         });
+        _inClose = true;
         Sound.PlayUiAudioOneShot(1003);
+       
     }
 
     protected abstract Animator Animator { get; }

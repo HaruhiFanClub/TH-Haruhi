@@ -61,12 +61,22 @@ public class ControllerPc : MonoBehaviour
     
     protected void Update()
     {
-        if(!Level.InLevel || GamePause.InPause)
+        if (UILoading.InLoading) return;
+        if (!Level.InLevel || GamePause.InPause) 
         {
-            if (!UILoading.InLoading)
-            {
-                UpdateMenu();
-            }
+            UpdateMenu();
+        }
+        else if(Level.InLevel)
+        {
+            UpdateBattle();
+        }
+    }
+
+    private void UpdateBattle()
+    {
+        if (_actions.Get(EControllerBtns.Pause).WasReleased)
+        {
+            UiManager.Show<UIPauseView>();
         }
     }
 

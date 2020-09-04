@@ -20,7 +20,6 @@ public class UiBackGround : MonoBehaviour
 
     public void MaskFadeIn(float sec, float endAlpha)
     {
-        BgMask.Alpha = 0f;
         BgMask.DOFade(endAlpha, sec);
     }
     public void MaskFadeOut(float sec)

@@ -83,16 +83,29 @@ public class GameSystem : MonoBehaviour
 
     public static void ShowTitle()
     {
-        UIMainView.Show(true);
+        GamePause.DoContionueGame(EPauseFrom.Esc);
+        CoroutineStart(ShowTitleImpl());
     }
 
     private static IEnumerator ShowTitleImpl()
-    {
+    {  
+        //加载Loading
+        yield return UILoading.YieldShow();
+        yield return Yielders.Frame;
+
+        //卸载场景
         yield return Level.UnloadCurrentScene();
+        yield return Yielders.Frame;
+
+        //显示主界面
+        UIMainView.Show(true);
+        yield return new WaitForSeconds(0.3f);
+
+        //关闭loading
+        UILoading.Close();
+
     }
 
-
-  
     public static void ClearCache()
     {
 

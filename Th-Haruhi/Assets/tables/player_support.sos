@@ -2,5 +2,5 @@
 #	描述	待机效果	快速射击叠加效果	慢速射击叠加效果	慢速子弹ID	慢速射击间隔	快速子弹ID	快速射击间隔
 id	name	idleEffectId	fastShootEffectId	slowShootEffectId	slowBulletId	slowFrame	fastBulletId	fastFrame
 1	魔理沙	1	3	0	101	16	102	0
-2	灵梦	2	0	0	0	4	0	0
-3	sakuya	2				4		
+2	灵梦	2	3	0	101	16	102	0
+3	sakuya	2	3	0	101	16	102	0

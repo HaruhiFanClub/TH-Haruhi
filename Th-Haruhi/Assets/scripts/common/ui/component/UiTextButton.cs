@@ -180,7 +180,7 @@ public class UiTextButton : Button, ISelectAble
             if (_text.Alpha < 0.5f)
                 _alphaAddFlag = 1;
 
-            _text.Alpha += ClickAlphaSmooth * Time.deltaTime * _alphaAddFlag;
+            _text.Alpha += ClickAlphaSmooth * Time.unscaledDeltaTime * _alphaAddFlag;
         }
         else if(IsSelected)
         {
@@ -189,7 +189,7 @@ public class UiTextButton : Button, ISelectAble
             if(_text.Alpha < 0.8f)
                 _alphaAddFlag = 1;
 
-            _text.Alpha += SelectAlphaSmooth * Time.deltaTime * _alphaAddFlag;
+            _text.Alpha += SelectAlphaSmooth * Time.unscaledDeltaTime * _alphaAddFlag;
         }
     }
 
@@ -209,7 +209,7 @@ public class UiTextButton : Button, ISelectAble
 
     private void OnSelectEnable()
     {
-        _shakeTween = transform.DOShakePosition(0.2F, 8, 50, 90, true);
+        _shakeTween = transform.DOShakePosition(0.2F, 8, 50, 90, true).SetUpdate(true);
         _shakeTween.onComplete = () =>
         {
             _shakeTween = null;

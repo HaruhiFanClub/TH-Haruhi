@@ -14,6 +14,10 @@ public class UiList
 
         _<UiTips>           ("UiTips.prefab",               UiLayer.Tips,   UiLoadType.Multi);
         _<UIFps>            ("UIFps.prefab",                UiLayer.Loding, UiLoadType.Multi); 
+
+        //battle
+        _<UIPauseView>      ("UIPauseView.prefab",       UiLayer.Main,   UiLoadType.Multi);
+        _<UIDeadView>       ("UIDeadView.prefab",        UiLayer.Main,   UiLoadType.Multi);
     }
 
     private static void _<T>(string viewPath, UiLayer layer, UiLoadType loadType) where T : UiInstance

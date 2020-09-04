@@ -11,7 +11,7 @@ id	name	resource	volume
 1001	Select	audios/se/se_select00.wav	1
 1002	OK	audios/se/se_ok00.wav	1
 1003	Cancel	audios/se/se_cancel00.wav	1
-			
+1004	se_pause	audios/se/se_pause.wav	1
 #battle			
 101	À¿Õˆ	audios/se/se_pldead00.wav	1
 102	damage00	audios/se/se_damage00.wav	0.4
@@ -20,5 +20,5 @@ id	name	resource	volume
 			
 			
 #bullet			
-2001	∆’π•	audios/se/se_plst00.wav	0.4
-2002	º§π‚	audios/se/se_lazer02.wav	0.3
+2001	∆’π•	audios/se/se_plst00.wav	0.2
+2002	º§π‚	audios/se/se_lazer02.wav	0.1

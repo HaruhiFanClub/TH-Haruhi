@@ -59,7 +59,7 @@ public class UIChooseDifficult : UiFullView
         _bind.Menu.Enable = true;
     }
 
-    private void OnSelectChange()
+    private void OnSelectChange(ISelectAble select, ISelectAble unSelect, bool isNext)
     {
         for (int i = 0; i < _bind.Menu.ItemList.Count; i++)
         {
@@ -132,6 +132,6 @@ public class UIChooseDifficult : UiFullView
     {
         base.OnClose(notify);
         PlayCloseAni();
-        UiManager.BackGround.MaskFadeOut(1f);
+        UiManager.BackGround.MaskFadeOut(0.6f);
     }
 }

@@ -71,6 +71,8 @@ public class UIMainView : UiFullView
     private void Btn_GameStart()
     {
         LevelMgr.Data = new LevelData();
+        LevelMgr.Data.CurLevelId = 1;
+
         UiManager.Show<UIChooseDifficult>();
     }
 
@@ -82,7 +84,7 @@ public class UIMainView : UiFullView
     private void Btn_ParcticeStart()
     {
         LevelMgr.Data = new LevelData();
-        LevelMgr.StartNewGame(1);
+        //LevelMgr.StartNewGame(1);
     }
 
     private void Btn_SpellParctice()

@@ -274,6 +274,18 @@ public static class Sound
         }
     }
 
+    public static void PauseMusic()
+    {
+        if (_music != null && _music.AudioSource != null)
+            _music.AudioSource.Pause();
+    }
+
+    public static void UnPauseMusic()
+    {
+        if (_music != null && _music.AudioSource != null)
+            _music.AudioSource.UnPause();
+    }
+
     public static void UnloadSoundAsset(AudioSource audioSource, int soundId)
     {
         if (audioSource != null)

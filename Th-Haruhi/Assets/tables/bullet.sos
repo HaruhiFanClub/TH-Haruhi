@@ -2,7 +2,7 @@
 #		类型	资源ID	缩放	图集中的第几张图片	碰撞半径比例，如果为-1则为boxCollider	透明度	默认旋转方向	速度	攻击力	爆炸特效ID	几秒后出发event	停滞
 id	name	classType	resourceId	scale	spriteIdx	radius	alpha	rota	speed	atk	bombEffectId	eventTime	eventWait
 1	魔理沙普攻	Bullet	6	1	0	1	0.8	90	60	10			
-2	灵梦普攻	Bullet	107	1	0	1	0.7	90	80	10			
+2	灵梦普攻	Bullet	107	1	0	1	0.7	90	60	10			
 101	魔理沙导弹	Bullet	7	1	0	1	0.8	90	30	10	4		
 102	魔理沙激光	MarisaLaser	16	1	0	-1	0.8	90	0	10			
 													
