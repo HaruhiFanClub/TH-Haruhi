@@ -223,9 +223,17 @@ public class Enemy : EntityBase
 
     private void UpdateMoveStyle()
     {
-        if(InMoveToTarget)
+        if(InMoveToTarget || InMove)
         {
-            var moveX = (_moveTarget - transform.position).normalized.x;
+            float moveX;
+            if(InMove)
+            {
+                moveX = _moveData.Forward.normalized.x;
+            }
+            else
+            {
+                moveX = (_moveTarget - transform.position).normalized.x;
+            }
 
             if(moveX > 0.01f)
             {

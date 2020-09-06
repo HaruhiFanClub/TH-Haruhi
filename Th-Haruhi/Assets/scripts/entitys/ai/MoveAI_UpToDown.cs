@@ -15,7 +15,7 @@ public class MoveAI_UpToDown : MoveAI_Base
 
         var moveData = MoveData.New(Master.transform.position, f1);
         moveData.HelixToward = MoveData.EHelixToward.Right;
-        moveData.HelixRefretFrame = 40;
+        moveData.HelixRefretFrame = 60;
         moveData.EulurPerFrame = 3f;
 
         Master.Move(moveData, 5); 
