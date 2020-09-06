@@ -60,7 +60,7 @@ public class AssetBundleManager
 
     public static void Initialize()
     {
-        string abName = "StreamingAssets.haruhi";
+        string abName = "streamingassets.haruhi";
         if (_assetBundleManifest == null)
         {
             LoadedAssetBundles.Clear();

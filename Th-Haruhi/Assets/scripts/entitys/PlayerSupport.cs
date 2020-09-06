@@ -76,7 +76,8 @@ public class PlayerSupport : MonoBehaviour
                     NextShootTime = Time.time + shootFrame * GameSystem.FrameTime;
                     BulletFactory.CreateBullet(bulletId, transform, layer, bullet =>
                     {
-                        bullet.Shoot(transform.position, MathUtility.SwapYZ(transform.forward));
+                        var data = MoveData.New(transform.position, MathUtility.SwapYZ(transform.forward));
+                        bullet.Shoot(data);
                     });
                 }
             }
@@ -89,7 +90,7 @@ public class PlayerSupport : MonoBehaviour
                 BulletFactory.CreateBullet(bulletId, transform, layer, bullet =>
                 {
                     _currBullet = bullet;
-                    bullet.Shoot(transform.position, transform.up);
+                    bullet.Shoot(MoveData.New(transform.position, transform.up));
                 });
             }
             if(_prevInLoopShoot && !inShoot)

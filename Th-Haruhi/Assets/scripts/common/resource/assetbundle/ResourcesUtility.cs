@@ -36,6 +36,7 @@ public static class ResourcesUtility
                     return ResourceType.fbx;
                 case ".otf":
                 case ".ttf":
+                case ".ttc":
                 case ".fontsettings":
                     return ResourceType.font;
                 case ".spriteatlas":

@@ -17,11 +17,11 @@ public class MoveAI_LR : MoveAI_Base
             _nextMoveTime = Time.time + 5f;
             if (_textMoveLeft)
             {
-                Master.Move(Vector2Fight.New(-75f, 80f), 0.3f);
+                Master.MoveToTarget(Vector2Fight.New(-75f, 80f), 0.3f);
             }
             else
             {
-                Master.Move(Vector2Fight.New(75f, 80f), 0.3f);
+                Master.MoveToTarget(Vector2Fight.New(75f, 80f), 0.3f);
             }
         }
     }

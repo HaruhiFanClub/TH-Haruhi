@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class Player : EntityBase
 {
+    public static Player Instance { private set; get; }
+
     public enum PlayerMoveStyle
     {
         LeftIdle,
@@ -86,6 +88,16 @@ public class Player : EntityBase
 
         SupportMgr = new PlayerSupportMgr();
         SupportMgr.Init(this);
+
+        Instance = this;
+    }
+
+    public void AfterInit()
+    {
+
+        AddSupport();
+        AddSupport();
+        AddSupport();
         AddSupport();
     }
 
@@ -130,13 +142,19 @@ public class Player : EntityBase
     //增加一个僚机
     public void AddSupport()
     {
+        StartCoroutine(DoAddSupport());
+    }
+
+    private IEnumerator DoAddSupport()
+    {
+        yield return Yielders.Frame;
         SupportMgr.AddSupport();
     }
 
     //操作按钮逻辑
     private void UpdateOperation()
     {
-        if (UILoading.InLoading) return;
+        if (GameSystem.InLoading) return;
         if (Actions == null) return;
 
         //move
@@ -170,7 +188,7 @@ public class Player : EntityBase
             var pos = transform.position + new Vector3(Deploy.shootPos[i][0], Deploy.shootPos[i][1]);
             BulletFactory.CreateBullet(Deploy.normalBulletId, transform, Layers.PlayerBullet,  bullet =>
             {
-                bullet.Shoot(pos, Vector3.up);
+                bullet.Shoot(MoveData.New(pos, Vector3.up));
             });
         }
 
@@ -265,6 +283,13 @@ public class Player : EntityBase
         }
     }
 
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        StopAllCoroutines();
+        Instance = null;
+    }
+
     //创建角色 static
     public static IEnumerator Create(int playerId, Action<Player> callBack)
     {
@@ -279,7 +304,7 @@ public class Player : EntityBase
         var model = new GameObject(deploy.name + "_model");
         var mainSprite = model.AddComponent<SpriteRenderer>();
         mainSprite.sortingOrder = SortingOrder.Player;
-        mainSprite.material = new Material(GameSystem.DefaultRes.BulletShader);
+        mainSprite.material = new Material(GameSystem.DefaultRes.CommonShader);
         model.transform.SetParent(playerObject.transform, false);
         yield return Yielders.Frame;
 
@@ -310,6 +335,7 @@ public class Player : EntityBase
         player.Init(mainSprite, script, deploy);
         playerObject.SetActiveSafe(true);
         callBack(player);
+        player.AfterInit();
     }
 }
 

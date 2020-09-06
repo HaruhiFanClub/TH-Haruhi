@@ -32,8 +32,8 @@ public class UIChoosePlayer : UiFullView
 
     private void OnSure(int playerId)
     {
-        LevelMgr.Data.PlayerId = playerId;
-        LevelMgr.StartGame();
+        StageMgr.Data.PlayerId = playerId;
+        StageMgr.StartGame();
     }
 
     protected override void OnDestroy()

@@ -37,7 +37,7 @@ public class UIChooseDifficult : UiFullView
 
     private void OnClick(ELevelDifficult diff)
     {
-        LevelMgr.Data.Difficult = diff;
+        StageMgr.Data.Difficult = diff;
 
 
         //复制出来闪烁

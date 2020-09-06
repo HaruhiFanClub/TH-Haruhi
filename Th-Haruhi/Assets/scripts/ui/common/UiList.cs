@@ -10,10 +10,10 @@ public class UiList
         _<UIChooseDifficult>("UIChooseDifficult.prefab",    UiLayer.Main,   UiLoadType.Multi);
         _<UIChoosePlayer>   ("UIChoosePlayer.prefab",       UiLayer.Main,   UiLoadType.Multi);
 
-        _<UILoading>        ("UILoading.prefab",            UiLayer.Loding, UiLoadType.Single);
+       // _<UILoading>        ("UILoading.prefab",            UiLayer.Loding, UiLoadType.Single);
 
         _<UiTips>           ("UiTips.prefab",               UiLayer.Tips,   UiLoadType.Multi);
-        _<UIFps>            ("UIFps.prefab",                UiLayer.Loding, UiLoadType.Multi); 
+        _<UIFps>            ("UIFps.prefab",                UiLayer.DontDestroy, UiLoadType.Multi); 
 
         //battle
         _<UIPauseView>      ("UIPauseView.prefab",       UiLayer.Main,   UiLoadType.Multi);

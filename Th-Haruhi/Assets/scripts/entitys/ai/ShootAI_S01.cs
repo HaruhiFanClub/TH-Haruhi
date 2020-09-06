@@ -21,7 +21,8 @@ public class ShootAI_S01 : ShootAI_Base
         if (Time.time <= _nextShootTime) return;
 
         var f1 = Quaternion.Euler(0, 0, _shootIdx * 29) * Master.transform.up;
-        BulletFactory.CreateBulletAndShoot(1001 + _shootIdx % 4, Master.transform, Layers.EnemyBullet, Master.transform.position, f1);
+        var data = MoveData.New(Master.transform.position, f1);
+        BulletFactory.CreateBulletAndShoot(1001 + _shootIdx % 4, Master.transform, Layers.EnemyBullet, data);
 
         _shootIdx++;
         if (_shootIdx > 10000000)

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6722555241914015934}
   - component: {fileID: 6722555241914015928}
-  - component: {fileID: 2801872117085142150}
+  - component: {fileID: 2352974604359835960}
   m_Layer: 5
   m_Name: UIFps
   m_TagString: Untagged
@@ -46,7 +46,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6722555241914015935}
   m_CullTransparentMesh: 0
---- !u!114 &2801872117085142150
+--- !u!114 &2352974604359835960
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,7 +55,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6722555241914015935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc1d74b51c4b864696af7d2833fdce8, type: 3}
+  m_Script: {fileID: 11500000, guid: 49c0e17030d9bb24b9f9fcfbd485f2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Fps: {fileID: 4118990806350469960}

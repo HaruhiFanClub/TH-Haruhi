@@ -59,10 +59,10 @@ public static class ResourcesBuilder
 
         if (assetManifest != null)
         {
-            if (File.Exists(_assetPath + "/StreamingAssets"))
+            if (File.Exists(_assetPath + "/streamingassets"))
             {
-                FileInfo file = new FileInfo(_assetPath + "/StreamingAssets");
-                string path = _assetPath + "/StreamingAssets.haruhi";
+                FileInfo file = new FileInfo(_assetPath + "/streamingassets");
+                string path = _assetPath + "/streamingassets.haruhi";
                 if (File.Exists(path))
                     File.Delete(path);
                 file.MoveTo(path);
@@ -89,7 +89,7 @@ public static class ResourcesBuilder
         }
     }
 
-    private static bool SetAssetsBundleName(HashSet<string> rList)
+    public static bool SetAssetsBundleName(HashSet<string> rList)
     {
         int step = 0;
 

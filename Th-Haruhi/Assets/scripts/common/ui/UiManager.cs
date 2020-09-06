@@ -53,7 +53,6 @@ public static class UiManager
     {
         SetDeltaInfo2(UiLayer.Main, _uiBind.CanvasList[UiLayer.Main], size, safeHeightRadio, bottomGiveY);
         SetDeltaInfo2(UiLayer.Tips, _uiBind.CanvasList[UiLayer.Tips], size, safeHeightRadio, bottomGiveY);
-        SetDeltaInfo2(UiLayer.Loding, _uiBind.CanvasList[UiLayer.Loding], size, safeHeightRadio, bottomGiveY);
     }
 
     private static void SetDeltaInfo2(UiLayer layer, Canvas canvas, Vector2 size, float safeHeightRadio, float bottomGiveY)
@@ -151,7 +150,7 @@ public static class UiManager
                 while (e.MoveNext())
                 {
                     var key = e.Current.Key;
-                    if (key == UiLayer.Loding)
+                    if (key == UiLayer.DontDestroy)
                         continue;
                     if (e.Current.Value != null)
                     {
@@ -418,7 +417,7 @@ public static class UiManager
     /// </summary>
     /// <param name="effect"></param>
     /// <param name="layerName"></param>
-    public static void ShowEffect(TextureEffect effect, UiLayer layerName = UiLayer.Loding)
+    public static void ShowEffect(TextureEffect effect, UiLayer layerName = UiLayer.Tips)
     {
         string layer = Enum.GetName(typeof(UiLayer), layerName);
         Transform parent = _uiBind.CanvasParentList[layerName];

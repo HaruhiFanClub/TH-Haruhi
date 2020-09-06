@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Enemy : EntityBase
 {
@@ -26,8 +27,8 @@ public class Enemy : EntityBase
 
     public Material Material { private set; get; }
 
+    public bool InMoveToTarget { private set; get; }
     public bool InMove { private set; get; }
-
     public bool IsDead { private set; get; }
 
     private MoveAI_Base MoveAI;
@@ -72,10 +73,14 @@ public class Enemy : EntityBase
         {
             MoveAI.Init(this);
         }
-        ShootAI = Common.CreateInstance(deploy.ShootAI) as ShootAI_Base;
-        if (ShootAI != null)
+
+        if(!string.IsNullOrEmpty(deploy.ShootAI))
         {
-            ShootAI.Init(this);
+            ShootAI = Common.CreateInstance(deploy.ShootAI) as ShootAI_Base;
+            if (ShootAI != null)
+            {
+                ShootAI.Init(this);
+            }
         }
     }
    
@@ -90,9 +95,10 @@ public class Enemy : EntityBase
         }
 
         UpdateAnimation();
-        UpdateMove();
+        UpdateMoveStyle();
+        UpdateMovePos();
 
-        
+
 
         if (MoveAI != null)
         {
@@ -157,20 +163,67 @@ public class Enemy : EntityBase
         Destroy(gameObject);
     }
 
-    private Vector3 _moveTarget;
-    private Vector3 _currPos;
-    private float _moveSpeed;
 
-    public void Move(Vector3 targetPoint, float moveSpeed)
+    private MoveData _moveData;
+    private int _totalFrame;
+    private float _lastHelixFrame;
+    public void Move(MoveData moveData, float moveSpeed)
     {
         InMove = true;
-        _moveTarget = targetPoint;
+        _moveData = moveData;
+        _totalFrame = 0;
+        _lastHelixFrame = 0;
         _moveSpeed = moveSpeed;
     }
 
-    private void UpdateMove()
+    private Vector3 _moveTarget;
+    private Vector3 _currPos;
+    private float _moveSpeed;
+    public void MoveToTarget(Vector3 targetPoint, float moveSpeed)
     {
-        if(InMove)
+        InMoveToTarget = true;
+        _moveTarget = targetPoint;
+        _moveSpeed = moveSpeed;
+        _currPos = transform.position;
+    }
+
+    private void UpdateMovePos()
+    {
+        if (InMoveToTarget)
+        {
+            _currPos = Vector3.MoveTowards(_currPos, _moveTarget, GameSystem.FrameTime * _moveSpeed);
+            Rigid2D.MovePosition(_currPos);
+
+            if (MathUtility.DistanceXY(_currPos, _moveTarget) < 0.5f)
+            {
+                StopMove();
+            }
+        }
+        else if (InMove)
+        {
+            _totalFrame += 1;
+
+            //螺旋移动
+            if (_moveData.HelixToward != MoveData.EHelixToward.None)
+            {
+                var eulurZ = (int)_moveData.HelixToward * _moveData.EulurPerFrame * Time.deltaTime * 60f;
+                _moveData.Forward = Quaternion.Euler(0, 0, eulurZ) * _moveData.Forward;
+
+                if (_totalFrame - _lastHelixFrame >= _moveData.HelixRefretFrame)
+                {
+                    _lastHelixFrame = _totalFrame;
+                    _moveData.HelixToward = _moveData.HelixToward == MoveData.EHelixToward.Right ?
+                                                    MoveData.EHelixToward.Left :
+                                                    MoveData.EHelixToward.Right;
+                }
+            }
+            Rigid2D.MovePosition(transform.position + _moveData.Forward.normalized * Time.deltaTime * _moveSpeed);
+        }
+    }
+
+    private void UpdateMoveStyle()
+    {
+        if(InMoveToTarget)
         {
             var moveX = (_moveTarget - transform.position).normalized.x;
 
@@ -191,25 +244,23 @@ public class Enemy : EntityBase
             {
                 AniStyle = EnemyMoveStyle.Idle;
             }
-
-            _currPos = Vector3.Lerp(_currPos, _moveTarget, GameSystem.FrameTime * _moveSpeed);
-            Rigid2D.MovePosition(_currPos);
-
-            if(MathUtility.DistanceXY(_currPos, _moveTarget) < 0.05f)
-            {
-                StopMove();
-            }
         }
         else
         {
             AniStyle = EnemyMoveStyle.Idle;
         }
     }
-
+    
     private void StopMove()
     {
+        InMoveToTarget = false;
         InMove = false;
         AniStyle = EnemyMoveStyle.Idle;
+
+        if(_moveData != null)
+        {
+            Pool.Free(_moveData);
+        }
     }
 
     private float _nextAnimationTime;
@@ -254,6 +305,11 @@ public class Enemy : EntityBase
 
     protected override void OnDestroy()
     {
+        if (_moveData != null)
+        {
+            Pool.Free(_moveData);
+        }
+
         if (MoveAI != null)
         {
             MoveAI.OnDestroy();
@@ -281,7 +337,7 @@ public class Enemy : EntityBase
         var model = new GameObject(deploy.name + "_model");
         var mainSprite = model.AddComponent<SpriteRenderer>();
         mainSprite.sortingOrder = SortingOrder.Enemy;
-        mainSprite.material = new Material(GameSystem.DefaultRes.BulletShader);
+        mainSprite.material = new Material(GameSystem.DefaultRes.CommonShader);
         model.transform.SetParent(gameObj.transform, false);
         yield return Yielders.Frame;
 
@@ -299,6 +355,7 @@ public class Enemy : EntityBase
         //Collider
         var collider = gameObj.AddComponent<CircleCollider2D>();
         collider.radius = deploy.radius;
+        collider.isTrigger = true;
 
         //init
         enemy.Material = mainSprite.material;

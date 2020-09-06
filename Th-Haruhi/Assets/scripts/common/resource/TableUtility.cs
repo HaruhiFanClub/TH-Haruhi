@@ -18,7 +18,7 @@ public static class TableUtility
         _(typeof(SoundDeploy), "sound");
         _(typeof(PlayerDeploy), "player");
         _(typeof(PlayerSupportDeploy), "player_support");
-        _(typeof(LevelDeploy), "level");
+        _(typeof(StageDeploy), "stage");
         _(typeof(BulletDeploy), "bullet");
         _(typeof(TextureResourceDeploy), "texture_resource");
         _(typeof(TextureEffectDeploy), "effect");

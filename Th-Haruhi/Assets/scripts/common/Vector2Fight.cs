@@ -10,7 +10,7 @@ public class Vector2Fight
     //换算 X: 100 -> 8  Y: 120 -> 9.6
     private static float _trans = 12.5f;    
 
-    public static Vector2 New(float x, float y)
+    public static Vector3 New(float x, float y)
     {
         return new Vector2(x / _trans, y / _trans) + Center;
     }

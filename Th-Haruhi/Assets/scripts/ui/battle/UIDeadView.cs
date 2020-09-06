@@ -28,7 +28,7 @@ public class UIDeadView : UiInstance
     private void BtnRetry()
     {
         this.Close();
-        LevelMgr.Retry();
+        StageMgr.Retry();
     }
 
     private void BtnBack()

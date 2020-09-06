@@ -12,7 +12,7 @@ public class UIPlayerCard : MonoBehaviour, ISelectAble
 
     public RectTransform RectTransform => GetComponent<RectTransform>();
 
-    private const float ClickWaitTime = 0.5f;
+    private const float ClickWaitTime = 0.2f;
 
     public Action OnClick;
 

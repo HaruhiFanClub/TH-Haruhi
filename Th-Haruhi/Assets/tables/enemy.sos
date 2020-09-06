@@ -10,3 +10,5 @@ id	name	scale	frameSpeed	resoureIds	radius	maxHp	MoveAI	ShootAI	deadEffect
 7	≥·∞Ú÷–∫Ï	1	"[6,3,6]"	"[2061,2062,2063]"	1	800	MoveAI_LR	ShootAI_S01	effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaFire.prefab
 8	≥·∞Ú¥Û∫Ï	1	"[6,3,6]"	"[2071,2072,2073]"	1	1500	MoveAI_LR	ShootAI_S01	effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaFire.prefab
 9	≥·∞Ú¥Û¿∂	1	"[6,3,6]"	"[2081,2082,2083]"	1	1500	MoveAI_LR	ShootAI_S01	effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaBlue.prefab
+									
+101	test	1	"[6,3,6]"	"[2081,2082,2083]"	1	2000000	MoveAI_UpToDown	ShootAI_S02	effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaBlue.prefab

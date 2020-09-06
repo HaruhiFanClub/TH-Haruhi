@@ -96,11 +96,10 @@ public class PlayerSupportMgr
             return;
         }
 
-
         var gameObj = new GameObject("support");
         gameObj.transform.SetParent(null, false);
-        gameObj.transform.position = _master.transform.position;
         gameObj.transform.localScale = _master.transform.localScale;
+        gameObj.transform.position = _master.transform.position;
 
         TextureEffectFactroy.CreateEffect(deploy.idleEffectId, SortingOrder.PlayerSupport, effect =>
         {

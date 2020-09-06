@@ -46,11 +46,11 @@ public static class BulletFactory
         BulletTab = TableUtility.GetTable<BulletDeploy>();
     }
 
-    public static void CreateBulletAndShoot(int id, Transform master, int layer, Vector3 startPos, Vector3 forward)
+    public static void CreateBulletAndShoot(int id, Transform master, int layer, MoveData moveData)
     {
         CreateBullet(id, master, layer, bullet =>
         {
-            bullet.Shoot(startPos, forward);
+            bullet.Shoot(moveData);
         });
     }
 
@@ -173,7 +173,7 @@ public static class BulletFactory
         Material material;
         if (!BulletMaterialCache.TryGetValue(deploy.id, out material))
         {
-            material = new Material(GameSystem.DefaultRes.BulletShader);
+            material = new Material(GameSystem.DefaultRes.CommonShader);
             material.mainTexture = resource.texture;
             material.SetFloat("_AlphaScale", deploy.alpha);
             
@@ -191,13 +191,23 @@ public static class BulletFactory
 
         model.transform.localScale = new Vector3(sizeX, sizeY, 1);
 
-        //加collider
-        if(deploy.radius  > 0)
+        //中心点位置
+        var bRota = (int)deploy.rota % 90 == 0;
+        if(deploy.centerPivot == 1)
         {
+            model.transform.localPosition = new Vector3(0, bRota ? sizeX / 2f : sizeY / 2f, 0);
+        }
+        else if(deploy.centerPivot == 2)
+        {
+            model.transform.localPosition = new Vector3(0, -(bRota ? sizeX / 2f : sizeY / 2f), 0);
+        }
 
+        //加collider
+        if (deploy.radius  > 0)
+        {
             var collider = _object.AddComponent<CircleCollider2D>();
-            collider.radius = sizeX * deploy.radius;
-            collider.offset = new Vector2(0, model.transform.localPosition.y);
+            collider.radius = deploy.radius;
+            collider.offset = new Vector2(0, 0);
             collider.isTrigger = true;
         }
 
@@ -210,7 +220,7 @@ public static class BulletFactory
         else
         {
             bullet.gameObject.layer = layer;
-            bullet.Init(deploy, master, model);
+            bullet.Init(deploy, master, mr);
         }
 
         notify(bullet);

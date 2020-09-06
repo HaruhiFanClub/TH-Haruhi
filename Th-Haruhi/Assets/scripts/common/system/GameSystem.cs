@@ -1,10 +1,11 @@
-﻿using System;
+﻿using CameraTransitions;
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class GameSystem : MonoBehaviour
 {
-    public static float FrameTime = 0.016666f; //基准帧率时间
+    public static float FrameTime = 0.0166667f; //基准帧率时间
 
     public static GameSystem Instance;
     private static bool _inited;
@@ -77,7 +78,7 @@ public class GameSystem : MonoBehaviour
         UILogo.Show(() =>
         {
             ShowTitle();
-            UiManager.Show<UIFps>();
+			UiManager.Show<UIFps>();
         });
     }
 
@@ -87,23 +88,38 @@ public class GameSystem : MonoBehaviour
         CoroutineStart(ShowTitleImpl());
     }
 
+    public static bool InLoading { private set; get; }
+    public static IEnumerator ShowLoading()
+    {
+        InLoading = true;
+        yield return UiManager.GetUiBind().Loading.Open();
+    }
+
+    public static IEnumerator HideLoading()
+    {
+        yield return UiManager.GetUiBind().Loading.Hide();
+        InLoading = false;
+    }
+
     private static IEnumerator ShowTitleImpl()
     {  
         //加载Loading
-        yield return UILoading.YieldShow();
+        yield return ShowLoading();
         yield return Yielders.Frame;
 
         //卸载场景
-        yield return Level.UnloadCurrentScene();
+        yield return StageBase.UnloadCurrentScene();
         yield return Yielders.Frame;
+
 
         //显示主界面
         UIMainView.Show(true);
-        yield return new WaitForSeconds(0.3f);
+
+        yield return new WaitForSeconds(0.2f);
 
         //关闭loading
-        UILoading.Close();
-
+        yield return HideLoading();
+        
     }
 
     public static void ClearCache()

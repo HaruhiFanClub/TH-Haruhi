@@ -152,7 +152,7 @@ public static class TextureEffectFactroy
         Material material;
         if (!_materialCache.TryGetValue(deploy.id, out material))
         {
-            material = new Material(GameSystem.DefaultRes.BulletShader)
+            material = new Material(GameSystem.DefaultRes.CommonShader)
             {
                 mainTexture = resource.texture
             };

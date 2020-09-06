@@ -1,8 +1,9 @@
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
-Shader "Fps/Effects/Alpha Blended Adjust" {
+Shader "Haruhi/Effects/Alpha Blended Adjust" {
 Properties {
 	_TintColor ("Tint Color", Color) = (1, 1, 1, 1)
+	_BrightnessColor("Brightness Color", Color) = (1, 1, 1, 1)
 	_MainTex ("Particle Texture", 2D) = "white" {}
 	_Gamma ("Gamma", Range(0, 8)) = 1
 	_Brightness ("Brightness", Range(0, 8)) = 1
@@ -27,6 +28,7 @@ Category {
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 			fixed4 _TintColor;
+			fixed4 _BrightnessColor;
 			half _Gamma;
 			half _Brightness;
 			half _AlphaGamma;

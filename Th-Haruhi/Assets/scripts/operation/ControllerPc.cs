@@ -61,12 +61,12 @@ public class ControllerPc : MonoBehaviour
     
     protected void Update()
     {
-        if (UILoading.InLoading) return;
-        if (!Level.InLevel || GamePause.InPause) 
+        if (GameSystem.InLoading) return;
+        if (!StageBase.InLevel || GamePause.InPause) 
         {
             UpdateMenu();
         }
-        else if(Level.InLevel)
+        else if(StageBase.InLevel)
         {
             UpdateBattle();
         }

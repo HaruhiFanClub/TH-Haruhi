@@ -39,7 +39,7 @@ public class PathUtility
     {
         AssetsPath = FormatPath(Application.dataPath);
         ResourcesPath = AssetsPath + "/res";
-        AssetBundlePath = FormatPath(Application.streamingAssetsPath);
+        AssetBundlePath = FormatPath(Application.streamingAssetsPath).Replace("StreamingAssets", "streamingassets"); ;
 
         var serializablePath = FormatPath(Application.persistentDataPath);
 

@@ -42,7 +42,7 @@ public class GameSetting
     private static void RefreshQualityState(EQuality q)
     {
        // QualitySettings.masterTextureLimit = q >= EQuality.High ? 0 : 1;
-       Application.targetFrameRate = 300;
+       Application.targetFrameRate = 60;
     }
 
     public static EQuality Quality

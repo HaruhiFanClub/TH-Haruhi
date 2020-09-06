@@ -1,0 +1,259 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!200 &20000000
+ShaderVariantCollection:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ShaderPreload
+  m_Shaders:
+  - first: {fileID: 9004, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: f38dfc34f994f864c8f28cba2b9264fc, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL INSTANCING_ON LIGHTPROBE_SH
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 4800000, guid: 3bbee1c5cb53e7346a9314e0787be91c, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: INSTANCING_ON _USEUV2_ON
+        passType: 4
+  - first: {fileID: 4800000, guid: 5298c0563437674438cda00458286b0e, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 4
+      - keywords: _DIFFUSEMASK_ON
+        passType: 4
+      - keywords: _DIFFUSEMASK_ON _DISTORTION_ON
+        passType: 4
+  - first: {fileID: 4800000, guid: 1cf18e3e3eed7354784435a91fe60bee, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTMAP_ON
+        passType: 4
+  - first: {fileID: 4800000, guid: 35640aefdd4fb804b88cece886886e1c, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTMAP_ON
+        passType: 4
+  - first: {fileID: 4800000, guid: 4249031aaf9ef454793c43ab0d7795ff, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: 44cbd8cb54b915346a3e0cffe4a84bf2, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: 5073aca1df10f344790dfcaed882fef5, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTMAP_ON
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 4800000, guid: 5407421c431e7da46bfcebf0b03a6d37, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 591742c38a9ffab44a06a54c98e3c35e, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
+        passType: 4
+  - first: {fileID: 4800000, guid: 61fd1f3d4321cfe4cb844365896fe3f1, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL INSTANCING_ON LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: 8f3accd90795b724d8485afe6def0572, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 9262245960fbec847b7292678bfcf67e, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: bc5109b6c5f76eb4aabdc9ac65308282, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: cf97553e13e748048a9d689503bb75cc, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTMAP_ON
+        passType: 4
+  - first: {fileID: 4800000, guid: e5ea15e10749ed646bab5e949668b84a, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTMAP_ON
+        passType: 4
+      - keywords: DIRECTIONAL INSTANCING_ON LIGHTPROBE_SH
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+      - keywords: INSTANCING_ON SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 4800000, guid: f398cc793db1fb04d85dc8c6087fb1ff, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL INSTANCING_ON LIGHTPROBE_SH
+        passType: 4
+      - keywords: INSTANCING_ON SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 4800000, guid: fae6c9262e6b58a40bd345ab7659c068, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 2c4d01cf4e744774db4e09754970f86c, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTMAP_ON
+        passType: 4
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+      - keywords: DIRECTIONAL INSTANCING_ON LIGHTPROBE_SH
+        passType: 4
+      - keywords: DIRECTIONAL INSTANCING_ON LIGHTPROBE_SH SHADOWS_SCREEN
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 4800000, guid: 6116b4a89fcacca4d98892ec47d1ca97, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: UNITY_UI_CLIP_RECT
+        passType: 0
+      - keywords: UNITY_UI_ALPHACLIP
+        passType: 0
+  - first: {fileID: 4800000, guid: f11216b0cf85a9148a56c29fb1776e89, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 6dad35c0b62e44c26ab244ad80deee1a, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 8e549b21d187f7543910e7bf37dc7625, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: e31550527bfd7ad4b99198e2e129da0a, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 37789ac270ca8b6439f6e3c84a035f00, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: c47e1fb309bd6e84ab8b36b9889ed9df, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 2f18964507eaeef49b7cc423e06e1db1, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 560b8b75602de724d8d3a707f21ac550, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: 0f620ed5237d2bb41bfeae1f266a14e5, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: d6f771e6a84585844a914a77b8683834, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: a7ca52682c2a4ac42aeb329c2b29a877, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 460194e8f959df546b1734e7897769a7, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: 98a742c9541deb34899e7058b809f97d, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: e7edfe3a6edfce045a304dc5e3b99a3b, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 5848ae6a9e6322a45a50637de5404e5b, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 6297f40c7b617d641963e227c4633162, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 39b9e55ea20200644966e65d9aa16866, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 384c647ee2d23ee4b823b75ee7104fb9, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: 1845d6ce9e0322b4695c4a06c3d43ce0, type: 3}
+    second:
+      variants:
+      - keywords: BlendAdd Clip_OFF FrameBlend_OFF SoftParticles_OFF VertLight_OFF
+        passType: 1
+  - first: {fileID: 4800000, guid: 2db92afed1da50c4ebefc01280934882, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 8b37a07fbd2bdf44e949e48de688e11f, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 54f108df9c1c9a74182578ae103a2b44, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: UNITY_UI_CLIP_RECT
+        passType: 0

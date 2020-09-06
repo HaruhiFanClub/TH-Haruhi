@@ -5,15 +5,16 @@ using System.Globalization;
 
 public class UIFps : UiInstance
 {
-    private UIFpsCompoent _compoent;
-    protected override void OnLoadFinish()
-    {
-        base.OnLoadFinish();
-        _compoent = GetComponent<UIFpsCompoent>();
-    }
+    private UIFpsComponent _component;
     private float _fps;
     private int _frames;
     private float _lasttime;
+
+    protected override void OnLoadFinish()
+    {
+        base.OnLoadFinish();
+        _component = GetComponent<UIFpsComponent>();
+    }
 
     protected override void Update()
     {
@@ -36,6 +37,6 @@ public class UIFps : UiInstance
         _fps = Mathf.Ceil(_fps);
         _frames = 0;
         _lasttime = currtime;
-        _compoent.Fps.text = _fps.ToString(CultureInfo.InvariantCulture) + "fps" +" 子弹数量:"+ Bullet.TotalBulletCount;
+        _component.Fps.text = _fps.ToString(CultureInfo.InvariantCulture) + "fps" + " 子弹数量:" + Bullet.TotalBulletCount;
     }
 }

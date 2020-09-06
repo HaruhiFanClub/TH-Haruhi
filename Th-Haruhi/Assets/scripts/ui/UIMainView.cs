@@ -70,8 +70,8 @@ public class UIMainView : UiFullView
 
     private void Btn_GameStart()
     {
-        LevelMgr.Data = new LevelData();
-        LevelMgr.Data.CurLevelId = 1;
+        StageMgr.Data = new StageData();
+        StageMgr.Data.CurLevelId = 1;
 
         UiManager.Show<UIChooseDifficult>();
     }
@@ -83,8 +83,10 @@ public class UIMainView : UiFullView
     }
     private void Btn_ParcticeStart()
     {
-        LevelMgr.Data = new LevelData();
-        //LevelMgr.StartNewGame(1);
+        StageMgr.Data = new StageData();
+        StageMgr.Data.CurLevelId = 2;
+        StageMgr.Data.PlayerId = 2;
+        StageMgr.StartGame();
     }
 
     private void Btn_SpellParctice()

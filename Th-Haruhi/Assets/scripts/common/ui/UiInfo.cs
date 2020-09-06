@@ -5,8 +5,8 @@ public enum UiLayer
 {
     Bg,
     Main,
-    Loding,
-    Tips
+    Tips,
+    DontDestroy
 }
 
 public enum UiLoadType

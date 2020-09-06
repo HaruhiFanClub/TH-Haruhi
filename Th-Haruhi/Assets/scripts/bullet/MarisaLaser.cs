@@ -15,16 +15,13 @@ public class MarisaLaser : Bullet
     //激光命中最小间隔
     private int HurtEnemyFrame = 4;
 
-    public override void Init(BulletDeploy deploy, Transform master, GameObject model)
+    public override void Init(BulletDeploy deploy, Transform master, MeshRenderer model)
     {
-        _material = model.GetComponent<Renderer>().material;
+        _material = model.material;
         base.Init(deploy, master, model);
         AutoDestroy = false;
 
-        //激光的中心点在底部
-        var bRota = (int)deploy.rota % 90 == 0;
-        var localScale = model.transform.localScale;
-        model.transform.localPosition = new Vector3(0, bRota ? localScale.x / 2f : localScale.y / 2f, 0);
+      
 
         //初始化被击特效
         TextureEffectFactroy.CreateEffect(HitEffectId, SortingOrder.Effect, e => 
@@ -71,7 +68,7 @@ public class MarisaLaser : Bullet
         if (hit.collider != null)
         {
             var dist = Vector2.Distance(hit.point, transform.position);
-            _maxScaleMultiple = dist / Model.transform.localScale.x;
+            _maxScaleMultiple = dist / Renderer.transform.localScale.x;
 
             //如果击中的是敌人，播放特效
             if(hit.collider.gameObject.layer == Layers.Enemy)

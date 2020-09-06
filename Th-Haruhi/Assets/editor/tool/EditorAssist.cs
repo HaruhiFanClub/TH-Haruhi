@@ -86,11 +86,11 @@ public static class EditorAssist
         }
     }
 
-    //manifest改名，前面加 . 这样打包的时候就会忽略
+   //manifest改名，前面加 . 这样打包的时候就会忽略
     public static void RenameAllManifestFiles(string path = "")
     {
         if (path == "")
-            path = Application.streamingAssetsPath;
+            path = PathUtility.AssetBundlePath;
         string[] fileNames = Directory.GetFiles(path, "*.manifest", SearchOption.AllDirectories);
         int count = 0;
         foreach (string fileName in fileNames)
@@ -105,11 +105,25 @@ public static class EditorAssist
         //ResourceBuildTool.OutputLog(string.Format("RenameAllManifestFiles in path:" + path + ", count:" + count));
     }
 
+    public static void DeleteAllManifestFiles(string path = "")
+    {
+        if (path == "")
+            path = PathUtility.AssetBundlePath;
+        string[] fileNames = Directory.GetFiles(path, "*.manifest", SearchOption.AllDirectories);
+        int count = 0;
+        foreach (string fileName in fileNames)
+        {
+            if (File.Exists(fileName))
+                File.Delete(fileName);
+            count++;
+        }
+    }
+
     //manifest改名再改回来
     public static void RestoreAllManifestFiles(string path = "")
     {
         if (path == "")
-            path = Application.streamingAssetsPath;
+            path = PathUtility.AssetBundlePath;
         //ResourceBuildTool.OutputLog(string.Format("RestoreAllManifestFiles in path:[{0}]", path));
         string[] fileNames = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
         int count = 0;

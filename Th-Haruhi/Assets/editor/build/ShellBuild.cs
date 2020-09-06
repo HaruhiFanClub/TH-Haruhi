@@ -307,11 +307,10 @@ public static class ShellBuild
         if (!ShellBuild.g_bSkipBuildPlayer)
         {
             //删除除 目录名.manifest以外的所有manifest文件
-            EditorAssist.RenameAllManifestFiles();
+            EditorAssist.DeleteAllManifestFiles();
             var msgBuild = BuildPipeline.BuildPlayer(scenes, buildPath, target, options);
-            EditorAssist.RestoreAllManifestFiles();
-            Debug.Log(string.Format("build info : {0}  {1}  {2}  {3}  {4}", msgBuild, scenes, buildPath, target, options));
-            Debug.Log("Build BuildPipeline.BuildPlayer end");
+            EditorAssist.DeleteAllManifestFiles();
+
         }
     }
 
