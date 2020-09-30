@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: tezt
+  m_Shader: {fileID: 4800000, guid: 4909fdb2cea905a43af823c6350d07fb, type: 3}
+  m_ShaderKeywords: _DISSOLVE_ON_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Blend_Texture:
+        m_Texture: {fileID: 2800000, guid: 85666a51ea4a1d94abb08c06f9ef14d0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Blend_Texture01:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpTex:
+        m_Texture: {fileID: 2800000, guid: e7da193fc8033b349aef9a83a1f06d60, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveTex:
+        m_Texture: {fileID: 2800000, guid: d50d74c676f20d3438f9b2bd47438ba6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 36d6d18e3bbe92745932eeb8fb16f872, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 2, y: 2}
+    - _MaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _alpha:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _tex2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _vertex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaGamma: 1
+    - _AlphaScale: 1
+    - _Brightness: 1
+    - _BumpAmt: 222
+    - _ColorMask: 15
+    - _Cutoff: 0.5
+    - _Fresnel_Value: 0.52
+    - _Gamma: 1
+    - _InvFade: 0.5
+    - _Lighten: 1
+    - _QiangDu: 0.05
+    - _Speed01x: 0
+    - _Speed01y: 0
+    - _Speed02x: 0
+    - _Speed02y: 0
+    - _Speedx: 0
+    - _Speedy: 0
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    - _V_speed: 0
+    - _dissolve_on: 1
+    - _masku: 0
+    - _maskv: 0
+    - _qiangdu: 0
+    - _tex2V_speed: 0
+    - _tex2u_speed: 0
+    - _u_speed: 0
+    - _uv_on: 0
+    m_Colors:
+    - _Color: {r: 1, g: 0, b: 0, a: 1}
+    - _Color01: {r: 1, g: 1, b: 1, a: 1}
+    - _Color02: {r: 1, g: 1, b: 1, a: 1}
+    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

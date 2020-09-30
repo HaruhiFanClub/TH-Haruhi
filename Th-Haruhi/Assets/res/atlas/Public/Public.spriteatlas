@@ -79,7 +79,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: c02048db67f7f034fbd3ec0a5caba77e, type: 3}
-    totalSpriteSurfaceArea: 2955614
+    totalSpriteSurfaceArea: 3742046
     bindAsDefault: 0
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -91,24 +91,42 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 9d0938634d38a794da91bf7b4bd9c2d5, type: 3}
   - {fileID: 21300000, guid: 0ac54a669279005428d11697da71da46, type: 3}
   - {fileID: 21300000, guid: 64d34286e2df4bd48ae4ee345f0c31fe, type: 3}
+  - {fileID: 21300000, guid: 5b9d1d476b6f85b41869ec72259e86bc, type: 3}
   - {fileID: 21300000, guid: 379fa6b7f63838640ad4ad53ae8a82c5, type: 3}
   - {fileID: 21300000, guid: 8ba64bc8844658b46868df631bd5db21, type: 3}
-  - {fileID: 21300000, guid: ad8dc40b001b116408088861234fe2c2, type: 3}
+  - {fileID: 21300000, guid: 451b6ea92383bee44a2cde2e39885028, type: 3}
+  - {fileID: -3019424127853119141, guid: ad8dc40b001b116408088861234fe2c2, type: 3}
+  - {fileID: -2983801191155921686, guid: ad8dc40b001b116408088861234fe2c2, type: 3}
+  - {fileID: 2827070441461746612, guid: ad8dc40b001b116408088861234fe2c2, type: 3}
+  - {fileID: -2956027928350987577, guid: ad8dc40b001b116408088861234fe2c2, type: 3}
+  - {fileID: 3257298273032107962, guid: ad8dc40b001b116408088861234fe2c2, type: 3}
+  - {fileID: 3986553184928412961, guid: ad8dc40b001b116408088861234fe2c2, type: 3}
+  - {fileID: 3783279168100775825, guid: ad8dc40b001b116408088861234fe2c2, type: 3}
   - {fileID: 21300000, guid: 92aceccb82e11664fa6424d6c61d151c, type: 3}
+  - {fileID: 21300000, guid: 9e274b7ecc3ed4a4c885ff68b0451f92, type: 3}
   - {fileID: 21300000, guid: db62861f372e4e44d8fb0d82ef6054ee, type: 3}
   m_PackedSpriteNamesToIndex:
   - author
   - ui_bg
   - main_logo
-  - bg_diff
+  - bg_difficult
   - main_mark
   - logo
   - main_bg
   - beta
+  - ring02
   - loading_bg
   - bg_circle
-  - line
+  - ring01
+  - line_0
+  - line_1
+  - line_2
+  - line_3
+  - line_4
+  - line_5
+  - line_6
   - main_logo2
+  - ring00
   - icon_haruhi
   m_Tag: Public
   m_IsVariant: 0

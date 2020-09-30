@@ -19,12 +19,13 @@ public static class Layers
 
 public static class SortingOrder
 {
+    public const int EnmeyBg = 1;
+    public const int PlayerBullet = 2;
     public const int Player = 5;
     public const int PlayerSupport = 6;
+    public const int EnemyBullet = 11;
     public const int Enemy = 15;
     public const int Effect = 10;
-    public const int PlayerBullet = 0;
-    public const int EnemyBullet = 11;
 }
 public static class LayersMask
 {

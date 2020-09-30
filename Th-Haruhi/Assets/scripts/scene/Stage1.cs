@@ -30,7 +30,8 @@ public class Stage1 : StageBase
     }
     protected override IEnumerator LoopLevel()
     {
+        //create boss
         yield return new WaitForSeconds(3f);
-        yield return Enemy.Create(102, 0, 70);
+        yield return Enemy.Create(102, 80, 150);
     }
 }
