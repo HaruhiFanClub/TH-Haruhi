@@ -12,7 +12,7 @@ public class Camera3DAutoMove : MonoBehaviour
     public float MinRotaZ;
     public float MaxRotaZ;
     public float Speed;
-
+    private float _dufaultY;
     private float _nextTime;
     private bool _bInRota;
 
@@ -22,6 +22,7 @@ public class Camera3DAutoMove : MonoBehaviour
     {
         _nextTime = Time.time + Random.Range(MinSec, MaxSec);
         _currentEuler = transform.eulerAngles;
+        _dufaultY = _currentEuler.y;
     }
 
     private void Update()
@@ -49,7 +50,7 @@ public class Camera3DAutoMove : MonoBehaviour
     {
         var targetX = Random.Range(MinRotaX, MaxRotaX);
         var targetZ = Random.Range(MinRotaZ, MaxRotaZ);
-        _targetEuler = new Vector3(targetX, 0, targetZ);
+        _targetEuler = new Vector3(targetX, _dufaultY, targetZ);
         _bInRota = true;
         _nextTime = Time.time + Random.Range(MinSec, MaxSec);
     }

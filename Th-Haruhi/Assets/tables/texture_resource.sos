@@ -21,11 +21,11 @@ id	texture	name	startX	startY	width	height	xCount	yCount
 17	player/marisa/marisa.png	Ä§ÀíÉ³_¼¤¹âÃüÖĞ	96	192	32	32	4	1
 								
 #reimu								
-101	player/reimu/reimu.png	ÁéÃÎ_´ı»ú	0	0	32	48	8	1
-102	player/reimu/reimu.png	ÁéÃÎ_×óÒÆ	0	48	32	48	4	1
-103	player/reimu/reimu.png	ÁéÃÎ_×ó´ı»ú	128	48	32	48	4	1
-104	player/reimu/reimu.png	ÁéÃÎ_ÓÒÒÆ	0	96	32	48	4	1
-105	player/reimu/reimu.png	ÁéÃÎ_ÓÒ´ı»ú	128	96	32	48	4	1
+101	player/reimu/reimu_self.png	ÁéÃÎ_´ı»ú	0	0	32	48	8	1
+102	player/reimu/reimu_self.png	ÁéÃÎ_×óÒÆ	0	48	32	48	4	1
+103	player/reimu/reimu_self.png	ÁéÃÎ_×ó´ı»ú	128	48	32	48	4	1
+104	player/reimu/reimu_self.png	ÁéÃÎ_ÓÒÒÆ	0	96	32	48	4	1
+105	player/reimu/reimu_self.png	ÁéÃÎ_ÓÒ´ı»ú	128	96	32	48	4	1
 106	player/reimu/reimu.png	ÁéÃÎ_ÁÅ»ú	64	144	16	16	1	1
 107	player/reimu/reimu.png	reimu_bullet_red	192	160	64	16	1	1
 108	player/reimu/reimu.png	reimu_bullet_red_ef	0	144	16	16	4	1
@@ -36,11 +36,11 @@ id	texture	name	startX	startY	width	height	xCount	yCount
 113	player/reimu/reimu.png	Ä§ÀíÉ³_¼¤¹â·¢Éäµã	224	224	32	32	1	1
 								
 #sakuya								
-201	player/sakuya/sakuya.png	sakuya_´ı»ú	0	0	32	48	8	1
-202	player/sakuya/sakuya.png	sakuya_×óÒÆ	0	48	32	48	4	1
-203	player/sakuya/sakuya.png	sakuya_×ó´ı»ú	128	48	32	48	4	1
-204	player/sakuya/sakuya.png	sakuya_ÓÒÒÆ	0	96	32	48	4	1
-205	player/sakuya/sakuya.png	sakuya_ÓÒ´ı»ú	128	96	32	48	4	1
+201	player/sakuya/sakuya_self.png	sakuya_´ı»ú	0	0	32	48	8	1
+202	player/sakuya/sakuya_self.png	sakuya_×óÒÆ	0	48	32	48	4	1
+203	player/sakuya/sakuya_self.png	sakuya_×ó´ı»ú	128	48	32	48	4	1
+204	player/sakuya/sakuya_self.png	sakuya_ÓÒÒÆ	0	96	32	48	4	1
+205	player/sakuya/sakuya_self.png	sakuya_ÓÒ´ı»ú	128	96	32	48	4	1
 								
 								
 								
@@ -93,7 +93,7 @@ id	texture	name	startX	startY	width	height	xCount	yCount
 2082	enemy/enemy1.png	³á°ò´óÀ¶-ÒÆ¶¯	320	192	48	48	4	1
 2083	enemy/enemy1.png	³á°ò´óÀ¶-ÒÆ¶¯´ı»ú	320	240	48	48	4	1
 								
-#2012	enemy/enemy1.png	kedama	256	320	32	32	2	2
-#2013	enemy/enemy1.png	enemy_orb	192	64	32	32	4	1
-#2014	enemy/enemy1.png	enemy_orb_ring	192	96	32	32	4	1
-#2015	enemy/enemy1.png	enemy_aura	192	32	32	32	4	1
+3001	enemy/enemy3.png	¹í»ğºì	0	0	32	32	8	1
+3002	enemy/enemy3.png	¹í»ğÂÌ	0	32	32	32	8	1
+3003	enemy/enemy3.png	¹í»ğÀ¶	0	64	32	32	8	1
+3004	enemy/enemy3.png	¹í»ğ»Æ	0	96	32	32	8	1

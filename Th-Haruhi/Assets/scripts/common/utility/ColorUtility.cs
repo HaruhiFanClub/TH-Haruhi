@@ -13,6 +13,23 @@ using UnityEngine;
 
 public static class ColorUtility
 {
+    public static string FormatEasyColor(string str)
+    {
+        return string.Format("<color=#06CA00>{0}</color>", str);
+    }
+    public static string FormatNormalColor(string str)
+    {
+        return string.Format("<color=#006EFF>{0}</color>", str);
+    }
+    public static string FormatHardColor(string str)
+    {
+        return string.Format("<color=#FF2F39>{0}</color>", str);
+    }
+    public static string FormatLunaticColor(string str)
+    {
+        return string.Format("<color=#E000FF>{0}</color>", str);
+    }
+
     public static Color Rgb(byte r, byte g, byte b)
     {
         return new Color(r / 255f, g / 255f, b / 255f);

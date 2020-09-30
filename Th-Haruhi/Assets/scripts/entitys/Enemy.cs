@@ -31,8 +31,8 @@ public class Enemy : EntityBase
     public bool InMove { private set; get; }
     public bool IsDead { private set; get; }
 
-    private MoveAI_Base MoveAI;
-    private ShootAI_Base ShootAI;
+    //private MoveAI_Base MoveAI;
+    private AI_Base AIMoudle;
 
 
     private EnemyMoveStyle _aniStyle;
@@ -67,19 +67,12 @@ public class Enemy : EntityBase
 
         InitRigid(); 
 
-        //初始化AI模块
-        MoveAI =  Common.CreateInstance(deploy.MoveAI) as MoveAI_Base;
-        if(MoveAI != null)
-        {
-            MoveAI.Init(this);
-        }
-
         if(!string.IsNullOrEmpty(deploy.ShootAI))
         {
-            ShootAI = Common.CreateInstance(deploy.ShootAI) as ShootAI_Base;
-            if (ShootAI != null)
+            AIMoudle = Common.CreateInstance(deploy.ShootAI) as AI_Base;
+            if (AIMoudle != null)
             {
-                ShootAI.Init(this);
+                AIMoudle.Init(this);
             }
         }
     }
@@ -98,16 +91,9 @@ public class Enemy : EntityBase
         UpdateMoveStyle();
         UpdateMovePos();
 
-
-
-        if (MoveAI != null)
+        if(AIMoudle != null)
         {
-            MoveAI.OnUpdate();
-        }
-
-        if(ShootAI != null)
-        {
-            ShootAI.OnUpdate();
+            AIMoudle.OnUpdate();
         }
     }
 
@@ -318,21 +304,16 @@ public class Enemy : EntityBase
             Pool.Free(_moveData);
         }
 
-        if (MoveAI != null)
+        if (AIMoudle != null)
         {
-            MoveAI.OnDestroy();
-        }
-
-        if (ShootAI != null)
-        {
-            ShootAI.OnDestroy();
+            AIMoudle.OnDestroy();
         }
         base.OnDestroy();
     }
 
 
     //创建怪物
-    public static IEnumerator Create(int enemyId)
+    public static IEnumerator Create(int enemyId, float bornX = 0f, float bornY = 150f)
     {
         var deploy = TableUtility.GetDeploy<EnemyDeploy>(enemyId);
 
@@ -350,7 +331,7 @@ public class Enemy : EntityBase
         yield return Yielders.Frame;
 
         //设置贴图
-        var enemy = gameObj.AddComponent<Enemy>();
+        var enemy = deploy.isBoss ? gameObj.AddComponent<Boss>() : gameObj.AddComponent<Enemy>();
         for (int i = 0; i < deploy.resoureIds.Length; i++)
         {
             var resourceId = deploy.resoureIds[i];
@@ -367,7 +348,7 @@ public class Enemy : EntityBase
 
         //init
         enemy.Material = mainSprite.material;
-        enemy.transform.position = Vector2Fight.New(0, 150);
+        enemy.transform.position = Vector2Fight.New(bornX, bornY);
         enemy.Init(mainSprite, deploy);
         gameObj.SetActiveSafe(true);
     }
@@ -377,6 +358,7 @@ public class Enemy : EntityBase
 public class EnemyDeploy : Conditionable
 {
     public int id;
+    public bool isBoss;
     public string name;
     public float scale;
     public float radius;

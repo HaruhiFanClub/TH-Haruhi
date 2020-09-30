@@ -54,6 +54,9 @@ public static class StageMgr
         yield return StageBase.Load(Data.CurLevelId);
         yield return Yielders.Frame;
 
+        //加载UI
+        UiManager.Show<UIBattle>();
+
         //加载角色
         yield return Player.Create(Data.PlayerId, player =>
         {
@@ -71,6 +74,8 @@ public static class StageMgr
         //生命数-1
         Data.LeftLifeCount--;
 
+        //销毁子弹
+
         if (Data.LeftLifeCount > 0)
         {
             //1秒后复活
@@ -80,11 +85,10 @@ public static class StageMgr
         {
             //无剩余生命数量，弹出结算
             DOVirtual.DelayedCall(1f, () => { UiManager.Show<UIDeadView>(); });
-            
         }
     }
 
-    private static IEnumerator PlayerReborn(float sec = 1f)
+    private static IEnumerator PlayerReborn(float sec = 1.2f)
     {
         yield return new WaitForSeconds(sec);
         yield return Player.Create(Data.PlayerId, p =>

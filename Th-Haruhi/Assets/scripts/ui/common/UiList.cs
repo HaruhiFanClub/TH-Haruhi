@@ -16,6 +16,7 @@ public class UiList
         _<UIFps>            ("UIFps.prefab",                UiLayer.DontDestroy, UiLoadType.Multi); 
 
         //battle
+        _<UIBattle>         ("UIBattle.prefab",          UiLayer.Battle, UiLoadType.Multi);
         _<UIPauseView>      ("UIPauseView.prefab",       UiLayer.Main,   UiLoadType.Multi);
         _<UIDeadView>       ("UIDeadView.prefab",        UiLayer.Main,   UiLoadType.Multi);
     }

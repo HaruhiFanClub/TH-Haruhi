@@ -79,43 +79,33 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: c02048db67f7f034fbd3ec0a5caba77e, type: 3}
-    totalSpriteSurfaceArea: 3143014
+    totalSpriteSurfaceArea: 2944414
     bindAsDefault: 0
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: c10b0280e34268247b3ef4e11cac1e97, type: 3}
+  - {fileID: 21300000, guid: c1f215a0b91a26d4babf55ddf4f549d0, type: 3}
   - {fileID: 21300000, guid: 81975eb05a39f2443840c4abeca34130, type: 3}
   - {fileID: 21300000, guid: e53cbfe0a2ed4bb42b3fbc0f5df34885, type: 3}
   - {fileID: 21300000, guid: 44e46311036622747b5b763f2e66b135, type: 3}
   - {fileID: 21300000, guid: 9d0938634d38a794da91bf7b4bd9c2d5, type: 3}
-  - {fileID: 1471019858918773194, guid: dbd6ed63816284740b718ea1f36401ce, type: 3}
-  - {fileID: 1959187622960580222, guid: dbd6ed63816284740b718ea1f36401ce, type: 3}
-  - {fileID: -6238173728711600983, guid: dbd6ed63816284740b718ea1f36401ce, type: 3}
-  - {fileID: -8079648683573792643, guid: dbd6ed63816284740b718ea1f36401ce, type: 3}
-  - {fileID: -1183237142440055844, guid: dbd6ed63816284740b718ea1f36401ce, type: 3}
-  - {fileID: 21300000, guid: 71367c84df9f4c14e98766971986026d, type: 3}
   - {fileID: 21300000, guid: 0ac54a669279005428d11697da71da46, type: 3}
   - {fileID: 21300000, guid: 64d34286e2df4bd48ae4ee345f0c31fe, type: 3}
+  - {fileID: 21300000, guid: 379fa6b7f63838640ad4ad53ae8a82c5, type: 3}
   - {fileID: 21300000, guid: 8ba64bc8844658b46868df631bd5db21, type: 3}
-  - {fileID: 21300000, guid: 139f622923fe35844b7b85438577c5a8, type: 3}
   - {fileID: 21300000, guid: 92aceccb82e11664fa6424d6c61d151c, type: 3}
   - {fileID: 21300000, guid: db62861f372e4e44d8fb0d82ef6054ee, type: 3}
   m_PackedSpriteNamesToIndex:
   - author
+  - ui_bg
   - main_logo
   - bg_diff
   - main_mark
   - logo
-  - rank_0
-  - rank_1
-  - rank_2
-  - rank_3
-  - rank_4
-  - loading_bg
   - main_bg
   - beta
+  - loading_bg
   - bg_circle
-  - title_page
   - main_logo2
   - icon_haruhi
   m_Tag: Public

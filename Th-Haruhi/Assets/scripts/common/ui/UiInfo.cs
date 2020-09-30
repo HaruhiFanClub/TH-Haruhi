@@ -4,6 +4,7 @@ using System;
 public enum UiLayer
 {
     Bg,
+    Battle,
     Main,
     Tips,
     DontDestroy

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-public class ShootAI_S01 : ShootAI_Base
+public class ShootAI_S01 : AI_Base
 {
     private float _nextShootTime;
     private int _shootIdx;

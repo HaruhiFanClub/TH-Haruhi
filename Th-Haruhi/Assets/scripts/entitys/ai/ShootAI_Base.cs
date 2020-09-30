@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class ShootAI_Base 
+public abstract class AI_Base 
 {
     protected Enemy Master;
     protected bool CanShoot;

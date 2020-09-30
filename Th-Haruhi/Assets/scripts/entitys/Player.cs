@@ -260,11 +260,16 @@ public class Player : EntityBase
         //特效
         EffectFactory.PlayEffectOnce(Deploy.deadEffect, transform.position);
 
+        //播放shader特效
+        StageCamera2D.Instance.PlayDeadEffect(transform.position);
+
         //销毁僚机
         SupportMgr.Clear();
 
         //销毁自己
         Destroy(gameObject);
+
+
 
         //发事件
         GameEventCenter.Send(GameEvent.OnPlayerDead);

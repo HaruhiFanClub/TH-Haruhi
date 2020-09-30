@@ -1,4 +1,4 @@
-Shader "XSJ/RimLight"
+Shader "Fps/RimLight"
 {
 	Properties
 	{

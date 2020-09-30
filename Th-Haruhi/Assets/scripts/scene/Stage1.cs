@@ -6,7 +6,6 @@ public class Stage1 : StageBase
     protected override void Awake()
     {
         base.Awake();
-
         GameEventCenter.AddListener(GameEvent.OnEnemyDie, OnEnemyDie);
     }
 
@@ -19,20 +18,19 @@ public class Stage1 : StageBase
     //测试用
     private void OnEnemyDie(object o)
     {
-        StartCoroutine(TestCreateEnemy());
+       // StartCoroutine(TestCreateEnemy());
     }
 
 
     private static IEnumerator TestCreateEnemy()
     {
         yield return new WaitForSeconds(3f);
-        var enemyId = UnityEngine.Random.Range(1, 10);
+        var enemyId = 102;
         yield return Enemy.Create(enemyId);
     }
     protected override IEnumerator LoopLevel()
     {
         yield return new WaitForSeconds(3f);
-
-        yield return Enemy.Create(2);
+        yield return Enemy.Create(102, 0, 90);
     }
 }
