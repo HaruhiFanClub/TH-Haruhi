@@ -18,6 +18,7 @@ public class Enemy : EntityBase
 
     //血量
     public int HP { private set; get; }
+    public int HPMax { private set; get; }
 
     public SpriteRenderer MainRenderer { private set; get; }
     
@@ -51,7 +52,7 @@ public class Enemy : EntityBase
     }
 
 
-    public void Init(SpriteRenderer renderer, EnemyDeploy deploy)
+    public virtual void Init(SpriteRenderer renderer, EnemyDeploy deploy)
     {
         transform.SetLayer(Layers.Enemy);
 
@@ -61,6 +62,7 @@ public class Enemy : EntityBase
         MainRenderer = renderer;
 
         HP = deploy.maxHp;
+        HPMax = HP;
 
         _aniStyle = EnemyMoveStyle.Idle;
         _currPos = transform.position;

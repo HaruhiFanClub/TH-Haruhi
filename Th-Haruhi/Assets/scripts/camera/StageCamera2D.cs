@@ -4,24 +4,24 @@ using System.Collections;
 public class StageCamera2D : MonoBehaviour
 {
 	public static StageCamera2D Instance;
-	private Camera _camera;
+	public Camera MainCamera { private set; get; }
 
 	private void Awake()
 	{
-		_camera = GetComponent<Camera>();
+		MainCamera = GetComponent<Camera>();
 		Instance = this;
 	}
 
 	private CameraPlayerDead _cameraDeadEffect;
 	public void PlayDeadEffect(Vector3 wordPos)
 	{
-		_cameraDeadEffect = _camera.gameObject.GetComponent<CameraPlayerDead>();
+		_cameraDeadEffect = MainCamera.gameObject.GetComponent<CameraPlayerDead>();
 		if(_cameraDeadEffect == null)
 		{
-			_cameraDeadEffect = _camera.gameObject.AddComponent<CameraPlayerDead>();
+			_cameraDeadEffect = MainCamera.gameObject.AddComponent<CameraPlayerDead>();
 		}
 
-		var screenPos = _camera.WorldToScreenPoint(wordPos);
+		var screenPos = MainCamera.WorldToScreenPoint(wordPos);
 		_cameraDeadEffect.Radius = 0f;
 		_cameraDeadEffect.CenterX = screenPos.x / Screen.width;
 		_cameraDeadEffect.CenterY = screenPos.y / Screen.height;
