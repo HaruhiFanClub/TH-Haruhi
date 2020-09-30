@@ -372,7 +372,7 @@ public class CheckPlaneWindow : EditorWindow
         }
   
         
-        var findRoot = new[] { "Assets/res/PolygonFarm" };
+        var findRoot = new[] { "Assets/res/scenes/stage1/PolygonFarm" };
         string[] ids = AssetDatabase.FindAssets("t:prefab", findRoot);
         List<string> notUsePrefab = new List<string>();
         for (int i = 0; i < ids.Length; i++)
@@ -469,7 +469,7 @@ public class CheckPlaneWindow : EditorWindow
         }
 
 
-        var findRoot = new[] { "Assets/res/PolygonFarm" };
+        var findRoot = new[] { "Assets/res/scenes/stage1/PolygonFarm" };
 
         string[] ids = AssetDatabase.FindAssets("t:prefab", new[] { "Assets" });
         List<string> materialsStr = new List<string>();
