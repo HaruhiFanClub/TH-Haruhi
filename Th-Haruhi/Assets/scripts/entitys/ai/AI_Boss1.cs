@@ -18,9 +18,14 @@ public class AI_Boss1 : AI_Base
     {
         if (!CanShoot) return;
 
+        
         if (Time.time <= _nextShootTime) return;
-
         _nextShootTime = Time.time + GameSystem.FrameTime;
+
+        for(int i = 0; i < 3; i++)
+        {
+
+        }
     }
 
 

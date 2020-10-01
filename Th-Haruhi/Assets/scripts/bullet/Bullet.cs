@@ -1,17 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Bullet : EntityBase
 {
+    public List<Sprite> AniList { set; get; }
     public override EEntityType EntityType => EEntityType.Bullet;
     public BulletDeploy Deploy { private set; get; }
     protected Transform Master { private set; get; }
-    protected MeshRenderer Renderer { private set; get; }
+    public MeshRenderer Renderer { private set; get; }
     public bool AutoDestroy { set; get; }
-    public float BulletSpeed { protected set; get; }
+    public int Atk { protected set; get; }
     public MoveData MoveData { protected set; get; }
+    public float ShootTime { protected set; get; }
 
-
-    private float _startTime;
     private bool _bShooted;
 
     public static int TotalBulletCount;
@@ -39,25 +40,42 @@ public class Bullet : EntityBase
     public virtual void ReInit(Transform t)
     {
         Master = t;
-        BulletSpeed = Deploy.speed;
     }
 
-    public virtual void Shoot(MoveData moveData)
+    public virtual void Shoot(MoveData moveData, int atk)
     {
+        Atk = atk;
         transform.position = moveData.StartPos;
-        _startTime = Time.time;
+        ShootTime = Time.time;
         InitBulletMoveData(moveData);
         _bShooted = true;
     }
 
-    private float _nextStartTime;
-    private bool _inStop;
-
+    private int _currAniIdx;
+    private float _lastAniTime;
+    protected override void Update()
+    {
+        base.Update();
+        if(Deploy.isAni && AniList != null)
+        {
+            if(Time.time - _lastAniTime > 0.1f)
+            {
+                _currAniIdx++;
+                if(_currAniIdx >= AniList.Count)
+                {
+                    _currAniIdx = 0;
+                }
+                Renderer.material.mainTexture = AniList[_currAniIdx].texture;
+                _lastAniTime = Time.time;
+            }
+        }
+    }
     protected override void FixedUpdate()
     {
         if (InCache) return;
         if (!_bShooted) return;
 
+        /*
         if (Deploy.eventTime > 0 && Time.time - _startTime > Deploy.eventTime)
         {
             if (_inStop)
@@ -75,7 +93,7 @@ public class Bullet : EntityBase
                 _nextStartTime = Time.time + Deploy.eventWait;
                 return;
             }
-        }
+        }*/
         UpdateBulletMove();
     }
 
@@ -112,7 +130,7 @@ public class Bullet : EntityBase
                                                 MoveData.EHelixToward.Right;
             }
         }
-        transform.position += MoveData.Forward.normalized * Time.deltaTime * BulletSpeed;
+        transform.position += MoveData.Forward.normalized * Time.deltaTime * MoveData.Speed;
     }
 
     public virtual void OnBulletHitEnemy()
@@ -140,7 +158,7 @@ public class Bullet : EntityBase
     {
         base.OnRecycle();
         _bShooted = false;
-        _startTime = 0;
+        ShootTime = 0;
         Pool.Free(MoveData);
     }
 }
@@ -151,16 +169,12 @@ public class BulletDeploy : Conditionable
     public int id;
     public string classType;
     public int resourceId;
-    public float speed;
-    public float rota;
+    public float rota = 90f;
     public float scale;
     public float alpha;
     public float radius;
     public int spriteIdx;
-    public int atk;
     public int bombEffectId;
     public int centerPivot;
-
-    public float eventTime;
-    public float eventWait;
+    public bool isAni;
 }

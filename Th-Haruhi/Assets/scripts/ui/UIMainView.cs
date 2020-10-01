@@ -32,6 +32,8 @@ public class UIMainView : UiFullView
         _compent.Btn_Option.onClick.AddListener(Btn_Option);
         _compent.Btn_Manual.onClick.AddListener(Btn_Manual);
         _compent.Btn_Quit.onClick.AddListener(Btn_Quit);
+
+        InitDebug();
     }
 
     private void DoOpen(bool bFisstOpen)
@@ -118,6 +120,23 @@ public class UIMainView : UiFullView
         UILogo.Show(() =>
         {
             Application.Quit();
+        });
+    }
+
+
+    //debug
+    private void InitDebug()
+    {
+        if(!Debug.isDebugBuild)
+        {
+            _compent.DebugRoot.SetActiveSafe(false);
+            return;
+        }
+
+        _compent.Debug_BulletLib.onClick.AddListener(() => 
+        {
+            Debug.Log("Debug Open BulletLib");
+            UiManager.Show<UIDebugBulletLib>();
         });
     }
 }

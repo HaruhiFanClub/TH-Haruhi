@@ -295,7 +295,7 @@ public class Enemy : EntityBase
             return;
 
         var playerBullet = collider.GetComponent<Bullet>();
-        OnEnemyHit(playerBullet.Deploy.atk);
+        OnEnemyHit(playerBullet.Atk);
         playerBullet.OnBulletHitEnemy();
     }
 

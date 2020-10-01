@@ -46,7 +46,7 @@ public class MarisaLaser : Bullet
             var enemy = enemyObj.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.OnEnemyHit(Deploy.atk);
+                enemy.OnEnemyHit(Atk);
             }
         }
     }

@@ -188,7 +188,7 @@ public class Player : EntityBase
             var pos = transform.position + new Vector3(Deploy.shootPos[i][0], Deploy.shootPos[i][1]);
             BulletFactory.CreateBullet(Deploy.normalBulletId, transform, Layers.PlayerBullet,  bullet =>
             {
-                bullet.Shoot(MoveData.New(pos, Vector3.up));
+                bullet.Shoot(MoveData.New(pos, Vector3.up, Deploy.bulletSpeed), Deploy.bulletAtk);
             });
         }
 
@@ -356,6 +356,8 @@ public class PlayerDeploy : Conditionable
     public int[] resoureIds;
     public int normalBulletId;
     public int shootFrame;
+    public int bulletSpeed;
+    public int bulletAtk;
     public float[][] shootPos;
     public int shootSound;
     public int supprotId;

@@ -11,7 +11,7 @@ public class PlayerBullet : Bullet
         _hitEnemyTime = Time.time;
 
         //击中敌人后速度减慢
-        BulletSpeed = 10f;
+        MoveData.Speed = 10f;
         Renderer.material.SetFloat("_Brightness", 2f);
     }
 

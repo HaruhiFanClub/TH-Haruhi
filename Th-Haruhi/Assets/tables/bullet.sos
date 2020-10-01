@@ -1,44 +1,466 @@
-#子弹配置							0:中心为中心 1:底部为中心 2:头部为中心							#event类型
-#		类型	资源ID	缩放	图集中的第几张图片	碰撞半径比例，如果为-1则为boxCollider	中心点	透明度	默认旋转方向	速度	攻击力	爆炸特效ID	几秒后出发event	停滞
-id	name	classType	resourceId	scale	spriteIdx	radius	centerPivot	alpha	rota	speed	atk	bombEffectId	eventTime	eventWait
-1	魔理沙普攻	PlayerBullet	6	1	0	0.3	2	0.6	90	50	10			
-2	灵梦普攻	PlayerBullet	107	1	0	0.3	2	0.6	90	50	10			
-														
-101	魔理沙导弹	Bullet	7	1	0	0.4	0	0.8	90	30	10	4		
-102	魔理沙激光	MarisaLaser	16	1	0	-1	1	0.8	90	0	10			
-														
-201	arrow_big	Bullet	1008	1	1	0.2		1	90	6				
-														
-1001	arrow_big	Bullet	1005	1	0	0.2		1	90	7				
-1002	arrow_big	Bullet	1005	1	1	0.2		1	90	7				
-1003	arrow_big	Bullet	1005	1	2	0.2		1	90	7				
-1004	arrow_big	Bullet	1005	1	3	0.2		1	90	7				
-														
-1005	arrow_big	Bullet	1002	1	0	0.2		1	90	5				
-1006	arrow_big	Bullet	1002	1	1	0.2		1	90	5				
-1007	arrow_big	Bullet	1002	1	2	0.2		1	90	5				
-1008	arrow_big	Bullet	1002	1	3	0.2		1	90	5				
-1009	arrow_big	Bullet	1003	1	0	0.2		1	90	2			3	2
-1010	arrow_big	Bullet	1003	1	1	0.2		1	90	2			3	2
-1011	arrow_big	Bullet	1003	1	2	0.2		1	90	2			3	2
-1012	arrow_big	Bullet	1003	1	3	0.2		1	90	2			3	2
-														
-1013	arrow_big	Bullet	1006	1	0	0.2		1	90	8			2	1
-1014	arrow_big	Bullet	1006	1	1	0.2		1	90	8			2	1
-1015	arrow_big	Bullet	1006	1	2	0.2		1	90	8			2	1
-1016	arrow_big	Bullet	1006	1	3	0.2		1	90	8			2	1
-														
-1017	arrow_big	Bullet	1007	1	0	0.2		1	90	4				
-1018	arrow_big	Bullet	1007	1	1	0.2		1	90	4				
-1019	arrow_big	Bullet	1007	1	2	0.2		1	90	4				
-1020	arrow_big	Bullet	1007	1	3	0.2		1	90	4				
-														
-1021	arrow_big	Bullet	1008	1	0	0.2		1	90	6				
-1022	arrow_big	Bullet	1008	1	1	0.2		1	90	6				
-1023	arrow_big	Bullet	1008	1	2	0.2		1	90	6				
-1024	arrow_big	Bullet	1008	1	3	0.2		1	90	6				
-														
-1025	arrow_big	Bullet	1009	1	0	0.2		1	90	7			4	1
-1026	arrow_big	Bullet	1009	1	1	0.2		1	90	7			4	1
-1027	arrow_big	Bullet	1009	1	2	0.2		1	90	7			4	1
-1028	arrow_big	Bullet	1009	1	3	0.2		1	90	7			4	1
+#子弹配置									0:中心为中心 1:底部为中心 2:头部为中心	
+#		类型	序列帧子弹	资源ID	缩放	图集中的第几张图片	碰撞半径比例，如果为-1则为boxCollider	透明度	中心点	爆炸特效ID
+id	name	classType	isAni	resourceId	scale	spriteIdx	radius	alpha	centerPivot	bombEffectId
+										
+#player bullet										
+										
+1	魔理沙普攻	PlayerBullet		6	1	0	0.3	0.6	2	
+2	灵梦普攻	PlayerBullet		107	1	0	0.3	0.6	2	
+101	魔理沙导弹	Bullet		7	1	0	0.4	0.8	0	4
+102	魔理沙激光	MarisaLaser		16	1	0	-1	0.8	1	
+										
+										
+#enemy_bullet										
+										
+1001		Bullet		1001	1	0	0.2	1		
+1002		Bullet		1001	1	1	0.2	1		
+1003		Bullet		1001	1	2	0.2	1		
+1004		Bullet		1001	1	3	0.2	1		
+1005		Bullet		1001	1	4	0.2	1		
+1006		Bullet		1001	1	5	0.2	1		
+1007		Bullet		1001	1	6	0.2	1		
+1008		Bullet		1001	1	7	0.2	1		
+1009		Bullet		1001	1	8	0.2	1		
+1010		Bullet		1001	1	9	0.2	1		
+1011		Bullet		1001	1	10	0.2	1		
+1012		Bullet		1001	1	11	0.2	1		
+1013		Bullet		1001	1	12	0.2	1		
+1014		Bullet		1001	1	13	0.2	1		
+1015		Bullet		1001	1	14	0.2	1		
+1016		Bullet		1001	1	15	0.2	1		
+1017		Bullet		1002	1	0	0.2	1		
+1018		Bullet		1002	1	1	0.2	1		
+1019		Bullet		1002	1	2	0.2	1		
+1020		Bullet		1002	1	3	0.2	1		
+1021		Bullet		1002	1	4	0.2	1		
+1022		Bullet		1002	1	5	0.2	1		
+1023		Bullet		1002	1	6	0.2	1		
+1024		Bullet		1002	1	7	0.2	1		
+1025		Bullet		1002	1	8	0.2	1		
+1026		Bullet		1002	1	9	0.2	1		
+1027		Bullet		1002	1	10	0.2	1		
+1028		Bullet		1002	1	11	0.2	1		
+1029		Bullet		1002	1	12	0.2	1		
+1030		Bullet		1002	1	13	0.2	1		
+1031		Bullet		1002	1	14	0.2	1		
+1032		Bullet		1002	1	15	0.2	1		
+1033		Bullet		1003	1	0	0.2	1		
+1034		Bullet		1003	1	1	0.2	1		
+1035		Bullet		1003	1	2	0.2	1		
+1036		Bullet		1003	1	3	0.2	1		
+1037		Bullet		1003	1	4	0.2	1		
+1038		Bullet		1003	1	5	0.2	1		
+1039		Bullet		1003	1	6	0.2	1		
+1040		Bullet		1003	1	7	0.2	1		
+1041		Bullet		1003	1	8	0.2	1		
+1042		Bullet		1003	1	9	0.2	1		
+1043		Bullet		1003	1	10	0.2	1		
+1044		Bullet		1003	1	11	0.2	1		
+1045		Bullet		1003	1	12	0.2	1		
+1046		Bullet		1003	1	13	0.2	1		
+1047		Bullet		1003	1	14	0.2	1		
+1048		Bullet		1003	1	15	0.2	1		
+1049		Bullet		1004	1	0	0.2	1		
+1050		Bullet		1004	1	1	0.2	1		
+1051		Bullet		1004	1	2	0.2	1		
+1052		Bullet		1004	1	3	0.2	1		
+1053		Bullet		1004	1	4	0.2	1		
+1054		Bullet		1004	1	5	0.2	1		
+1055		Bullet		1004	1	6	0.2	1		
+1056		Bullet		1004	1	7	0.2	1		
+1057		Bullet		1005	1	0	0.2	1		
+1058		Bullet		1005	1	1	0.2	1		
+1059		Bullet		1005	1	2	0.2	1		
+1060		Bullet		1005	1	3	0.2	1		
+1061		Bullet		1005	1	4	0.2	1		
+1062		Bullet		1005	1	5	0.2	1		
+1063		Bullet		1005	1	6	0.2	1		
+1064		Bullet		1005	1	7	0.2	1		
+1065		Bullet		1006	1	0	0.2	1		
+1066		Bullet		1006	1	1	0.2	1		
+1067		Bullet		1006	1	2	0.2	1		
+1068		Bullet		1006	1	3	0.2	1		
+1069		Bullet		1006	1	4	0.2	1		
+1070		Bullet		1006	1	5	0.2	1		
+1071		Bullet		1006	1	6	0.2	1		
+1072		Bullet		1006	1	7	0.2	1		
+1073		Bullet		1006	1	8	0.2	1		
+1074		Bullet		1006	1	9	0.2	1		
+1075		Bullet		1006	1	10	0.2	1		
+1076		Bullet		1006	1	11	0.2	1		
+1077		Bullet		1006	1	12	0.2	1		
+1078		Bullet		1006	1	13	0.2	1		
+1079		Bullet		1006	1	14	0.2	1		
+1080		Bullet		1006	1	15	0.2	1		
+1081		Bullet		1007	1	0	0.2	1		
+1082		Bullet		1007	1	1	0.2	1		
+1083		Bullet		1007	1	2	0.2	1		
+1084		Bullet		1007	1	3	0.2	1		
+1085		Bullet		1007	1	4	0.2	1		
+1086		Bullet		1007	1	5	0.2	1		
+1087		Bullet		1007	1	6	0.2	1		
+1088		Bullet		1007	1	7	0.2	1		
+1089		Bullet		1008	1	0	0.2	1		
+1090		Bullet		1008	1	1	0.2	1		
+1091		Bullet		1008	1	2	0.2	1		
+1092		Bullet		1008	1	3	0.2	1		
+1093		Bullet		1008	1	4	0.2	1		
+1094		Bullet		1008	1	5	0.2	1		
+1095		Bullet		1008	1	6	0.2	1		
+1096		Bullet		1008	1	7	0.2	1		
+1097		Bullet		1008	1	8	0.2	1		
+1098		Bullet		1008	1	9	0.2	1		
+1099		Bullet		1008	1	10	0.2	1		
+1100		Bullet		1008	1	11	0.2	1		
+1101		Bullet		1008	1	12	0.2	1		
+1102		Bullet		1008	1	13	0.2	1		
+1103		Bullet		1008	1	14	0.2	1		
+1104		Bullet		1008	1	15	0.2	1		
+1105		Bullet		1009	1	0	0.2	1		
+1106		Bullet		1009	1	1	0.2	1		
+1107		Bullet		1009	1	2	0.2	1		
+1108		Bullet		1009	1	3	0.2	1		
+1109		Bullet		1009	1	4	0.2	1		
+1110		Bullet		1009	1	5	0.2	1		
+1111		Bullet		1009	1	6	0.2	1		
+1112		Bullet		1009	1	7	0.2	1		
+1113		Bullet		1010	1	0	0.8	1		
+1114		Bullet		1010	1	1	0.8	1		
+1115		Bullet		1010	1	2	0.8	1		
+1116		Bullet		1010	1	3	0.8	1		
+1117		Bullet		1011	1	0	0.2	1		
+1118		Bullet		1011	1	1	0.2	1		
+1119		Bullet		1011	1	2	0.2	1		
+1120		Bullet		1011	1	3	0.2	1		
+1121		Bullet		1011	1	4	0.2	1		
+1122		Bullet		1011	1	5	0.2	1		
+1123		Bullet		1011	1	6	0.2	1		
+1124		Bullet		1011	1	7	0.2	1		
+1125		Bullet		1011	1	8	0.2	1		
+1126		Bullet		1011	1	9	0.2	1		
+1127		Bullet		1011	1	10	0.2	1		
+1128		Bullet		1011	1	11	0.2	1		
+1129		Bullet		1011	1	12	0.2	1		
+1130		Bullet		1011	1	13	0.2	1		
+1131		Bullet		1011	1	14	0.2	1		
+1132		Bullet		1011	1	15	0.2	1		
+1133		Bullet		1012	1	0	0.2	1		
+1134		Bullet		1012	1	1	0.2	1		
+1135		Bullet		1012	1	2	0.2	1		
+1136		Bullet		1012	1	3	0.2	1		
+1137		Bullet		1012	1	4	0.2	1		
+1138		Bullet		1012	1	5	0.2	1		
+1139		Bullet		1012	1	6	0.2	1		
+1140		Bullet		1012	1	7	0.2	1		
+1141		Bullet		1012	1	8	0.2	1		
+1142		Bullet		1012	1	9	0.2	1		
+1143		Bullet		1012	1	10	0.2	1		
+1144		Bullet		1012	1	11	0.2	1		
+1145		Bullet		1012	1	12	0.2	1		
+1146		Bullet		1012	1	13	0.2	1		
+1147		Bullet		1012	1	14	0.2	1		
+1148		Bullet		1012	1	15	0.2	1		
+1149		Bullet		1013	1	0	0.2	1		
+1150		Bullet		1013	1	1	0.2	1		
+1151		Bullet		1013	1	2	0.2	1		
+1152		Bullet		1013	1	3	0.2	1		
+1153		Bullet		1013	1	4	0.2	1		
+1154		Bullet		1013	1	5	0.2	1		
+1155		Bullet		1013	1	6	0.2	1		
+1156		Bullet		1013	1	7	0.2	1		
+1157		Bullet		1013	1	8	0.2	1		
+1158		Bullet		1013	1	9	0.2	1		
+1159		Bullet		1013	1	10	0.2	1		
+1160		Bullet		1013	1	11	0.2	1		
+1161		Bullet		1013	1	12	0.2	1		
+1162		Bullet		1013	1	13	0.2	1		
+1163		Bullet		1013	1	14	0.2	1		
+1164		Bullet		1013	1	15	0.2	1		
+1165		Bullet		1014	1	0	0.2	1		
+1166		Bullet		1014	1	1	0.2	1		
+1167		Bullet		1014	1	2	0.2	1		
+1168		Bullet		1014	1	3	0.2	1		
+1169		Bullet		1014	1	4	0.2	1		
+1170		Bullet		1014	1	5	0.2	1		
+1171		Bullet		1014	1	6	0.2	1		
+1172		Bullet		1014	1	7	0.2	1		
+1173		Bullet		1014	1	8	0.2	1		
+1174		Bullet		1014	1	9	0.2	1		
+1175		Bullet		1014	1	10	0.2	1		
+1176		Bullet		1014	1	11	0.2	1		
+1177		Bullet		1014	1	12	0.2	1		
+1178		Bullet		1014	1	13	0.2	1		
+1179		Bullet		1014	1	14	0.2	1		
+1180		Bullet		1014	1	15	0.2	1		
+1181		Bullet		1015	1	0	0.2	1		
+1182		Bullet		1015	1	1	0.2	1		
+1183		Bullet		1015	1	2	0.2	1		
+1184		Bullet		1015	1	3	0.2	1		
+1185		Bullet		1015	1	4	0.2	1		
+1186		Bullet		1015	1	5	0.2	1		
+1187		Bullet		1015	1	6	0.2	1		
+1188		Bullet		1015	1	7	0.2	1		
+1189		Bullet		1016	1	0	0.2	1		
+1190		Bullet		1016	1	1	0.2	1		
+1191		Bullet		1016	1	2	0.2	1		
+1192		Bullet		1016	1	3	0.2	1		
+1193		Bullet		1016	1	4	0.2	1		
+1194		Bullet		1016	1	5	0.2	1		
+1195		Bullet		1016	1	6	0.2	1		
+1196		Bullet		1016	1	7	0.2	1		
+1197		Bullet		1017	1	0	0.2	1		
+1198		Bullet		1017	1	1	0.2	1		
+1199		Bullet		1017	1	2	0.2	1		
+1200		Bullet		1017	1	3	0.2	1		
+1201		Bullet		1017	1	4	0.2	1		
+1202		Bullet		1017	1	5	0.2	1		
+1203		Bullet		1017	1	6	0.2	1		
+1204		Bullet		1017	1	7	0.2	1		
+1205		Bullet		1018	1	0	0.2	1		
+1206		Bullet		1018	1	1	0.2	1		
+1207		Bullet		1018	1	2	0.2	1		
+1208		Bullet		1018	1	3	0.2	1		
+1209		Bullet		1018	1	4	0.2	1		
+1210		Bullet		1018	1	5	0.2	1		
+1211		Bullet		1018	1	6	0.2	1		
+1212		Bullet		1018	1	7	0.2	1		
+1213		Bullet		1018	1	8	0.2	1		
+1214		Bullet		1018	1	9	0.2	1		
+1215		Bullet		1018	1	10	0.2	1		
+1216		Bullet		1018	1	11	0.2	1		
+1217		Bullet		1018	1	12	0.2	1		
+1218		Bullet		1018	1	13	0.2	1		
+1219		Bullet		1018	1	14	0.2	1		
+1220		Bullet		1018	1	15	0.2	1		
+1221		Bullet		1019	1	0	0.2	1		
+1222		Bullet		1019	1	1	0.2	1		
+1223		Bullet		1019	1	2	0.2	1		
+1224		Bullet		1019	1	3	0.2	1		
+1225		Bullet		1019	1	4	0.2	1		
+1226		Bullet		1019	1	5	0.2	1		
+1227		Bullet		1019	1	6	0.2	1		
+1228		Bullet		1019	1	7	0.2	1		
+1229		Bullet		1019	1	8	0.2	1		
+1230		Bullet		1019	1	9	0.2	1		
+1231		Bullet		1019	1	10	0.2	1		
+1232		Bullet		1019	1	11	0.2	1		
+1233		Bullet		1019	1	12	0.2	1		
+1234		Bullet		1019	1	13	0.2	1		
+1235		Bullet		1019	1	14	0.2	1		
+1236		Bullet		1019	1	15	0.2	1		
+1237		Bullet		1020	1	0	0.2	1		
+1238		Bullet		1020	1	1	0.2	1		
+1239		Bullet		1020	1	2	0.2	1		
+1240		Bullet		1020	1	3	0.2	1		
+1241		Bullet		1020	1	4	0.2	1		
+1242		Bullet		1020	1	5	0.2	1		
+1243		Bullet		1020	1	6	0.2	1		
+1244		Bullet		1020	1	7	0.2	1		
+1245		Bullet		1020	1	8	0.2	1		
+1246		Bullet		1020	1	9	0.2	1		
+1247		Bullet		1020	1	10	0.2	1		
+1248		Bullet		1020	1	11	0.2	1		
+1249		Bullet		1020	1	12	0.2	1		
+1250		Bullet		1020	1	13	0.2	1		
+1251		Bullet		1020	1	14	0.2	1		
+1252		Bullet		1020	1	15	0.2	1		
+1253		Bullet		1021	1	0	0.2	1		
+1254		Bullet		1021	1	1	0.2	1		
+1255		Bullet		1021	1	2	0.2	1		
+1256		Bullet		1021	1	3	0.2	1		
+1257		Bullet		1021	1	4	0.2	1		
+1258		Bullet		1021	1	5	0.2	1		
+1259		Bullet		1021	1	6	0.2	1		
+1260		Bullet		1021	1	7	0.2	1		
+1261		Bullet		1021	1	8	0.2	1		
+1262		Bullet		1021	1	9	0.2	1		
+1263		Bullet		1021	1	10	0.2	1		
+1264		Bullet		1021	1	11	0.2	1		
+1265		Bullet		1021	1	12	0.2	1		
+1266		Bullet		1021	1	13	0.2	1		
+1267		Bullet		1021	1	14	0.2	1		
+1268		Bullet		1021	1	15	0.2	1		
+1269		Bullet	TRUE	1022	1	0	0.2	1		
+1270		Bullet	TRUE	1023	1	0	0.2	1		
+1271		Bullet	TRUE	1024	1	0	0.2	1		
+1272		Bullet	TRUE	1025	1	0	0.2	1		
+1273		Bullet		1026	1	0	0.2	1		
+1274		Bullet		1026	1	1	0.2	1		
+1275		Bullet		1026	1	2	0.2	1		
+1276		Bullet		1026	1	3	0.2	1		
+1277		Bullet		1026	1	4	0.2	1		
+1278		Bullet		1026	1	5	0.2	1		
+1279		Bullet		1026	1	6	0.2	1		
+1280		Bullet		1026	1	7	0.2	1		
+1281		Bullet		1027	1	0	0.2	1		
+1282		Bullet		1027	1	1	0.2	1		
+1283		Bullet		1027	1	2	0.2	1		
+1284		Bullet		1027	1	3	0.2	1		
+1285		Bullet		1027	1	4	0.2	1		
+1286		Bullet		1027	1	5	0.2	1		
+1287		Bullet		1027	1	6	0.2	1		
+1288		Bullet		1027	1	7	0.2	1		
+1289		Bullet		1028	1	0	0.2	1		
+1290		Bullet		1028	1	1	0.2	1		
+1291		Bullet		1028	1	2	0.2	1		
+1292		Bullet		1028	1	3	0.2	1		
+1293		Bullet		1028	1	4	0.2	1		
+1294		Bullet		1028	1	5	0.2	1		
+1295		Bullet		1028	1	6	0.2	1		
+1296		Bullet		1028	1	7	0.2	1		
+1297		Bullet		1029	1	0	0.2	1		
+1298		Bullet		1029	1	1	0.2	1		
+1299		Bullet		1029	1	2	0.2	1		
+1300		Bullet		1029	1	3	0.2	1		
+1301		Bullet		1029	1	4	0.2	1		
+1302		Bullet		1029	1	5	0.2	1		
+1303		Bullet		1029	1	6	0.2	1		
+1304		Bullet		1029	1	7	0.2	1		
+1305		Bullet		1030	1	0	0.2	1		
+1306		Bullet		1030	1	1	0.2	1		
+1307		Bullet		1030	1	2	0.2	1		
+1308		Bullet		1030	1	3	0.2	1		
+1309		Bullet		1030	1	4	0.2	1		
+1310		Bullet		1030	1	5	0.2	1		
+1311		Bullet		1030	1	6	0.2	1		
+1312		Bullet		1030	1	7	0.2	1		
+1313		Bullet		1031	1	0	0.2	1		
+1314		Bullet		1031	1	1	0.2	1		
+1315		Bullet		1031	1	2	0.2	1		
+1316		Bullet		1031	1	3	0.2	1		
+1317		Bullet		1031	1	4	0.2	1		
+1318		Bullet		1031	1	5	0.2	1		
+1319		Bullet		1031	1	6	0.2	1		
+1320		Bullet		1031	1	7	0.2	1		
+1321		Bullet		1032	1	0	0.2	1		
+1322		Bullet		1032	1	1	0.2	1		
+1323		Bullet		1032	1	2	0.2	1		
+1324		Bullet		1032	1	3	0.2	1		
+1325		Bullet		1033	1	0	0.2	1		
+1326		Bullet		1033	1	1	0.2	1		
+1327		Bullet		1033	1	2	0.2	1		
+1328		Bullet		1033	1	3	0.2	1		
+1329		Bullet	TRUE	1034	1	0	0.2	1		
+1330		Bullet	TRUE	1035	1	0	0.2	1		
+1331		Bullet	TRUE	1036	1	0	0.2	1		
+1332		Bullet	TRUE	1037	1	0	0.2	1		
+1333		Bullet	TRUE	1038	1	0	0.2	1		
+1334		Bullet	TRUE	1039	1	0	0.2	1		
+1335		Bullet	TRUE	1040	1	0	0.2	1		
+1336		Bullet	TRUE	1041	1	0	0.2	1		
+1337		Bullet		1042	1	0	0.2	1		
+1338		Bullet		1042	1	1	0.2	1		
+1339		Bullet		1042	1	2	0.2	1		
+1340		Bullet		1042	1	3	0.2	1		
+1341		Bullet		1042	1	4	0.2	1		
+1342		Bullet		1042	1	5	0.2	1		
+1343		Bullet		1042	1	6	0.2	1		
+1344		Bullet		1042	1	7	0.2	1		
+1345		Bullet		1043	1	0	0.8	1		
+1346		Bullet		1043	1	1	0.8	1		
+1347		Bullet		1043	1	2	0.8	1		
+1348		Bullet		1043	1	3	0.8	1		
+1349		Bullet		1043	1	4	0.8	1		
+1350		Bullet		1043	1	5	0.8	1		
+1351		Bullet		1043	1	6	0.8	1		
+1352		Bullet		1043	1	7	0.8	1		
+1353		Bullet	TRUE	1044	1	0	0.2	1		
+1354		Bullet	TRUE	1045	1	0	0.2	1		
+1355		Bullet	TRUE	1046	1	0	0.2	1		
+1356		Bullet	TRUE	1047	1	0	0.2	1		
+1357		Bullet	TRUE	1048	1	0	0.2	1		
+1358		Bullet	TRUE	1049	1	0	0.2	1		
+1359		Bullet	TRUE	1050	1	0	0.2	1		
+1360		Bullet	TRUE	1051	1	0	0.2	1		
+1361		Bullet	TRUE	1052	1	0	0.2	1		
+1362		Bullet	TRUE	1053	1	0	0.2	1		
+1363		Bullet	TRUE	1054	1	0	0.2	1		
+1364		Bullet	TRUE	1055	1	0	0.2	1		
+1365		Bullet	TRUE	1056	1	0	0.2	1		
+1366		Bullet	TRUE	1057	1	0	0.2	1		
+1367		Bullet	TRUE	1058	1	0	0.2	1		
+1368		Bullet	TRUE	1059	1	0	0.2	1		
+1369		Bullet		1060	1	0	0.2	1		
+1370		Bullet		1060	1	1	0.2	1		
+1371		Bullet		1060	1	2	0.2	1		
+1372		Bullet		1060	1	3	0.2	1		
+1373		Bullet		1060	1	4	0.2	1		
+1374		Bullet		1060	1	5	0.2	1		
+1375		Bullet		1060	1	6	0.2	1		
+1376		Bullet		1060	1	7	0.2	1		
+1377		Bullet		1060	1	8	0.2	1		
+1378		Bullet		1060	1	9	0.2	1		
+1379		Bullet		1060	1	10	0.2	1		
+1380		Bullet		1060	1	11	0.2	1		
+1381		Bullet		1060	1	12	0.2	1		
+1382		Bullet		1060	1	13	0.2	1		
+1383		Bullet		1060	1	14	0.2	1		
+1384		Bullet		1060	1	15	0.2	1		
+1385		Bullet		1061	1	0	0.2	1		
+1386		Bullet		1061	1	1	0.2	1		
+1387		Bullet		1061	1	2	0.2	1		
+1388		Bullet		1061	1	3	0.2	1		
+1389		Bullet		1061	1	4	0.2	1		
+1390		Bullet		1061	1	5	0.2	1		
+1391		Bullet		1061	1	6	0.2	1		
+1392		Bullet		1061	1	7	0.2	1		
+1393		Bullet		1061	1	8	0.2	1		
+1394		Bullet		1061	1	9	0.2	1		
+1395		Bullet		1061	1	10	0.2	1		
+1396		Bullet		1061	1	11	0.2	1		
+1397		Bullet		1061	1	12	0.2	1		
+1398		Bullet		1061	1	13	0.2	1		
+1399		Bullet		1061	1	14	0.2	1		
+1400		Bullet		1061	1	15	0.2	1		
+1401		Bullet		1062	1	0	0.2	1		
+1402		Bullet		1062	1	1	0.2	1		
+1403		Bullet		1062	1	2	0.2	1		
+1404		Bullet		1062	1	3	0.2	1		
+1405		Bullet		1062	1	4	0.2	1		
+1406		Bullet		1062	1	5	0.2	1		
+1407		Bullet		1062	1	6	0.2	1		
+1408		Bullet		1062	1	7	0.2	1		
+1409		Bullet		1062	1	8	0.2	1		
+1410		Bullet		1062	1	9	0.2	1		
+1411		Bullet		1062	1	10	0.2	1		
+1412		Bullet		1062	1	11	0.2	1		
+1413		Bullet		1062	1	12	0.2	1		
+1414		Bullet		1062	1	13	0.2	1		
+1415		Bullet		1062	1	14	0.2	1		
+1416		Bullet		1062	1	15	0.2	1		
+1417		Bullet		1063	1	0	0.2	1		
+1418		Bullet		1063	1	1	0.2	1		
+1419		Bullet		1063	1	2	0.2	1		
+1420		Bullet		1063	1	3	0.2	1		
+1421		Bullet		1063	1	4	0.2	1		
+1422		Bullet		1063	1	5	0.2	1		
+1423		Bullet		1063	1	6	0.2	1		
+1424		Bullet		1063	1	7	0.2	1		
+1425		Bullet		1063	1	8	0.2	1		
+1426		Bullet		1063	1	9	0.2	1		
+1427		Bullet		1063	1	10	0.2	1		
+1428		Bullet		1063	1	11	0.2	1		
+1429		Bullet		1063	1	12	0.2	1		
+1430		Bullet		1063	1	13	0.2	1		
+1431		Bullet		1063	1	14	0.2	1		
+1432		Bullet		1063	1	15	0.2	1		
+1433		Bullet		1064	1	0	0.2	1		
+1434		Bullet		1064	1	1	0.2	1		
+1435		Bullet		1064	1	2	0.2	1		
+1436		Bullet		1064	1	3	0.2	1		
+1437		Bullet		1064	1	4	0.2	1		
+1438		Bullet		1064	1	5	0.2	1		
+1439		Bullet		1064	1	6	0.2	1		
+1440		Bullet		1064	1	7	0.2	1		
+1441		Bullet		1064	1	8	0.2	1		
+1442		Bullet		1064	1	9	0.2	1		
+1443		Bullet		1064	1	10	0.2	1		
+1444		Bullet		1064	1	11	0.2	1		
+1445		Bullet		1064	1	12	0.2	1		
+1446		Bullet		1064	1	13	0.2	1		
+1447		Bullet		1064	1	14	0.2	1		
+1448		Bullet		1064	1	15	0.2	1		
+1449		Bullet		1065	1	0	0.2	1		
+1450		Bullet		1065	1	1	0.2	1		
+1451		Bullet		1065	1	2	0.2	1		
+1452		Bullet		1065	1	3	0.2	1		

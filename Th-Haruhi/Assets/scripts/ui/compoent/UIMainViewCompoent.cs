@@ -14,4 +14,9 @@ public class UIMainViewCompoent : MonoBehaviour
     public UiTextButton Btn_Option;
     public UiTextButton Btn_Manual;
     public UiTextButton Btn_Quit;
+
+    //debug
+    public GameObject DebugRoot;
+    public UiButton Debug_BulletLib;
+    
 }

@@ -173,8 +173,13 @@ public class PlayerSupportDeploy : Conditionable
 
     public int slowBulletId;
     public int slowFrame;
+    public int slowAtk;
+    public float slowSpeed;
+
     public int fastBulletId;
     public int fastFrame;
+    public int fastAtk;
+    public float fastSpeed;
 }
 
 

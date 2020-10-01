@@ -13,7 +13,7 @@ public class MoveAI_UpToDown : MoveAI_Base
         base.Init(enemy);
         var f1 = Quaternion.Euler(0, 0, -90f) * Vector3.down;
 
-        var moveData = MoveData.New(Master.transform.position, f1);
+        var moveData = MoveData.New(Master.transform.position, f1, 5f);
         moveData.HelixToward = MoveData.EHelixToward.Right;
         moveData.HelixRefretFrame = 60;
         moveData.EulurPerFrame = 3f;

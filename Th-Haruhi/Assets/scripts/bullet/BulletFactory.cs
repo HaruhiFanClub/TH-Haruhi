@@ -46,11 +46,11 @@ public static class BulletFactory
         BulletTab = TableUtility.GetTable<BulletDeploy>();
     }
 
-    public static void CreateBulletAndShoot(int id, Transform master, int layer, MoveData moveData)
+    public static void CreateBulletAndShoot(int id, Transform master, int layer, MoveData moveData, int atk = 1)
     {
         CreateBullet(id, master, layer, bullet =>
         {
-            bullet.Shoot(moveData);
+            bullet.Shoot(moveData, atk);
         });
     }
 
@@ -120,6 +120,10 @@ public static class BulletFactory
 
             CreateBulletDirect(sprite, deploy, master, layer, bullet =>
             {
+                if (deploy.isAni)
+                {
+                    bullet.AniList = spriteList;
+                }
                 notify(bullet);
             });
         }));
@@ -182,7 +186,19 @@ public static class BulletFactory
 
         var mr = model.AddComponent<MeshRenderer>();
         mr.sharedMaterial = material;
-        mr.sortingOrder = layer == Layers.PlayerBullet ? SortingOrder.PlayerBullet : SortingOrder.EnemyBullet;
+
+        switch (layer)
+        {
+            case Layers.PlayerBullet:
+                mr.sortingOrder = SortingOrder.PlayerBullet;
+                break;
+            case Layers.EnemyBullet:
+                mr.sortingOrder = SortingOrder.EnemyBullet;
+                break;
+            case Layers.Ui:
+                mr.sortingOrder = SortingOrder.DebugUI;
+                break;
+        }
 
         model.transform.localEulerAngles = new Vector3(0, 0, deploy.rota);
 

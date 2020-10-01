@@ -37,7 +37,7 @@ public class ShootAI_S02 : AI_Base
         if(!_inWait && Time.time > _nextShootTime)
         {
             var f1 = Quaternion.Euler(0, 0, -60f) * _nextShootForward;
-            var bulletMoveData = MoveData.New(Master.transform.position, f1);
+            var bulletMoveData = MoveData.New(Master.transform.position, f1, 5f);
             bulletMoveData.HelixToward = MoveData.EHelixToward.Right;
             bulletMoveData.HelixRefretFrame = 20;
             bulletMoveData.EulurPerFrame = 6f;
@@ -45,7 +45,7 @@ public class ShootAI_S02 : AI_Base
             BulletFactory.CreateBulletAndShoot(201, Master.transform, Layers.EnemyBullet, bulletMoveData);
 
             var f2 = Quaternion.Euler(0, 0, 60f) * _nextShootForward;
-            var bulletMoveData2 = MoveData.New(Master.transform.position, f2);
+            var bulletMoveData2 = MoveData.New(Master.transform.position, f2, 5f);
             bulletMoveData2.HelixToward = MoveData.EHelixToward.Left;
             bulletMoveData2.HelixRefretFrame = 20;
             bulletMoveData2.EulurPerFrame = 6f;

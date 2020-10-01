@@ -50,6 +50,8 @@ public class PlayerSupport : MonoBehaviour
     { 
         var shootFrame = isSlow ? Deploy.slowFrame : Deploy.fastFrame;
         var bulletId = isSlow ? Deploy.slowBulletId : Deploy.fastBulletId;
+        var atk = isSlow ? Deploy.slowAtk : Deploy.fastAtk;
+        var bulletSpeed = isSlow ? Deploy.slowSpeed : Deploy.fastSpeed;
 
         if(_prevInSlow != isSlow)
         {
@@ -76,8 +78,8 @@ public class PlayerSupport : MonoBehaviour
                     NextShootTime = Time.time + shootFrame * GameSystem.FrameTime;
                     BulletFactory.CreateBullet(bulletId, transform, layer, bullet =>
                     {
-                        var data = MoveData.New(transform.position, MathUtility.SwapYZ(transform.forward));
-                        bullet.Shoot(data);
+                        var data = MoveData.New(transform.position, MathUtility.SwapYZ(transform.forward), bulletSpeed);
+                        bullet.Shoot(data, atk);
                     });
                 }
             }
@@ -90,7 +92,7 @@ public class PlayerSupport : MonoBehaviour
                 BulletFactory.CreateBullet(bulletId, transform, layer, bullet =>
                 {
                     _currBullet = bullet;
-                    bullet.Shoot(MoveData.New(transform.position, transform.up));
+                    bullet.Shoot(MoveData.New(transform.position, transform.up, bulletSpeed), atk);
                 });
             }
             if(_prevInLoopShoot && !inShoot)

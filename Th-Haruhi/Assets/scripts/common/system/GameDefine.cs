@@ -24,9 +24,11 @@ public static class SortingOrder
     public const int Player = 5;
     public const int PlayerSupport = 6;
     public const int EnemyBullet = 11;
-    public const int Enemy = 15;
     public const int Effect = 10;
+    public const int Enemy = 15;
+    public const int DebugUI = 20;
 }
+
 public static class LayersMask
 {
     public const int None = 0;
