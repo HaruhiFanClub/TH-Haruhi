@@ -158,6 +158,11 @@ public static class TextureEffectFactroy
             };
             material.SetFloat("_AlphaScale", deploy.alpha);
 
+            if (deploy.Color != null && deploy.Color.Length >= 3)
+            {
+                material.SetColor("_TintColor", new Color(deploy.Color[0], deploy.Color[1], deploy.Color[2], 1f));
+            }
+
             _materialCache[deploy.id] = material;
         }
 

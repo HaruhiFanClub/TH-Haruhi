@@ -14,8 +14,12 @@ public class Boss : Enemy
     private string BossHpBar = "ui/prefabs/battle/UIBossHpHud.prefab";
     private string BossHpCircle = "ui/prefabs/battle/UIBossCircle.prefab";
 
+    //boss符卡管理器
+    private BossCardMgr CardMgr;
+
     private UIBossHpComponent _bossHpHud;
     private bool _initedHpBar;
+
 
     public override void Init(SpriteRenderer renderer, EnemyDeploy deploy)
     {
@@ -23,7 +27,10 @@ public class Boss : Enemy
 
         MoveToTarget(Vector2Fight.New(0f, 50f), 10f);
 
-        DOVirtual.DelayedCall(1F, StartFight);
+        CardMgr = new BossCardMgr();
+        CardMgr.Init(this);
+
+        DOVirtual.DelayedCall(1.5F, StartFight);
     }
 
     private void StartFight()
@@ -40,6 +47,9 @@ public class Boss : Enemy
         //boss背景
         var bossCircle = ResourceMgr.Instantiate(ResourceMgr.LoadImmediately(BossHpCircle));
         bossCircle.transform.SetParent(gameObject.transform, false);
+
+        //bossCard
+        DOVirtual.DelayedCall(1F, CardMgr.OnStartFight);
     }
 
     private void UpdateHpHud()
@@ -49,10 +59,45 @@ public class Boss : Enemy
         _bossHpHud.Bar.fillAmount = (float)HP / HPMax;
 
     }
+
+    protected override void OnDead()
+    {
+        GameEventCenter.Send(GameEvent.OnEnemyDie);
+
+        //销毁子弹
+        BulletExplosion.Create(transform.position, 0.05f);
+
+        DOVirtual.DelayedCall(0.6f, () =>
+        {
+            StageCamera2D.Instance?.Shake(0.7f, 1.2f);
+            StageCamera3D.Instance?.Shake(0.7f, 1.2f);
+
+            //震屏
+            Sound.PlayUiAudioOneShot(105);
+
+            //播放shader特效
+            StageCamera2D.Instance.PlayDeadEffect(transform.position);
+
+            Destroy(gameObject);
+        });
+    }
     protected override void Update()
     {
         base.Update();
         UpdateHpHud();
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        CardMgr?.OnFixedUpdate();
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        CardMgr?.OnDestroy();
+        CardMgr = null;
     }
 }
 

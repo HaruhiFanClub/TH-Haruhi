@@ -79,7 +79,7 @@ public class PlayerSupport : MonoBehaviour
                     BulletFactory.CreateBullet(bulletId, transform, layer, bullet =>
                     {
                         var data = MoveData.New(transform.position, MathUtility.SwapYZ(transform.forward), bulletSpeed);
-                        bullet.Shoot(data, atk);
+                        bullet.Shoot(data, atk:atk);
                     });
                 }
             }
@@ -92,7 +92,7 @@ public class PlayerSupport : MonoBehaviour
                 BulletFactory.CreateBullet(bulletId, transform, layer, bullet =>
                 {
                     _currBullet = bullet;
-                    bullet.Shoot(MoveData.New(transform.position, transform.up, bulletSpeed), atk);
+                    bullet.Shoot(MoveData.New(transform.position, transform.up, bulletSpeed), atk: atk);
                 });
             }
             if(_prevInLoopShoot && !inShoot)

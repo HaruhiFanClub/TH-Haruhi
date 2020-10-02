@@ -188,7 +188,7 @@ public class Player : EntityBase
             var pos = transform.position + new Vector3(Deploy.shootPos[i][0], Deploy.shootPos[i][1]);
             BulletFactory.CreateBullet(Deploy.normalBulletId, transform, Layers.PlayerBullet,  bullet =>
             {
-                bullet.Shoot(MoveData.New(pos, Vector3.up, Deploy.bulletSpeed), Deploy.bulletAtk);
+                bullet.Shoot(MoveData.New(pos, Vector3.up, Deploy.bulletSpeed), atk: Deploy.bulletAtk);
             });
         }
 
@@ -269,11 +269,13 @@ public class Player : EntityBase
         //销毁自己
         Destroy(gameObject);
 
-
-
         //发事件
         GameEventCenter.Send(GameEvent.OnPlayerDead);
+
+        //销毁子弹
+        BulletExplosion.Create(transform.position, 0.3f);
     }
+
 
     //伤害判定
     private void OnTriggerEnter2D(Collider2D c)

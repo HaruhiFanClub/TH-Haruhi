@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using System.Collections.Generic;
+using UnityEngine;
 
 public enum EEntityType
 {
@@ -7,6 +9,16 @@ public enum EEntityType
     Effect,
     Bullet
 }
+
+public enum EShootSound
+{
+    Laser = 2006,
+    Tan00 = 2003,
+    Tan01 = 2004,
+    Tan02 = 2005,
+    Noraml = 2007,
+}
+
 
 public abstract class EntityBase : MonoBehaviour
 {
@@ -44,6 +56,87 @@ public abstract class EntityBase : MonoBehaviour
                 _rigidBody2d.freezeRotation = true;
             }
         }
+    }
+
+    public void PlayShootEffect(EColor color, float startScale = 1f)
+    {
+        var effectId = 0;
+        switch (color)
+        {
+            case EColor.Red:
+                effectId = 901;
+                break;
+            case EColor.Purple:
+                effectId = 902;
+                break;
+            case EColor.Blue:
+                effectId = 903;
+                break;
+            case EColor.BlueLight:
+                effectId = 904;
+                break;
+            case EColor.Green:
+                effectId = 905;
+                break;
+            case EColor.Yellow:
+                effectId = 906;
+                break;
+            case EColor.Orange:
+                effectId = 907;
+                break;
+            case EColor.White:
+                effectId = 908;
+                break;
+        }
+
+        if (effectId > 0)
+        {
+            var pos = transform.position;
+            TextureEffectFactroy.CreateEffect(effectId, SortingOrder.ShootEffect, effect =>
+            {
+                effect.transform.position = pos;
+                effect.transform.localScale = Vector3.one * startScale;
+                effect.transform.DOScale(0f, 0.4f).onComplete = () =>
+                {
+                    TextureEffectFactroy.DestroyEffect(effect);
+                };
+            });
+        }
+    }
+
+
+
+    private Dictionary<EShootSound, float> ShootSoundCd = new Dictionary<EShootSound, float>();
+
+    private float GetShootSoundCd(EShootSound e)
+    {
+        switch (e)
+        {
+            case EShootSound.Laser:
+                return GameSystem.FrameTime * 20;
+            case EShootSound.Tan00:
+            case EShootSound.Tan01:
+            case EShootSound.Tan02:
+                return GameSystem.FrameTime * 5;
+            case EShootSound.Noraml:
+                return GameSystem.FrameTime * 3;
+        }
+        return 0;
+    }
+    public void PlayShootSound(EShootSound sound)
+    {
+        float lastTime;
+        if(ShootSoundCd.TryGetValue(sound, out lastTime))
+        {
+            var cd = GetShootSoundCd(sound);
+            if(Time.time - lastTime < cd)
+            {
+                return;
+            }
+        }
+
+        ShootSoundCd[sound] = Time.time;
+        Sound.PlayUiAudioOneShot((int)sound);
     }
 
     public Rigidbody2D Rigid2D

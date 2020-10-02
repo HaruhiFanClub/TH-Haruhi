@@ -11,6 +11,7 @@ public class Bullet : EntityBase
     public bool AutoDestroy { set; get; }
     public int Atk { protected set; get; }
     public MoveData MoveData { protected set; get; }
+    public List<EventData> EventList { protected set; get; }
     public float ShootTime { protected set; get; }
 
     private bool _bShooted;
@@ -42,26 +43,27 @@ public class Bullet : EntityBase
         Master = t;
     }
 
-    public virtual void Shoot(MoveData moveData, int atk)
+ 
+    public virtual void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1)
     {
         Atk = atk;
         transform.position = moveData.StartPos;
         ShootTime = Time.time;
+        EventList = eventList;
         InitBulletMoveData(moveData);
         _bShooted = true;
     }
 
     private int _currAniIdx;
     private float _lastAniTime;
-    protected override void Update()
+    private void UpdateAnimation()
     {
-        base.Update();
-        if(Deploy.isAni && AniList != null)
+        if (Deploy.isAni && AniList != null)
         {
-            if(Time.time - _lastAniTime > 0.1f)
+            if (Time.time - _lastAniTime > 0.1f)
             {
                 _currAniIdx++;
-                if(_currAniIdx >= AniList.Count)
+                if (_currAniIdx >= AniList.Count)
                 {
                     _currAniIdx = 0;
                 }
@@ -74,30 +76,34 @@ public class Bullet : EntityBase
     {
         if (InCache) return;
         if (!_bShooted) return;
-
-        /*
-        if (Deploy.eventTime > 0 && Time.time - _startTime > Deploy.eventTime)
-        {
-            if (_inStop)
-            {
-                if (Time.time > _nextStartTime)
-                {
-                    _inStop = false;
-                    _startTime = Time.time;
-                }
-                return;
-            }
-            if (!_inStop && Deploy.eventWait > 0)
-            {
-                _inStop = true;
-                _nextStartTime = Time.time + Deploy.eventWait;
-                return;
-            }
-        }*/
+        UpdateAnimation();
         UpdateBulletMove();
+        UpdateEventList();
     }
 
  
+    private void UpdateEventList()
+    {
+        if (EventList == null || EventList.Count == 0) return;
+
+        for(int i = EventList.Count - 1; i >= 0; i--)
+        {
+            var e = EventList[i];
+            switch (e.Type)
+            {
+                case EventData.EventType.TimeChangeSpeed:
+
+                    if(Time.time - ShootTime > e.DelayTime)
+                    {
+                        MoveData.EndSpeed = e.SpeedData.EndSpeed;
+                        MoveData.Acceleration = e.SpeedData.Acceleration;
+                        MoveData.Speed = e.SpeedData.Speed;
+                        EventList.RemoveAt(i);
+                    }
+                    break;
+            }
+        }
+    }
 
     private void InitBulletMoveData(MoveData data)
     {
@@ -131,6 +137,15 @@ public class Bullet : EntityBase
             }
         }
         transform.position += MoveData.Forward.normalized * Time.deltaTime * MoveData.Speed;
+
+        if(!MathUtility.FloatEqual(MoveData.Acceleration, 0f))
+        {
+            MoveData.Speed += MoveData.Acceleration * Time.deltaTime;
+            if (!MathUtility.FloatEqual(MoveData.EndSpeed, 0) && Mathf.Abs(MoveData.EndSpeed - MoveData.Speed) < 0.1f)
+            {
+                MoveData.Speed = MoveData.EndSpeed;
+            }
+        }
     }
 
     public virtual void OnBulletHitEnemy()
@@ -157,6 +172,7 @@ public class Bullet : EntityBase
     public override void OnRecycle()
     {
         base.OnRecycle();
+        _currAniIdx = 0;
         _bShooted = false;
         ShootTime = 0;
         Pool.Free(MoveData);
@@ -177,4 +193,8 @@ public class BulletDeploy : Conditionable
     public int bombEffectId;
     public int centerPivot;
     public bool isAni;
+    public bool isBoxCollider;
+    public float sizeX;
+    public float sizeY;
+    public float brightness;
 }

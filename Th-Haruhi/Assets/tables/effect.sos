@@ -1,8 +1,21 @@
-#特效配置							自动缩放	自动旋转	自动gamma变化
-#		资源ID	序列帧帧率	缩放	翻转	透明度	[最小,最大,速度]	[方向,速度]	[最小,最大,速度]
-id	name	resourceId	frame	scale	rota	alpha	AutoScale	AutoRotation	AutoGamma
-1	魔理沙_僚机	10		1	0	1	[0.8,1,1]		
-2	灵梦_僚机	106		1	0	1		[-1,300]	
-3	魔理沙_激光发射点	13		1	0	1		[-1,300]	[0,1,10]
-4	魔理沙导弹爆炸	8	4	1	0	1			
-5	魔理沙_激光命中	17	2	1	0	1			[0,1,10]
+#特效配置								自动缩放	自动旋转	自动gamma变化
+#		资源ID	序列帧帧率	缩放	翻转	透明度	颜色	[最小,最大,速度]	[方向,速度]	[最小,最大,速度]
+id	name	resourceId	frame	scale	rota	alpha	Color	AutoScale	AutoRotation	AutoGamma
+1	魔理沙_僚机	10		1	0	1		[0.8,1,1]		
+2	灵梦_僚机	106		1	0	1			[-1,300]	
+3	魔理沙_激光发射点	13		1	0	1			[-1,300]	[0,1,10]
+4	魔理沙导弹爆炸	8	4	1	0	1				
+5	魔理沙_激光命中	17	2	1	0	1				[0,1,10]
+										
+										
+501	子弹爆炸	501	3	0.75	0	0.75	[1,0,0]			
+										
+										
+901	buleltShoot_红	901		1	0	1				
+902	buleltShoot_紫	902		1	0	1				
+903	buleltShoot_蓝	903		1	0	1				
+904	buleltShoot_青	904		1	0	1				
+905	buleltShoot_绿	905		1	0	1				
+906	buleltShoot_黄	906		1	0	1				
+907	buleltShoot_橙	907		1	0	1				
+908	buleltShoot_白	908		1	0	1				

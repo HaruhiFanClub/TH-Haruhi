@@ -70,9 +70,10 @@ public static class TextureUtility
     {
         List<Sprite> list = new List<Sprite>();
 
-        for (int i = 0; i < row; i++)
+       
+        for (int j = 0; j < column; j++)
         {
-            for (int j = 0; j < column; j++)
+            for (int i = 0; i < row; i++)
             {
                 var x = startX + i * width;
                 var y = (tex.height - height) - startY - height * j;

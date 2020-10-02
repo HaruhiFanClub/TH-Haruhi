@@ -13,6 +13,7 @@ public static class BulletFactory
     {
         public BulletDeploy Deploy;
         public Sprite Resource;
+        public List<Sprite> SpriteList;
         public Queue<Bullet> Queue;
         public float BackToPoolTime;
     }
@@ -46,11 +47,11 @@ public static class BulletFactory
         BulletTab = TableUtility.GetTable<BulletDeploy>();
     }
 
-    public static void CreateBulletAndShoot(int id, Transform master, int layer, MoveData moveData, int atk = 1)
+    public static void CreateBulletAndShoot(int id, Transform master, int layer, MoveData moveData, List<EventData> eventList = null, int atk = 1)
     {
         CreateBullet(id, master, layer, bullet =>
         {
-            bullet.Shoot(moveData, atk);
+            bullet.Shoot(moveData, eventList, atk);
         });
     }
 
@@ -82,7 +83,7 @@ public static class BulletFactory
                 }
                 else
                 {
-                    CreateBulletDirect(holder.Resource,deploy, master, layer, bulletObj =>
+                    CreateBulletDirect(holder.SpriteList, holder.Resource,deploy, master, layer, bulletObj =>
                     {
                         bullet = bulletObj;
                         notify(bullet);
@@ -113,17 +114,14 @@ public static class BulletFactory
                 {
                     Deploy = deploy,
                     Resource = sprite,
+                    SpriteList = spriteList,
                     Queue = new Queue<Bullet>()
                 };
                 CachePool.Add(id, holder);
             }
 
-            CreateBulletDirect(sprite, deploy, master, layer, bullet =>
+            CreateBulletDirect(spriteList, sprite, deploy, master, layer, bullet =>
             {
-                if (deploy.isAni)
-                {
-                    bullet.AniList = spriteList;
-                }
                 notify(bullet);
             });
         }));
@@ -156,7 +154,7 @@ public static class BulletFactory
     }
 
     
-    private static void CreateBulletDirect(Sprite resource, BulletDeploy deploy, Transform master, int layer,  Action<Bullet> notify)
+    private static void CreateBulletDirect(List<Sprite> spriteList, Sprite resource, BulletDeploy deploy, Transform master, int layer,  Action<Bullet> notify)
     {
         Type type = null;
 
@@ -180,7 +178,9 @@ public static class BulletFactory
             material = new Material(GameSystem.DefaultRes.CommonShader);
             material.mainTexture = resource.texture;
             material.SetFloat("_AlphaScale", deploy.alpha);
+            material.SetFloat("_Brightness", deploy.brightness);
             
+
             BulletMaterialCache[deploy.id] = material;
         }
 
@@ -204,6 +204,11 @@ public static class BulletFactory
 
         var sizeX = resource.bounds.size.x;
         var sizeY = resource.bounds.size.y;
+        if (deploy.sizeX > 0 && deploy.sizeY > 0)
+        {
+            sizeX = deploy.sizeX;
+            sizeY = deploy.sizeY;
+        }
 
         model.transform.localScale = new Vector3(sizeX, sizeY, 1);
 
@@ -219,7 +224,14 @@ public static class BulletFactory
         }
 
         //加collider
-        if (deploy.radius  > 0)
+        if(deploy.isBoxCollider)
+        {
+            var collider = _object.AddComponent<BoxCollider2D>();
+            collider.size = new Vector2(bRota ? sizeY : sizeX, bRota ? sizeX : sizeY) * deploy.radius;
+            collider.offset = model.transform.localPosition;
+            collider.isTrigger = true;
+        }
+        else if (deploy.radius  > 0)
         {
             var collider = _object.AddComponent<CircleCollider2D>();
             collider.radius = deploy.radius;
@@ -237,6 +249,12 @@ public static class BulletFactory
         {
             bullet.gameObject.layer = layer;
             bullet.Init(deploy, master, mr);
+        }
+
+        //ani
+        if (deploy.isAni)
+        {
+            bullet.AniList = spriteList;
         }
 
         notify(bullet);

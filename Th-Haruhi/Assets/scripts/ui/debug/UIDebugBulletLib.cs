@@ -2,12 +2,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 
 public class UIDebugBulletLib : UiInstance
 {
-
     private UIDebugBulletLibComponent _component;
     protected override void OnLoadFinish()
     {
@@ -51,39 +49,57 @@ public class UIDebugBulletLib : UiInstance
             bulletObj.transform.SetParent(_component.Grid, false);
 
             //createBullet
-            BulletFactory.CreateBullet(deploy.id, bulletObj.transform, Layers.Ui, bullet =>
+            Bullet bullet = null;
+            BulletFactory.CreateBullet(deploy.id, bulletObj.transform, Layers.Ui, b =>
             {
-                var localScale = bullet.Renderer.transform.localScale;
-                var ratio = localScale.x * 100;
-                if (ratio > 100) ratio = 96f / localScale.x;
-
-                bullet.Renderer.sortingLayerID = soringLayerId;
-                bullet.transform.localScale = Vector3.one * ratio;
-                bullet.Renderer.transform.SetLayer(Layers.Ui);
-                bullet.transform.SetParent(bulletObj.transform, false);
-
-                //显示collider
-                var collider = bullet.GetComponentInChildren<CircleCollider2D>();
-                var col = new GameObject("collider");
-                col.transform.SetParent(bullet.transform, false);
-                col.AddComponent<MeshFilter>().sharedMesh = GameSystem.DefaultRes.QuadMesh;
-                col.layer = Layers.Ui;
-                col.transform.localScale = Vector3.one * collider.radius * 2;
-
-                var material = new Material(GameSystem.DefaultRes.CommonShader);
-                material.mainTexture = GameSystem.DefaultRes.CircleTexture;
-                material.SetColor("_TintColor", Color.red);
-                material.SetFloat("_AlphaScale", deploy.alpha);
-
-                var mr = col.AddComponent<MeshRenderer>();
-                mr.sharedMaterial = material;
-                mr.sortingLayerID = soringLayerId;
-                mr.sortingOrder = bullet.Renderer.sortingOrder + 1;
-                col.SetActiveSafe(_showPoint);
-                _pointList.Add(col);
-
+                bullet = b;
             });
-            yield return Yielders.Frame;
+            yield return new WaitUntil(() => bullet != null);
+
+            var localScale = bullet.Renderer.transform.localScale;
+            var ratio = localScale.x * 100;
+            if (ratio > 100) ratio = 96f / localScale.x;
+
+            bullet.Renderer.sortingLayerID = soringLayerId;
+            bullet.transform.localScale = Vector3.one * ratio;
+            bullet.Renderer.transform.SetLayer(Layers.Ui);
+            bullet.transform.SetParent(bulletObj.transform, false);
+
+            //显示collider
+            var col = new GameObject("collider");
+            col.transform.SetParent(bullet.transform, false);
+            col.AddComponent<MeshFilter>().sharedMesh = GameSystem.DefaultRes.QuadMesh;
+            col.layer = Layers.Ui;
+
+            var material = new Material(GameSystem.DefaultRes.CommonShader);
+            material.SetColor("_TintColor", Color.red);
+            material.SetFloat("_AlphaScale", deploy.alpha);
+
+            var collider = bullet.GetComponentInChildren<Collider2D>();
+            var circleCollider = collider as CircleCollider2D;
+            if (circleCollider != null)
+            {
+                material.mainTexture = GameSystem.DefaultRes.CircleTexture;
+                col.transform.localScale = Vector3.one * circleCollider.radius * 2;
+                
+            }
+            else
+            {
+                var boxCollider = collider as BoxCollider2D;
+                if(boxCollider != null)
+                {
+                    material.mainTexture = GameSystem.DefaultRes.BoxTexture;
+                    col.transform.localScale = new Vector3(boxCollider.size.x, boxCollider.size.y, 1);
+                    col.transform.localPosition = boxCollider.offset;
+                }
+            }
+
+            var mr = col.AddComponent<MeshRenderer>();
+            mr.sharedMaterial = material;
+            mr.sortingLayerID = soringLayerId;
+            mr.sortingOrder = bullet.Renderer.sortingOrder + 1;
+            col.SetActiveSafe(_showPoint);
+            _pointList.Add(col);
         }
     }
 }

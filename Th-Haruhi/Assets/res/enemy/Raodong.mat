@@ -75,7 +75,7 @@ Material:
     - _BumpAmt: 222
     - _ColorMask: 15
     - _Cutoff: 0.5
-    - _DistortStrength: 0.177
+    - _DistortStrength: 0.057
     - _DistortVelocity: 0.105
     - _Fresnel_Value: 0.52
     - _Gamma: 1
@@ -110,7 +110,7 @@ Material:
     - _u_speed: 0
     - _uv_on: 0
     m_Colors:
-    - _Color: {r: 0.397, g: 0, b: 1, a: 1}
+    - _Color: {r: 1, g: 0, b: 0.55888844, a: 1}
     - _Color01: {r: 1, g: 1, b: 1, a: 1}
     - _Color02: {r: 1, g: 1, b: 1, a: 1}
     - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

@@ -21,7 +21,6 @@ public class MarisaLaser : Bullet
         base.Init(deploy, master, model);
         AutoDestroy = false;
 
-      
 
         //初始化被击特效
         TextureEffectFactroy.CreateEffect(HitEffectId, SortingOrder.Effect, e => 

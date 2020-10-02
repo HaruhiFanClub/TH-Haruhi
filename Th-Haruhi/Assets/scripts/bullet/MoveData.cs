@@ -2,12 +2,14 @@
 
 public class MoveData : IPool
 {
-    public static MoveData New(Vector3 startPos, Vector3 forward, float speed)
+    public static MoveData New(Vector3 startPos, Vector3 forward, float speed, float accelertion = 0, float endSpeed = 0)
     {
         var bulletData = Pool.New<MoveData>() as MoveData;
         bulletData.StartPos = startPos;
         bulletData.Forward = forward;
         bulletData.Speed = speed;
+        bulletData.Acceleration = accelertion;
+        bulletData.EndSpeed = endSpeed;
         return bulletData;
     }
 
@@ -19,6 +21,8 @@ public class MoveData : IPool
     }
 
     public float Speed;          //初速度
+    public float Acceleration;
+    public float EndSpeed;
     public Vector3 StartPos;
     public Vector3 Forward;
     public EHelixToward HelixToward;  //螺旋方向 0:不螺旋 1：右边 -1：左边

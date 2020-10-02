@@ -11,7 +11,6 @@ public class Effect : MonoBehaviour
     public string CacheName;
     private Vector3 _originScale;
 
-
     private ParticleSystem[] _particleSystems;
 
     public ParticleSystem[] ParticleSystemList

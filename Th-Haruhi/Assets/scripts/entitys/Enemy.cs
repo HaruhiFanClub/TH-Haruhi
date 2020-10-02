@@ -69,9 +69,9 @@ public class Enemy : EntityBase
 
         InitRigid(); 
 
-        if(!string.IsNullOrEmpty(deploy.ShootAI))
+        if(!string.IsNullOrEmpty(deploy.AIScript))
         {
-            AIMoudle = Common.CreateInstance(deploy.ShootAI) as AI_Base;
+            AIMoudle = Common.CreateInstance(deploy.AIScript) as AI_Base;
             if (AIMoudle != null)
             {
                 AIMoudle.Init(this);
@@ -139,7 +139,14 @@ public class Enemy : EntityBase
         }
     }
 
-    private void OnDead()
+    public void SelfDie()
+    {
+        if (IsDead) return;
+        IsDead = true;
+        OnDead();
+    }
+
+    protected virtual void OnDead()
     {
         //特效
         EffectFactory.PlayEffectOnce(Deploy.deadEffect, transform.position);
@@ -367,8 +374,8 @@ public class EnemyDeploy : Conditionable
     public int[] frameSpeed;
     public int[] resoureIds;
     public int maxHp;
-    public string MoveAI;
-    public string ShootAI;
+    public string AIScript;
+    public string[] BossCard;
     public string deadEffect;
 }
 

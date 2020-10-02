@@ -11,6 +11,17 @@
 using System;
 using UnityEngine;
 
+public enum EColor
+{
+    Red,
+    Purple,
+    Blue,
+    BlueLight,
+    Green,
+    Yellow,
+    Orange,
+    White
+}
 public static class ColorUtility
 {
     public static string FormatEasyColor(string str)

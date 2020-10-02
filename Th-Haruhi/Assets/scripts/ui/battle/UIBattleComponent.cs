@@ -13,4 +13,8 @@ public class UIBattleComponent : MonoBehaviour
     public UiText Power;
     public UiText Point;
     public UiText Graze;
+
+    public GameObject BossCard;
+    public UiText BossCardSec1;
+    public UiText BossCardSec2;
 }

@@ -74,8 +74,6 @@ public static class StageMgr
         //生命数-1
         Data.LeftLifeCount--;
 
-        //销毁子弹
-
         if (Data.LeftLifeCount > 0)
         {
             //1秒后复活
@@ -86,6 +84,10 @@ public static class StageMgr
             //无剩余生命数量，弹出结算
             DOVirtual.DelayedCall(1f, () => { UiManager.Show<UIDeadView>(); });
         }
+
+        //禁止敌人攻击3s
+        GameEventCenter.Send(GameEvent.DisableEnemyShoot);
+        DOVirtual.DelayedCall(3f, () => { GameEventCenter.Send(GameEvent.EnableEnemyShoot); });
     }
 
     private static IEnumerator PlayerReborn(float sec = 1.2f)

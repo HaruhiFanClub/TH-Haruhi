@@ -1720,6 +1720,8 @@ MonoBehaviour:
   CommonShader: {fileID: 4800000, guid: f11216b0cf85a9148a56c29fb1776e89, type: 3}
   UiGray: {fileID: 2100000, guid: 53ba1bab2d092954896be0389146e82f, type: 2}
   UiTop: {fileID: 2100000, guid: bf115b2b2e663364e9d6cd310d4eba6f, type: 2}
+  CircleTexture: {fileID: 2800000, guid: c89fac3508295eb46b9b21c5fa7f6c08, type: 3}
+  BoxTexture: {fileID: 2800000, guid: 0d24ff387eeee51438541503e24239cd, type: 3}
 --- !u!1 &2102877597
 GameObject:
   m_ObjectHideFlags: 0

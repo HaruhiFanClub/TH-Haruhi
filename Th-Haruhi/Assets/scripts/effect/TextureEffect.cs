@@ -69,6 +69,7 @@ public class TextureEffectDeploy : Conditionable
     public float alpha;
     public int frame;
     public int rota;
+    public float[] Color;
     public float[] AutoScale;
     public float[] AutoRotation;
     public float[] AutoGamma;

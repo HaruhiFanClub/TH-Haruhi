@@ -26,6 +26,7 @@ public static class SortingOrder
     public const int EnemyBullet = 11;
     public const int Effect = 10;
     public const int Enemy = 15;
+    public const int ShootEffect = 16;
     public const int DebugUI = 20;
 }
 
