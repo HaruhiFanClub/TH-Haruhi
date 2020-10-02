@@ -67,6 +67,8 @@ public class Boss : Enemy
         //销毁子弹
         BulletExplosion.Create(transform.position, 0.05f);
 
+        CardMgr.OnDead();
+
         DOVirtual.DelayedCall(0.6f, () =>
         {
             StageCamera2D.Instance?.Shake(0.7f, 1.2f);

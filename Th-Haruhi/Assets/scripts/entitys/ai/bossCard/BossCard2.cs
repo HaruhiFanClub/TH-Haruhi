@@ -2,8 +2,8 @@
 using DG.Tweening;
 using System.Collections.Generic;
 
-//boss 符卡1
-public class BossCard1 : BossCardBase
+//boss 符卡2
+public class BossCard2 : BossCardBase
 {
     public override float TotalTime => 30f;
 
@@ -29,7 +29,7 @@ public class BossCard1 : BossCardBase
     private float RedBulletSpeed = 8f;
 
     //hugeBullet
-    private int BurstHurgeWait = 1560; //26s
+    private int BurstHurgeWait = 1620; //27s
     private int BurstHurgeInterval = 20;
     private int HugeBulletId = 1345;
     private int HugeBulletCount = 6;
@@ -47,7 +47,7 @@ public class BossCard1 : BossCardBase
             _isBuletBulletState = !_isBuletBulletState;
         }
 
-        if(_isBuletBulletState)
+        if (_isBuletBulletState)
         {
             FireBlueBullet();
             FireLaser();
@@ -75,7 +75,7 @@ public class BossCard1 : BossCardBase
             Master.PlayShootSound(EShootSound.Noraml);
             Master.PlayShootEffect(EColor.Red, 2f);
 
-            for(int i = 0; i < RedBulletCount; i++)
+            for (int i = 0; i < RedBulletCount; i++)
             {
                 var fwd = Quaternion.Euler(0, 0, i * (360f / RedBulletCount) + Random.Range(-30f, 30f)) * Master.transform.up;
                 var moveData = MoveData.New(Master.transform.position, fwd, RedBulletSpeed, -1, RedBulletSpeed - 2);
@@ -108,13 +108,13 @@ public class BossCard1 : BossCardBase
 
     private void FireHugeBullet()
     {
-        if(ShootIdx >= HugeFrame && ShootIdx % HugeFrame == 0)
+        if (ShootIdx >= HugeFrame && ShootIdx % HugeFrame == 0)
         {
             Master.PlayShootSound(EShootSound.Laser);
 
             var startAngle = Random.Range(0, 360f);
 
-            for(int i = 0; i < HugeBulletCount; i++)
+            for (int i = 0; i < HugeBulletCount; i++)
             {
                 var fwd = Quaternion.Euler(0, 0, startAngle + i * (360f / HugeBulletCount)) * Master.transform.up;
                 var moveData = MoveData.New(Master.transform.position, fwd, HugeSlowSpeed, 5f, HugeFastSpeed);
@@ -154,7 +154,7 @@ public class BossCard1 : BossCardBase
         //蓝色子弹
         if (ShootIdx % BlueBulletFrame == 0)
         {
-            Master.PlayShootSound(EShootSound.Tan01);
+            Master.PlayShootSound(EShootSound.Tan00);
 
             for (int i = 0; i < BlueBulletCount; i++)
             {
@@ -166,7 +166,7 @@ public class BossCard1 : BossCardBase
                 }
             }
 
-            
+
             Master.PlayShootEffect(EColor.BlueLight, 2f);
 
             _blueBulletAngel += 15;

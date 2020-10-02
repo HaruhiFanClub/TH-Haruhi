@@ -68,10 +68,17 @@ public class BossCardMgr
        
     }
 
+    public void OnDead()
+    {
+        _currCard?.OnDisable();
+        _cardList.Clear();
+        _currCard?.OnDestroy();
+        _currCard = null;
+    }
+
     public void OnDestroy()
     {
         _cardList.Clear();
-
         _currCard?.OnDestroy();
         _currCard = null;
     }

@@ -8,6 +8,8 @@ public abstract class BossCardBase
 
     public bool CanShoot { set; get; }
 
+    protected int ShootIdx { private set; get; }
+
 
     public virtual void Init(Boss enemy)
     {
@@ -39,7 +41,9 @@ public abstract class BossCardBase
 
     public virtual void OnFixedUpdate()
     {
-  
+        ShootIdx++;
+        if (ShootIdx > 10000000)
+            ShootIdx = 0;
     }
 
     public virtual void OnDestroy()

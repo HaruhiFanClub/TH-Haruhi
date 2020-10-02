@@ -85,9 +85,9 @@ public static class StageMgr
             DOVirtual.DelayedCall(1f, () => { UiManager.Show<UIDeadView>(); });
         }
 
-        //禁止敌人攻击3s
+        //禁止敌人攻击2s
         GameEventCenter.Send(GameEvent.DisableEnemyShoot);
-        DOVirtual.DelayedCall(3f, () => { GameEventCenter.Send(GameEvent.EnableEnemyShoot); });
+        DOVirtual.DelayedCall(2f, () => { GameEventCenter.Send(GameEvent.EnableEnemyShoot); });
     }
 
     private static IEnumerator PlayerReborn(float sec = 1.2f)

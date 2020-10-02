@@ -39,6 +39,7 @@ public class UIBattle : UiInstance
         _bind.BossCard.SetActiveSafe(b);
     }
 
+    private float _lastPlayTime;
     private void UpdateBossTime()
     {
         if (!_bossTimeActive) return;
@@ -50,7 +51,20 @@ public class UIBattle : UiInstance
 
         var sec = Mathf.FloorToInt(_bossTimeLeft);
         var sec2 = (_bossTimeLeft - sec) * 100;
-        _bind.BossCardSec1.text = string.Format("{0:00}.", sec);
-        _bind.BossCardSec2.text = string.Format("{0:00}", sec2);
+        var color = _bossTimeLeft < 10f ? "red" : "white";
+
+        _bind.BossCardSec1.text = string.Format("<color={1}>{0:00}.</color>", sec, color);
+        _bind.BossCardSec2.text = string.Format("<color={1}>{0:00}</color>", sec2, color);
+
+        //音效
+        if(_bossTimeLeft > 0 && _bossTimeLeft < 10)
+        {
+            var cd = _bossTimeLeft < 5 ? 0.5f : 1f;
+            if (Time.time - _lastPlayTime > cd)
+            {
+                Sound.PlayUiAudioOneShot(1005);
+                _lastPlayTime = Time.time;
+            }
+        }
     }
 }
