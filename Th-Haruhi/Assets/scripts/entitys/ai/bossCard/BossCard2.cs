@@ -7,148 +7,84 @@ public class BossCard2 : BossCardBase
 {
     public override float TotalTime => 30f;
 
-    private bool _isBuletBulletState = true;
-    private const int SwitchFrame = 400;
-
     //blueBullet
-    private int BlueBulletId = 1244;
-    private int BlueBulletFrame = 9;
-    private float BlueBulletSpeed = 4f;
-    private int BlueBulletCount = 3;
+    private int BlueBulletId = 1154;
+    private int BlueBulletFrame = 10;
+    private float BlueBulletSpeed = 5f;
+    private int BlueBulletCount = 8;
 
-    //laser
-    private int LaserBulletId = 1455;
-    private int LaserFrame = 10;
-    private float LaserFastSpeed = 10;
-    private float LaserSlowSpeed = 1;
-
+ 
     //redBullet
-    private int RedBulletId = 1238;
-    private int RedBulletFrame = 3;
-    private int RedBulletCount = 4;
-    private float RedBulletSpeed = 8f;
+    private int RedBulletId = 1134;
+    private int RedBulletFrame = 10;
+    private int RedBulletCount = 5;
+    private float RedBulletSpeed = 4f;
 
-    //hugeBullet
-    private int BurstHurgeWait = 1620; //27s
-    private int BurstHurgeInterval = 20;
-    private int HugeBulletId = 1345;
-    private int HugeBulletCount = 6;
-    private int HugeFrame = 170;
-    private float HugeFastSpeed = 10f;
-    private float HugeSlowSpeed = 3f;
+    private float _lastMoveTime;
+    private bool _moveLeft;
 
     public override void OnFixedUpdate()
     {
         base.OnFixedUpdate();
         if (!CanShoot || Master.IsDead) return;
 
-        if (ShootIdx >= SwitchFrame && ShootIdx % SwitchFrame == 0)
-        {
-            _isBuletBulletState = !_isBuletBulletState;
-        }
+        FireBlueBullet();
+        FireBulletRed();
 
-        if (_isBuletBulletState)
+        //左右移动
+        if (Time.time - _lastMoveTime > Random.Range(8, 15)) 
         {
-            FireBlueBullet();
-            FireLaser();
-        }
-        else
-        {
-            FireBulletRed();
-        }
+            _moveLeft = !_moveLeft;
 
-        if (ShootIdx >= BurstHurgeWait)
-        {
-            BurstHugeBullet();
+            Master.MoveToTarget(Vector2Fight.New(_moveLeft ? -60f : 60f, 50f), 0.4f);
+            _lastMoveTime = Time.time;
         }
-        else
-        {
-            FireHugeBullet();
-        }
-
     }
 
+    private int _redShootIndex = 1;
+    private int _redBulletAngel;
     private void FireBulletRed()
     {
         if (ShootIdx % RedBulletFrame == 0)
         {
+          
+            var fwd = Quaternion.Euler(0, 0, _redBulletAngel) * Master.transform.up;
+            var shootPos = Master.transform.position + fwd.normalized * 3f;
+
             Master.PlayShootSound(EShootSound.Noraml);
-            Master.PlayShootEffect(EColor.Red, 2f);
+            Master.PlayShootEffect(EColor.Red, 2f, shootPos);
+
+
+            //2组子弹，往反方向
+            for (int i = 0; i < RedBulletCount; i++)
+            {
+                var f1 = Quaternion.Euler(0, 0, _redBulletAngel + 120 + i * 5) * Master.transform.up;
+                var moveData = MoveData.New(shootPos, f1, RedBulletSpeed - i * 0.1f);
+                BulletFactory.CreateBulletAndShoot(RedBulletId, Master.transform, Layers.EnemyBullet, moveData);
+            }
 
             for (int i = 0; i < RedBulletCount; i++)
             {
-                var fwd = Quaternion.Euler(0, 0, i * (360f / RedBulletCount) + Random.Range(-30f, 30f)) * Master.transform.up;
-                var moveData = MoveData.New(Master.transform.position, fwd, RedBulletSpeed, -1, RedBulletSpeed - 2);
+                var f1 = Quaternion.Euler(0, 0, _redBulletAngel - 120 - i * 5) * Master.transform.up;
+                var moveData = MoveData.New(shootPos, f1, RedBulletSpeed - i * 0.1f);
                 BulletFactory.CreateBulletAndShoot(RedBulletId, Master.transform, Layers.EnemyBullet, moveData);
             }
-        }
-    }
 
-    private float _burstHugeAngel = 0;
-    private void BurstHugeBullet()
-    {
-        if (ShootIdx % BurstHurgeInterval == 0)
-        {
-            Master.PlayShootEffect(EColor.Red, 3f);
-            Master.PlayShootSound(EShootSound.Tan01);
+            _redShootIndex++;
 
-            for (int i = 0; i < HugeBulletCount; i++)
-            {
-                var fwd = Quaternion.Euler(0, 0, _burstHugeAngel + i * (360f / HugeBulletCount)) * Master.transform.up;
-                var moveData = MoveData.New(Master.transform.position, fwd, HugeSlowSpeed, 5f, HugeFastSpeed);
+            if (_redShootIndex % Random.Range(4, 6) == 0)
+                _redBulletAngel += 120;
+            else
+                _redBulletAngel += 60;
 
-                List<EventData> eventList = new List<EventData>();
-                eventList.Add(EventData.NewDelay_ChangeSpeed(0.8f, HugeFastSpeed, -5f, HugeSlowSpeed));
-                BulletFactory.CreateBulletAndShoot(HugeBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
-            }
-            _burstHugeAngel += 13f;
-            if (_burstHugeAngel > 360f) _burstHugeAngel -= 360f;
-        }
-    }
 
-    private void FireHugeBullet()
-    {
-        if (ShootIdx >= HugeFrame && ShootIdx % HugeFrame == 0)
-        {
-            Master.PlayShootSound(EShootSound.Laser);
-
-            var startAngle = Random.Range(0, 360f);
-
-            for (int i = 0; i < HugeBulletCount; i++)
-            {
-                var fwd = Quaternion.Euler(0, 0, startAngle + i * (360f / HugeBulletCount)) * Master.transform.up;
-                var moveData = MoveData.New(Master.transform.position, fwd, HugeSlowSpeed, 5f, HugeFastSpeed);
-
-                List<EventData> eventList = new List<EventData>();
-                eventList.Add(EventData.NewDelay_ChangeSpeed(0.8f, HugeFastSpeed, -5f, HugeSlowSpeed));
-                BulletFactory.CreateBulletAndShoot(HugeBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
-            }
-        }
-    }
-
-    private int _laserAngel;
-    private void FireLaser()
-    {
-        if (ShootIdx % LaserFrame == 0)
-        {
-            Master.PlayShootSound(EShootSound.Noraml);
-            Master.PlayShootEffect(EColor.Red, 3f);
-
-            var fwd = Quaternion.Euler(0, 0, _laserAngel) * Master.transform.up;
-            var moveData = MoveData.New(Master.transform.position, fwd, LaserFastSpeed);
-
-            List<EventData> eventList = new List<EventData>();
-            eventList.Add(EventData.NewDelay_ChangeSpeed(0.3f, LaserSlowSpeed));
-            eventList.Add(EventData.NewDelay_ChangeSpeed(0.8f, LaserSlowSpeed, 4, LaserFastSpeed));
-
-            BulletFactory.CreateBulletAndShoot(LaserBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
-
-            _laserAngel += Random.Range(45, 75);
-            if (_laserAngel > 360) _laserAngel -= 360;
+            if (_redBulletAngel > 360)
+                _redBulletAngel -= 360;
         }
     }
 
     private int _blueBulletAngel;
+    private int _blueShootIndex = 1;
     private void FireBlueBullet()
     {
         //蓝色子弹
@@ -156,20 +92,23 @@ public class BossCard2 : BossCardBase
         {
             Master.PlayShootSound(EShootSound.Tan00);
 
+            //6发换角度
             for (int i = 0; i < BlueBulletCount; i++)
             {
-                for (int j = 0; j < 3; j++)
-                {
-                    var f1 = Quaternion.Euler(0, 0, _blueBulletAngel + i * -12 + j * 120) * Master.transform.up;
-                    var data = MoveData.New(Master.transform.position, f1, BlueBulletSpeed + i * 0.05f, -0.5f, BlueBulletSpeed - 2f);
-                    BulletFactory.CreateBulletAndShoot(BlueBulletId, Master.transform, Layers.EnemyBullet, data);
-                }
+                var f1 = Quaternion.Euler(0, 0, _blueBulletAngel + i * 10) * Master.transform.up;
+                var data = MoveData.New(Master.transform.position, f1, BlueBulletSpeed);
+                BulletFactory.CreateBulletAndShoot(BlueBulletId, Master.transform, Layers.EnemyBullet, data);
             }
-
+            _blueShootIndex++;
 
             Master.PlayShootEffect(EColor.BlueLight, 2f);
 
-            _blueBulletAngel += 15;
+            if(_blueShootIndex % Random.Range(4, 6) == 0) 
+                _blueBulletAngel += Random.Range(90, 110);
+            else
+                _blueBulletAngel += Random.Range(25, 35);
+
+
             if (_blueBulletAngel > 360)
                 _blueBulletAngel -= 360;
         }

@@ -141,7 +141,7 @@ public class EffectFactory : MonoBehaviour
             DOVirtual.DelayedCall(delay, () =>
             {
                 DestroyEffectImpl(effect);
-            });
+            }, false);
         }
     }
 

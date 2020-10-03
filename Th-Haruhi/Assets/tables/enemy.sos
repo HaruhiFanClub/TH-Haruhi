@@ -13,4 +13,6 @@ id	name	scale	isBoss	frameSpeed	resoureIds	radius	maxHp	AIScript	BossCard	deadEf
 										
 101	test	1		[6,3,6]	[2081,2082,2083]	1	2000000	ShootAI_S02		effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaBlue.prefab
 										
-102	haruhi	1	TRUE	[6,3,6]	[3002,3002,3002]	1	10000		["BossCard1"]	effects/Prefabs/Combat/Brawling/RoundHit/RoundHitRed.prefab
+102	boss	1	TRUE	[6,3,6]	[3002,3002,3002]	1	5000		["BossCard_AllStar"]	effects/Prefabs/Combat/Brawling/RoundHit/RoundHitRed.prefab
+										
+									BossCard1,	

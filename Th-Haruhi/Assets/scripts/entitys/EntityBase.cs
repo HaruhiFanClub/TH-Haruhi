@@ -58,7 +58,7 @@ public abstract class EntityBase : MonoBehaviour
         }
     }
 
-    public void PlayShootEffect(EColor color, float startScale = 1f)
+    public void PlayShootEffect(EColor color, float startScale = 1f, Vector3? startPos = null)
     {
         var effectId = 0;
         switch (color)
@@ -91,7 +91,7 @@ public abstract class EntityBase : MonoBehaviour
 
         if (effectId > 0)
         {
-            var pos = transform.position;
+            var pos = startPos == null ? transform.position : (Vector3)startPos;
             TextureEffectFactroy.CreateEffect(effectId, SortingOrder.ShootEffect, effect =>
             {
                 effect.transform.position = pos;
@@ -136,7 +136,7 @@ public abstract class EntityBase : MonoBehaviour
         }
 
         ShootSoundCd[sound] = Time.time;
-        Sound.PlayUiAudioOneShot((int)sound);
+        Sound.PlayUiAudioOneShot((int)sound, true);
     }
 
     public Rigidbody2D Rigid2D

@@ -20,7 +20,7 @@ public class Player : EntityBase
 
     public override EEntityType EntityType => EEntityType.Player;
 
-    //动画帧缓存
+   //动画帧缓存
     public Dictionary<PlayerMoveStyle, List<Sprite>> SpriteDic = new Dictionary<PlayerMoveStyle, List<Sprite>>();
 
     public SpriteRenderer SpriteRenderer { private set; get; }
@@ -44,7 +44,31 @@ public class Player : EntityBase
     public PlayerSupportMgr SupportMgr { private set; get; }
 
     //是否无敌
-    public bool Invincible { private set; get; }
+    private bool _invincible;
+    public bool Invincible
+    { 
+        set
+        {
+            _invincible = value;
+            if(value)
+            {
+                var autoBrightness = SpriteRenderer.gameObject.GetComponent<AutoBrightness>();
+                if(autoBrightness == null)
+                {
+                    autoBrightness = SpriteRenderer.gameObject.AddComponent<AutoBrightness>();
+                }
+                autoBrightness.Speed = 3f;
+            }
+            else
+            {
+                SpriteRenderer.gameObject.RemoveComponent<AutoBrightness>();
+            }
+        }
+        get
+        {
+            return _invincible;
+        }
+    }
 
     //当前动画帧id
     private int _currAniIdx;
@@ -126,7 +150,6 @@ public class Player : EntityBase
         if (!Invincible)
         {
             Invincible = true;
-            SpriteRenderer.gameObject.AddComponent<AutoBrightness>().Speed = 3;
         }
     }
 
@@ -135,7 +158,6 @@ public class Player : EntityBase
         if(Invincible && Time.time > _recoverInvicibleTime)
         {
             Invincible = false;
-            SpriteRenderer.gameObject.RemoveComponent<AutoBrightness>();
         }
     }
 
@@ -252,8 +274,12 @@ public class Player : EntityBase
     }
 
     //死亡处理
+    private bool IsDead;
     private void OnDead()
     {
+        if (IsDead) return;
+        IsDead = true;
+
         //音效
         Sound.PlayUiAudioOneShot(Deploy.deadSound);
 
@@ -297,7 +323,7 @@ public class Player : EntityBase
         Instance = null;
     }
 
-    //创建角色 static
+      //创建角色 static
     public static IEnumerator Create(int playerId, Action<Player> callBack)
     {
         var deploy = TableUtility.GetDeploy<PlayerDeploy>(playerId);

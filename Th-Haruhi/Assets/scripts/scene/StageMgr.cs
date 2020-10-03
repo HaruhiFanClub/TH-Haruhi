@@ -36,6 +36,8 @@ public static class StageMgr
     }
 
     public static StageData Data;
+    public static Player MainPlayer { private set; get; }
+
 
     //从第一关开始游戏
     public static void StartGame()
@@ -61,6 +63,7 @@ public static class StageMgr
         yield return Player.Create(Data.PlayerId, player =>
         {
             player.transform.position = Data.PlayerBornPos;
+            MainPlayer = player;
         });
 
         //关闭loading
@@ -73,6 +76,7 @@ public static class StageMgr
     {
         //生命数-1
         Data.LeftLifeCount--;
+        MainPlayer = null;
 
         if (Data.LeftLifeCount > 0)
         {
@@ -87,7 +91,7 @@ public static class StageMgr
 
         //禁止敌人攻击2s
         GameEventCenter.Send(GameEvent.DisableEnemyShoot);
-        DOVirtual.DelayedCall(2f, () => { GameEventCenter.Send(GameEvent.EnableEnemyShoot); });
+        DOVirtual.DelayedCall(2f, () => { GameEventCenter.Send(GameEvent.EnableEnemyShoot); }, false);
     }
 
     private static IEnumerator PlayerReborn(float sec = 1.2f)
@@ -95,6 +99,8 @@ public static class StageMgr
         yield return new WaitForSeconds(sec);
         yield return Player.Create(Data.PlayerId, p =>
         {
+            MainPlayer = p;
+
             //从屏幕外移动进来
             p.transform.position = Vector2Fight.New(0, -110);
             p.transform.DOMove(Data.PlayerBornPos, 0.5f).SetEase(Ease.Linear);

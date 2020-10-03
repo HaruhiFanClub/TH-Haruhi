@@ -12,9 +12,11 @@ public class Bullet : EntityBase
     public int Atk { protected set; get; }
     public MoveData MoveData { protected set; get; }
     public List<EventData> EventList { protected set; get; }
-    public float ShootTime { protected set; get; }
+    public int ShootFrame { protected set; get; }
 
     private bool _bShooted;
+
+    private float _movedDistance;
 
     public static int TotalBulletCount;
 
@@ -47,8 +49,9 @@ public class Bullet : EntityBase
     public virtual void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1)
     {
         Atk = atk;
+        _movedDistance = 0;
         transform.position = moveData.StartPos;
-        ShootTime = Time.time;
+        ShootFrame = 0;
         EventList = eventList;
         InitBulletMoveData(moveData);
         _bShooted = true;
@@ -76,6 +79,7 @@ public class Bullet : EntityBase
     {
         if (InCache) return;
         if (!_bShooted) return;
+        ShootFrame++;
         UpdateAnimation();
         UpdateBulletMove();
         UpdateEventList();
@@ -91,13 +95,46 @@ public class Bullet : EntityBase
             var e = EventList[i];
             switch (e.Type)
             {
-                case EventData.EventType.TimeChangeSpeed:
+                case EventData.EventType.Frame_Destroy:
 
-                    if(Time.time - ShootTime > e.DelayTime)
+                    if (ShootFrame >= e.FrameCount)
+                    {
+                        EventList.RemoveAt(i);
+                        BulletFactory.DestroyBullet(this);
+                    }
+                    break;
+                case EventData.EventType.Frame_ChangeSpeed:
+
+                    if( ShootFrame >= e.FrameCount)
                     {
                         MoveData.EndSpeed = e.SpeedData.EndSpeed;
                         MoveData.Acceleration = e.SpeedData.Acceleration;
-                        MoveData.Speed = e.SpeedData.Speed;
+
+                        if (e.SpeedData.Speed > 0f)
+                        {
+                            MoveData.Speed = e.SpeedData.Speed;
+                        }
+                        EventList.RemoveAt(i);
+                    }
+                    break;
+                case EventData.EventType.Frame_ChangeForward:
+
+                    if (ShootFrame >= e.FrameCount)
+                    {
+                        MoveData.Forward = e.ForwardData.Forward;
+                        MoveData.HelixRefretFrame = e.ForwardData.HelixRefretFrame;
+                        MoveData.HelixToward = e.ForwardData.HelixToward;
+                        MoveData.EulurPerFrame = e.ForwardData.EulurPerFrame;
+                        EventList.RemoveAt(i);
+                    }
+                    break;
+                case EventData.EventType.Distance_ChangeFoward:
+                    if(_movedDistance >= e.Distance)
+                    {
+                        MoveData.Forward = e.ForwardData.Forward;
+                        MoveData.HelixRefretFrame = e.ForwardData.HelixRefretFrame;
+                        MoveData.HelixToward = e.ForwardData.HelixToward;
+                        MoveData.EulurPerFrame = e.ForwardData.EulurPerFrame;
                         EventList.RemoveAt(i);
                     }
                     break;
@@ -128,7 +165,7 @@ public class Bullet : EntityBase
             MoveData.Forward = Quaternion.Euler(0, 0, eulurZ) * MoveData.Forward;
             transform.up = MoveData.Forward;
 
-            if (_totalFrame - _lastHelixFrame >= MoveData.HelixRefretFrame)
+            if (MoveData.HelixRefretFrame > 0 && _totalFrame - _lastHelixFrame >= MoveData.HelixRefretFrame)
             {
                 _lastHelixFrame = _totalFrame;
                 MoveData.HelixToward = MoveData.HelixToward == MoveData.EHelixToward.Right ? 
@@ -136,9 +173,9 @@ public class Bullet : EntityBase
                                                 MoveData.EHelixToward.Right;
             }
         }
-        transform.position += MoveData.Forward.normalized * Time.deltaTime * MoveData.Speed;
 
-        if(!MathUtility.FloatEqual(MoveData.Acceleration, 0f))
+
+        if (!MathUtility.FloatEqual(MoveData.Acceleration, 0f))
         {
             MoveData.Speed += MoveData.Acceleration * Time.deltaTime;
             if (!MathUtility.FloatEqual(MoveData.EndSpeed, 0) && Mathf.Abs(MoveData.EndSpeed - MoveData.Speed) < 0.1f)
@@ -146,6 +183,10 @@ public class Bullet : EntityBase
                 MoveData.Speed = MoveData.EndSpeed;
             }
         }
+
+        var dist = Time.deltaTime * MoveData.Speed;
+        _movedDistance += dist;
+        transform.position += MoveData.Forward * dist;
     }
 
     public virtual void OnBulletHitEnemy()
@@ -173,8 +214,9 @@ public class Bullet : EntityBase
     {
         base.OnRecycle();
         _currAniIdx = 0;
+        _movedDistance = 0;
         _bShooted = false;
-        ShootTime = 0;
+        ShootFrame = 0;
         Pool.Free(MoveData);
     }
 }

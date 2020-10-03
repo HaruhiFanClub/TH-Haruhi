@@ -14,6 +14,8 @@ public class Boss : Enemy
     private string BossHpBar = "ui/prefabs/battle/UIBossHpHud.prefab";
     private string BossHpCircle = "ui/prefabs/battle/UIBossCircle.prefab";
 
+
+
     //boss符卡管理器
     private BossCardMgr CardMgr;
 
@@ -28,13 +30,15 @@ public class Boss : Enemy
         MoveToTarget(Vector2Fight.New(0f, 50f), 10f);
 
         CardMgr = new BossCardMgr();
-        CardMgr.Init(this);
+        CardMgr.Init(this, HPMax);
 
-        DOVirtual.DelayedCall(1.5F, StartFight);
+        DOVirtual.DelayedCall(1.5F, StartFight, false);
     }
 
     private void StartFight()
     {
+        Sound.PlayUiAudioOneShot(107);
+
         //血条
         var bossHpHudObj = ResourceMgr.Instantiate(ResourceMgr.LoadImmediately(BossHpBar));
         bossHpHudObj.transform.SetParent(gameObject.transform, false);
@@ -49,25 +53,26 @@ public class Boss : Enemy
         bossCircle.transform.SetParent(gameObject.transform, false);
 
         //bossCard
-        DOVirtual.DelayedCall(1F, CardMgr.OnStartFight);
+        DOVirtual.DelayedCall(1F, CardMgr.OnStartFight, false);
     }
 
     private void UpdateHpHud()
     {
         if (!_initedHpBar) return;
         if (_bossHpHud == null) return;
-        _bossHpHud.Bar.fillAmount = (float)HP / HPMax;
 
+        _bossHpHud.Bar.fillAmount = CardMgr.GetHpPercent();
+    }
+
+    protected override void CalculateHp(int atk)
+    {
+        //改为扣符卡血量
+        CardMgr.CalculateHp(atk);
     }
 
     protected override void OnDead()
     {
         GameEventCenter.Send(GameEvent.OnEnemyDie);
-
-        //销毁子弹
-        BulletExplosion.Create(transform.position, 0.05f);
-
-        CardMgr.OnDead();
 
         DOVirtual.DelayedCall(0.6f, () =>
         {
@@ -81,7 +86,7 @@ public class Boss : Enemy
             StageCamera2D.Instance.PlayDeadEffect(transform.position);
 
             Destroy(gameObject);
-        });
+        }, false);
     }
     protected override void Update()
     {

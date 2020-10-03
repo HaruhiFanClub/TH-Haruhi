@@ -14,17 +14,16 @@ public class Enemy : EntityBase
     }
 
     public override EEntityType EntityType => EEntityType.Enemy;
-    public Dictionary<EnemyMoveStyle, List<Sprite>> SpriteDic = new Dictionary<EnemyMoveStyle, List<Sprite>>();
-
+   public Dictionary<EnemyMoveStyle, List<Sprite>> SpriteDic = new Dictionary<EnemyMoveStyle, List<Sprite>>();
     //血量
     public int HP { private set; get; }
     public int HPMax { private set; get; }
-
-    public SpriteRenderer MainRenderer { private set; get; }
-    
+  
     public EnemyDeploy Deploy { private set; get; }
     
     public bool InShoot { private set; get; }
+  
+    public SpriteRenderer MainRenderer { private set; get; }
 
     public Material Material { private set; get; }
 
@@ -52,7 +51,7 @@ public class Enemy : EntityBase
     }
 
 
-    public virtual void Init(SpriteRenderer renderer, EnemyDeploy deploy)
+     public virtual void Init(SpriteRenderer renderer, EnemyDeploy deploy)
     {
         transform.SetLayer(Layers.Enemy);
 
@@ -120,7 +119,6 @@ public class Enemy : EntityBase
     /// </summary>
     /// <param name="atk"></param>
 
-    private RelayInterval _hitSoundInterval = new RelayInterval(0.05f);
     public void OnEnemyHit(int atk)
     {
         if (IsDead) return;
@@ -129,10 +127,16 @@ public class Enemy : EntityBase
         SetBrightness();
 
         //扣血
+        CalculateHp(atk);
+    }
+
+    protected virtual void CalculateHp(int atk)
+    {
+        //扣血
         HP -= atk;
 
         //死亡
-        if (HP < 0) 
+        if (HP < 0)
         {
             IsDead = true;
             OnDead();
@@ -235,13 +239,15 @@ public class Enemy : EntityBase
                 //right
                 if(AniStyle != EnemyMoveStyle.MoveIdle)
                     AniStyle = EnemyMoveStyle.Move;
-                MainRenderer.flipX = false;
+
+                 MainRenderer.flipX = false;
             }
             else if(moveX < 0.01f)
             {
                 if (AniStyle != EnemyMoveStyle.MoveIdle)
                     AniStyle = EnemyMoveStyle.Move;
-                MainRenderer.flipX = true;
+
+             	MainRenderer.flipX = true;
             }
             else
             {
@@ -273,7 +279,7 @@ public class Enemy : EntityBase
     {
         if (Time.time < _nextAnimationTime) return;
 
-        List<Sprite> sprites;
+         List<Sprite> sprites;
         if(SpriteDic.TryGetValue(AniStyle, out sprites))
         {
             if (sprites.Count > 0)

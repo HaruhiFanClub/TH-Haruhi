@@ -17,4 +17,7 @@ public class UIBattleComponent : MonoBehaviour
     public GameObject BossCard;
     public UiText BossCardSec1;
     public UiText BossCardSec2;
+
+    public UiButton DebugWudi;
+
 }

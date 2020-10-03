@@ -25,15 +25,15 @@ id	name	resource	volume
 104	enemydie	audios/se/se_enep00.wav	0.3
 105	bossDie	audios/se/se_enep01.wav	0.3
 106	cardget	audios/se/se_cardget.wav	1
-			
-			
+107	Boss³ö³¡	audios/se/se_ch02.wav	0.6
+108	startShoot	audios/se/se_heal.wav	1
 			
 			
 #bullet			
 2001	ÆÕ¹¥	audios/se/se_plst00.wav	0.2
 2002	¼¤¹â	audios/se/se_lazer02.wav	0.1
-2003	tan00	audios/se/se_tan00.wav	0.3
-2004	tan01	audios/se/se_tan01.wav	0.2
-2005	tan02	audios/se/se_tan02.wav	0.2
+2003	fast_tan00	audios/se/se_tan00.wav	0.1
+2004	tan01	audios/se/se_tan01.wav	0.5
+2005	tan02	audios/se/se_tan02.wav	0.5
 2006	laser	audios/se/se_lazer00.wav	0.25
 2007	bossShoot	audios/se/se_plst00.wav	0.3

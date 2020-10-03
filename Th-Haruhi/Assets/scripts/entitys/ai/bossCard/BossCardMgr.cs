@@ -9,12 +9,14 @@ public class BossCardMgr
     private List<BossCardBase> _cardList = new List<BossCardBase>();
     private float _cardStartTime;
 
-    public void Init(Boss enemy)
+    public void Init(Boss enemy, int maxHp)
     {
         Master = enemy;
 
         var deploy = Master.Deploy;
         _cardList.Clear();
+
+        int perCardHp = maxHp / deploy.BossCard.Length;
 
         for (int i = 0; i < deploy.BossCard.Length; i++)
         {
@@ -24,11 +26,53 @@ public class BossCardMgr
                 var card = Common.CreateInstance(strClass) as BossCardBase;
                 if (card != null)
                 {
-                    card.Init(Master);
+                    card.Init(Master, perCardHp);
                     _cardList.Add(card);
                 }
             }
         }
+
+
+
+        GameEventCenter.AddListener(GameEvent.DisableEnemyShoot, DisableEnemyShoot);
+        GameEventCenter.AddListener(GameEvent.EnableEnemyShoot, EnableEnemyShoot);
+    }
+
+    private void DisableEnemyShoot(object o)
+    {
+        if (_currCard != null)
+        {
+            _currCard.CanShoot = false;
+        }
+    }
+
+    private void EnableEnemyShoot(object o)
+    {
+        if (_currCard != null)
+        {
+            _currCard.CanShoot = true;
+        }
+    }
+
+    public void CalculateHp(int atk)
+    {
+        if(_currCard != null)
+        {
+            _currCard.CurrentHp -= atk;
+            if(_currCard.CurrentHp <= 0)
+            {
+                ChangeToNextCard();
+            }
+        }
+    }
+
+    public float GetHpPercent()
+    {
+        if (_currCard != null)
+        {
+            return _currCard.CurrentHp / (float)_currCard.MaxHp;
+        }
+        return 1f;
     }
 
     public void OnStartFight()
@@ -38,10 +82,19 @@ public class BossCardMgr
 
     private void ChangeToNextCard()
     {
-        _currCard?.OnDisable();
+        //销毁当前Card
+        if(_currCard != null)
+        {
+            _currCard.OnDisable();
+            _currCard.OnDestroy();
+            _currCard = null;
+
+            //销毁子弹
+            BulletExplosion.Create(Master.transform.position, 0.15f);
+        }
 
         //有剩余符卡，切换到下一个
-        if(_cardList.Count > 0)
+        if (_cardList.Count > 0)
         {
             _currCard = _cardList[0];
             _cardList.RemoveAt(0);
@@ -65,15 +118,6 @@ public class BossCardMgr
                 ChangeToNextCard();
             }
         }
-       
-    }
-
-    public void OnDead()
-    {
-        _currCard?.OnDisable();
-        _cardList.Clear();
-        _currCard?.OnDestroy();
-        _currCard = null;
     }
 
     public void OnDestroy()
@@ -81,5 +125,7 @@ public class BossCardMgr
         _cardList.Clear();
         _currCard?.OnDestroy();
         _currCard = null;
+        GameEventCenter.RemoveListener(GameEvent.DisableEnemyShoot, DisableEnemyShoot);
+        GameEventCenter.RemoveListener(GameEvent.EnableEnemyShoot, EnableEnemyShoot);
     }
 }

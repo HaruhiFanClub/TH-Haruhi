@@ -98,7 +98,7 @@ public class BossCard1 : BossCardBase
                 var moveData = MoveData.New(Master.transform.position, fwd, HugeSlowSpeed, 5f, HugeFastSpeed);
 
                 List<EventData> eventList = new List<EventData>();
-                eventList.Add(EventData.NewDelay_ChangeSpeed(0.8f, HugeFastSpeed, -5f, HugeSlowSpeed));
+                eventList.Add(EventData.NewFrame_ChangeSpeed(48, HugeFastSpeed, -5f, HugeSlowSpeed));
                 BulletFactory.CreateBulletAndShoot(HugeBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
             }
             _burstHugeAngel += 13f;
@@ -110,7 +110,7 @@ public class BossCard1 : BossCardBase
     {
         if(ShootIdx >= HugeFrame && ShootIdx % HugeFrame == 0)
         {
-            Master.PlayShootSound(EShootSound.Laser);
+            Master.PlayShootSound(EShootSound.Tan01);
 
             var startAngle = Random.Range(0, 360f);
 
@@ -120,7 +120,7 @@ public class BossCard1 : BossCardBase
                 var moveData = MoveData.New(Master.transform.position, fwd, HugeSlowSpeed, 5f, HugeFastSpeed);
 
                 List<EventData> eventList = new List<EventData>();
-                eventList.Add(EventData.NewDelay_ChangeSpeed(0.8f, HugeFastSpeed, -5f, HugeSlowSpeed));
+                eventList.Add(EventData.NewFrame_ChangeSpeed(48, HugeFastSpeed, -5f, HugeSlowSpeed));
                 BulletFactory.CreateBulletAndShoot(HugeBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
             }
         }
@@ -131,15 +131,14 @@ public class BossCard1 : BossCardBase
     {
         if (ShootIdx % LaserFrame == 0)
         {
-            Master.PlayShootSound(EShootSound.Noraml);
             Master.PlayShootEffect(EColor.Red, 3f);
 
             var fwd = Quaternion.Euler(0, 0, _laserAngel) * Master.transform.up;
             var moveData = MoveData.New(Master.transform.position, fwd, LaserFastSpeed);
 
             List<EventData> eventList = new List<EventData>();
-            eventList.Add(EventData.NewDelay_ChangeSpeed(0.3f, LaserSlowSpeed));
-            eventList.Add(EventData.NewDelay_ChangeSpeed(0.8f, LaserSlowSpeed, 4, LaserFastSpeed));
+            eventList.Add(EventData.NewFrame_ChangeSpeed(20, LaserSlowSpeed));
+            eventList.Add(EventData.NewFrame_ChangeSpeed(48, LaserSlowSpeed, 4, LaserFastSpeed));
 
             BulletFactory.CreateBulletAndShoot(LaserBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
 
@@ -154,8 +153,8 @@ public class BossCard1 : BossCardBase
         //蓝色子弹
         if (ShootIdx % BlueBulletFrame == 0)
         {
-            Master.PlayShootSound(EShootSound.Tan01);
 
+            Master.PlayShootSound(EShootSound.Tan00);
             for (int i = 0; i < BlueBulletCount; i++)
             {
                 for (int j = 0; j < 3; j++)

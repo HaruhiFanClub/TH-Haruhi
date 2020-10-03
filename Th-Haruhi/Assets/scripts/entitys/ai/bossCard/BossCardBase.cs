@@ -3,30 +3,29 @@ using System.Collections;
 
 public abstract class BossCardBase
 {
+    public enum ECardPhase
+    {
+        One,
+        Two
+    }
+
     protected Boss Master;
     public abstract float TotalTime { get; }
+    public int CurrentHp { set;  get; }
+    public int MaxHp { set; get; }
 
     public bool CanShoot { set; get; }
 
     protected int ShootIdx { private set; get; }
 
 
-    public virtual void Init(Boss enemy)
+    public virtual void Init(Boss enemy, int maxHp)
     {
         Master = enemy;
-        GameEventCenter.AddListener(GameEvent.DisableEnemyShoot, DisableEnemyShoot);
-        GameEventCenter.AddListener(GameEvent.EnableEnemyShoot, EnableEnemyShoot);
+        CurrentHp = MaxHp = maxHp;
     }
 
-    private void DisableEnemyShoot(object o)
-    {
-        CanShoot = false;
-    }
-
-    private void EnableEnemyShoot(object o)
-    {
-        CanShoot = true;
-    }
+   
 
     public virtual void OnEnable()
     {
@@ -48,8 +47,6 @@ public abstract class BossCardBase
 
     public virtual void OnDestroy()
     {
-
-        GameEventCenter.RemoveListener(GameEvent.DisableEnemyShoot, DisableEnemyShoot);
-        GameEventCenter.RemoveListener(GameEvent.EnableEnemyShoot, EnableEnemyShoot);
+        
     }
 }

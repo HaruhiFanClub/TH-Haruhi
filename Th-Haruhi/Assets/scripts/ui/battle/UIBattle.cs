@@ -16,6 +16,8 @@ public class UIBattle : UiInstance
         Instance = this;
 
         _bind.BossCard.SetActiveSafe(false);
+
+        InitDebug();
     }
 
     protected override void OnDestroy()
@@ -65,6 +67,52 @@ public class UIBattle : UiInstance
                 Sound.PlayUiAudioOneShot(1005);
                 _lastPlayTime = Time.time;
             }
+        }
+    }
+
+
+
+
+
+
+
+    //debug
+
+    private bool _inInvincible;
+    private void InitDebug()
+    {
+        if (!Debug.isDebugBuild)
+        {
+            _bind.DebugWudi.SetActiveSafe(false);
+            return;
+        }
+
+        RefreshDebugBtn();
+        _bind.DebugWudi.onClick.AddListener(() =>
+        {
+            if (StageMgr.MainPlayer != null)
+            {
+                _inInvincible = !_inInvincible;
+                if (_inInvincible)
+                {
+                    StageMgr.MainPlayer.SetInvincibleTime(100000);
+                }
+                else
+                {
+                    StageMgr.MainPlayer.Invincible = false;
+                }
+                RefreshDebugBtn();
+            }
+        });
+    }
+
+    private void RefreshDebugBtn()
+    {
+        var txt = _bind.DebugWudi.GetComponentInChildren<UiText>();
+        if(txt)
+        {
+            txt.color = _inInvincible ? Color.green : Color.red;
+            txt.text = _inInvincible ? "无敌 ON" : "无敌 OFF";
         }
     }
 }
