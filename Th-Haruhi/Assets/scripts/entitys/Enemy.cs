@@ -14,7 +14,11 @@ public class Enemy : EntityBase
     }
 
     public override EEntityType EntityType => EEntityType.Enemy;
-   public Dictionary<EnemyMoveStyle, List<Sprite>> SpriteDic = new Dictionary<EnemyMoveStyle, List<Sprite>>();
+    public Dictionary<EnemyMoveStyle, List<Sprite>> SpriteDic = new Dictionary<EnemyMoveStyle, List<Sprite>>();
+    
+    //是否无敌
+    public bool Invisible { set; get; }
+
     //血量
     public int HP { private set; get; }
     public int HPMax { private set; get; }
@@ -123,11 +127,14 @@ public class Enemy : EntityBase
     {
         if (IsDead) return;
 
-        //闪白
-        SetBrightness();
+        if(!Invisible)
+        {
+            //闪白
+            SetBrightness();
 
-        //扣血
-        CalculateHp(atk);
+            //扣血
+            CalculateHp(atk);
+        }
     }
 
     protected virtual void CalculateHp(int atk)
@@ -372,5 +379,6 @@ public class EnemyDeploy : Conditionable
     public string AIScript;
     public string[] BossCard;
     public string deadEffect;
+    public string BossDraw;
 }
 

@@ -109,6 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 368da9d7d35cb674d85da28d0496277e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RaoDong: {fileID: 2396184260540466987}
   TurnSpeed: 30
   TurnSpeedX: 8
 --- !u!1001 &6821981228737030690
@@ -198,6 +199,12 @@ PrefabInstance:
 --- !u!4 &5524653602009502184 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1299016803159849930, guid: 8c0ddb039b6298d4bae094c7e63c6b1a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6821981228737030690}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2396184260540466987 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 9217882363380722953, guid: 8c0ddb039b6298d4bae094c7e63c6b1a,
     type: 3}
   m_PrefabInstance: {fileID: 6821981228737030690}
   m_PrefabAsset: {fileID: 0}

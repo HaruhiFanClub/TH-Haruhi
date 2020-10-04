@@ -42,4 +42,27 @@ public static class UIUtility
             }
         }
     }
+
+
+    public static void SetRawImageTexture(this RawImage rawImage, string path, bool resetAlpha = true)
+    {
+        if (!rawImage) return;
+        if (string.IsNullOrEmpty(path))
+        {
+            return;
+        }
+
+        var o = ResourceMgr.LoadImmediately(path);
+        var texture = o as Texture;
+        if (texture)
+        {
+            rawImage.texture = texture;
+            if (resetAlpha)
+            {
+                var c = rawImage.color;
+                c.a = 1f;
+                rawImage.color = c;
+            }
+        }
+    }
 }

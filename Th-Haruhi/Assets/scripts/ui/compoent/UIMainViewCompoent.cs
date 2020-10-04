@@ -18,5 +18,5 @@ public class UIMainViewCompoent : MonoBehaviour
     //debug
     public GameObject DebugRoot;
     public UiButton Debug_BulletLib;
-    
+    public UiButton Debug_BtnTest;
 }

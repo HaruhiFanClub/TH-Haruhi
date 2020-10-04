@@ -138,5 +138,10 @@ public class UIMainView : UiFullView
             Debug.Log("Debug Open BulletLib");
             UiManager.Show<UIDebugBulletLib>();
         });
+
+        _compent.Debug_BtnTest.onClick.AddListener(() =>
+        {
+            UIBossBg.Show("drawing/nagato1.png");
+        });
     }
 }

@@ -7,5 +7,6 @@ public class UIBossHpComponent : MonoBehaviour
 {
     public Canvas Canvas;
     public UiImage Bar;
+    public UiImage Point;
 
 }

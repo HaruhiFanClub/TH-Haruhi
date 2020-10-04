@@ -1397,6 +1397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UiCamera: {fileID: 1513776398}
+  Bg: {fileID: 1230692447}
   Battle: {fileID: 943231792}
   Main: {fileID: 897054967}
   Tips: {fileID: 1702508988}

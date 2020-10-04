@@ -6,6 +6,7 @@ using UnityEngine;
 public class UiRootScript : MonoBehaviour
 {
     public Camera UiCamera;
+    public RectTransform Bg;
     public RectTransform Battle;
     public RectTransform Main;
     public RectTransform Tips;
@@ -18,10 +19,12 @@ public class UiRootScript : MonoBehaviour
     
     public void Init()
     {
+        CanvasParentList[UiLayer.Bg] = Bg;
         CanvasParentList[UiLayer.Battle] = Battle;
         CanvasParentList[UiLayer.Main] = Main;
         CanvasParentList[UiLayer.Tips] = Tips;
         CanvasParentList[UiLayer.DontDestroy] = DontDestroy;
+        CanvasList[UiLayer.Bg] = Bg.GetComponent<Canvas>();
         CanvasList[UiLayer.Battle] = Battle.GetComponent<Canvas>();
         CanvasList[UiLayer.Main] = Main.GetComponent<Canvas>(); 
         CanvasList[UiLayer.Tips] = Tips.GetComponent<Canvas>();

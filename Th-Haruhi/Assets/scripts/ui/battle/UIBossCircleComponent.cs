@@ -4,6 +4,7 @@ using DG.Tweening;
 
 public class UIBossCircleComponent : MonoBehaviour
 {
+    public Renderer RaoDong;
     private float _curX;
     private float _curY;
     private float _curZ;

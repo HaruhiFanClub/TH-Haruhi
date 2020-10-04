@@ -1,6 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+public enum EBossCardPhase
+{
+    One,
+    Two,
+    Single
+}
+
 public class BossCardMgr
 {
     protected Boss Master;
@@ -32,6 +39,17 @@ public class BossCardMgr
             }
         }
 
+        if(_cardList.Count == 1)
+        {
+            _cardList[0].Phase = EBossCardPhase.Single;
+        }
+        else
+        {
+            for (int i = 0; i < _cardList.Count; i++) 
+            {
+                _cardList[i].Phase = i % 2 == 0 ? EBossCardPhase.One : EBossCardPhase.Two;
+            }
+        }
 
 
         GameEventCenter.AddListener(GameEvent.DisableEnemyShoot, DisableEnemyShoot);
@@ -70,7 +88,19 @@ public class BossCardMgr
     {
         if (_currCard != null)
         {
-            return _currCard.CurrentHp / (float)_currCard.MaxHp;
+           
+            switch (_currCard.Phase)
+            {
+                case EBossCardPhase.One:
+                    //第一阶段显示80%
+                    return 0.2f + (_currCard.CurrentHp / (float)_currCard.MaxHp) * 0.8f;
+                case EBossCardPhase.Two:
+                    //第二阶段显示后面20%
+                    return (_currCard.CurrentHp / (float)_currCard.MaxHp) * 0.2f;
+                case EBossCardPhase.Single:
+                    //如果boss总共就1个阶段，直接显示
+                    return _currCard.CurrentHp / (float)_currCard.MaxHp;
+            }
         }
         return 1f;
     }
@@ -90,7 +120,11 @@ public class BossCardMgr
             _currCard = null;
 
             //销毁子弹
-            BulletExplosion.Create(Master.transform.position, 0.15f);
+            BulletExplosion.Create(Master.transform.position, 0.02f);
+
+            //播放音效(success or failed)
+            //todo
+            Sound.PlayUiAudioOneShot(106);
         }
 
         //有剩余符卡，切换到下一个

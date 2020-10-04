@@ -17,7 +17,7 @@ public class BulletExplosion
         Radius = 0;
 
         gameObj.transform.position = pos;
-        var t = gameObj.transform.DOScale(20f, 1.2f);
+        var t = gameObj.transform.DOScale(25f, 1.2f);
         t.onUpdate = () =>
         {
             Radius = gameObj.transform.localScale.x;

@@ -90,7 +90,8 @@ public static class ResourceBuildTool
             else if (pathname.StartsWith("Assets/res/player") || 
                 pathname.StartsWith("Assets/res/bullet") || 
                 pathname.StartsWith("Assets/res/enemy") ||
-                pathname.StartsWith("Assets/res/effects_tex"))
+                pathname.StartsWith("Assets/res/effects_tex") ||
+                pathname.StartsWith("Assets/res/drawing"))
             {
                 filter = buildFilter;
             }

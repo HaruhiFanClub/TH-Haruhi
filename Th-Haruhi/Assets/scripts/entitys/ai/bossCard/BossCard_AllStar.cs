@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using DG.Tweening;
 using System.Collections.Generic;
 
 //boss 符卡2
@@ -7,15 +6,12 @@ public class BossCard_AllStar : BossCardBase
 {
     public override float TotalTime => 30f;
 
+    public override Vector3 StartPos => Boss.BossMidCenter;
 
     private int _curIdx;
     private bool _inWait = true;
     public override void OnFixedUpdate()
     {
-        if (ShootIdx == 0)
-        {
-            Master.MoveToTarget(Vector2Fight.New(0, 0), 3);
-        }
         base.OnFixedUpdate();
         
         if (!CanShoot || Master.IsDead) return;
@@ -54,7 +50,7 @@ public class BossCard_AllStar : BossCardBase
    
     private int BigStarId = 1192;
     private int MiniStartId = 1460;
-    private int StarCount = 19;
+    private int StarCount = 17;
     private int StarFrame = 8;
     private int StarSpeed = 10;
 
@@ -62,7 +58,7 @@ public class BossCard_AllStar : BossCardBase
     private int RedStarFrame = 20;
     private int RedStarCount = 9;
     private int RedStarSpeed = 3;
-    private float TurnSpeed = 0.7f;
+    private float TurnSpeed = 0.5f;
 
 
     private float _starAngel;

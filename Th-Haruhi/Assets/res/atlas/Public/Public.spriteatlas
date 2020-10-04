@@ -79,7 +79,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: c02048db67f7f034fbd3ec0a5caba77e, type: 3}
-    totalSpriteSurfaceArea: 3742046
+    totalSpriteSurfaceArea: 3509286
     bindAsDefault: 0
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -89,10 +89,18 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e53cbfe0a2ed4bb42b3fbc0f5df34885, type: 3}
   - {fileID: 21300000, guid: 44e46311036622747b5b763f2e66b135, type: 3}
   - {fileID: 21300000, guid: 9d0938634d38a794da91bf7b4bd9c2d5, type: 3}
+  - {fileID: 21300000, guid: 51a93105dcdf3a74bb5b8dcff109867e, type: 3}
   - {fileID: 21300000, guid: 0ac54a669279005428d11697da71da46, type: 3}
   - {fileID: 21300000, guid: 64d34286e2df4bd48ae4ee345f0c31fe, type: 3}
-  - {fileID: 21300000, guid: 5b9d1d476b6f85b41869ec72259e86bc, type: 3}
   - {fileID: 21300000, guid: 379fa6b7f63838640ad4ad53ae8a82c5, type: 3}
+  - {fileID: -3588229512158965765, guid: 60bb09789340c154b9f2c34637e8a329, type: 3}
+  - {fileID: -2424553518018739129, guid: 60bb09789340c154b9f2c34637e8a329, type: 3}
+  - {fileID: 7801903984715115176, guid: 60bb09789340c154b9f2c34637e8a329, type: 3}
+  - {fileID: -6963195877183015321, guid: 60bb09789340c154b9f2c34637e8a329, type: 3}
+  - {fileID: -7366506907712603825, guid: 60bb09789340c154b9f2c34637e8a329, type: 3}
+  - {fileID: -5888845342232556802, guid: 60bb09789340c154b9f2c34637e8a329, type: 3}
+  - {fileID: -8797041637764437337, guid: 60bb09789340c154b9f2c34637e8a329, type: 3}
+  - {fileID: 5981802871748074552, guid: 60bb09789340c154b9f2c34637e8a329, type: 3}
   - {fileID: 21300000, guid: 8ba64bc8844658b46868df631bd5db21, type: 3}
   - {fileID: 21300000, guid: 451b6ea92383bee44a2cde2e39885028, type: 3}
   - {fileID: -3019424127853119141, guid: ad8dc40b001b116408088861234fe2c2, type: 3}
@@ -112,10 +120,18 @@ SpriteAtlas:
   - bg_difficult
   - main_mark
   - logo
+  - spellAttack
   - main_bg
   - beta
-  - ring02
   - loading_bg
+  - boss_1
+  - boss_0
+  - boss_3
+  - boss_2
+  - boss_5
+  - boss_4
+  - boss_7
+  - boss_6
   - bg_circle
   - ring01
   - line_0

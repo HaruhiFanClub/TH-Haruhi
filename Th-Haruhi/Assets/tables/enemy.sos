@@ -1,18 +1,16 @@
-#自机配置				[待机,移动,移动待机]	资源必须是12张图(待机8，移动4，移动待机4）					
-#	描述	缩放		待机动画帧率{60为基准)	资源Id	碰撞体半径	血量	小怪AI脚本	Boss符卡	死亡特效
-id	name	scale	isBoss	frameSpeed	resoureIds	radius	maxHp	AIScript	BossCard	deadEffect
-1	大蝴蝶	1		[6,3,6]	[2001,2002,2003]	1	2000	ShootAI_S01		effects/Prefabs/Combat/Magic/Enchant/MagicEnchantBlue.prefab
-2	小红	1		[6,3,6]	[2011,2012,2013]	1	200	ShootAI_S01		effects/Prefabs/Combat/Brawling/RoundHit/RoundHitRed.prefab
-3	小绿	1		[6,3,6]	[2021,2022,2023]	1	200	ShootAI_S01		effects/Prefabs/Combat/Brawling/RoundHit/RoundHitGreen.prefab
-4	小蓝	1		[6,3,6]	[2031,2032,2033]	1	200	ShootAI_S01		effects/Prefabs/Combat/Brawling/RoundHit/RoundHitBlue.prefab
-5	小黄	1		[6,3,6]	[2041,2042,2043]	1	200	ShootAI_S01		effects/Prefabs/Combat/Brawling/RoundHit/RoundHitYellow.prefab
-6	翅膀中蓝	1		[6,3,6]	[2051,2052,2053]	1	800	ShootAI_S01		effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaBlue.prefab
-7	翅膀中红	1		[6,3,6]	[2061,2062,2063]	1	800	ShootAI_S01		effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaFire.prefab
-8	翅膀大红	1		[6,3,6]	[2071,2072,2073]	1	1500	ShootAI_S01		effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaFire.prefab
-9	翅膀大蓝	1		[6,3,6]	[2081,2082,2083]	1	1500	ShootAI_S01		effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaBlue.prefab
-										
-101	test	1		[6,3,6]	[2081,2082,2083]	1	2000000	ShootAI_S02		effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaBlue.prefab
-										
-102	boss	1	TRUE	[6,3,6]	[3002,3002,3002]	1	5000		["BossCard1"]	effects/Prefabs/Combat/Brawling/RoundHit/RoundHitRed.prefab
-										
-									,	
+#自机配置				[待机,移动,移动待机]	资源必须是12张图(待机8，移动4，移动待机4）						
+#	描述	缩放		待机动画帧率{60为基准)	资源Id	碰撞体半径	血量	小怪AI脚本	Boss符卡	boss立绘	死亡特效
+id	name	scale	isBoss	frameSpeed	resoureIds	radius	maxHp	AIScript	BossCard	BossDraw	deadEffect
+1	大蝴蝶	1		[6,3,6]	[2001,2002,2003]	1	2000	ShootAI_S01			effects/Prefabs/Combat/Magic/Enchant/MagicEnchantBlue.prefab
+2	小红	1		[6,3,6]	[2011,2012,2013]	1	200	ShootAI_S01			effects/Prefabs/Combat/Brawling/RoundHit/RoundHitRed.prefab
+3	小绿	1		[6,3,6]	[2021,2022,2023]	1	200	ShootAI_S01			effects/Prefabs/Combat/Brawling/RoundHit/RoundHitGreen.prefab
+4	小蓝	1		[6,3,6]	[2031,2032,2033]	1	200	ShootAI_S01			effects/Prefabs/Combat/Brawling/RoundHit/RoundHitBlue.prefab
+5	小黄	1		[6,3,6]	[2041,2042,2043]	1	200	ShootAI_S01			effects/Prefabs/Combat/Brawling/RoundHit/RoundHitYellow.prefab
+6	翅膀中蓝	1		[6,3,6]	[2051,2052,2053]	1	800	ShootAI_S01			effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaBlue.prefab
+7	翅膀中红	1		[6,3,6]	[2061,2062,2063]	1	800	ShootAI_S01			effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaFire.prefab
+8	翅膀大红	1		[6,3,6]	[2071,2072,2073]	1	1500	ShootAI_S01			effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaFire.prefab
+9	翅膀大蓝	1		[6,3,6]	[2081,2082,2083]	1	1500	ShootAI_S01			effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaBlue.prefab
+											
+101	test	1		[6,3,6]	[2081,2082,2083]	1	2000000	ShootAI_S02			effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaBlue.prefab
+											
+102	长门有希	1	TRUE	[6,3,6]	[3002,3002,3002]	1	15000		["BossCard1","BossCard1_End",BossCard2","BossCard_AllStar"]	drawing/nagato1.png	effects/Prefabs/Combat/Brawling/RoundHit/RoundHitRed.prefab

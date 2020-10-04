@@ -22,10 +22,6 @@ public class UiImage : Image
     protected override void Awake()
     {
         base.Awake();
-        if (type == Type.Tiled)
-        {
-            Debug.LogError("!! XUI_IMAGE 禁止使用 tiled 填充:"+transform.root.name);
-        }
         if (Alpha <= 0)
         {
             type = Type.Simple;

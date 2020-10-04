@@ -95,7 +95,6 @@ Shader "Haruhi/Distortion(GrabPass)"
 				fixed4 color =  tex2D(_GrabTex, i.grabPos);
 				fixed4 maskColor = tex2D(_Mask, i.uv.zw) * i.color;
 				return color + maskColor;
-
 			}
 			ENDCG
 		}

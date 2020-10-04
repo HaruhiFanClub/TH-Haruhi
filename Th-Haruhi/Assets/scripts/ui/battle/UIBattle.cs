@@ -7,6 +7,14 @@ public class UIBattle : UiInstance
 {
     public static UIBattle Instance;
 
+    public static void ShowBossTime(bool b, float leftSec = 0)
+    {
+        if(Instance)
+        {
+            Instance.SetBossTimeActive(b, leftSec);
+        }
+    }
+
     private UIBattleComponent _bind;
 
     protected override void OnLoadFinish()
@@ -34,7 +42,7 @@ public class UIBattle : UiInstance
 
     private float _bossTimeLeft;
     private bool _bossTimeActive;
-    public void SetBossTimeActive(bool b, float leftSec = 0)
+    private void SetBossTimeActive(bool b, float leftSec = 0)
     {
         _bossTimeActive = b;
         _bossTimeLeft = leftSec;
@@ -81,13 +89,20 @@ public class UIBattle : UiInstance
     private bool _inInvincible;
     private void InitDebug()
     {
+        /*
         if (!Debug.isDebugBuild)
         {
             _bind.DebugWudi.SetActiveSafe(false);
             return;
         }
+        */
 
         RefreshDebugBtn();
+        _bind.DebugTest.onClick.AddListener(() =>
+        {
+            UIBossBg.Show("drawing/nagato1.png");
+        });
+
         _bind.DebugWudi.onClick.AddListener(() =>
         {
             if (StageMgr.MainPlayer != null)

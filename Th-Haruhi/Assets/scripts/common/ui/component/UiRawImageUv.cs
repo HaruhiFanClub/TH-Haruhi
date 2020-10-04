@@ -2,10 +2,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExecuteInEditMode]
 public class UiRawImageUv : MonoBehaviour
 {
-    public RawImage target;
-
+    private RawImage target;
     public float SpeedX = 0f;
     public float SpeedY = 0f;
 
@@ -21,16 +21,14 @@ public class UiRawImageUv : MonoBehaviour
             target = GetComponent<RawImage>();
         }
 
-        wc = target.rectTransform.rect.width / target.mainTexture.width;
-        hc = target.rectTransform.rect.height / target.mainTexture.height;
+        wc = target.uvRect.width;
+        hc = target.uvRect.height;
     }
 
     void Update()
     {
         if (target != null)
         {
-            wc = target.rectTransform.rect.width / target.mainTexture.width;
-            hc = target.rectTransform.rect.height / target.mainTexture.height;
             ox += Time.deltaTime * SpeedX;
             oy += Time.deltaTime * SpeedY;
             ox = ox % 1;

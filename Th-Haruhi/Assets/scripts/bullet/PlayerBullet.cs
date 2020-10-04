@@ -74,6 +74,10 @@ public class PlayerBullet : Bullet
             MoveData.Speed = 10f;
             Renderer.material.SetFloat("_Brightness", 2f);
         }
+        else
+        {
+            DoBulletBomb();
+        }
     }
 
     //子弹爆炸，销毁子弹

@@ -19,10 +19,8 @@ public class UiList
         _<UIBattle>         ("UIBattle.prefab",             UiLayer.Battle, UiLoadType.Multi);
         _<UIPauseView>      ("UIPauseView.prefab",          UiLayer.Main,   UiLoadType.Multi);
         _<UIDeadView>       ("UIDeadView.prefab",           UiLayer.Main,   UiLoadType.Multi);
-
-
-
-
+        _<UIBossBg>         ("UIBossBg.prefab",             UiLayer.Bg,     UiLoadType.Multi);
+       
         //debug
         _<UIDebugBulletLib> ("debug/DebugBulletLib.prefab", UiLayer.Tips,   UiLoadType.Multi);
     }

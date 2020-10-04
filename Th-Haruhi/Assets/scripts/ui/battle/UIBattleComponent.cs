@@ -19,5 +19,5 @@ public class UIBattleComponent : MonoBehaviour
     public UiText BossCardSec2;
 
     public UiButton DebugWudi;
-
+    public UiButton DebugTest;
 }
