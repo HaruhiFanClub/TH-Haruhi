@@ -188,6 +188,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Raodong
       objectReference: {fileID: 0}
+    - target: {fileID: 3352540107544793406, guid: 8c0ddb039b6298d4bae094c7e63c6b1a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c0ddb039b6298d4bae094c7e63c6b1a, type: 3}
 --- !u!4 &5524653602009502184 stripped

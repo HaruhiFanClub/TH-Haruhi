@@ -54,7 +54,7 @@ public class BossCard_AllStar : BossCardBase
    
     private int BigStarId = 1192;
     private int MiniStartId = 1460;
-    private int StarCount = 13;
+    private int StarCount = 19;
     private int StarFrame = 8;
     private int StarSpeed = 10;
 

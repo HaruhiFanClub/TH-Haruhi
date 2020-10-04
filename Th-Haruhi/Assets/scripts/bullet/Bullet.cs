@@ -3,20 +3,46 @@ using UnityEngine;
 
 public class Bullet : EntityBase
 {
+    public class ColliderInfo
+    {
+        public bool IsBox;
+        public float Radius;
+        public float BoxWidth;
+        public float BoxHeight;
+        public Vector3 Center;
+    }
+
+    //擦弹判定距离
+    public const float GrizeDistance = 0.2f;
+
+    //碰撞信息
+    public ColliderInfo CollisionInfo;
+
+    //移动数据
+    public MoveData MoveData;
+
+    //事件数据
+    public List<EventData> EventList;
+
     public List<Sprite> AniList { set; get; }
     public override EEntityType EntityType => EEntityType.Bullet;
     public BulletDeploy Deploy { private set; get; }
     protected Transform Master { private set; get; }
     public MeshRenderer Renderer { private set; get; }
-    public bool AutoDestroy { set; get; }
-    public int Atk { protected set; get; }
-    public MoveData MoveData { protected set; get; }
-    public List<EventData> EventList { protected set; get; }
-    public int ShootFrame { protected set; get; }
+    protected Transform CacheTransform { private set; get; }
+    protected bool Shooted { private set; get; }
 
-    private bool _bShooted;
+    public int Atk { protected set; get; }
+
+    private int _totalFrame;
+
+    private int _lastHelixFrame;
+
 
     private float _movedDistance;
+
+
+    private bool _isAni;
 
     public static int TotalBulletCount;
 
@@ -35,8 +61,7 @@ public class Bullet : EntityBase
         Deploy = deploy;
         Master = master;
         Renderer = renderer;
-       
-        AutoDestroy = true;
+        _isAni = deploy.isAni;
         ReInit(master);
     }
 
@@ -44,26 +69,60 @@ public class Bullet : EntityBase
     {
         Master = t;
     }
-
  
     public virtual void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1)
     {
         Atk = atk;
+
+        CacheTransform = transform;
+        CacheTransform.position = moveData.StartPos;
+
         _movedDistance = 0;
-        transform.position = moveData.StartPos;
-        ShootFrame = 0;
+        _totalFrame = 0;
+        _lastHelixFrame = 0;
+
         EventList = eventList;
-        InitBulletMoveData(moveData);
-        _bShooted = true;
+
+        if (moveData != null)
+        {
+            MoveData = moveData;
+            transform.up = MoveData.Forward;
+        }
+
+        Shooted = true;
+    }
+
+    protected override void FixedUpdate()
+    {
+        if (InCache) return;
+        if (!Shooted) return;
+        _totalFrame++;
+
+        float delta = Time.deltaTime;
+        UpdateAnimation();
+        UpdateBulletMove(delta);
+        UpdateEventList();
+    }
+
+    protected bool CheckBulletOutSide(Vector3 bulletCenter)
+    {
+        //超出边界销毁
+        if (bulletCenter.x < -15f || bulletCenter.x > 5f || bulletCenter.y < -12f || bulletCenter.y > 12f)
+        {
+            BulletFactory.DestroyBullet(this);
+            return true;
+        }
+        return false;
     }
 
     private int _currAniIdx;
-    private float _lastAniTime;
+    private float _lastAniFrame;
+
     private void UpdateAnimation()
     {
-        if (Deploy.isAni && AniList != null)
+        if (_isAni && AniList != null)
         {
-            if (Time.time - _lastAniTime > 0.1f)
+            if (_totalFrame - _lastAniFrame > 6)
             {
                 _currAniIdx++;
                 if (_currAniIdx >= AniList.Count)
@@ -71,21 +130,11 @@ public class Bullet : EntityBase
                     _currAniIdx = 0;
                 }
                 Renderer.material.mainTexture = AniList[_currAniIdx].texture;
-                _lastAniTime = Time.time;
+                _lastAniFrame = _totalFrame;
             }
         }
     }
-    protected override void FixedUpdate()
-    {
-        if (InCache) return;
-        if (!_bShooted) return;
-        ShootFrame++;
-        UpdateAnimation();
-        UpdateBulletMove();
-        UpdateEventList();
-    }
 
- 
     private void UpdateEventList()
     {
         if (EventList == null || EventList.Count == 0) return;
@@ -97,7 +146,7 @@ public class Bullet : EntityBase
             {
                 case EventData.EventType.Frame_Destroy:
 
-                    if (ShootFrame >= e.FrameCount)
+                    if (_totalFrame >= e.FrameCount)
                     {
                         EventList.RemoveAt(i);
                         BulletFactory.DestroyBullet(this);
@@ -105,7 +154,7 @@ public class Bullet : EntityBase
                     break;
                 case EventData.EventType.Frame_ChangeSpeed:
 
-                    if( ShootFrame >= e.FrameCount)
+                    if( _totalFrame >= e.FrameCount)
                     {
                         MoveData.EndSpeed = e.SpeedData.EndSpeed;
                         MoveData.Acceleration = e.SpeedData.Acceleration;
@@ -119,7 +168,7 @@ public class Bullet : EntityBase
                     break;
                 case EventData.EventType.Frame_ChangeForward:
 
-                    if (ShootFrame >= e.FrameCount)
+                    if (_totalFrame >= e.FrameCount)
                     {
                         MoveData.Forward = e.ForwardData.Forward;
                         MoveData.HelixRefretFrame = e.ForwardData.HelixRefretFrame;
@@ -142,28 +191,16 @@ public class Bullet : EntityBase
         }
     }
 
-    private void InitBulletMoveData(MoveData data)
+    
+    private void UpdateBulletMove(float deltaTime)
     {
-        if (data == null) return;
-        MoveData = data;
-        transform.up = MoveData.Forward;
-
-        _totalFrame = 0;
-        _lastHelixFrame = 0;
-    }
-
-    private int _totalFrame;
-    private float _lastHelixFrame;
-    private void UpdateBulletMove()
-    {
-        _totalFrame += 1;
 
         //螺旋移动
         if (MoveData.HelixToward != MoveData.EHelixToward.None) 
         {
-            var eulurZ = (int)MoveData.HelixToward * MoveData.EulurPerFrame * Time.deltaTime * 60f;
+            var eulurZ = (int)MoveData.HelixToward * MoveData.EulurPerFrame * deltaTime * 60f;
             MoveData.Forward = Quaternion.Euler(0, 0, eulurZ) * MoveData.Forward;
-            transform.up = MoveData.Forward;
+            CacheTransform.up = MoveData.Forward;
 
             if (MoveData.HelixRefretFrame > 0 && _totalFrame - _lastHelixFrame >= MoveData.HelixRefretFrame)
             {
@@ -177,46 +214,26 @@ public class Bullet : EntityBase
 
         if (!MathUtility.FloatEqual(MoveData.Acceleration, 0f))
         {
-            MoveData.Speed += MoveData.Acceleration * Time.deltaTime;
+            MoveData.Speed += MoveData.Acceleration * deltaTime;
             if (!MathUtility.FloatEqual(MoveData.EndSpeed, 0) && Mathf.Abs(MoveData.EndSpeed - MoveData.Speed) < 0.1f)
             {
                 MoveData.Speed = MoveData.EndSpeed;
             }
         }
 
-        var dist = Time.deltaTime * MoveData.Speed;
+        var dist = deltaTime * MoveData.Speed;
         _movedDistance += dist;
-        transform.position += MoveData.Forward * dist;
+        CacheTransform.position += MoveData.Forward * dist;
     }
 
-    public virtual void OnBulletHitEnemy()
-    {
-        if (!InCache)
-        {
-            PlayBombEffect(transform.position);
-            BulletFactory.DestroyBullet(this);
-        }
-    }
-
-    private void PlayBombEffect(Vector3 pos)
-    {
-        if (Deploy.bombEffectId > 0)
-        {
-            TextureEffectFactroy.CreateEffect(Deploy.bombEffectId, SortingOrder.EnemyBullet, effect =>
-            {
-                effect.transform.position = pos;
-                effect.AutoDestroy();
-            });
-        }
-    }
 
     public override void OnRecycle()
     {
         base.OnRecycle();
         _currAniIdx = 0;
         _movedDistance = 0;
-        _bShooted = false;
-        ShootFrame = 0;
+        Shooted = false;
+        _totalFrame = 0;
         Pool.Free(MoveData);
     }
 }
@@ -239,4 +256,5 @@ public class BulletDeploy : Conditionable
     public float sizeX;
     public float sizeY;
     public float brightness;
+    public bool delayDestroy;
 }

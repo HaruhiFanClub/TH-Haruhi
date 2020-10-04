@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MarisaLaser : Bullet
+public class MarisaLaser : PlayerBullet
 {
     private Material _material;
     private float _scaleSpeed = 10f;
@@ -19,8 +19,6 @@ public class MarisaLaser : Bullet
     {
         _material = model.material;
         base.Init(deploy, master, model);
-        AutoDestroy = false;
-
 
         //初始化被击特效
         TextureEffectFactroy.CreateEffect(HitEffectId, SortingOrder.Effect, e => 
@@ -37,58 +35,62 @@ public class MarisaLaser : Bullet
         transform.localScale = new Vector2(1f, 0f);
     }
 
-    private void OnHitEnemy(GameObject enemyObj)
+    protected override void OnBulletHitEnemy(Enemy enemy)
     {
-        if (Time.time - _lastHurtEnemyTime > GameSystem.FrameTime * HurtEnemyFrame)
+        if(enemy != null)
         {
-            _lastHurtEnemyTime = Time.time;
-            var enemy = enemyObj.GetComponent<Enemy>();
-            if (enemy != null)
+            if (Time.time - _lastHurtEnemyTime > GameSystem.FrameTime * HurtEnemyFrame)
             {
+                _lastHurtEnemyTime = Time.time;
                 enemy.OnEnemyHit(Atk);
             }
         }
     }
 
-    protected override void Update()
+    protected override void CheckHitEnemy()
     {
-        base.Update();
         if (InCache) return;
+        if (!Shooted) return;
         if (Master == null) return;
 
-        transform.position = Master.position;
+        CacheTransform.position = Master.position;
 
         var delteTime = Time.deltaTime;
 
         //根据射线，更新最长距离
         var bPlayHitEffect = false;
-
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, 100f, LayersMask.Enemy | LayersMask.BulletDestroy);
+        var maxDist = 20f;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, 100f, LayersMask.Enemy);
         if (hit.collider != null)
         {
-            var dist = Vector2.Distance(hit.point, transform.position);
-            _maxScaleMultiple = dist / Renderer.transform.localScale.x;
+            maxDist = Vector2.Distance(hit.point, transform.position);
 
             //如果击中的是敌人，播放特效
-            if(hit.collider.gameObject.layer == Layers.Enemy)
+            var gameObj = hit.collider.gameObject;
+            if (gameObj.layer == Layers.Enemy)
             {
                 bPlayHitEffect = true;
-                if(_hitEffect)
+                if (_hitEffect)
                 {
                     _hitEffect.transform.position = hit.point;
                     _hitEffect.SetActiveSafe(true);
                 }
 
-                //激光击中敌人伤害
-                OnHitEnemy(hit.collider.gameObject);
+                var enemy = gameObj.GetComponent<Enemy>();
+                if (enemy != null)
+                {
+                    //激光击中敌人伤害
+                    OnBulletHitEnemy(enemy);
+                }
             }
         }
 
-        if(!bPlayHitEffect)
+        if (!bPlayHitEffect)
         {
             if (_hitEffect)
                 _hitEffect.SetActiveSafe(false);
         }
+        _maxScaleMultiple = maxDist / Renderer.transform.localScale.x;
 
         //mainTextureOffset(UV动画)
         var t = _material.mainTextureOffset;
@@ -119,12 +121,6 @@ public class MarisaLaser : Bullet
             Sound.PlayUiAudioOneShot(2002, true);
             _nextSoundTime = Time.time + GameSystem.FrameTime * 12;
         }
-    }
-
-
-    public override void OnBulletHitEnemy()
-    {
-        //base.OnBulletHitEnemy();
     }
 
     public override void OnRecycle()

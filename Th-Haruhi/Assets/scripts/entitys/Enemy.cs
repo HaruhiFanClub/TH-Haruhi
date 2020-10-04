@@ -301,17 +301,6 @@ public class Enemy : EntityBase
         _nextAnimationTime = Time.time + Deploy.frameSpeed[(int)AniStyle] * GameSystem.FrameTime;
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        //玩家子弹击中怪物逻辑
-        if (collider.gameObject.layer != Layers.PlayerBullet)
-            return;
-
-        var playerBullet = collider.GetComponent<Bullet>();
-        OnEnemyHit(playerBullet.Atk);
-        playerBullet.OnBulletHitEnemy();
-    }
-
     protected override void OnDestroy()
     {
         if (_moveData != null)

@@ -25,7 +25,6 @@ public class Player : EntityBase
 
     public SpriteRenderer SpriteRenderer { private set; get; }
     
-    //配置
     public PlayerDeploy Deploy { private set; get; }
 
     //是否慢速移动
@@ -302,15 +301,41 @@ public class Player : EntityBase
         BulletExplosion.Create(transform.position, 0.3f);
     }
 
+    //擦弹
+    private float _lastGrazeTime;
+    private float GrazeCd = 0.1f;
+    public void OnGraze()
+    {
+        if(Time.time - _lastGrazeTime > GrazeCd)
+        {
+            _lastGrazeTime = Time.time;
+
+            //播放特效
+
+            //播放音效
+            Sound.PlayUiAudioOneShot(109);
+
+            //事件
+        }
+    }
+
+    //子弹击中
+    public bool OnPlayerHit()
+    {
+        //无敌中不处理
+        if (Invincible) return false;
+        OnDead();
+        return true;
+    }
 
     //伤害判定
     private void OnTriggerEnter2D(Collider2D c)
-    {
+    { 
         //无敌中不处理
         if (Invincible) return;
 
-        //碰到怪或怪物子弹就死
-        if(c.gameObject.layer == Layers.EnemyBullet || c.gameObject.layer == Layers.Enemy)
+        //碰到怪就死
+        if (c.gameObject.layer == Layers.Enemy)
         {
             OnDead();
         }
@@ -357,7 +382,7 @@ public class Player : EntityBase
 
         //Collider
         var collider = playerObject.AddComponent<CircleCollider2D>();
-        collider.radius = 0.2f;
+        collider.radius = deploy.radius;
 
         //判定点
         var pointObj = ResourceMgr.LoadImmediately("player/point.prefab");
@@ -397,5 +422,6 @@ public class PlayerDeploy : Conditionable
     public float supportDownRotaSlow;
     public string deadEffect;
     public int deadSound;
+    public float radius;
 }
 

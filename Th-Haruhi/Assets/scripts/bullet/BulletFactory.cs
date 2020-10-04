@@ -223,20 +223,20 @@ public static class BulletFactory
             model.transform.localPosition = new Vector3(0, -(bRota ? sizeX / 2f : sizeY / 2f), 0);
         }
 
+        var collisionInfo = new Bullet.ColliderInfo();
         //加collider
         if(deploy.isBoxCollider)
         {
-            var collider = _object.AddComponent<BoxCollider2D>();
-            collider.size = new Vector2(bRota ? sizeY : sizeX, bRota ? sizeX : sizeY) * deploy.radius;
-            collider.offset = model.transform.localPosition;
-            collider.isTrigger = true;
+            collisionInfo.IsBox = true;
+            collisionInfo.BoxWidth = (bRota ? sizeY : sizeX) * deploy.radius;
+            collisionInfo.BoxHeight = (bRota ? sizeX : sizeY) * deploy.radius;
+            collisionInfo.Center = model.transform.localPosition;
         }
         else if (deploy.radius  > 0)
         {
-            var collider = _object.AddComponent<CircleCollider2D>();
-            collider.radius = deploy.radius;
-            collider.offset = new Vector2(0, 0);
-            collider.isTrigger = true;
+            collisionInfo.IsBox = false;
+            collisionInfo.Radius = deploy.radius;
+            collisionInfo.Center = model.transform.localPosition;
         }
 
         var bullet = _object.AddComponent(type) as Bullet;
@@ -247,6 +247,7 @@ public static class BulletFactory
         }
         else
         {
+            bullet.CollisionInfo = collisionInfo;
             bullet.gameObject.layer = layer;
             bullet.Init(deploy, master, mr);
         }

@@ -4,23 +4,28 @@ using System.Collections;
 
 public class BulletExplosion
 {
+    public static bool InExplosion;
+    public static Vector3 Center;
+    public static float Radius;
+
     private static IEnumerator DoCreate(Vector3 pos, float delay)
     {
         yield return new WaitForSeconds(delay);
         var gameObj = new GameObject("BulletExplosionObj");
+        InExplosion = true;
+        Center = pos;
+        Radius = 0;
+
         gameObj.transform.position = pos;
-        gameObj.layer = Layers.BulletDestroy;
-
-        var circleCollider = gameObj.AddComponent<CircleCollider2D>();
-        circleCollider.radius = 1f;
-
-        var rigid = gameObj.AddComponent<Rigidbody2D>();
-        rigid.bodyType = RigidbodyType2D.Kinematic;
-        rigid.simulated = true;
-
-        gameObj.AddComponent<BulletExplosionCollider>();
-        gameObj.transform.DOScale(20f, 1.2f).onComplete = ()=>
+        var t = gameObj.transform.DOScale(20f, 1.2f);
+        t.onUpdate = () =>
         {
+            Radius = gameObj.transform.localScale.x;
+        };
+
+        t.onComplete = ()=>
+        {
+            InExplosion = false;
             Object.Destroy(gameObj);
         };
     }

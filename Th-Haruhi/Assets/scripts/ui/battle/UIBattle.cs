@@ -111,8 +111,8 @@ public class UIBattle : UiInstance
         var txt = _bind.DebugWudi.GetComponentInChildren<UiText>();
         if(txt)
         {
-            txt.color = _inInvincible ? Color.green : Color.red;
-            txt.text = _inInvincible ? "无敌 ON" : "无敌 OFF";
+            txt.color = _inInvincible ? Color.green : Color.white;
+            txt.text = _inInvincible ? "无敌ON" : "无敌OFF";
         }
     }
 }

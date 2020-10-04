@@ -38,6 +38,7 @@ public static class LayersMask
     public const int Ui = 1 << Layers.Ui;
     public const int Player = 1 << Layers.Player;
     public const int Enemy = 1 << Layers.Enemy;
+    public const int EnemyBullet = 1 << Layers.EnemyBullet;
     public const int Creature = Player | Enemy;
     public const int Ground = 1 << Layers.BackGround;
     public const int Obstacle = 1 << Layers.Obstacle;

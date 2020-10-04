@@ -75,23 +75,18 @@ public class UIDebugBulletLib : UiInstance
             material.SetColor("_TintColor", Color.red);
             material.SetFloat("_AlphaScale", deploy.alpha);
 
-            var collider = bullet.GetComponentInChildren<Collider2D>();
-            var circleCollider = collider as CircleCollider2D;
-            if (circleCollider != null)
+            var collider = bullet.CollisionInfo;
+            if (!collider.IsBox)
             {
                 material.mainTexture = GameSystem.DefaultRes.CircleTexture;
-                col.transform.localScale = Vector3.one * circleCollider.radius * 2;
+                col.transform.localScale = Vector3.one * collider.Radius * 2;
                 
             }
             else
             {
-                var boxCollider = collider as BoxCollider2D;
-                if(boxCollider != null)
-                {
-                    material.mainTexture = GameSystem.DefaultRes.BoxTexture;
-                    col.transform.localScale = new Vector3(boxCollider.size.x, boxCollider.size.y, 1);
-                    col.transform.localPosition = boxCollider.offset;
-                }
+                material.mainTexture = GameSystem.DefaultRes.BoxTexture;
+                col.transform.localScale = new Vector3(collider.BoxWidth, collider.BoxHeight, 1);
+                col.transform.localPosition = collider.Center;
             }
 
             var mr = col.AddComponent<MeshRenderer>();

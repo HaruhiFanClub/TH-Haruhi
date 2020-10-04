@@ -27,7 +27,7 @@ id	name	resource	volume
 106	cardget	audios/se/se_cardget.wav	1
 107	Boss³ö³¡	audios/se/se_ch02.wav	0.6
 108	startShoot	audios/se/se_heal.wav	1
-			
+109	graze	audios/se/se_graze.wav	0.5
 			
 #bullet			
 2001	ÆÕ¹¥	audios/se/se_plst00.wav	0.2
