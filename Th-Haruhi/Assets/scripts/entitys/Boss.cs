@@ -11,8 +11,9 @@ using UnityEngine;
 /// </summary>
 public class Boss : Enemy
 {
-    private string BossHpBar = "ui/prefabs/battle/UIBossHpHud.prefab";
-    private string BossHpCircle = "ui/prefabs/battle/UIBossCircle.prefab";
+    private const string BossBottomMark = "ui/prefabs/battle/UIBossBottomMark.prefab";
+    private const string BossHpBar = "ui/prefabs/battle/UIBossHpHud.prefab";
+    private const string BossHpCircle = "ui/prefabs/battle/UIBossCircle.prefab";
 
     //上方中心位置
     public static Vector3 BossUpCenter = Vector2Fight.New(0f, 50f);
@@ -38,6 +39,9 @@ public class Boss : Enemy
         CardMgr.Init(this, HPMax);
 
         Invisible = true;
+
+        //bossMark显示
+        UIBattle.SetBossMarkActive(true);
 
         DOVirtual.DelayedCall(0.5F, StartFight, false);
     }
@@ -130,6 +134,9 @@ public class Boss : Enemy
         //隐藏血条
         SetHpHudActive(false);
 
+        //bossMark隐藏
+        UIBattle.SetBossMarkActive(false);
+
         DOVirtual.DelayedCall(0.3f, () =>
         {
             StageCamera2D.Instance?.Shake(0.7f, 1.2f);
@@ -148,6 +155,7 @@ public class Boss : Enemy
     {
         base.Update();
         UpdateHpHud();
+        UIBattle.SetBossMarkPos(transform.position);
     }
 
     protected override void FixedUpdate()

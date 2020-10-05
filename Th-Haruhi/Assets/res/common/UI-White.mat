@@ -7,13 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UI-Top
-  m_Shader: {fileID: 4800000, guid: 2f18964507eaeef49b7cc423e06e1db1, type: 3}
+  m_Name: UI-White
+  m_Shader: {fileID: 4800000, guid: 1010b20695c3f9f46a95638ecac17528, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3100
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:

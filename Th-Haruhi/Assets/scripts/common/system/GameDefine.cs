@@ -27,7 +27,7 @@ public static class SortingOrder
     public const int Effect = 10;
     public const int Enemy = 15;
     public const int ShootEffect = 16;
-    public const int DebugUI = 20;
+    public const int Top = 20;
 }
 
 public static class LayersMask

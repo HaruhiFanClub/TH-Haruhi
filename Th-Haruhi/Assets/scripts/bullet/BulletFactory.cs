@@ -196,7 +196,7 @@ public static class BulletFactory
                 mr.sortingOrder = SortingOrder.EnemyBullet;
                 break;
             case Layers.Ui:
-                mr.sortingOrder = SortingOrder.DebugUI;
+                mr.sortingOrder = SortingOrder.Top;
                 break;
         }
 

@@ -15,6 +15,25 @@ public class UIBattle : UiInstance
         }
     }
 
+    public static void SetBossMarkPos(Vector3 bossPos)
+    {
+        if(Instance)
+        {
+            var uiPos = Vector2Fight.WordPosToUIPos(bossPos);
+            var pos = Instance._bind.BossMark.anchoredPosition;
+            pos.x = uiPos.x;
+            Instance._bind.BossMark.anchoredPosition = pos;
+        }
+    }
+
+    public static void SetBossMarkActive(bool b)
+    {
+        if (Instance)
+        {
+            Instance._bind.BossMark.gameObject.SetActiveSafe(b);
+        }
+    }
+
     private UIBattleComponent _bind;
 
     protected override void OnLoadFinish()
@@ -69,7 +88,7 @@ public class UIBattle : UiInstance
         //音效
         if(_bossTimeLeft > 0 && _bossTimeLeft < 10)
         {
-            var cd = _bossTimeLeft < 5 ? 0.5f : 1f;
+            var cd = 1f;
             if (Time.time - _lastPlayTime > cd)
             {
                 Sound.PlayUiAudioOneShot(1005);
@@ -77,11 +96,6 @@ public class UIBattle : UiInstance
             }
         }
     }
-
-
-
-
-
 
 
     //debug
