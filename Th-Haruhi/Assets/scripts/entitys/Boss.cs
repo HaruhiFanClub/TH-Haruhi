@@ -1,6 +1,8 @@
 ﻿
 using DG.Tweening;
+using System;
 using UnityEngine;
+using System.Collections;
 
 /// <summary>
 /// boss
@@ -48,7 +50,9 @@ public class Boss : Enemy
 
     private void StartFight()
     {
-        Sound.PlayUiAudioOneShot(107);
+        //第一符卡，播放收放特效
+        PlayShirnkEffect(true);
+
 
         //血条
         var bossHpHudObj = ResourceMgr.Instantiate(ResourceMgr.LoadImmediately(BossHpBar));
@@ -121,6 +125,45 @@ public class Boss : Enemy
         _bossHpHud.Bar.fillAmount = CardMgr.GetHpPercent();
     }
 
+    public void PlayShirnkEffect(bool bPlayAmplify = false)
+    {
+        //音效
+        Sound.PlayUiAudioOneShot(107);
+
+        var effect = ResourceMgr.Instantiate(ResourceMgr.LoadImmediately("effects_tex/prefab/bossStart2.prefab"));
+        effect.SetRendererOrderSort(SortingOrder.Top);
+
+        var e = effect.AddComponent<EffectMono>();
+        e.transform.SetParent(transform, false);
+        e.AutoDestory();
+
+        if (bPlayAmplify) 
+        {
+            StartCoroutine(PlayAmplifyEffect(1.2f));
+        }
+    }
+
+    public IEnumerator PlayAmplifyEffect(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        var pos = transform.position; 
+        EffectFactory.CreateEffect("effects_tex/prefab/bossStart.prefab", eff =>
+        {
+            if(gameObject == null)
+            {
+                eff.transform.position = pos;
+            }
+            else
+            {
+                eff.transform.SetParent(transform, false);
+            }
+            eff.gameObject.SetRendererOrderSort(SortingOrder.Top);
+            Sound.PlayUiAudioOneShot(110);
+            eff.AutoDestory();
+        });
+    }
+
+
     protected override void CalculateHp(int atk)
     {
         //改为扣符卡血量
@@ -151,6 +194,8 @@ public class Boss : Enemy
             Destroy(gameObject);
         }, false);
     }
+
+
     protected override void Update()
     {
         base.Update();

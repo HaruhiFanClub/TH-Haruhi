@@ -428,4 +428,16 @@ public static class GameObjectTools
         if (obj.gameObject != null)
             Object.DestroyImmediate(obj.gameObject);
     }
+
+    public static void SetRendererOrderSort(this GameObject gameObj, int order)
+    {
+        var renderers = gameObj.GetComponentsInChildren<Renderer>();
+        for(int i = 0; i < renderers.Length; i++)
+        {
+            if(renderers[i])
+            {
+                renderers[i].sortingOrder = order;
+            }
+        }
+    }
 }

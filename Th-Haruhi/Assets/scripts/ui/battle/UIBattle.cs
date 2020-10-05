@@ -114,7 +114,7 @@ public class UIBattle : UiInstance
         RefreshDebugBtn();
         _bind.DebugTest.onClick.AddListener(() =>
         {
-            UIBossBg.Show("drawing/nagato1.png");
+            
         });
 
         _bind.DebugWudi.onClick.AddListener(() =>

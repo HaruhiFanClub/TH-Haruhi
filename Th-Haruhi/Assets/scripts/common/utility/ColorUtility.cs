@@ -55,7 +55,6 @@ public static class ColorUtility
             case EColor.White:
                 return White;
         }
-        Debug.LogError("CAN COLOR!" + color);
         return Color.red;
     }
 

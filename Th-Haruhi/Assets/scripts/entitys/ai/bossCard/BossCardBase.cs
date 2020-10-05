@@ -28,7 +28,7 @@ public abstract class BossCardBase
     {
         //3秒后开始
         Master.StartCoroutine(DoEnable());
-        Master.MoveToTarget(StartPos, 5f);
+        Master.MoveToTarget(StartPos, 3f);
     }
 
     private IEnumerator DoEnable()

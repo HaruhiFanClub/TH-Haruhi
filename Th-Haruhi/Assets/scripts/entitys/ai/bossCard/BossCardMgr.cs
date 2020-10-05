@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum EBossCardPhase
@@ -113,20 +114,22 @@ public class BossCardMgr
     private void ChangeToNextCard()
     {
         //销毁当前Card
+        var isFirstCard = true;
         if(_currCard != null)
         {
-            _currCard.OnDisable();
-            _currCard.OnDestroy();
-            _currCard = null;
-
             //销毁子弹
             BulletExplosion.Create(Master.transform.position, 0.02f);
 
             //播放音效(success or failed)
             //todo
             Sound.PlayUiAudioOneShot(106);
-        }
 
+            _currCard.OnDisable();
+            _currCard.OnDestroy();
+            _currCard = null;
+            isFirstCard = false;
+        }
+  
         //有剩余符卡，切换到下一个
         if (_cardList.Count > 0)
         {
@@ -134,6 +137,20 @@ public class BossCardMgr
             _cardList.RemoveAt(0);
             _currCard.OnEnable();
             _cardStartTime = Time.time;
+
+
+            //播放收缩or扩大特效
+            if(!isFirstCard)
+            {
+                if (_currCard.Phase == EBossCardPhase.Two)
+                {
+                    Master.PlayShirnkEffect();
+                }
+                else
+                {
+                    Master.PlayShirnkEffect(true);
+                }
+            }
         }
         else
         {
@@ -154,6 +171,8 @@ public class BossCardMgr
         }
     }
 
+
+   
     public void OnDestroy()
     {
         _cardList.Clear();

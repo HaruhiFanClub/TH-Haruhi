@@ -1,5 +1,5 @@
 #Sound表			
-#	描述	资源路径	音量[0.0,1.0]
+#	描述	资源路径	"音量[0.0,1.0]"
 id	name	resource	volume
 			
 #Bgm(1-10)			
@@ -25,9 +25,10 @@ id	name	resource	volume
 104	enemydie	audios/se/se_enep00.wav	0.3
 105	bossDie	audios/se/se_enep01.wav	0.3
 106	击破boss success	audios/se/se_cardget.wav	1
-107	Boss出场	audios/se/se_ch02.wav	0.6
+107	Boss出场	audios/se/se_power3.wav	0.8
 108	开始射击警告	audios/se/se_heal.wav	1
 109	graze	audios/se/se_graze.wav	0.5
+110	boss出场扩大特效	audios/se/se_tan02.wav	0.4
 			
 #bullet			
 2001	普攻	audios/se/se_plst00.wav	0.2

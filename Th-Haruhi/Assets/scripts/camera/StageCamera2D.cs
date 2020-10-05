@@ -13,7 +13,7 @@ public class StageCamera2D : MonoBehaviour
 	}
 
 	private CameraPlayerDead _cameraDeadEffect;
-	public void PlayDeadEffect(Vector3 wordPos)
+	public void PlayDeadEffect(Vector3 worldPos)
 	{
 		_cameraDeadEffect = MainCamera.gameObject.GetComponent<CameraPlayerDead>();
 		if(_cameraDeadEffect == null)
@@ -21,7 +21,7 @@ public class StageCamera2D : MonoBehaviour
 			_cameraDeadEffect = MainCamera.gameObject.AddComponent<CameraPlayerDead>();
 		}
 
-		var screenPos = MainCamera.WorldToScreenPoint(wordPos);
+		var screenPos = MainCamera.WorldToScreenPoint(worldPos);
 		_cameraDeadEffect.Radius = 0f;
 		_cameraDeadEffect.CenterX = screenPos.x / Screen.width;
 		_cameraDeadEffect.CenterY = screenPos.y / Screen.height;
