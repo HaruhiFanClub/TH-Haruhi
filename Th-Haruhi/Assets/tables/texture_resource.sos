@@ -177,3 +177,5 @@ id	texture	name	startX	startY	width	height	xCount	yCount
 3002	enemy/enemy3.png	¹í»ğÂÌ	0	32	32	32	8	1
 3003	enemy/enemy3.png	¹í»ğÀ¶	0	64	32	32	8	1
 3004	enemy/enemy3.png	¹í»ğ»Æ	0	96	32	32	8	1
+								
+9999	enemy/nagato.png	nagato	0	0	144	144	1	1

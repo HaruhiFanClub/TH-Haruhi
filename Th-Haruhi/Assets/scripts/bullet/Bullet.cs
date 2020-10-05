@@ -257,4 +257,5 @@ public class BulletDeploy : Conditionable
     public float sizeY;
     public float brightness;
     public bool delayDestroy;
+    public EColor ExplosionColor;
 }

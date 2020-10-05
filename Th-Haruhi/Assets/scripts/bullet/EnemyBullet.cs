@@ -47,6 +47,7 @@ public class EnemyBullet : Bullet
             BulletFactory.DestroyBullet(this);
             TextureEffectFactroy.CreateEffect(501, SortingOrder.ShootEffect, effect =>
             {
+                effect.Renderer.material.SetColor("_TintColor", ColorUtility.GetColor(Deploy.ExplosionColor));
                 effect.transform.position = pos;
                 effect.AutoDestroy();
             });

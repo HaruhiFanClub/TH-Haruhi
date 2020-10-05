@@ -13,6 +13,7 @@ using UnityEngine;
 
 public enum EColor
 {
+    None,
     Red,
     Purple,
     Blue,
@@ -24,6 +25,40 @@ public enum EColor
 }
 public static class ColorUtility
 {
+    public static Color Red = Color.red;
+    public static Color Purple = new Color(0.86f, 0f, 1f, 1f);
+    public static Color Blue = Color.blue;
+    public static Color BlueLight = new Color(0.077f, 0.86f, 0.86f, 1f);
+    public static Color Green = Color.green;
+    public static Color Yellow = Color.yellow;
+    public static Color Orange = new Color(1f, 0.5f, 0f, 1f);
+    public static Color White = Color.white;
+
+    public static Color GetColor(EColor color)
+    {
+        switch (color)
+        {
+            case EColor.Red:
+                return Red;
+            case EColor.Purple:
+                return Purple;
+            case EColor.Blue:
+                return Blue;
+            case EColor.BlueLight:
+                return BlueLight;
+            case EColor.Green:
+                return Green;
+            case EColor.Yellow:
+                return Yellow;
+            case EColor.Orange:
+                return Orange;
+            case EColor.White:
+                return White;
+        }
+        Debug.LogError("CAN COLOR!" + color);
+        return Color.red;
+    }
+
     public static string FormatEasyColor(string str)
     {
         return string.Format("<color=#06CA00>{0}</color>", str);
