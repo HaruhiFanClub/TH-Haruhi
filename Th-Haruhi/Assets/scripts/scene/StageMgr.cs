@@ -22,7 +22,8 @@ public enum ELevelDifficult
     Easy,
     Normal,
     Hard,
-    Lunatic
+    Lunatic,
+    Extra
 }
 
 /// <summary>
@@ -59,12 +60,18 @@ public static class StageMgr
         //加载UI
         UiManager.Show<UIBattle>();
 
+        //cacheSound
+        yield return Sound.CacheAllBgm();
+
         //加载角色
         yield return Player.Create(Data.PlayerId, player =>
         {
             player.transform.position = Data.PlayerBornPos;
             MainPlayer = player;
         });
+
+        //cacheBgm
+        Sound.CacheAllBgm();
 
         //关闭loading
         yield return GameSystem.HideLoading();

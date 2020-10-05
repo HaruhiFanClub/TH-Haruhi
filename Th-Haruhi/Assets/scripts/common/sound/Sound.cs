@@ -505,22 +505,17 @@ public static class Sound
             yield break;
         }
 
-        ResourceMgr.Load(soundName, _object =>
+        var soundObj = ResourceMgr.LoadImmediately(soundName);
+        var resource = soundObj as AudioClip;
+        if (!resource)
         {
-            var resource = _object as AudioClip;
-            if (!resource)
-            {
-                Debug.LogError("加载声音失败:" + soundName);
-            }
-            else
-            {
-                if (!CachePool.ContainsKey(soundName))
-                    CachePool.Add(soundName, resource);
-            }
-        });
-        yield return Yielders.Frame;
-        yield return Yielders.Frame;
-        yield return Yielders.Frame;
+            Debug.LogError("加载声音失败:" + soundName);
+        }
+        else
+        {
+            if (!CachePool.ContainsKey(soundName))
+                CachePool.Add(soundName, resource);
+        }
         yield return Yielders.Frame;
     }
 
@@ -550,6 +545,13 @@ public static class Sound
         }
     }
 
+
+    public static IEnumerator CacheAllBgm()
+    {
+        yield return CacheSound(2);
+        yield return CacheSound(3);
+        yield return CacheSound(12);
+    }
 }
 
 public class SoundDeploy : Conditionable

@@ -80,11 +80,13 @@ public class UIMainView : UiFullView
 
     private void Btn_ExtraStart()
     {
-        
-
+        UiTips.Show("Btn_ExtraStart");
     }
+
     private void Btn_ParcticeStart()
     {
+        UiTips.Show("Btn_ParcticeStart");
+        return;
         StageMgr.Data = new StageData();
         StageMgr.Data.CurLevelId = 2;
         StageMgr.Data.PlayerId = 2;
@@ -93,11 +95,11 @@ public class UIMainView : UiFullView
 
     private void Btn_SpellParctice()
     {
-        UiTips.Show(Application.streamingAssetsPath);
+        UiTips.Show("Btn_SpellParctice");
     }
     private void Btn_Replay()
     {
-        UiTips.Show(Application.dataPath);
+        UiTips.Show("Btn_Replay");
     }
     private void Btn_PlayerData()
     {

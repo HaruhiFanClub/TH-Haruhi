@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class Stage1 : StageBase
 {
@@ -18,16 +19,14 @@ public class Stage1 : StageBase
     //测试用
     private void OnEnemyDie(object o)
     {
+        DOVirtual.DelayedCall(2f, () =>
+        {
+            UiManager.Show<UIStageAllClear>();
+        }, false);
+        
        // StartCoroutine(TestCreateEnemy());
     }
 
-
-    private static IEnumerator TestCreateEnemy()
-    {
-        yield return new WaitForSeconds(3f);
-        var enemyId = 1001;
-        yield return Enemy.Create(enemyId);
-    }
     protected override IEnumerator LoopLevel()
     {
         //create boss
