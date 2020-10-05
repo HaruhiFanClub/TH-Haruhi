@@ -69,6 +69,10 @@ public class ControllerPc : MonoBehaviour
         else if(StageBase.InLevel)
         {
             UpdateBattle();
+            if(DialogMgr.InDrawingDialog)
+            {
+                UpdateDrawing();
+            }
         }
     }
 
@@ -77,6 +81,14 @@ public class ControllerPc : MonoBehaviour
         if (_actions.Get(EControllerBtns.Pause).WasReleased)
         {
             UiManager.Show<UIPauseView>();
+        }
+    }
+
+    private void UpdateDrawing()
+    {
+        if (_actions.Get(EControllerBtns.Sure).WasReleased)
+        {
+            GameEventCenter.Send(GameEvent.UI_NextChat);
         }
     }
 
@@ -105,11 +117,6 @@ public class ControllerPc : MonoBehaviour
         if (_actions.Get(EControllerBtns.Sure).WasReleased)
         {
             GameEventCenter.Send(GameEvent.UI_Sure);
-        }
-
-        if (_actions.Get(EControllerBtns.Cancel).WasReleased)
-        {
-            GameEventCenter.Send(GameEvent.UI_Cancel);
         }
 
         if (_actions.Get(EControllerBtns.Cancel).WasReleased)

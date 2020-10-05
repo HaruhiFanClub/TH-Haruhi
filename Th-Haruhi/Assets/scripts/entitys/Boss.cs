@@ -34,16 +34,43 @@ public class Boss : Enemy
     {
         base.Init(renderer, deploy);
 
-        MoveToTarget(BossUpCenter, 10f);
-
         CardMgr = new BossCardMgr();
         CardMgr.Init(this, HPMax);
 
         Invisible = true;
 
-        //bossMark显示
-        UIBattle.SetBossMarkActive(true);
+        
 
+        TryDialog();
+    }
+
+    private void TryDialog()
+    {
+        if(StageMgr.MainPlayer != null)
+        {
+            var deploy = DialogMgr.GetBossDialog(StageMgr.MainPlayer.Deploy.id, Deploy.id);
+            if(deploy != null)
+            {
+                var list = DialogMgr.GetDrawList(deploy.dialogId);
+                UIDrawingChat.Show(list, 
+                    ()=> 
+                    { 
+                        MoveToTarget(BossUpCenter, 10f); 
+                    },
+                    () =>
+                    {
+                        StartFight();
+                        if (deploy.bgmId > 0)
+                        {
+                            Sound.PlayMusic(deploy.bgmId);
+                        }
+                    });
+                return;
+            }
+        }
+
+        //如果没有对话，直接移动到指定位置，并开始战斗
+        MoveToTarget(BossUpCenter, 10f);
         DOVirtual.DelayedCall(1.15F, StartFight, false);
     }
 
@@ -54,6 +81,9 @@ public class Boss : Enemy
         {
             PlayShirnkEffect(true);
         }
+
+        //bossMark显示
+        UIBattle.SetBossMarkActive(true);
 
         //血条
         var bossHpHudObj = ResourceMgr.Instantiate(ResourceMgr.LoadImmediately(BossHpBar));

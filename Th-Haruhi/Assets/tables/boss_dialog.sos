@@ -1,0 +1,8 @@
+#boss对话ID配置					
+#					
+#					
+#					对话结束后换bgm
+id	remark	bossId	playerId	dialogId	bgmId
+1	灵梦vs长门	1001	2	1	12
+2	魔理沙vs长门	1001	1	2	12
+3	十六夜vs长门	1001	3	3	12

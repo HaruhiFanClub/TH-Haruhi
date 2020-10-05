@@ -25,13 +25,13 @@ public class Stage1 : StageBase
     private static IEnumerator TestCreateEnemy()
     {
         yield return new WaitForSeconds(3f);
-        var enemyId = 102;
+        var enemyId = 1001;
         yield return Enemy.Create(enemyId);
     }
     protected override IEnumerator LoopLevel()
     {
         //create boss
         yield return new WaitForSeconds(3f);
-        yield return Enemy.Create(102, 80, 150);
+        yield return Enemy.Create(1001, 80, 150);
     }
 }

@@ -136,6 +136,7 @@ public class Player : EntityBase
         UpdateOperation();
         UpdateAnimation();
         UpdateShoot();
+        
         UpdateInvicibleTime();
         SupportMgr.Update();
     }
@@ -193,7 +194,7 @@ public class Player : EntityBase
         RedPoint.SetVisible(InSlow);
 
         //shoot
-        InShoot = Actions.Get(EControllerBtns.Shoot).IsPressed;
+        InShoot = !DialogMgr.InDrawingDialog && Actions.Get(EControllerBtns.Shoot).IsPressed;
     }
 
     //射击逻辑

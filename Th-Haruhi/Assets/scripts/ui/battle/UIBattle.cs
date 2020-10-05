@@ -114,7 +114,6 @@ public class UIBattle : UiInstance
         RefreshDebugBtn();
         _bind.DebugTest.onClick.AddListener(() =>
         {
-            
         });
 
         _bind.DebugWudi.onClick.AddListener(() =>

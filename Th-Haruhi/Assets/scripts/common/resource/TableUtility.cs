@@ -23,6 +23,8 @@ public static class TableUtility
         _(typeof(TextureResourceDeploy), "texture_resource");
         _(typeof(TextureEffectDeploy), "effect");
         _(typeof(EnemyDeploy), "enemy");
+        _(typeof(DialogDeploy), "drawing_dialog");
+        _(typeof(BossDialogDeplpy), "boss_dialog");
     }
     
     private class RandomIdData

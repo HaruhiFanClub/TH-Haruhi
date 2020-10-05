@@ -79,7 +79,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: c02048db67f7f034fbd3ec0a5caba77e, type: 3}
-    totalSpriteSurfaceArea: 3509286
+    totalSpriteSurfaceArea: 3554178
     bindAsDefault: 0
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -111,6 +111,7 @@ SpriteAtlas:
   - {fileID: 3986553184928412961, guid: ad8dc40b001b116408088861234fe2c2, type: 3}
   - {fileID: 3783279168100775825, guid: ad8dc40b001b116408088861234fe2c2, type: 3}
   - {fileID: 21300000, guid: 92aceccb82e11664fa6424d6c61d151c, type: 3}
+  - {fileID: 21300000, guid: 6f53e76cc77286247bf8045a86cf1fcf, type: 3}
   - {fileID: 21300000, guid: 9e274b7ecc3ed4a4c885ff68b0451f92, type: 3}
   - {fileID: 21300000, guid: db62861f372e4e44d8fb0d82ef6054ee, type: 3}
   m_PackedSpriteNamesToIndex:
@@ -142,6 +143,7 @@ SpriteAtlas:
   - line_5
   - line_6
   - main_logo2
+  - chat_dialog
   - ring00
   - icon_haruhi
   m_Tag: Public

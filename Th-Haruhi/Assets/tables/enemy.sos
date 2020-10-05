@@ -11,6 +11,5 @@ id	name	scale	isBoss	frameSpeed	resoureIds	radius	maxHp	AIScript	BossCard	BossDr
 8	翅膀大红	1		[6,3,6]	[2071,2072,2073]	1	1500	ShootAI_S01			effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaFire.prefab
 9	翅膀大蓝	1		[6,3,6]	[2081,2082,2083]	1	1500	ShootAI_S01			effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaBlue.prefab
 											
-101	test	1		[6,3,6]	[2081,2082,2083]	1	2000000	ShootAI_S02			effects/Prefabs/Combat/Explosions/NovaExplosion/ExplosionNovaBlue.prefab
-											
-102	长门有希	1	TRUE	[6,3,6]	[9999,9999,9999]	1.5	15000		["BossCard1","BossCard1_End",BossCard2","BossCard_AllStar"]	drawing/nagato1.png	effects/Prefabs/Combat/Brawling/RoundHit/RoundHitRed.prefab
+#boss											
+1001	长门有希	1	TRUE	[6,3,6]	[9999,9999,9999]	1.5	15000		["BossCard1","BossCard1_End",BossCard2","BossCard_AllStar"]	drawing/nagato1.png	effects/Prefabs/Combat/Brawling/RoundHit/RoundHitRed.prefab

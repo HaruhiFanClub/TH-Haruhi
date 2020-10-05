@@ -141,7 +141,7 @@ public class UIMainView : UiFullView
 
         _compent.Debug_BtnTest.onClick.AddListener(() =>
         {
-            UIBossBg.Show("drawing/nagato1.png");
+            //UIBossBg.Show("drawing/nagato1.png");
         });
     }
 }

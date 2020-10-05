@@ -71,8 +71,8 @@ public class PlayerBullet : Bullet
         //击中敌人后速度减慢
         if (Deploy.delayDestroy)
         {
-            MoveData.Speed = 10f;
-            Renderer.material.SetFloat("_Brightness", 2f);
+            MoveData.Speed = 8f;
+            Renderer.material.SetFloat("_Brightness", 3f);
         }
         else
         {

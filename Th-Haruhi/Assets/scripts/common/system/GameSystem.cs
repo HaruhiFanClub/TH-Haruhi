@@ -124,9 +124,8 @@ public class GameSystem : MonoBehaviour
 
     public static void ClearCache()
     {
+        DialogMgr.InDrawingDialog = false;
 
-        //清理各种池
-        //EffectFactory.BackAllToPool();
 
         UiMenuBase.ClearSelectStatus();
 
