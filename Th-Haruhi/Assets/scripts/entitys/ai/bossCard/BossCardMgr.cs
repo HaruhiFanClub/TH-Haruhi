@@ -57,6 +57,11 @@ public class BossCardMgr
         GameEventCenter.AddListener(GameEvent.EnableEnemyShoot, EnableEnemyShoot);
     }
 
+    public bool IsSingleCard()
+    {
+        return _cardList.Count == 1;
+    }
+
     private void DisableEnemyShoot(object o)
     {
         if (_currCard != null)
@@ -135,7 +140,7 @@ public class BossCardMgr
         {
             _currCard = _cardList[0];
             _cardList.RemoveAt(0);
-            _currCard.OnEnable();
+            _currCard.OnEnable(isFirstCard);
             _cardStartTime = Time.time;
 
 

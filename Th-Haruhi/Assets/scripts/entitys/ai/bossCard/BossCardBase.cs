@@ -10,7 +10,7 @@ public abstract class BossCardBase
     //符卡时间
     public abstract float TotalTime { get; }
     //出生位置
-    public virtual Vector3 StartPos { get { return Boss.BossUpCenter; } }
+    public virtual Vector3 StartPos { get { return Vector3.zero; } }
 
     public int CurrentHp { set;  get; }
     public int MaxHp { set; get; }
@@ -24,14 +24,18 @@ public abstract class BossCardBase
         CurrentHp = MaxHp = maxHp;
     }
 
-    public void OnEnable()
+    public void OnEnable(bool isFirstCard)
     {
         //3秒后开始
-        Master.StartCoroutine(DoEnable());
-        Master.MoveToTarget(StartPos, 3f);
+        Master.StartCoroutine(DoEnable(isFirstCard));
+
+        if(StartPos != Vector3.zero)
+        {
+            Master.MoveToTarget(StartPos, 3f);
+        }
     }
 
-    private IEnumerator DoEnable()
+    private IEnumerator DoEnable(bool isFirstCard)
     {
         Master.Invisible = true;
         UIBattle.ShowBossTime(true, TotalTime);
@@ -51,11 +55,13 @@ public abstract class BossCardBase
                 Master.SetHpHudActive(true);
                 break;
         }
-        
-        yield return new WaitForSeconds(1.5f);
+
+        yield return new WaitForSeconds(isFirstCard ? 0.5f : 1.5f);
+
         Master.Invisible = false;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+
         Master.ShowCircleRaoDong(true);
         CanShoot = true;
     }

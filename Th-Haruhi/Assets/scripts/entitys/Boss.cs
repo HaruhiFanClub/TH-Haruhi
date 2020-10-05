@@ -25,7 +25,6 @@ public class Boss : Enemy
 
     //boss符卡管理器
     private BossCardMgr CardMgr;
-
     private UIBossHpComponent _bossHpHud;
     private UIBossCircleComponent _bossCircle;
     private bool _initedHpBar;
@@ -45,14 +44,16 @@ public class Boss : Enemy
         //bossMark显示
         UIBattle.SetBossMarkActive(true);
 
-        DOVirtual.DelayedCall(0.5F, StartFight, false);
+        DOVirtual.DelayedCall(1.15F, StartFight, false);
     }
 
     private void StartFight()
     {
-        //第一符卡，播放收放特效
-        PlayShirnkEffect(true);
-
+        //第一符卡，播放收放特效(关卡中途加入的boss不需要)
+        if (!CardMgr.IsSingleCard())
+        {
+            PlayShirnkEffect(true);
+        }
 
         //血条
         var bossHpHudObj = ResourceMgr.Instantiate(ResourceMgr.LoadImmediately(BossHpBar));
@@ -74,7 +75,7 @@ public class Boss : Enemy
     }
 
     //显示隐藏boss气流扰动效果
-    public void ShowCircleRaoDong(bool b, Color? color = null)
+    public void ShowCircleRaoDong(bool b)
     {
         if(_bossCircle)
         {
