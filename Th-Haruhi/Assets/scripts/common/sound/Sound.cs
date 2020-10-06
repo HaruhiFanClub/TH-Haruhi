@@ -557,6 +557,7 @@ public static class Sound
 public class SoundDeploy : Conditionable
 {
     public int id;
+    public string name;
     public string resource;
     public float volume;
 }

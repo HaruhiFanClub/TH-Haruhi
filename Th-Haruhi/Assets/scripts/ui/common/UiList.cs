@@ -21,6 +21,10 @@ public class UiList
         _<UIDeadView>       ("UIDeadView.prefab",           UiLayer.Tips,   UiLoadType.Multi);
         _<UIBossBg>         ("UIBossBg.prefab",             UiLayer.Bg,     UiLoadType.Multi);
 
+        //bgmTip
+        _<UIBgmTip>         ("UIBgmTip.prefab",             UiLayer.Bg,     UiLoadType.Multi);
+        
+
         //通关
         _<UIStageAllClear>  ("UIStageAllClear.prefab",      UiLayer.Main,   UiLoadType.Multi);
         

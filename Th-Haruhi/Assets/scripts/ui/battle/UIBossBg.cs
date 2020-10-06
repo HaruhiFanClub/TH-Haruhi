@@ -91,7 +91,7 @@ public class UIBossBg : UiInstance
             return;
         }
 
-        var moveSpeed = 2000f;
+        var moveSpeed = 1500f;
         if(pos.x <-100 && pos.x > -200)
         {
             moveSpeed = 60f;

@@ -2,39 +2,76 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class UIBattle : UiInstance
 {
+    
+    //------------------- start static ------------------//
+
     public static UIBattle Instance;
 
+    //显示隐藏剩余时间
     public static void ShowBossTime(bool b, float leftSec = 0)
     {
         if(Instance)
         {
-            Instance.SetBossTimeActive(b, leftSec);
+            Instance.ShowLeftTime(b, leftSec);
         }
     }
 
+    //显示隐藏boss标记
     public static void SetBossMarkPos(Vector3 bossPos)
     {
         if(Instance)
         {
             var uiPos = Vector2Fight.WordPosToUIPos(bossPos);
-            var pos = Instance._bind.BossMark.anchoredPosition;
+            var pos = Instance._bind.EnemyMark.anchoredPosition;
             pos.x = uiPos.x;
-            Instance._bind.BossMark.anchoredPosition = pos;
+            Instance._bind.EnemyMark.anchoredPosition = pos;
         }
     }
 
+    //更新boss标记位置
     public static void SetBossMarkActive(bool b)
     {
         if (Instance)
         {
-            Instance._bind.BossMark.gameObject.SetActiveSafe(b);
+            Instance._bind.EnemyMark.gameObject.SetActiveSafe(b);
         }
     }
 
+    //显示boss符卡信息
+    public static void ShowBossCard(string name)
+    {
+        if(Instance)
+        {
+            Instance.StartCoroutine(Instance.ShowCard(name));
+        }
+    }
+
+    //隐藏boss符卡信息
+    public static void HideBossCard()
+    {
+        if(Instance)
+        {
+            Instance.HideCard();
+        }
+    }
+
+
+    //------------------- end static ------------------//
+
+
     private UIBattleComponent _bind;
+    private Vector2 _defaultLeftTimePos;
+    private Vector2 _defaultCardNamePos;
+    private Vector2 _defaultCardBonusPos;
+
+    private float _timeLeft;
+    private bool _leftActive;
+    private float _lastTimeOutTime;
+    private bool _bShowingCardName;
 
     protected override void OnLoadFinish()
     {
@@ -42,7 +79,11 @@ public class UIBattle : UiInstance
         _bind = GetComponent<UIBattleComponent>();
         Instance = this;
 
-        _bind.BossCard.SetActiveSafe(false);
+        _bind.LeftTimeRoot.gameObject.SetActiveSafe(false);
+
+        _defaultLeftTimePos = _bind.LeftTimeRoot.anchoredPosition;
+        _defaultCardNamePos = _bind.CardNameRoot.anchoredPosition;
+        _defaultCardBonusPos = _bind.CardBonusRoot.anchoredPosition;
 
         InitDebug();
     }
@@ -56,47 +97,111 @@ public class UIBattle : UiInstance
     protected override void Update()
     {
         base.Update();
-        UpdateBossTime();
+        UpdateLeftTime();
     }
 
-    private float _bossTimeLeft;
-    private bool _bossTimeActive;
-    private void SetBossTimeActive(bool b, float leftSec = 0)
+    private void ShowLeftTime(bool b, float leftSec = 0)
     {
-        _bossTimeActive = b;
-        _bossTimeLeft = leftSec;
-        _bind.BossCard.SetActiveSafe(b);
+        _leftActive = b;
+        _timeLeft = leftSec;
+        _bind.LeftTimeRoot.gameObject.SetActiveSafe(b);
     }
 
-    private float _lastPlayTime;
-    private void UpdateBossTime()
+    private void UpdateLeftTime()
     {
-        if (!_bossTimeActive) return;
-        _bossTimeLeft -= Time.deltaTime;
-        if (_bossTimeLeft <= 0)
+        if (!_leftActive) return;
+        _timeLeft -= Time.deltaTime;
+        if (_timeLeft <= 0)
         {
-            _bossTimeLeft = 0;
+            _timeLeft = 0;
         }
 
-        var sec = Mathf.FloorToInt(_bossTimeLeft);
-        var sec2 = (_bossTimeLeft - sec) * 100;
-        var color = _bossTimeLeft < 10f ? "red" : "white";
+        var sec = Mathf.FloorToInt(_timeLeft);
+        var sec2 = (_timeLeft - sec) * 100;
+        var color = _timeLeft < 10f ? "red" : "white";
 
-        _bind.BossCardSec1.text = string.Format("<color={1}>{0:00}.</color>", sec, color);
-        _bind.BossCardSec2.text = string.Format("<color={1}>{0:00}</color>", sec2, color);
+        _bind.LeftTimeSec1.text = string.Format("<color={1}>{0:00}.</color>", sec, color);
+        _bind.LeftTimeSec2.text = string.Format("<color={1}>{0:00}</color>", sec2, color);
 
         //音效
-        if(_bossTimeLeft > 0 && _bossTimeLeft < 10)
+        if(_timeLeft > 0 && _timeLeft < 10)
         {
             var cd = 1f;
-            if (Time.time - _lastPlayTime > cd)
+            if (Time.time - _lastTimeOutTime > cd)
             {
                 Sound.PlayUiAudioOneShot(1005);
-                _lastPlayTime = Time.time;
+                _lastTimeOutTime = Time.time;
             }
         }
     }
 
+   
+    public IEnumerator ShowCard(string name)
+    {
+        if(_bShowingCardName)
+        {
+            yield break;
+        }
+        _bShowingCardName = true;
+
+        //时间下移
+        _bind.LeftTimeRoot.DOAnchorPos(new Vector2(_defaultLeftTimePos.x, -120f), 0.5f);
+
+        _bind.CardName.text = name;
+
+        //动画过程
+        _bind.CardNameRoot.gameObject.SetActiveSafe(true);
+        _bind.CardBonusRoot.gameObject.SetActiveSafe(true);
+        _bind.CardBonusRoot.anchoredPosition = _defaultCardBonusPos;
+
+        var startPos = new Vector2(-800f, -300f);
+        var posTarget1 = new Vector2(_defaultCardNamePos.x, -300f);
+
+        _bind.CardBonusAlpha.alpha = 0;
+        _bind.CardNameAlpha.alpha = 0;
+
+        _bind.CardNameRoot.anchoredPosition = startPos;
+        _bind.CardNameRoot.localScale = Vector3.one * 5f;
+
+        var aniSec1 = 0.5f;
+        _bind.CardNameAlpha.DOFade(1f, aniSec1);
+        _bind.CardNameRoot.DOAnchorPos(posTarget1, aniSec1);
+        _bind.CardNameRoot.DOScale(Vector3.one, aniSec1);
+
+        yield return new WaitForSeconds(aniSec1 + 1f);
+
+        _bind.CardNameRoot.DOAnchorPos(_defaultCardNamePos, 0.5f);
+
+        yield return new WaitForSeconds(0.3f);
+        _bind.CardBonusAlpha.DOFade(1f, 0.3f);
+    }
+
+    public void HideCard()
+    {
+        if(!_bShowingCardName)
+        {
+            return;
+        }
+
+        _bShowingCardName = false;
+
+        //时间下移
+        _bind.LeftTimeRoot.DOAnchorPos(_defaultLeftTimePos, 0.5f);
+
+        var pos1 = _defaultCardNamePos;
+        pos1.x += 500;
+        _bind.CardNameRoot.DOAnchorPos(pos1, 0.5f).onComplete = () =>
+        {
+            _bind.CardNameRoot.gameObject.SetActiveSafe(false);
+        };
+
+        var pos2 = _defaultCardBonusPos;
+        pos2.x += 500;
+        _bind.CardBonusRoot.DOAnchorPos(pos1, 0.5f).onComplete = () =>
+        {
+            _bind.CardBonusRoot.gameObject.SetActiveSafe(false);
+        };
+    }
 
     //debug
 
@@ -114,6 +219,7 @@ public class UIBattle : UiInstance
         RefreshDebugBtn();
         _bind.DebugTest.onClick.AddListener(() =>
         {
+          
         });
 
         _bind.DebugWudi.onClick.AddListener(() =>

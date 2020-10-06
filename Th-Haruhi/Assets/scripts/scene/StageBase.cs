@@ -19,8 +19,19 @@ public abstract class StageBase : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
+        //2秒后显示bgm名称
+        StartCoroutine(ShowBgmTip());
+
+        //关卡循环
         StartCoroutine(LoopLevel());
     }
+
+    private IEnumerator ShowBgmTip()
+    {
+        yield return new WaitForSeconds(1f);
+        UIBgmTip.Show(Deploy.bgmId);
+    }
+
 
     protected abstract IEnumerator LoopLevel();
 

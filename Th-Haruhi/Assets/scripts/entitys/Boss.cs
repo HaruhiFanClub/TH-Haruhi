@@ -63,6 +63,7 @@ public class Boss : Enemy
                         if (deploy.bgmId > 0)
                         {
                             Sound.PlayMusic(deploy.bgmId);
+                            UIBgmTip.Show(deploy.bgmId);
                         }
                     });
                 return;

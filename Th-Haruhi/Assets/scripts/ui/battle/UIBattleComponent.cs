@@ -14,11 +14,22 @@ public class UIBattleComponent : MonoBehaviour
     public UiText Point;
     public UiText Graze;
 
-    public GameObject BossCard;
-    public UiText BossCardSec1;
-    public UiText BossCardSec2;
-    public RectTransform BossMark;
+    public RectTransform LeftTimeRoot;
+    public UiText LeftTimeSec1;
+    public UiText LeftTimeSec2;
+    public RectTransform EnemyMark;
 
+    public RectTransform CardNameRoot;
+    public CanvasGroup CardNameAlpha;
+    public UiText CardName;
+
+    public RectTransform CardBonusRoot;
+    public CanvasGroup CardBonusAlpha;
+    public UiText CardBonusScore;
+    public UiText CardBonusHistory;
+
+
+    //debug
     public UiButton DebugWudi;
     public UiButton DebugTest;
 }

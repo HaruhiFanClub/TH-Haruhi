@@ -5,6 +5,7 @@ using System.Collections.Generic;
 //boss 符卡1
 public class BossCard1_End : BossCardBase
 {
+    public override string CardName => "有希符「统合思念体」";
     public override float TotalTime => 30f;
 
     private bool _isBuletBulletState = true;
@@ -28,14 +29,37 @@ public class BossCard1_End : BossCardBase
     private int RedBulletCount = 4;
     private float RedBulletSpeed = 8f;
 
-    //hugeBullet
-    private int BurstHurgeWait = 1560; //26s
-    private int BurstHurgeInterval = 20;
-    private int HugeBulletId = 1345;
-    private int HugeBulletCount = 6;
-    private int HugeFrame = 170;
-    private float HugeFastSpeed = 10f;
-    private float HugeSlowSpeed = 3f;
+    protected override void InitDifficult(ELevelDifficult diff)
+    {
+        switch (diff)
+        {
+            case ELevelDifficult.Easy:
+                BlueBulletCount = 1;
+                LaserFrame = 20;
+                RedBulletSpeed = 6f;
+                RedBulletFrame = 8;
+                break;
+            case ELevelDifficult.Normal:
+                BlueBulletCount = 3;
+                LaserFrame = 10;
+                RedBulletSpeed = 6f;
+                RedBulletFrame = 6;
+                break;
+            case ELevelDifficult.Hard:
+                BlueBulletCount = 3;
+                LaserFrame = 10;
+                RedBulletSpeed = 8f;
+                RedBulletFrame = 4;
+                break;
+            case ELevelDifficult.Lunatic:
+            case ELevelDifficult.Extra:
+                BlueBulletCount = 4;
+                LaserFrame = 7;
+                RedBulletSpeed = 8f;
+                RedBulletFrame = 2;
+                break;
+        }
+    }
 
     public override void OnFixedUpdate()
     {

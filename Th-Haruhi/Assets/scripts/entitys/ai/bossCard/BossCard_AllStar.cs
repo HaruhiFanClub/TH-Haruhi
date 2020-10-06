@@ -4,6 +4,8 @@ using System.Collections.Generic;
 //boss 符卡2
 public class BossCard_AllStar : BossCardBase
 {
+    public override string CardName => "有希符「资讯爆炸」";
+
     public override float TotalTime => 30f;
 
     public override Vector3 StartPos => Boss.BossMidCenter;
@@ -61,9 +63,38 @@ public class BossCard_AllStar : BossCardBase
     private float TurnSpeed = 0.5f;
 
 
-    private float _starAngel;
+    protected override void InitDifficult(ELevelDifficult diff)
+    {
+        switch (diff)
+        {
+            case ELevelDifficult.Easy:
+                StarCount = 11;
+                RedStarCount = 1;
+                TurnSpeed = 0.2f;
+                break;
+            case ELevelDifficult.Normal:
+                StarCount = 13;
+                RedStarCount = 5;
+                TurnSpeed = 0.4f;
+                break;
+            case ELevelDifficult.Hard:
+                StarCount = 17;
+                RedStarCount = 9;
+                TurnSpeed = 0.6f;
+                break;
+            case ELevelDifficult.Lunatic:
+            case ELevelDifficult.Extra:
+                StarCount = 19;
+                RedStarCount = 11;
+                TurnSpeed = 0.75f;
+                break;
+        }
+    }
 
+
+    private float _starAngel;
     private int _shootedRedStarCount = 0;
+
     private void FireRedStar()
     {
         if (_shootedRedStarCount < RedStarCount)

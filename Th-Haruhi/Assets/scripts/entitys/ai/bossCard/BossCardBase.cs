@@ -3,12 +3,20 @@ using System.Collections;
 
 public abstract class BossCardBase
 {
+    //符卡名称
+    public abstract string CardName { get; }
+
+    //符卡时间
+    public abstract float TotalTime { get; }
+
+    //难度设置
+    protected abstract void InitDifficult(ELevelDifficult diff);
+
+
     protected Boss Master;
 
     public EBossCardPhase Phase { set; get; }
 
-    //符卡时间
-    public abstract float TotalTime { get; }
     //出生位置
     public virtual Vector3 StartPos { get { return Vector3.zero; } }
 
@@ -17,11 +25,11 @@ public abstract class BossCardBase
     public bool CanShoot { set; get; }
     protected int ShootIdx { private set; get; }
 
-
     public virtual void Init(Boss enemy, int maxHp)
     {
         Master = enemy;
         CurrentHp = MaxHp = maxHp;
+        InitDifficult(StageMgr.Data.Difficult);
     }
 
     public void OnEnable(bool isFirstCard)
@@ -49,6 +57,7 @@ public abstract class BossCardBase
                 break;
             case EBossCardPhase.Two:
                 UIBossBg.Show(Master.Deploy.BossDraw);
+                UIBattle.ShowBossCard(CardName);
                 Master.SetHpHudPointActive(false);
                 break;
             case EBossCardPhase.Single:
@@ -60,7 +69,7 @@ public abstract class BossCardBase
 
         Master.Invisible = false;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.8f);
 
         Master.ShowCircleRaoDong(true);
         CanShoot = true;
@@ -80,6 +89,7 @@ public abstract class BossCardBase
         Master.ShowCircleRaoDong(false);
         UIBossBg.FadeOut();
         UIBattle.ShowBossTime(false);
+        UIBattle.HideBossCard();
     }
 
     public virtual void OnFixedUpdate()

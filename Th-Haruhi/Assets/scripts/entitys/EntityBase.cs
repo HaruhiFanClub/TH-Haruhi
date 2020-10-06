@@ -148,6 +148,11 @@ public abstract class EntityBase : MonoBehaviour
         }
     }
 
+    public void PlayRefreshEffect()
+    {
+        var url = "effects/Prefabs/Interactive/Powerups/PowerupGlow/PowerupGlow4.prefab";
+
+    }
 
     public bool InCache { private set; get; }
     public void SetInCache(bool b)

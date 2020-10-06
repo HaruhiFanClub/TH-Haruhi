@@ -1,47 +1,47 @@
-#Sound表			
-#	描述	资源路径	音量[0.0,1.0]
-id	name	resource	volume
-			
-#Bgm(1-10)			
-1	Title	audios/bgm/main.ogg	1
-2	stage1	audios/bgm/level1.ogg	1
-3	stage2	audios/bgm/Stage2.mp3	1
-12	boss2	audios/bgm/Boss2.mp3	1
-			
-			
-			
-			
-			
-			
-			
-#UI			
-1001	Select	audios/se/se_select00.wav	1
-1002	OK	audios/se/se_ok00.wav	1
-1003	Cancel	audios/se/se_cancel00.wav	1
-1004	se_pause	audios/se/se_pause.wav	1
-1005	timeout	audios/se/se_timeout.wav	1
-1006	对话	audios/se/se_plst00.wav	0.6
-			
-			
-			
-			
-#battle			
-101	死亡	audios/se/se_pldead00.wav	1
-102	damage00	audios/se/se_damage00.wav	0.4
-103	damage01	audios/se/se_damage01.wav	0.6
-104	enemydie	audios/se/se_enep00.wav	0.3
-105	bossDie	audios/se/se_enep01.wav	0.3
-106	击破boss success	audios/se/se_cardget.wav	1
-107	Boss出场	audios/se/se_power3.wav	0.8
-108	开始射击警告	audios/se/se_heal.wav	1
-109	graze	audios/se/se_graze.wav	0.5
-110	boss出场扩大特效	audios/se/se_tan02.wav	0.4
-			
-#bullet			
-2001	普攻	audios/se/se_plst00.wav	0.2
-2002	激光	audios/se/se_lazer02.wav	0.1
-2003	fast_tan00	audios/se/se_tan00.wav	0.1
-2004	tan01	audios/se/se_tan01.wav	0.5
-2005	tan02	audios/se/se_tan02.wav	0.5
-2006	laser	audios/se/se_lazer00.wav	0.25
-2007	bossShoot	audios/se/se_plst00.wav	0.3
+#Sound表				
+#	描述	名称	资源路径	"音量[0.0,1.0]"
+id	remark	name	resource	volume
+				
+#Bgm(1-10)				
+1	Title		audios/bgm/main.ogg	1
+2	stage1	没有名字的BGM 1号	audios/bgm/level1.ogg	1
+3	stage2	没有名字的BGM 2号	audios/bgm/Stage2.mp3	1
+12	boss2	没有名字的BGM 3号	audios/bgm/Boss2.mp3	1
+				
+				
+				
+				
+				
+				
+				
+#UI				
+1001	Select		audios/se/se_select00.wav	1
+1002	OK		audios/se/se_ok00.wav	1
+1003	Cancel		audios/se/se_cancel00.wav	1
+1004	se_pause		audios/se/se_pause.wav	1
+1005	timeout		audios/se/se_timeout.wav	1
+1006	对话		audios/se/se_plst00.wav	0.6
+				
+				
+				
+				
+#battle				
+101	死亡		audios/se/se_pldead00.wav	1
+102	damage00		audios/se/se_damage00.wav	0.4
+103	damage01		audios/se/se_damage01.wav	0.6
+104	enemydie		audios/se/se_enep00.wav	0.3
+105	bossDie		audios/se/se_enep01.wav	0.3
+106	击破boss success		audios/se/se_cardget.wav	1
+107	Boss出场		audios/se/se_power3.wav	0.8
+108	开始射击警告		audios/se/se_heal.wav	1
+109	graze		audios/se/se_graze.wav	0.5
+110	boss出场扩大特效		audios/se/se_tan02.wav	0.4
+				
+#bullet				
+2001	普攻		audios/se/se_plst00.wav	0.2
+2002	激光		audios/se/se_lazer02.wav	0.1
+2003	fast_tan00		audios/se/se_tan00.wav	0.1
+2004	tan01		audios/se/se_tan01.wav	0.5
+2005	tan02		audios/se/se_tan02.wav	0.5
+2006	laser		audios/se/se_lazer00.wav	0.25
+2007	bossShoot		audios/se/se_plst00.wav	0.3

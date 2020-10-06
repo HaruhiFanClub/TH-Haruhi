@@ -5,6 +5,8 @@ using System.Collections.Generic;
 //boss 符卡2
 public class BossCard2 : BossCardBase
 {
+    public override string CardName => "有希符「资讯爆炸」";
+
     public override float TotalTime => 30f;
 
     //blueBullet
@@ -19,6 +21,32 @@ public class BossCard2 : BossCardBase
     private int RedBulletFrame = 10;
     private int RedBulletCount = 5;
     private float RedBulletSpeed = 4f;
+
+
+    protected override void InitDifficult(ELevelDifficult diff)
+    {
+        switch (diff)
+        {
+            case ELevelDifficult.Easy:
+                BlueBulletCount = 4;
+                RedBulletCount = 3;
+                break;
+            case ELevelDifficult.Normal:
+                BlueBulletCount = 6;
+                RedBulletCount = 4;
+                break;
+            case ELevelDifficult.Hard:
+                BlueBulletCount = 8;
+                RedBulletCount = 5;
+                break;
+            case ELevelDifficult.Lunatic:
+            case ELevelDifficult.Extra:
+                BlueBulletCount = 12;
+                RedBulletCount = 7;
+                break;
+        }
+
+    }
 
     private float _lastMoveTime;
     private bool _moveLeft;

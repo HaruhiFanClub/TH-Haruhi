@@ -49,7 +49,7 @@ public class UIDrawingChat : UiInstance
     private void OnClickNext(object o)
     {
         //如果正在播放，则先强制结束
-        if (Time.time - _lastShowTime > 0.55f)
+        if (Time.time - _lastShowTime > 0.48f)
         {
             if(!_inForceWait)
             {
