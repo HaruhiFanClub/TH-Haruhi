@@ -23,9 +23,10 @@ public class UiList
 
         //bgmTip
         _<UIBgmTip>         ("UIBgmTip.prefab",             UiLayer.Bg,     UiLoadType.Multi);
-        
+
 
         //通关
+        _<UIStageClear>     ("UIStageClear.prefab",         UiLayer.Main,   UiLoadType.Multi);
         _<UIStageAllClear>  ("UIStageAllClear.prefab",      UiLayer.Main,   UiLoadType.Multi);
         
         //立绘对话

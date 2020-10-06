@@ -40,10 +40,10 @@ public class BossCard1_End : BossCardBase
                 RedBulletFrame = 8;
                 break;
             case ELevelDifficult.Normal:
-                BlueBulletCount = 3;
-                LaserFrame = 10;
+                BlueBulletCount = 2;
+                LaserFrame = 15;
                 RedBulletSpeed = 6f;
-                RedBulletFrame = 6;
+                RedBulletFrame = 8;
                 break;
             case ELevelDifficult.Hard:
                 BlueBulletCount = 3;

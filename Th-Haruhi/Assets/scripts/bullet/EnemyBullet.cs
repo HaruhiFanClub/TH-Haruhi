@@ -1,7 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class EnemyBullet : Bullet
 {
+
+    //是否被擦过弹
+    private bool _isGrazed;
+
+    public override void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1)
+    {
+        base.Shoot(moveData, eventList, atk);
+        _isGrazed = false;
+    }
+
     protected virtual void LateUpdate()
     {
         if (InCache) return;
@@ -76,12 +87,13 @@ public class EnemyBullet : Bullet
             }
 
             //擦弹判定
-            if (!bHit)
+            if (!bHit && !_isGrazed)
             {
                 var grazeDist = CollisionInfo.Radius + mainPlayer.Deploy.radius + GrizeDistance;
                 if (sqrDist < grazeDist * grazeDist)
                 {
                     mainPlayer.OnGraze();
+                    _isGrazed = true;
                 }
             }
         }
@@ -130,7 +142,12 @@ public class EnemyBullet : Bullet
                 }
 
                 //擦弹判定
-                player.OnGraze();
+                if(!_isGrazed)
+                {
+                    player.OnGraze();
+                    _isGrazed = true;
+                }
+                
             }
         }
         return false;

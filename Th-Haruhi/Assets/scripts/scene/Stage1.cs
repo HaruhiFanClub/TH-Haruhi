@@ -19,12 +19,27 @@ public class Stage1 : StageBase
     //测试用
     private void OnEnemyDie(object o)
     {
-        DOVirtual.DelayedCall(2f, () =>
+        if(!_bGameOver)
         {
-            UiManager.Show<UIStageAllClear>();
-        }, false);
-        
+            _bGameOver = true;
+            StartCoroutine(DoGameOver());
+        }
        // StartCoroutine(TestCreateEnemy());
+    }
+
+    private bool _bGameOver;
+    private IEnumerator DoGameOver()
+    {
+        yield return new WaitForSeconds(0.2f);
+        UiManager.Show<UIStageClear>();
+        yield return new WaitForSeconds(2f);
+        if(UIStageClear.Instance != null)
+        {
+            UIStageClear.Instance.FadeOutClose();
+        }
+
+        yield return new WaitForSeconds(1f);
+        UiManager.Show<UIStageAllClear>();
     }
 
     protected override IEnumerator LoopLevel()

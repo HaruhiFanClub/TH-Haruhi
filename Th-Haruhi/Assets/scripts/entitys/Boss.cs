@@ -39,8 +39,6 @@ public class Boss : Enemy
 
         Invisible = true;
 
-        
-
         TryDialog();
     }
 
@@ -48,7 +46,7 @@ public class Boss : Enemy
     {
         if(StageMgr.MainPlayer != null)
         {
-            var deploy = DialogMgr.GetBossDialog(StageMgr.MainPlayer.Deploy.id, Deploy.id);
+            var deploy = DialogMgr.GetBossDialog(StageMgr.MainPlayer.Deploy.id, Deploy.id, true);
             if(deploy != null)
             {
                 var list = DialogMgr.GetDrawList(deploy.dialogId);
@@ -204,7 +202,13 @@ public class Boss : Enemy
 
     protected override void OnDead()
     {
-        GameEventCenter.Send(GameEvent.OnEnemyDie);
+        StartCoroutine(DoBossDead());
+    }
+
+    private IEnumerator DoBossDead()
+    {
+        //对话配置
+        var dialogDeploy = DialogMgr.GetBossDialog(StageMgr.MainPlayer.Deploy.id, Deploy.id, false);
 
         //隐藏血条
         SetHpHudActive(false);
@@ -212,21 +216,44 @@ public class Boss : Enemy
         //bossMark隐藏
         UIBattle.SetBossMarkActive(false);
 
-        DOVirtual.DelayedCall(0.3f, () =>
+        yield return new WaitForSeconds(0.3f);
+
+        //震屏
+        if(StageCamera2D.Instance) StageCamera2D.Instance.Shake(0.7f, 1.2f);
+        if(StageCamera3D.Instance) StageCamera3D.Instance.Shake(0.7f, 1.2f);
+
+        Sound.PlayUiAudioOneShot(105);
+
+        //播放shader特效
+        StageCamera2D.Instance.PlayDeadEffect(transform.position);
+
+        //隐藏renderer
+        MainRenderer.enabled = false;
+        if(_bossCircle)
         {
-            StageCamera2D.Instance?.Shake(0.7f, 1.2f);
-            StageCamera3D.Instance?.Shake(0.7f, 1.2f);
+            _bossCircle.SetActiveSafe(false);
+        }
 
-            //震屏
-            Sound.PlayUiAudioOneShot(105);
+        yield return new WaitForSeconds(0.7f);
 
-            //播放shader特效
-            StageCamera2D.Instance.PlayDeadEffect(transform.position);
+        //尝试显示对话
+        if (dialogDeploy != null)
+        {
+            var list = DialogMgr.GetDrawList(dialogDeploy.dialogId);
+            UIDrawingChat.Show(list, null,
+            () =>
+            {
+                GameEventCenter.Send(GameEvent.OnEnemyDie);
+            });
+        }
+        else
+        {
+            GameEventCenter.Send(GameEvent.OnEnemyDie);
+        }
 
-            Destroy(gameObject);
-        }, false);
+        yield return new WaitForSeconds(0.3f);
+        Destroy(gameObject);
     }
-
 
     protected override void Update()
     {

@@ -10,6 +10,8 @@ public static class GameEvent
     public const string OnEnemyDie = "OnEnemyDie";
     public const string DisableEnemyShoot = "DisableEnemyShoot";
     public const string EnableEnemyShoot = "EnableEnemyShoot";
+    public const string OnGraze = "OnGraze";
+    public const string LifeCountChanged = "LifeCountChanged";
 
     public const string UI_Up = "UI_Up";
     public const string UI_Down = "UI_Down";

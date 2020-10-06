@@ -58,6 +58,11 @@ public static class ColorUtility
         return Color.red;
     }
 
+    public static Color EasyOutLine = new Color(0.02486126f, 0.7924528f, 0f, 0.7f);
+    public static Color NormalOutLine = new Color(0f, 0.433f, 1f, 0.7f);
+    public static Color HardOutLine = new Color(1f, 0.1839623f, 0.2234849f, 0.7f);
+    public static Color LunaticOutLine = new Color(0.87988f, 0f, 1f, 0.7f);
+
     public static string FormatEasyColor(string str)
     {
         return string.Format("<color=#06CA00>{0}</color>", str);

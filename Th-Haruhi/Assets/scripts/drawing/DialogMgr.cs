@@ -26,12 +26,12 @@ public static class DialogMgr
         return list;
     }
 
-    public static BossDialogDeplpy GetBossDialog(int playerId, int bossId)
+    public static BossDialogDeplpy GetBossDialog(int playerId, int bossId, bool beforeBoss)
     {
         var t = TableUtility.GetTable<BossDialogDeplpy>();
         foreach (var d in t)
         {
-            if (d.playerId == playerId && d.bossId == bossId)
+            if (d.playerId == playerId && d.bossId == bossId && beforeBoss == d.beforeBoss)
             {
                 return d;
             }
@@ -61,6 +61,7 @@ public class BossDialogDeplpy : Conditionable
     public int playerId;
     public int dialogId;
     public int bgmId;
+    public bool beforeBoss;
 }
 
 

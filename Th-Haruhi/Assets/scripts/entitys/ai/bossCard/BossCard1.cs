@@ -39,7 +39,6 @@ public class BossCard1 : BossCardBase
     private float HugeFastSpeed = 10f;
     private float HugeSlowSpeed = 3f;
 
-
     protected override void InitDifficult(ELevelDifficult diff)
     {
         switch (diff)
@@ -51,10 +50,10 @@ public class BossCard1 : BossCardBase
                 RedBulletFrame = 8;
                 break;
             case ELevelDifficult.Normal:
-                BlueBulletCount = 3;
-                LaserFrame = 10;
+                BlueBulletCount = 2;
+                LaserFrame = 15;
                 RedBulletSpeed = 6f;
-                RedBulletFrame = 6;
+                RedBulletFrame = 8;
                 break;
             case ELevelDifficult.Hard:
                 BlueBulletCount = 3;

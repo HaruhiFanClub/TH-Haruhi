@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,9 @@ public class UIBattleComponent : MonoBehaviour
 {
     public UiText Difficult;
     public Outline DifficultOutLine;
+    public List<GameObject> LifeList;
+    public List<GameObject> SpellList;
+
     public UiText MaxScore;
     public UiText CurScore;
     public UiText Power;

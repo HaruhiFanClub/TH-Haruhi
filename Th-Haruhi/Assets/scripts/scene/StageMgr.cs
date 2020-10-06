@@ -10,11 +10,23 @@ public class StageData
     //出生坐标
     public Vector2 PlayerBornPos = Vector2Fight.New(0, -80f);
 
-    public int MaxLifeCount = 3;        //总生命数量
-    public int LeftLifeCount = 3;       //剩余生命数量
+    public int GrazeCount = 0;          //擦弹数
+    public int DefaultLifeCount = 3;    //默认3条命
     public int TotalScore = 0;          //总分数
     public int PlayerId;
     public int CurLevelId;
+
+    //剩余生命数量
+    private int _leftLifeCount = 3;
+    public int LeftLifeCount
+    {
+        get { return _leftLifeCount; }
+        set
+        {
+            _leftLifeCount = value;
+            GameEventCenter.Send(GameEvent.LifeCountChanged);
+        }
+    }
 }
 
 public enum ELevelDifficult
@@ -33,6 +45,7 @@ public static class StageMgr
 {
     static StageMgr()
     {
+        GameEventCenter.AddListener(GameEvent.OnGraze, OnGraze);
         GameEventCenter.AddListener(GameEvent.OnPlayerDead, OnPlayerDead);
     }
 
@@ -77,6 +90,11 @@ public static class StageMgr
         yield return GameSystem.HideLoading();
     }
 
+    //擦弹
+    private static void OnGraze(object o)
+    {
+        Data.GrazeCount++;
+    }
 
     //玩家死亡处理
     private static void OnPlayerDead(object o)
@@ -122,7 +140,7 @@ public static class StageMgr
     {
         //1秒后复活
         GameSystem.CoroutineStart(PlayerReborn(0.2f));
-        Data.LeftLifeCount = Data.MaxLifeCount;
+        Data.LeftLifeCount = Data.DefaultLifeCount;
     }
 
 
@@ -131,7 +149,7 @@ public static class StageMgr
     {
         Data.CurLevelId = 1;
         Data.TotalScore = 0;
-        Data.LeftLifeCount = Data.MaxLifeCount;
+        Data.LeftLifeCount = Data.DefaultLifeCount;
     }
 
 }

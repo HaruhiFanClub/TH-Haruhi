@@ -85,19 +85,69 @@ public class UIBattle : UiInstance
         _defaultCardNamePos = _bind.CardNameRoot.anchoredPosition;
         _defaultCardBonusPos = _bind.CardBonusRoot.anchoredPosition;
 
+        RefreshDifficult();
+        RefreshLifeCount();
+
+        GameEventCenter.AddListener(GameEvent.LifeCountChanged, RefreshLifeCount);
+
         InitDebug();
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
+        GameEventCenter.RemoveListener(GameEvent.LifeCountChanged, RefreshLifeCount);
         Instance = null;
+    }
+
+    private void RefreshLifeCount(object o = null)
+    {
+        var curLifeCount = StageMgr.Data.LeftLifeCount;
+        for(int i = 0; i < _bind.LifeList.Count; i++)
+        {
+            _bind.LifeList[i].SetActiveSafe(curLifeCount - 1 > i);
+        }
+    }
+
+    private void RefreshDifficult()
+    {
+        var diff = StageMgr.Data.Difficult;
+        switch (diff)
+        {
+            case ELevelDifficult.Easy:
+                _bind.Difficult.text = "Easy";
+                _bind.DifficultOutLine.effectColor = ColorUtility.EasyOutLine;
+                break;
+            case ELevelDifficult.Normal:
+                _bind.Difficult.text = "Normal";
+                _bind.DifficultOutLine.effectColor = ColorUtility.NormalOutLine;
+                break;
+            case ELevelDifficult.Hard:
+                _bind.Difficult.text = "Hard";
+                _bind.DifficultOutLine.effectColor = ColorUtility.HardOutLine;
+                break;
+            case ELevelDifficult.Lunatic:
+                _bind.Difficult.text = "Lunatic";
+                _bind.DifficultOutLine.effectColor = ColorUtility.LunaticOutLine;
+                break;
+            case ELevelDifficult.Extra:
+                _bind.Difficult.text = "Extra";
+                _bind.DifficultOutLine.effectColor = ColorUtility.LunaticOutLine;
+                break;
+        }
+
     }
 
     protected override void Update()
     {
         base.Update();
         UpdateLeftTime();
+        UpdateGrazeCount();
+    }
+
+    private void UpdateGrazeCount()
+    {
+        _bind.Graze.text = StageMgr.Data.GrazeCount.ToString("N0");
     }
 
     private void ShowLeftTime(bool b, float leftSec = 0)
