@@ -27,6 +27,8 @@ public class TextureEffect : EntityBase
         _lastChangeSpriteTime = Time.time;
         _currSpriteIndex = 0;
         _bAutoDestroy = false;
+        Renderer.material.mainTexture = SpriteList[0].texture;
+
     }
 
     private bool _bAutoDestroy;
@@ -34,7 +36,6 @@ public class TextureEffect : EntityBase
     {
         _bAutoDestroy = true;
     }
-
 
     protected override void Update()
     {
@@ -59,6 +60,31 @@ public class TextureEffect : EntityBase
         }
     }
 
+
+    private bool _bAutoMove;
+    private Vector3 _autoMoveForward;
+    public float _autoMoveSpeed;
+    public void SetAutoMove(Vector3 forward, float speed)
+    {
+        _bAutoMove = true;
+        _autoMoveForward = forward;
+        _autoMoveSpeed = speed;
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        if(_bAutoMove)
+        {
+            var dist = Time.deltaTime * _autoMoveSpeed;
+            transform.position += _autoMoveForward * dist;
+        }
+    }
+    public override void OnRecycle()
+    {
+        base.OnRecycle();
+        _bAutoMove = false;
+    }
 }
 
 public class TextureEffectDeploy : Conditionable

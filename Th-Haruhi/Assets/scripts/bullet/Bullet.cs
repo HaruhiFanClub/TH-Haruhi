@@ -250,6 +250,7 @@ public class BulletDeploy : Conditionable
     public float radius;
     public int spriteIdx;
     public int bombEffectId;
+    public float bombEffectSpeed;
     public int centerPivot;
     public bool isAni;
     public bool isBoxCollider;

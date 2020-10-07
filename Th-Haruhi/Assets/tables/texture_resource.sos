@@ -27,13 +27,9 @@ id	texture	name	startX	startY	width	height	xCount	yCount
 104	player/reimu/reimu_self.png	ÁéÃÎ_ÓÒÒÆ	0	96	32	48	4	1
 105	player/reimu/reimu_self.png	ÁéÃÎ_ÓÒ´ı»ú	128	96	32	48	4	1
 106	player/reimu/reimu.png	ÁéÃÎ_ÁÅ»ú	64	144	16	16	1	1
-107	player/reimu/reimu.png	reimu_bullet_red	192	160	64	16	1	1
-108	player/reimu/reimu.png	reimu_bullet_red_ef	0	144	16	16	4	1
-109	player/reimu/reimu.png	reimu_bullet_ef_img	48	144	16	16	1	1
-110	player/reimu/reimu.png	reimu_bullet_blue	0	160	64	16	1	1
-111	player/reimu/reimu.png	reimu_bullet_blue_ef	0	160	16	16	4	1
-112	player/reimu/reimu.png	reimu_bullet_orange	64	176	64	16	4	1
-113	player/reimu/reimu.png	Ä§ÀíÉ³_¼¤¹â·¢Éäµã	224	224	32	32	1	1
+107	player/reimu/reimu.png	ÁéÃÎ_ÆÕ¹¥×Óµ¯	192	160	64	16	1	1
+108	player/reimu/reimu.png	ÁéÃÎ_ÆÕ¹¥×Óµ¯ÃüÖĞ	128	160	16	16	4	1
+								
 								
 #sakuya								
 201	player/sakuya/sakuya_self.png	sakuya_´ı»ú	0	0	32	48	8	1

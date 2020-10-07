@@ -91,11 +91,17 @@ public class PlayerBullet : Bullet
         //播放爆炸特效
         if (Deploy.bombEffectId > 0)
         {
-            var pos = CacheTransform.position;
+            var pos = Renderer.transform.position;
+            var forward = MoveData.Forward;
+            var speed = Deploy.bombEffectSpeed;
             TextureEffectFactroy.CreateEffect(Deploy.bombEffectId, SortingOrder.EnemyBullet, effect =>
             {
                 effect.transform.position = pos;
                 effect.AutoDestroy();
+                if(speed > 0)
+                {
+                    effect.SetAutoMove(forward, speed);
+                }
             });
         }
 

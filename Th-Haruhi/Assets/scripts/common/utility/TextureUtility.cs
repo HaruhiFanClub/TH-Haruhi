@@ -69,7 +69,6 @@ public static class TextureUtility
     public static List<Sprite> LoadSpriteGroup(Texture2D tex, int startX, int startY, int width, int height, int row, int column)
     {
         List<Sprite> list = new List<Sprite>();
-
        
         for (int j = 0; j < column; j++)
         {

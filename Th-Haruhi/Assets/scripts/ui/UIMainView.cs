@@ -86,7 +86,6 @@ public class UIMainView : UiFullView
     private void Btn_ParcticeStart()
     {
         UiTips.Show("Btn_ParcticeStart");
-        return;
         StageMgr.Data = new StageData();
         StageMgr.Data.CurLevelId = 2;
         StageMgr.Data.PlayerId = 2;

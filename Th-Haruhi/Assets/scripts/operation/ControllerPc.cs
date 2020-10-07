@@ -86,7 +86,7 @@ public class ControllerPc : MonoBehaviour
 
     private void UpdateDrawing()
     {
-        if (_actions.Get(EControllerBtns.Sure).WasReleased)
+        if (_actions.Get(EControllerBtns.Sure).WasPressed)
         {
             GameEventCenter.Send(GameEvent.UI_NextChat);
         }
@@ -94,32 +94,32 @@ public class ControllerPc : MonoBehaviour
 
     private void UpdateMenu()
     {
-        if(_actions.Get(EControllerBtns.Up).WasReleased)
+        if(_actions.Get(EControllerBtns.Up).WasPressed)
         {
             GameEventCenter.Send(GameEvent.UI_Up);
         }
 
-        if (_actions.Get(EControllerBtns.Down).WasReleased)
+        if (_actions.Get(EControllerBtns.Down).WasPressed)
         {
             GameEventCenter.Send(GameEvent.UI_Down);
         }
 
-        if (_actions.Get(EControllerBtns.Left).WasReleased)
+        if (_actions.Get(EControllerBtns.Left).WasPressed)
         {
             GameEventCenter.Send(GameEvent.UI_Left);
         }
 
-        if (_actions.Get(EControllerBtns.Right).WasReleased)
+        if (_actions.Get(EControllerBtns.Right).WasPressed)
         {
             GameEventCenter.Send(GameEvent.UI_Right);
         }
 
-        if (_actions.Get(EControllerBtns.Sure).WasReleased)
+        if (_actions.Get(EControllerBtns.Sure).WasPressed)
         {
             GameEventCenter.Send(GameEvent.UI_Sure);
         }
 
-        if (_actions.Get(EControllerBtns.Cancel).WasReleased)
+        if (_actions.Get(EControllerBtns.Cancel).WasPressed)
         {
             GameEventCenter.Send(GameEvent.UI_Back);
         }

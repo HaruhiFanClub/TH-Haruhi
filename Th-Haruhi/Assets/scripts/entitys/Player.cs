@@ -118,10 +118,10 @@ public class Player : EntityBase
     public void AfterInit()
     {
 
-        AddSupport();
-        AddSupport();
-        AddSupport();
-        AddSupport();
+    //    AddSupport();
+    //    AddSupport();
+    //    AddSupport();
+     //   AddSupport();
     }
 
     protected override void Update()
@@ -312,10 +312,10 @@ public class Player : EntityBase
             _lastGrazeTime = Time.time;
 
             //播放特效
-
+            EffectFactory.PlayEffectOnce("effects_tex/prefab/Graze.prefab", transform.position);
 
             //播放音效
-            Sound.PlayUiAudioOneShot(109);
+            Sound.PlayUiAudioOneShot(109, true);
 
             //事件
             GameEventCenter.Send(GameEvent.OnGraze);
@@ -327,6 +327,8 @@ public class Player : EntityBase
     {
         //无敌中不处理
         if (Invincible) return false;
+        if (DialogMgr.InDrawingDialog) return false;
+
         OnDead();
         return true;
     }
@@ -336,6 +338,7 @@ public class Player : EntityBase
     { 
         //无敌中不处理
         if (Invincible) return;
+        if (DialogMgr.InDrawingDialog) return;
 
         //碰到怪就死
         if (c.gameObject.layer == Layers.Enemy)
