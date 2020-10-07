@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class UIDrawingChat : UiInstance
 {
-
     public static void Show(List<DialogDeploy> list, Action refreshBossAction, Action overAction)
     {
         UiManager.Show<UIDrawingChat>(view =>
@@ -56,6 +55,10 @@ public class UIDrawingChat : UiInstance
                 StartCoroutine(ShowNext());
             }
         }
+        else
+        {
+            _lastShowTime = 0;
+        }
     }
 
     private List<DialogDeploy> _list;
@@ -70,7 +73,6 @@ public class UIDrawingChat : UiInstance
     private IEnumerator ShowNext()
     {
       
-
         //无内容了。关闭
         if (_list.Count <= 0) 
         {

@@ -304,10 +304,10 @@ public class Player : EntityBase
 
     //擦弹
     private float _lastGrazeTime;
-    //private float GrazeCd = 0.1f;
+    private float GrazeCd = 0.1f;
     public void OnGraze()
     {
-        //if(Time.time - _lastGrazeTime > GrazeCd)
+        if(Time.time - _lastGrazeTime > GrazeCd)
         {
             _lastGrazeTime = Time.time;
 
@@ -316,10 +316,10 @@ public class Player : EntityBase
 
             //播放音效
             Sound.PlayUiAudioOneShot(109, true);
-
-            //事件
-            GameEventCenter.Send(GameEvent.OnGraze);
         }
+
+        //事件
+        GameEventCenter.Send(GameEvent.OnGraze);
     }
 
     //子弹击中

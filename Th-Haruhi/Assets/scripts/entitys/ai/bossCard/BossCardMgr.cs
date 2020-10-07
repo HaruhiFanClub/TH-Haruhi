@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public enum EBossCardPhase
@@ -53,28 +54,29 @@ public class BossCardMgr
         }
 
 
-        GameEventCenter.AddListener(GameEvent.DisableEnemyShoot, DisableEnemyShoot);
-        GameEventCenter.AddListener(GameEvent.EnableEnemyShoot, EnableEnemyShoot);
+        GameEventCenter.AddListener(GameEvent.OnPlayerDead, OnPlayerDead);
     }
 
     public bool IsSingleCard()
     {
         return _cardList.Count == 1;
-    }
+    }   
 
-    private void DisableEnemyShoot(object o)
+    private void OnPlayerDead(object o)
     {
         if (_currCard != null)
         {
-            _currCard.CanShoot = false;
+            _currCard.BanShoot = true;
+            Master.StartCoroutine(ResetBanShoot());
         }
     }
 
-    private void EnableEnemyShoot(object o)
+    private IEnumerator ResetBanShoot()
     {
+        yield return new WaitForSeconds(2f);
         if (_currCard != null)
         {
-            _currCard.CanShoot = true;
+            _currCard.BanShoot = false;
         }
     }
 
@@ -183,7 +185,6 @@ public class BossCardMgr
         _cardList.Clear();
         _currCard?.OnDestroy();
         _currCard = null;
-        GameEventCenter.RemoveListener(GameEvent.DisableEnemyShoot, DisableEnemyShoot);
-        GameEventCenter.RemoveListener(GameEvent.EnableEnemyShoot, EnableEnemyShoot);
+        GameEventCenter.RemoveListener(GameEvent.OnPlayerDead, OnPlayerDead);
     }
 }

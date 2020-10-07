@@ -8,6 +8,10 @@ public class BulletExplosion
     public static Vector3 Center;
     public static float Radius;
 
+    public static void Reset()
+    {
+        InExplosion = false;
+    }
     private static IEnumerator DoCreate(Vector3 pos, float delay)
     {
         yield return new WaitForSeconds(delay);

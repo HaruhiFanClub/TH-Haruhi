@@ -98,7 +98,7 @@ public class Bullet : EntityBase
         if (!Shooted) return;
         _totalFrame++;
 
-        float delta = Time.deltaTime;
+        float delta = Time.fixedDeltaTime;
         UpdateAnimation();
         UpdateBulletMove(delta);
         UpdateEventList();
@@ -194,7 +194,6 @@ public class Bullet : EntityBase
     
     private void UpdateBulletMove(float deltaTime)
     {
-
         //螺旋移动
         if (MoveData.HelixToward != MoveData.EHelixToward.None) 
         {

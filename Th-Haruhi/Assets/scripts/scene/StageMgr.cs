@@ -113,10 +113,6 @@ public static class StageMgr
             //无剩余生命数量，弹出结算
             DOVirtual.DelayedCall(1f, () => { UiManager.Show<UIDeadView>(); });
         }
-
-        //禁止敌人攻击2s
-        GameEventCenter.Send(GameEvent.DisableEnemyShoot);
-        DOVirtual.DelayedCall(2f, () => { GameEventCenter.Send(GameEvent.EnableEnemyShoot); }, false);
     }
 
     private static IEnumerator PlayerReborn(float sec = 1.2f)

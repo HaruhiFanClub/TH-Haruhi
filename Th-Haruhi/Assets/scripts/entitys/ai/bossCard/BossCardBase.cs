@@ -22,7 +22,18 @@ public abstract class BossCardBase
 
     public int CurrentHp { set;  get; }
     public int MaxHp { set; get; }
-    public bool CanShoot { set; get; }
+
+    public bool BanShoot;
+    public bool Inited { private set; get; }
+
+    public bool CanShoot 
+    {
+        get
+        {
+            return !BanShoot && Inited;
+        }
+    }
+
     protected int ShootIdx { private set; get; }
 
     public virtual void Init(Boss enemy, int maxHp)
@@ -34,7 +45,6 @@ public abstract class BossCardBase
 
     public void OnEnable(bool isFirstCard)
     {
-        //3秒后开始
         Master.StartCoroutine(DoEnable(isFirstCard));
 
         if(StartPos != Vector3.zero)
@@ -72,7 +82,7 @@ public abstract class BossCardBase
         yield return new WaitForSeconds(0.8f);
 
         Master.ShowCircleRaoDong(true);
-        CanShoot = true;
+        Inited = true;
     }
 
     public void OnDisable()

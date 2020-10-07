@@ -105,7 +105,6 @@ public class GameSystem : MonoBehaviour
     {  
         //加载Loading
         yield return ShowLoading();
-        yield return Yielders.Frame;
 
         //卸载场景
         yield return StageBase.UnloadCurrentScene();
@@ -125,7 +124,7 @@ public class GameSystem : MonoBehaviour
     public static void ClearCache()
     {
         DialogMgr.InDrawingDialog = false;
-
+        BulletExplosion.Reset();
 
         UiMenuBase.ClearSelectStatus();
 

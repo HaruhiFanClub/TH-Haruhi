@@ -68,6 +68,7 @@ public class ControllerPc : MonoBehaviour
         }
         else if(StageBase.InLevel)
         {
+            
             UpdateBattle();
             if(DialogMgr.InDrawingDialog)
             {
@@ -81,6 +82,15 @@ public class ControllerPc : MonoBehaviour
         if (_actions.Get(EControllerBtns.Pause).WasReleased)
         {
             UiManager.Show<UIPauseView>();
+        }
+
+        if(Debug.isDebugBuild)
+        {
+            if (_actions.Get(EControllerBtns.Debug).WasPressed)
+            {
+                if (Player.Instance)
+                    Player.Instance.OnPlayerHit();
+            }
         }
     }
 

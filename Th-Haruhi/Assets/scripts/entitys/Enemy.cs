@@ -94,12 +94,23 @@ public class Enemy : EntityBase
 
         UpdateAnimation();
         UpdateMoveStyle();
-        UpdateMovePos();
+        
 
         if(AIMoudle != null)
         {
             AIMoudle.OnUpdate();
         }
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        if (GamePause.InPause != false)
+        {
+            return;
+        }
+        UpdateMovePos();
     }
 
     /// <summary>
@@ -195,9 +206,10 @@ public class Enemy : EntityBase
 
     private void UpdateMovePos()
     {
+        var delta = Time.fixedDeltaTime;
         if (InMoveToTarget)
         {
-            _currPos = Vector3.MoveTowards(_currPos, _moveTarget, GameSystem.FrameTime * _moveSpeed);
+            _currPos = Vector3.MoveTowards(_currPos, _moveTarget, delta * _moveSpeed);
             Rigid2D.MovePosition(_currPos);
 
             if (MathUtility.DistanceXY(_currPos, _moveTarget) < 0.5f)
@@ -212,7 +224,7 @@ public class Enemy : EntityBase
             //螺旋移动
             if (_moveData.HelixToward != MoveData.EHelixToward.None)
             {
-                var eulurZ = (int)_moveData.HelixToward * _moveData.EulurPerFrame * Time.deltaTime * 60f;
+                var eulurZ = (int)_moveData.HelixToward * _moveData.EulurPerFrame * delta * 60f;
                 _moveData.Forward = Quaternion.Euler(0, 0, eulurZ) * _moveData.Forward;
 
                 if (_totalFrame - _lastHelixFrame >= _moveData.HelixRefretFrame)
@@ -223,7 +235,7 @@ public class Enemy : EntityBase
                                                     MoveData.EHelixToward.Right;
                 }
             }
-            Rigid2D.MovePosition(transform.position + _moveData.Forward.normalized * Time.deltaTime * _moveSpeed);
+            Rigid2D.MovePosition(transform.position + _moveData.Forward.normalized * delta * _moveSpeed);
         }
     }
 

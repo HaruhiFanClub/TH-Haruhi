@@ -24,6 +24,8 @@ public enum EControllerBtns
 	TurnRight,
 	TurnUp,
 	TurnDown,
+
+	Debug,
 }
 
 public class ControllerActions : PlayerActionSet
@@ -43,7 +45,7 @@ public class ControllerActions : PlayerActionSet
 		_joyActions[EControllerBtns.Shoot] = CreatePlayerAction("Shoot");
 		_joyActions[EControllerBtns.Explosion] = CreatePlayerAction("Explosion");
 		_joyActions[EControllerBtns.SlowMove] = CreatePlayerAction("SlowMove");
-
+		_joyActions[EControllerBtns.Debug] = CreatePlayerAction("Debug");
 
 		var left = CreatePlayerAction("Move Left");
         var right = CreatePlayerAction("Move Right");
@@ -83,14 +85,18 @@ public class ControllerActions : PlayerActionSet
 	{
 		var p = new ControllerActions();
 
-        //sure
-        p.Get(EControllerBtns.Sure).AddDefaultBinding(Key.Return);
+		p.Get(EControllerBtns.Debug).AddDefaultBinding(Key.F);
+
+		//sure
+		p.Get(EControllerBtns.Sure).AddDefaultBinding(Key.Return);
 		p.Get(EControllerBtns.Sure).AddDefaultBinding(Key.Z);
+		p.Get(EControllerBtns.Sure).AddDefaultBinding(Key.J);
 		p.Get(EControllerBtns.Sure).AddDefaultBinding(InputControlType.Action1);
 
         //back
         p.Get(EControllerBtns.Cancel).AddDefaultBinding(Key.Escape);
 		p.Get(EControllerBtns.Cancel).AddDefaultBinding(Key.X);
+		p.Get(EControllerBtns.Cancel).AddDefaultBinding(Key.K);
 		p.Get(EControllerBtns.Cancel).AddDefaultBinding(InputControlType.Action2);
 
 		//pause
@@ -99,9 +105,11 @@ public class ControllerActions : PlayerActionSet
 
 		//shoot
 		p.Get(EControllerBtns.Shoot).AddDefaultBinding(Key.Z);
+		p.Get(EControllerBtns.Shoot).AddDefaultBinding(Key.J);
 		p.Get(EControllerBtns.Shoot).AddDefaultBinding(InputControlType.Action1);
 
 		//slowmove
+		p.Get(EControllerBtns.SlowMove).AddDefaultBinding(Key.L);
 		p.Get(EControllerBtns.SlowMove).AddDefaultBinding(Key.LeftShift);
 		p.Get(EControllerBtns.SlowMove).AddDefaultBinding(InputControlType.Action3);
 
@@ -111,7 +119,13 @@ public class ControllerActions : PlayerActionSet
 		p.Get(EControllerBtns.Left).AddDefaultBinding( Key.LeftArrow);
 		p.Get(EControllerBtns.Right).AddDefaultBinding( Key.RightArrow);
 
-	    p.Get(EControllerBtns.Up).AddDefaultBinding(InputControlType.LeftStickUp);
+		p.Get(EControllerBtns.Up).AddDefaultBinding(Key.W);
+		p.Get(EControllerBtns.Down).AddDefaultBinding(Key.S);
+		p.Get(EControllerBtns.Left).AddDefaultBinding(Key.A);
+		p.Get(EControllerBtns.Right).AddDefaultBinding(Key.D);
+
+
+		p.Get(EControllerBtns.Up).AddDefaultBinding(InputControlType.LeftStickUp);
 	    p.Get(EControllerBtns.Down).AddDefaultBinding(InputControlType.LeftStickDown);
         p.Get(EControllerBtns.Left).AddDefaultBinding( InputControlType.LeftStickLeft );
 		p.Get(EControllerBtns.Right).AddDefaultBinding( InputControlType.LeftStickRight );
