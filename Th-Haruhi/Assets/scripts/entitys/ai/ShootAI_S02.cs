@@ -29,31 +29,32 @@ public class ShootAI_S02 : AI_Base
 
         if(_inWait)
         {
-            if(Player.Instance)
+            if (Player.Instance)
+            {
                 _nextShootForward = Player.Instance.transform.position - Master.transform.position;
+                _nextShootForward = _nextShootForward.normalized;
+            }
             _inWait = false;
         }
 
         if(!_inWait && GameSystem.FixedFrameCount > _nextShootFrame)
         {
             var f1 = Quaternion.Euler(0, 0, -60f) * _nextShootForward;
-            var bulletMoveData = MoveData.New(Master.transform.position, f1, 5f);
+            var bulletMoveData = MoveData.New(Master.transform.position, f1, 10f);
             bulletMoveData.HelixToward = MoveData.EHelixToward.Right;
-            bulletMoveData.Speed = 4f;
             bulletMoveData.HelixRefretFrame = 20;
             bulletMoveData.EulurPerFrame = 6f;
 
-            BulletFactory.CreateBulletAndShoot(1001, Master.transform, Layers.EnemyBullet, bulletMoveData);
+            BulletFactory.CreateBulletAndShoot(1009, Master.transform, Layers.EnemyBullet, bulletMoveData);
 
             var f2 = Quaternion.Euler(0, 0, 60f) * _nextShootForward;
-            var bulletMoveData2 = MoveData.New(Master.transform.position, f2, 5f);
+            var bulletMoveData2 = MoveData.New(Master.transform.position, f2, 10f);
             bulletMoveData2.HelixToward = MoveData.EHelixToward.Left;
             bulletMoveData2.HelixRefretFrame = 20;
             bulletMoveData2.EulurPerFrame = 6f;
-            bulletMoveData.Speed = 4f;
-            BulletFactory.CreateBulletAndShoot(1001, Master.transform, Layers.EnemyBullet, bulletMoveData2);
+            BulletFactory.CreateBulletAndShoot(1009, Master.transform, Layers.EnemyBullet, bulletMoveData2);
 
-            _nextShootFrame = GameSystem.FixedFrameCount + 5;
+            _nextShootFrame = GameSystem.FixedFrameCount + 2;
 
             _shootIdx++;
             //每20发子弹停2秒

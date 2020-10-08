@@ -103,10 +103,7 @@ public class Enemy : EntityBase
         base.FixedUpdate();
 
         if (GamePause.InPause != false)
-        {
             return;
-        }
-
        
         UpdateMovePos();
 

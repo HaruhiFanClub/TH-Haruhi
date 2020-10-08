@@ -34,9 +34,7 @@ public class Bullet : EntityBase
 
     public int Atk { protected set; get; }
 
-    private int TotalFrame => GameSystem.FixedFrameCount - _startFrame;
-
-    private int _startFrame;
+    private int _totalFrame;
 
     private int _lastHelixFrame;
 
@@ -80,7 +78,7 @@ public class Bullet : EntityBase
         CacheTransform.position = moveData.StartPos;
 
         _movedDistance = 0;
-        _startFrame = GameSystem.FixedFrameCount;
+        _totalFrame = 0;
         _lastHelixFrame = 0;
 
         EventList = eventList;
@@ -94,12 +92,12 @@ public class Bullet : EntityBase
         Shooted = true;
     }
 
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
         if (InCache) return;
         if (!Shooted) return;
-        
+        _totalFrame++;
 
         float delta = Time.deltaTime;
         UpdateAnimation();
@@ -124,7 +122,7 @@ public class Bullet : EntityBase
     {
         if (_isAni && AniList != null)
         {
-            if (TotalFrame - _lastAniFrame > 6)
+            if (_totalFrame - _lastAniFrame > 6)
             {
                 _currAniIdx++;
                 if (_currAniIdx >= AniList.Count)
@@ -132,7 +130,7 @@ public class Bullet : EntityBase
                     _currAniIdx = 0;
                 }
                 Renderer.material.mainTexture = AniList[_currAniIdx].texture;
-                _lastAniFrame = TotalFrame;
+                _lastAniFrame = _totalFrame;
             }
         }
     }
@@ -148,7 +146,7 @@ public class Bullet : EntityBase
             {
                 case EventData.EventType.Frame_Destroy:
 
-                    if (TotalFrame >= e.FrameCount)
+                    if (_totalFrame >= e.FrameCount)
                     {
                         EventList.RemoveAt(i);
                         BulletFactory.DestroyBullet(this);
@@ -156,7 +154,7 @@ public class Bullet : EntityBase
                     break;
                 case EventData.EventType.Frame_ChangeSpeed:
 
-                    if( TotalFrame >= e.FrameCount)
+                    if( _totalFrame >= e.FrameCount)
                     {
                         MoveData.EndSpeed = e.SpeedData.EndSpeed;
                         MoveData.Acceleration = e.SpeedData.Acceleration;
@@ -170,7 +168,7 @@ public class Bullet : EntityBase
                     break;
                 case EventData.EventType.Frame_ChangeForward:
 
-                    if (TotalFrame >= e.FrameCount)
+                    if (_totalFrame >= e.FrameCount)
                     {
                         MoveData.Forward = e.ForwardData.Forward;
                         MoveData.HelixRefretFrame = e.ForwardData.HelixRefretFrame;
@@ -203,9 +201,9 @@ public class Bullet : EntityBase
             MoveData.Forward = Quaternion.Euler(0, 0, eulurZ) * MoveData.Forward;
             CacheTransform.up = MoveData.Forward;
 
-            if (MoveData.HelixRefretFrame > 0 && TotalFrame - _lastHelixFrame >= MoveData.HelixRefretFrame)
+            if (MoveData.HelixRefretFrame > 0 && _totalFrame - _lastHelixFrame >= MoveData.HelixRefretFrame)
             {
-                _lastHelixFrame = TotalFrame;
+                _lastHelixFrame = _totalFrame;
                 MoveData.HelixToward = MoveData.HelixToward == MoveData.EHelixToward.Right ? 
                                                 MoveData.EHelixToward.Left : 
                                                 MoveData.EHelixToward.Right;
@@ -234,7 +232,7 @@ public class Bullet : EntityBase
         _currAniIdx = 0;
         _movedDistance = 0;
         Shooted = false;
-        _startFrame = GameSystem.FixedFrameCount;
+        _totalFrame = 0;
         Pool.Free(MoveData);
     }
 }
