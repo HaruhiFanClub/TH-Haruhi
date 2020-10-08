@@ -106,36 +106,36 @@ public abstract class EntityBase : MonoBehaviour
 
 
 
-    private Dictionary<EShootSound, float> ShootSoundCd = new Dictionary<EShootSound, float>();
+    private Dictionary<EShootSound, int> ShootSoundCd = new Dictionary<EShootSound, int>();
 
-    private float GetShootSoundCd(EShootSound e)
+    private int GetShootSoundCdFrame(EShootSound e)
     {
         switch (e)
         {
             case EShootSound.Laser:
-                return GameSystem.FrameTime * 20;
+                return 20;
             case EShootSound.Tan00:
             case EShootSound.Tan01:
             case EShootSound.Tan02:
-                return GameSystem.FrameTime * 5;
+                return 5;
             case EShootSound.Noraml:
-                return GameSystem.FrameTime * 3;
+                return 3;
         }
         return 0;
     }
+
     public void PlayShootSound(EShootSound sound)
     {
-        float lastTime;
-        if(ShootSoundCd.TryGetValue(sound, out lastTime))
+        if(ShootSoundCd.TryGetValue(sound, out int lastframe))
         {
-            var cd = GetShootSoundCd(sound);
-            if(Time.time - lastTime < cd)
+            var cdFrame = GetShootSoundCdFrame(sound);
+            if(GameSystem.FixedFrameCount - lastframe < cdFrame)
             {
                 return;
             }
         }
 
-        ShootSoundCd[sound] = Time.time;
+        ShootSoundCd[sound] = GameSystem.FixedFrameCount;
         Sound.PlayUiAudioOneShot((int)sound, true);
     }
 
@@ -146,12 +146,6 @@ public abstract class EntityBase : MonoBehaviour
             InitRigid();
             return _rigidBody2d;
         }
-    }
-
-    public void PlayRefreshEffect()
-    {
-        var url = "effects/Prefabs/Interactive/Powerups/PowerupGlow/PowerupGlow4.prefab";
-
     }
 
     public bool InCache { private set; get; }
@@ -165,6 +159,7 @@ public abstract class EntityBase : MonoBehaviour
     }
     protected virtual void OnDestroy() { }
     protected virtual void Update() { }
+    protected virtual void FixedUpdate() { }
     public virtual void OnRecycle() { }
 
     public static void DestroyEntity(EntityBase b)

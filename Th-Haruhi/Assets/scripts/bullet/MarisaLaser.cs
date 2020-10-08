@@ -10,10 +10,12 @@ public class MarisaLaser : PlayerBullet
     private const int HitEffectId = 5;
     private TextureEffect _hitEffect;
 
-    private float _lastHurtEnemyTime;
+    private int _lastHurtEnemyFrame;
+    private int _nextSoundFrame;
 
     //激光命中最小间隔
     private int HurtEnemyFrame = 4;
+    private int SoundFrame = 12;
 
     public override void Init(BulletDeploy deploy, Transform master, MeshRenderer model)
     {
@@ -39,9 +41,9 @@ public class MarisaLaser : PlayerBullet
     {
         if(enemy != null)
         {
-            if (Time.time - _lastHurtEnemyTime > GameSystem.FrameTime * HurtEnemyFrame)
+            if (GameSystem.FixedFrameCount - _lastHurtEnemyFrame >  HurtEnemyFrame)
             {
-                _lastHurtEnemyTime = Time.time;
+                _lastHurtEnemyFrame = GameSystem.FixedFrameCount;
                 enemy.OnEnemyHit(Atk);
             }
         }
@@ -113,13 +115,12 @@ public class MarisaLaser : PlayerBullet
         UpdateSoundPlay();
     }
 
-    private float _nextSoundTime;
     private void UpdateSoundPlay()
     {
-        if (Time.time > _nextSoundTime)
+        if (GameSystem.FixedFrameCount > _nextSoundFrame)
         {
             Sound.PlayUiAudioOneShot(2002, true);
-            _nextSoundTime = Time.time + GameSystem.FrameTime * 12;
+            _nextSoundFrame = GameSystem.FixedFrameCount + SoundFrame;
         }
     }
 

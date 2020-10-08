@@ -111,18 +111,22 @@ public class PlayerSupportMgr
     }
 
 
-    public void Update()
+    public void OnFixedUpdate()
     {
-        UpdateMove();
-        UpdateShoot();
+        FixUpdateShoot();
     }
 
-    private void UpdateShoot()
+    public void OnUpdate()
+    {
+        UpdateMove();
+    }
+
+    private void FixUpdateShoot()
     {
         for (int i = 0; i < _supportList.Count; i++)
         {
             var support = _supportList[i];
-            support.UpdateShoot(_master.InSlow, Layers.PlayerBullet, _master.InShoot);
+            support.FixUpdateShoot(_master.InSlow, Layers.PlayerBullet, _master.InShoot);
         }
     }
 

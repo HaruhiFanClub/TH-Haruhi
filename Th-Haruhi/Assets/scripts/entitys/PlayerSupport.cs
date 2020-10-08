@@ -6,7 +6,7 @@ using UnityEngine;
 //僚机
 public class PlayerSupport : MonoBehaviour
 {
-    public float NextShootTime;
+    public int NextShootFrame;
 
     public PlayerSupportDeploy Deploy { private set; get; }
 
@@ -44,9 +44,7 @@ public class PlayerSupport : MonoBehaviour
         }
     }
 
-   
-
-    public void UpdateShoot(bool isSlow, int layer, bool inShoot)
+    public void FixUpdateShoot(bool isSlow, int layer, bool inShoot)
     { 
         var shootFrame = isSlow ? Deploy.slowFrame : Deploy.fastFrame;
         var bulletId = isSlow ? Deploy.slowBulletId : Deploy.fastBulletId;
@@ -62,7 +60,7 @@ public class PlayerSupport : MonoBehaviour
                 _currBullet = null;
             }
             _prevInLoopShoot = false;
-            NextShootTime = Time.time + shootFrame * GameSystem.FrameTime;
+            NextShootFrame = GameSystem.FixedFrameCount + shootFrame;
         }
 
         _slowEffect?.SetActiveSafe(inShoot && isSlow);
@@ -73,9 +71,9 @@ public class PlayerSupport : MonoBehaviour
             //正常类型，持续射击
             if(inShoot)
             {
-                if (Time.time > NextShootTime)
+                if (GameSystem.FixedFrameCount > NextShootFrame)
                 {
-                    NextShootTime = Time.time + shootFrame * GameSystem.FrameTime;
+                    NextShootFrame = GameSystem.FixedFrameCount + shootFrame;
                     BulletFactory.CreateBullet(bulletId, transform, layer, bullet =>
                     {
                         var data = MoveData.New(transform.position, MathUtility.SwapYZ(transform.forward), bulletSpeed);

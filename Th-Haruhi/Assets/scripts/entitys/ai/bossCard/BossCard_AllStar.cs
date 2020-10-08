@@ -12,9 +12,9 @@ public class BossCard_AllStar : BossCardBase
 
     private int _curIdx;
     private bool _inWait = true;
-    public override void OnUpdate()
+    public override void OnFixedUpdate()
     {
-        base.OnUpdate();
+        base.OnFixedUpdate();
         
         if (!CanShoot || Master.IsDead) return;
 

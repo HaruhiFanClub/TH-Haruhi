@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameSystem : MonoBehaviour
 {
-    public static float FrameTime = 0.0166667f; //基准帧率时间
+    public static int FixedFrameCount;
 
     public static GameSystem Instance;
     private static bool _inited;
@@ -149,6 +149,12 @@ public class GameSystem : MonoBehaviour
         UiManager.Update();
         
     }
+
+    private void FixedUpdate()
+    {
+        FixedFrameCount++;
+    }
+
     private void LateUpdate()
     {
         Sound.LateUpdate();

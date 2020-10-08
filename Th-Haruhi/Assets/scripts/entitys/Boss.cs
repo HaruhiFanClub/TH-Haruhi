@@ -266,7 +266,12 @@ public class Boss : Enemy
         base.Update();
         UpdateHpHud();
         UIBattle.SetBossMarkPos(transform.position);
-        CardMgr?.OnUpdate();
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        CardMgr?.OnFixedUpdate();
     }
 
     protected override void OnDestroy()

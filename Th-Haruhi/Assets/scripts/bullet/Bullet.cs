@@ -92,18 +92,18 @@ public class Bullet : EntityBase
         Shooted = true;
     }
 
-    protected override void Update()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         if (InCache) return;
         if (!Shooted) return;
         _totalFrame++;
 
-        float delta = GameSystem.FrameTime;
+        float delta = Time.fixedDeltaTime;
         UpdateAnimation();
         UpdateBulletMove(delta);
         UpdateEventList();
     }
-
     protected bool CheckBulletOutSide(Vector3 bulletCenter)
     {
         //超出边界销毁

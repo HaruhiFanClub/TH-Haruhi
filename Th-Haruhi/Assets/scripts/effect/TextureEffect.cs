@@ -12,7 +12,7 @@ public class TextureEffect : EntityBase
     public List<Sprite> SpriteList { private set; get; }
 
 
-    private float _lastChangeSpriteTime;
+    private int _lastChangedFrame;
     private int _currSpriteIndex;
 
     public virtual void Init(TextureEffectDeploy deploy, List<Sprite> spriteList)
@@ -24,7 +24,7 @@ public class TextureEffect : EntityBase
 
     public virtual void ReInit()
     {
-        _lastChangeSpriteTime = Time.time;
+        _lastChangedFrame = GameSystem.FixedFrameCount;
         _currSpriteIndex = 0;
         _bAutoDestroy = false;
         Renderer.material.mainTexture = SpriteList[0].texture;
@@ -37,21 +37,20 @@ public class TextureEffect : EntityBase
         _bAutoDestroy = true;
     }
 
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
         UpdateAutoMove();
-
         if (SpriteList.Count <= 1) return;
         if (Deploy.frame <= 0) return;
 
-        if(Time.time - _lastChangeSpriteTime > GameSystem.FrameTime * Deploy.frame)
+        if (GameSystem.FixedFrameCount - _lastChangedFrame >  Deploy.frame)
         {
-            _lastChangeSpriteTime = Time.time;
+            _lastChangedFrame = GameSystem.FixedFrameCount;
             _currSpriteIndex++;
             if (_currSpriteIndex >= SpriteList.Count)
             {
-                if(_bAutoDestroy)
+                if (_bAutoDestroy)
                 {
                     TextureEffectFactroy.DestroyEffect(this);
                     return;
@@ -61,7 +60,6 @@ public class TextureEffect : EntityBase
             Renderer.material.mainTexture = SpriteList[_currSpriteIndex].texture;
         }
     }
-
 
     private bool _bAutoMove;
     private Vector3 _autoMoveForward;
@@ -77,7 +75,7 @@ public class TextureEffect : EntityBase
     {
         if (_bAutoMove)
         {
-            var dist = Time.deltaTime * _autoMoveSpeed;
+            var dist = Time.fixedDeltaTime * _autoMoveSpeed;
             transform.position += _autoMoveForward * dist;
         }
     }

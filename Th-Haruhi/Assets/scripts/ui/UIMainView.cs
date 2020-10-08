@@ -128,11 +128,13 @@ public class UIMainView : UiFullView
     //debug
     private void InitDebug()
     {
+        /*
         if(!Debug.isDebugBuild)
         {
             _compent.DebugRoot.SetActiveSafe(false);
             return;
         }
+        */
 
         _compent.Debug_BulletLib.onClick.AddListener(() => 
         {

@@ -19,7 +19,7 @@ public abstract class AI_Base
         CanShoot = true;
     }
 
-    public virtual void OnUpdate()
+    public virtual void OnFixedUpdate()
     {
 
     }

@@ -73,10 +73,10 @@ public class Player : EntityBase
     private int _currAniIdx;
 
     //下一帧动画时间
-    private float _nextAnimationTime;
+    private float _nextAnimatorFrame;
 
     //下次射击时间
-    private float _nextShootTime;
+    private float _nextShootFrame;
 
 
     private PlayerMoveStyle _aniStyle;
@@ -88,7 +88,7 @@ public class Player : EntityBase
             if (_aniStyle != value)
             {
                 _currAniIdx = 0;
-                _nextAnimationTime = 0;
+                _nextAnimatorFrame = 0;
             }
             _aniStyle = value;
         }
@@ -118,8 +118,8 @@ public class Player : EntityBase
     public void AfterInit()
     {
 
-    //    AddSupport();
-    //    AddSupport();
+        AddSupport();
+        AddSupport();
     //    AddSupport();
      //   AddSupport();
     }
@@ -127,18 +127,25 @@ public class Player : EntityBase
     protected override void Update()
     {
         base.Update();
-
         if (GamePause.InPause != false)
-        {
             return;
-        }
+
+        UpdateInvicibleTime();
+        SupportMgr.OnUpdate();
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        
+        if (GamePause.InPause != false)
+            return;
 
         UpdateOperation();
         UpdateAnimation();
         UpdateShoot();
-        
-        UpdateInvicibleTime();
-        SupportMgr.Update();
+       
+        SupportMgr.OnFixedUpdate();
     }
 
     //设置X秒无敌时间
@@ -202,8 +209,8 @@ public class Player : EntityBase
     {
         if (!InShoot) return;
 
-        if (Time.time < _nextShootTime) return;
-        _nextShootTime = Time.time + Deploy.shootFrame * GameSystem.FrameTime;
+        if (GameSystem.FixedFrameCount < _nextShootFrame) return;
+        _nextShootFrame = GameSystem.FixedFrameCount + Deploy.shootFrame;
 
         for (int i = 0; i < Deploy.shootPos.Length; i++)
         {
@@ -221,7 +228,7 @@ public class Player : EntityBase
     private void Move(Vector3 dir)
     {
         var moveSpeed = InSlow ? Deploy.slowSpeed : Deploy.speed;
-        var targetPos = transform.position + dir * GameSystem.FrameTime * moveSpeed;
+        var targetPos = transform.position + dir * Time.fixedDeltaTime * moveSpeed;
         Rigid2D.MovePosition(targetPos);
 
         if (MathUtility.FloatEqual(dir.x, 0))
@@ -246,7 +253,7 @@ public class Player : EntityBase
     //移动动画处理
     private void UpdateAnimation()
     {
-        if (Time.time < _nextAnimationTime) return;
+        if (GameSystem.FixedFrameCount < _nextAnimatorFrame) return;
 
         List<Sprite> sprites;
         if(SpriteDic.TryGetValue(AniStyle, out sprites))
@@ -269,7 +276,7 @@ public class Player : EntityBase
             }
         }
 
-        _nextAnimationTime = Time.time + Deploy.frameSpeed[(int)AniStyle] * GameSystem.FrameTime;
+        _nextAnimatorFrame = GameSystem.FixedFrameCount + Deploy.frameSpeed[(int)AniStyle];
 
     }
 

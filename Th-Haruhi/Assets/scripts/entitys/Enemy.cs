@@ -39,6 +39,10 @@ public class Enemy : EntityBase
     private AI_Base AIMoudle;
 
 
+
+    private int _nextAnimationFrame;
+    private int _currAniIdx;
+
     private EnemyMoveStyle _aniStyle;
     private EnemyMoveStyle AniStyle
     {
@@ -48,7 +52,7 @@ public class Enemy : EntityBase
             if (_aniStyle != value)
             {
                 _currAniIdx = 0;
-                _nextAnimationTime = 0;
+                _nextAnimationFrame = 0;
             }
             _aniStyle = value;
         }
@@ -86,22 +90,27 @@ public class Enemy : EntityBase
     {
         base.Update();
         UpdateHitBrightness();
+        
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
 
         if (GamePause.InPause != false)
         {
             return;
         }
 
-        UpdateAnimation();
         UpdateMoveStyle();
+        UpdateAnimation();
         UpdateMovePos();
 
         if (AIMoudle != null)
         {
-            AIMoudle.OnUpdate();
+            AIMoudle.OnFixedUpdate();
         }
     }
-
 
     /// <summary>
     /// 敌人被击高亮闪白相关
@@ -196,7 +205,7 @@ public class Enemy : EntityBase
 
     private void UpdateMovePos()
     {
-        var delta = GameSystem.FrameTime;
+        var delta = Time.fixedDeltaTime;
         if (InMoveToTarget)
         {
             _currPos = Vector3.MoveTowards(_currPos, _moveTarget, delta * _moveSpeed);
@@ -281,15 +290,12 @@ public class Enemy : EntityBase
         }
     }
 
-    private float _nextAnimationTime;
-    private int _currAniIdx;
 
     private void UpdateAnimation()
     {
-        if (Time.time < _nextAnimationTime) return;
+        if (GameSystem.FixedFrameCount < _nextAnimationFrame) return;
 
-         List<Sprite> sprites;
-        if(SpriteDic.TryGetValue(AniStyle, out sprites))
+        if (SpriteDic.TryGetValue(AniStyle, out List<Sprite> sprites))
         {
             if (sprites.Count > 0)
             {
@@ -307,7 +313,7 @@ public class Enemy : EntityBase
             }
         }
 
-        _nextAnimationTime = Time.time + Deploy.frameSpeed[(int)AniStyle] * GameSystem.FrameTime;
+        _nextAnimationFrame = GameSystem.FixedFrameCount + Deploy.frameSpeed[(int)AniStyle];
     }
 
     protected override void OnDestroy()

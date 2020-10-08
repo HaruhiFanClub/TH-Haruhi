@@ -16,7 +16,7 @@ public class AI_Test : AI_Base
 
     }
 
-    public override void OnUpdate()
+    public override void OnFixedUpdate()
     {
         if (!CanShoot) return;
 

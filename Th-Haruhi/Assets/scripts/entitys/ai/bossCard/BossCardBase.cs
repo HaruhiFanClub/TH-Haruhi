@@ -102,7 +102,7 @@ public abstract class BossCardBase
         UIBattle.HideBossCard();
     }
 
-    public virtual void OnUpdate()
+    public virtual void OnFixedUpdate()
     {
         ShootIdx++;
         if (ShootIdx > 10000000)

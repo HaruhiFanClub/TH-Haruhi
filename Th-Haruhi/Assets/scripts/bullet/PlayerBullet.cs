@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class PlayerBullet : Bullet
 {
     private bool _bHitEnemy;
-    private float _hitEnemyTime;
+    private float _hitEnemyFrame;
 
     public override void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1)
     {
@@ -27,7 +27,7 @@ public class PlayerBullet : Bullet
         //已经击中敌人的不处理，且0.1s后销毁子弹
         if (_bHitEnemy)
         {
-            if(Deploy.delayDestroy && Time.time - _hitEnemyTime > 0.1f)
+            if(Deploy.delayDestroy && GameSystem.FixedFrameCount - _hitEnemyFrame > 6)
             {
                 DoBulletBomb();
             }
@@ -66,7 +66,7 @@ public class PlayerBullet : Bullet
     protected virtual void OnBulletHitEnemy(Enemy enemy)
     {
         _bHitEnemy = true;
-        _hitEnemyTime = Time.time;
+        _hitEnemyFrame = GameSystem.FixedFrameCount;
 
         //击中敌人后速度减慢
         if (Deploy.delayDestroy)
