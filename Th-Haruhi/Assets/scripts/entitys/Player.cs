@@ -221,7 +221,7 @@ public class Player : EntityBase
     private void Move(Vector3 dir)
     {
         var moveSpeed = InSlow ? Deploy.slowSpeed : Deploy.speed;
-        var targetPos = transform.position + dir * Time.fixedDeltaTime * moveSpeed;
+        var targetPos = transform.position + dir * GameSystem.FrameTime * moveSpeed;
         Rigid2D.MovePosition(targetPos);
 
         if (MathUtility.FloatEqual(dir.x, 0))

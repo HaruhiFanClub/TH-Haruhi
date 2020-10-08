@@ -165,7 +165,6 @@ public abstract class EntityBase : MonoBehaviour
     }
     protected virtual void OnDestroy() { }
     protected virtual void Update() { }
-    protected virtual void FixedUpdate() { }
     public virtual void OnRecycle() { }
 
     public static void DestroyEntity(EntityBase b)

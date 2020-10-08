@@ -40,6 +40,9 @@ public class Boss : Enemy
         Invisible = true;
 
         TryDialog();
+
+        //场景卷轴减慢
+        StageSceneBase.ChangeSpeed(5f);
     }
 
     private void TryDialog()
@@ -101,6 +104,9 @@ public class Boss : Enemy
 
         //禁止无敌
         Invisible = false;
+
+        //场景卷轴恢复
+        StageSceneBase.RevertSpeed();
     }
 
     //显示隐藏boss气流扰动效果
@@ -260,12 +266,7 @@ public class Boss : Enemy
         base.Update();
         UpdateHpHud();
         UIBattle.SetBossMarkPos(transform.position);
-    }
-
-    protected override void FixedUpdate()
-    {
-        base.FixedUpdate();
-        CardMgr?.OnFixedUpdate();
+        CardMgr?.OnUpdate();
     }
 
     protected override void OnDestroy()

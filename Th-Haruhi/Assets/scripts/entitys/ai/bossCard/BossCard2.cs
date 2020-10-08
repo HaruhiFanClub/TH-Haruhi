@@ -51,9 +51,9 @@ public class BossCard2 : BossCardBase
     private float _lastMoveTime;
     private bool _moveLeft;
 
-    public override void OnFixedUpdate()
+    public override void OnUpdate()
     {
-        base.OnFixedUpdate();
+        base.OnUpdate();
         if (!CanShoot || Master.IsDead) return;
 
         FireBlueBullet();

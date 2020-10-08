@@ -92,13 +92,13 @@ public class Bullet : EntityBase
         Shooted = true;
     }
 
-    protected override void FixedUpdate()
+    protected override void Update()
     {
         if (InCache) return;
         if (!Shooted) return;
         _totalFrame++;
 
-        float delta = Time.fixedDeltaTime;
+        float delta = GameSystem.FrameTime;
         UpdateAnimation();
         UpdateBulletMove(delta);
         UpdateEventList();

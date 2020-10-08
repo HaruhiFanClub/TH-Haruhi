@@ -94,24 +94,14 @@ public class Enemy : EntityBase
 
         UpdateAnimation();
         UpdateMoveStyle();
-        
+        UpdateMovePos();
 
-        if(AIMoudle != null)
+        if (AIMoudle != null)
         {
             AIMoudle.OnUpdate();
         }
     }
 
-    protected override void FixedUpdate()
-    {
-        base.FixedUpdate();
-
-        if (GamePause.InPause != false)
-        {
-            return;
-        }
-        UpdateMovePos();
-    }
 
     /// <summary>
     /// 敌人被击高亮闪白相关
@@ -206,7 +196,7 @@ public class Enemy : EntityBase
 
     private void UpdateMovePos()
     {
-        var delta = Time.fixedDeltaTime;
+        var delta = GameSystem.FrameTime;
         if (InMoveToTarget)
         {
             _currPos = Vector3.MoveTowards(_currPos, _moveTarget, delta * _moveSpeed);

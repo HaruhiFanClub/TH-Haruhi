@@ -2,26 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stage1Scene : MonoBehaviour
+public class Stage1Scene : StageSceneBase
 {
     public Transform Block1;
     public Transform Block2;
 
     private Transform CurBlock;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         CurBlock = Block1;
     }
 
-    void Update()
+    protected override void Update()
     {
-        var speed = 7;
+        base.Update();
+
         var delta = Time.deltaTime;
         var pos1 = Block1.position;
         var pos2 = Block2.position;
-        pos1.z -= delta * speed;
-        pos2.z -= delta * speed;
+        pos1.z -= delta * Speed;
+        pos2.z -= delta * Speed;
 
         Block1.position = pos1;
         Block2.position = pos2;

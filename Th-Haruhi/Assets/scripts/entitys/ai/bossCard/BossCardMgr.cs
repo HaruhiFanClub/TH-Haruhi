@@ -166,11 +166,11 @@ public class BossCardMgr
         }
     }
 
-    public void OnFixedUpdate()
+    public void OnUpdate()
     {
         if(_currCard != null)
         {
-            _currCard.OnFixedUpdate();
+            _currCard.OnUpdate();
             if(Time.time - _cardStartTime > _currCard.TotalTime)
             {
                 ChangeToNextCard();

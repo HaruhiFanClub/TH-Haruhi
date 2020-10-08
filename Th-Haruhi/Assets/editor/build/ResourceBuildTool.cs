@@ -61,7 +61,8 @@ public static class ResourceBuildTool
             ResourceType.shader,
             ResourceType.shadervariants,
             ResourceType.font,
-            ResourceType.texture
+            ResourceType.texture,
+            ResourceType.scene,
         };
     }
 
@@ -83,22 +84,29 @@ public static class ResourceBuildTool
         }
         else
         {
-            if (string.Compare(pathname, "Assets/res/scenes", StringComparison.OrdinalIgnoreCase) == 0)
+            //SCENES
+            if(pathname.Contains("res/scenes"))
             {
                 filter = CollectionUtility.Remove(filter, sceneFilterRemoves);
             }
-            else if (pathname.StartsWith("Assets/res/player") || 
-                pathname.StartsWith("Assets/res/bullet") || 
-                pathname.StartsWith("Assets/res/enemy") ||
-                pathname.StartsWith("Assets/res/effects_tex") ||
-                pathname.StartsWith("Assets/res/drawing"))
+
+            //ALWAYS BUILD
+            else if (
+                pathname.Contains("res/player") ||
+                pathname.Contains("res/bullet") ||
+                pathname.Contains("res/enemy") ||
+                pathname.Contains("res/effects_tex") ||
+                pathname.Contains("res/drawing"))
             {
                 filter = buildFilter;
             }
+            //Only Prefabs, No Scenes
             else
             {
                 filter = CollectionUtility.Remove(filter, directoryFilterRemoves);
             }
+
+
 
             string[] fileList = Directory.GetFiles(pathname, "*");
             foreach (string resource in fileList)

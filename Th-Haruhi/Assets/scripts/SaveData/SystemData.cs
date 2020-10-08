@@ -4,8 +4,6 @@ public class GameSettingData
 {
     public float MusicVolume;
     public float AudioVolume;
-    public GameSetting.EQuality DefaultQuality;
-    public GameSetting.EnumResolution Resolution;
 }
 
 

@@ -40,6 +40,8 @@ public class TextureEffect : EntityBase
     protected override void Update()
     {
         base.Update();
+        UpdateAutoMove();
+
         if (SpriteList.Count <= 1) return;
         if (Deploy.frame <= 0) return;
 
@@ -71,15 +73,15 @@ public class TextureEffect : EntityBase
         _autoMoveSpeed = speed;
     }
 
-    protected override void FixedUpdate()
+    private void UpdateAutoMove()
     {
-        base.FixedUpdate();
-        if(_bAutoMove)
+        if (_bAutoMove)
         {
             var dist = Time.deltaTime * _autoMoveSpeed;
             transform.position += _autoMoveForward * dist;
         }
     }
+
     public override void OnRecycle()
     {
         base.OnRecycle();

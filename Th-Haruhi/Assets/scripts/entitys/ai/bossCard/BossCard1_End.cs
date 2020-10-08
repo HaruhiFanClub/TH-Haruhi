@@ -61,9 +61,9 @@ public class BossCard1_End : BossCardBase
         }
     }
 
-    public override void OnFixedUpdate()
+    public override void OnUpdate()
     {
-        base.OnFixedUpdate();
+        base.OnUpdate();
         if (!CanShoot || Master.IsDead) return;
 
         if (ShootIdx >= SwitchFrame && ShootIdx % SwitchFrame == 0)

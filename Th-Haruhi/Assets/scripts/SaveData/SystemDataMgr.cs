@@ -43,9 +43,7 @@ public static class SystemDataMgr
             SettingData = new GameSettingData
             {
                 MusicVolume = 1f,
-                AudioVolume = 1f,
-                DefaultQuality = SystemInfoUtils.GetDefaultQuailty(),
-                Resolution = SystemInfoUtils.GetDefaultResolution(),
+                AudioVolume = 1f,   
             }
         };
         SaveSystemData();
