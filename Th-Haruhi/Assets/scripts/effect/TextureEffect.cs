@@ -41,6 +41,12 @@ public class TextureEffect : EntityBase
     {
         base.FixedUpdate();
         UpdateAutoMove();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+       
         if (SpriteList.Count <= 1) return;
         if (Deploy.frame <= 0) return;
 
@@ -75,7 +81,7 @@ public class TextureEffect : EntityBase
     {
         if (_bAutoMove)
         {
-            var dist = Time.fixedDeltaTime * _autoMoveSpeed;
+            var dist = Time.deltaTime * _autoMoveSpeed;
             transform.position += _autoMoveForward * dist;
         }
     }

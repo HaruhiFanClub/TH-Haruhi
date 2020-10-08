@@ -90,7 +90,12 @@ public class Enemy : EntityBase
     {
         base.Update();
         UpdateHitBrightness();
-        
+
+        if (GamePause.InPause != false)
+            return;
+
+        UpdateMoveStyle();
+        UpdateAnimation();
     }
 
     protected override void FixedUpdate()
@@ -102,8 +107,7 @@ public class Enemy : EntityBase
             return;
         }
 
-        UpdateMoveStyle();
-        UpdateAnimation();
+       
         UpdateMovePos();
 
         if (AIMoudle != null)
@@ -205,7 +209,7 @@ public class Enemy : EntityBase
 
     private void UpdateMovePos()
     {
-        var delta = Time.fixedDeltaTime;
+        var delta = Time.deltaTime;
         if (InMoveToTarget)
         {
             _currPos = Vector3.MoveTowards(_currPos, _moveTarget, delta * _moveSpeed);

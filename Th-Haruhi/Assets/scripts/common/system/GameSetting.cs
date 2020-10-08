@@ -16,7 +16,7 @@ public class GameSetting
 
 
         RefreshGameResolutions();
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
     }
 
 
@@ -56,6 +56,8 @@ public class GameSetting
     public static void SetGameResolutions(EResolution e)
     {
         var h = (int)e;
+        if (h > Screen.currentResolution.height)
+            h = Screen.currentResolution.height;
         var w = Mathf.CeilToInt(1.3333333f * h);
         Screen.SetResolution(w, h, false);
     }

@@ -131,6 +131,8 @@ public class Player : EntityBase
             return;
 
         UpdateInvicibleTime();
+        UpdateOperation();
+        UpdateAnimation();
         SupportMgr.OnUpdate();
     }
 
@@ -141,10 +143,7 @@ public class Player : EntityBase
         if (GamePause.InPause != false)
             return;
 
-        UpdateOperation();
-        UpdateAnimation();
         UpdateShoot();
-       
         SupportMgr.OnFixedUpdate();
     }
 
