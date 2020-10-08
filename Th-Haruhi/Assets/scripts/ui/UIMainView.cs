@@ -140,9 +140,10 @@ public class UIMainView : UiFullView
             UiManager.Show<UIDebugBulletLib>();
         });
 
-        _compent.Debug_BtnTest.onClick.AddListener(() =>
-        {
-            //UIBossBg.Show("drawing/nagato1.png");
-        });
+        _compent.R480.onClick.AddListener(() => { GameSetting.SetGameResolutions(GameSetting.EResolution.R480); });
+        _compent.R720.onClick.AddListener(() => { GameSetting.SetGameResolutions(GameSetting.EResolution.R720); });
+        _compent.R960.onClick.AddListener(() => { GameSetting.SetGameResolutions(GameSetting.EResolution.R960); });
+        _compent.R1440.onClick.AddListener(() => { GameSetting.SetGameResolutions(GameSetting.EResolution.R1440); });
+        _compent.R1920.onClick.AddListener(() => { GameSetting.SetGameResolutions(GameSetting.EResolution.R1920); });
     }
 }

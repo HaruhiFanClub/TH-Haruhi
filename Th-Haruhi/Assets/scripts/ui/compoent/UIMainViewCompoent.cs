@@ -18,5 +18,9 @@ public class UIMainViewCompoent : MonoBehaviour
     //debug
     public GameObject DebugRoot;
     public UiButton Debug_BulletLib;
-    public UiButton Debug_BtnTest;
+    public UiButton R1920;
+    public UiButton R1440;
+    public UiButton R960;
+    public UiButton R720;
+    public UiButton R480;
 }
