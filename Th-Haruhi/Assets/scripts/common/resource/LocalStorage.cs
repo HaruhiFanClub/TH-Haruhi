@@ -13,7 +13,7 @@ public static class LocalStorage
         BulletCfg
     }
 
-    private static string GetStoragePath(EStorageType type)
+    public static string GetStoragePath(EStorageType type)
     {
         var path = PathUtility.CommonStoragePath;
         switch (type)
@@ -41,7 +41,7 @@ public static class LocalStorage
 
     public static T Read<T>(string key, EStorageType ePath)
     {
-        System.Object value = Read(key, typeof(T), ePath);
+        object value = Read(key, typeof(T), ePath);
         if (value != null)
             return (T)value;
         return default(T);

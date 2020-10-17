@@ -112,7 +112,7 @@ public class BossCard1 : BossCardBase
             {
                 var fwd = Quaternion.Euler(0, 0, i * (360f / RedBulletCount) + Random.Range(-30f, 30f)) * Master.transform.up;
                 var moveData = MoveData.New(Master.transform.position, fwd, RedBulletSpeed, -1, RedBulletSpeed - 2);
-                BulletFactory.CreateBulletAndShoot(RedBulletId, Master.transform, Layers.EnemyBullet, moveData);
+                BulletFactory.CreateBulletShoot(RedBulletId, Master.transform, Layers.EnemyBullet, moveData);
             }
         }
     }
@@ -132,7 +132,7 @@ public class BossCard1 : BossCardBase
 
                 List<EventData> eventList = new List<EventData>();
                 eventList.Add(EventData.NewFrame_ChangeSpeed(48, HugeFastSpeed, -5f, HugeSlowSpeed));
-                BulletFactory.CreateBulletAndShoot(HugeBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
+                BulletFactory.CreateBulletShoot(HugeBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
             }
             _burstHugeAngel += 13f;
             if (_burstHugeAngel > 360f) _burstHugeAngel -= 360f;
@@ -154,7 +154,7 @@ public class BossCard1 : BossCardBase
 
                 List<EventData> eventList = new List<EventData>();
                 eventList.Add(EventData.NewFrame_ChangeSpeed(48, HugeFastSpeed, -5f, HugeSlowSpeed));
-                BulletFactory.CreateBulletAndShoot(HugeBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
+                BulletFactory.CreateBulletShoot(HugeBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
             }
         }
     }
@@ -173,7 +173,7 @@ public class BossCard1 : BossCardBase
             eventList.Add(EventData.NewFrame_ChangeSpeed(20, LaserSlowSpeed));
             eventList.Add(EventData.NewFrame_ChangeSpeed(48, LaserSlowSpeed, 4, LaserFastSpeed));
 
-            BulletFactory.CreateBulletAndShoot(LaserBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
+            BulletFactory.CreateBulletShoot(LaserBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
 
             _laserAngel += Random.Range(45, 75);
             if (_laserAngel > 360) _laserAngel -= 360;
@@ -194,7 +194,7 @@ public class BossCard1 : BossCardBase
                 {
                     var f1 = Quaternion.Euler(0, 0, _blueBulletAngel + i * -12 + j * 120) * Master.transform.up;
                     var data = MoveData.New(Master.transform.position, f1, BlueBulletSpeed + i * 0.05f, -0.5f, BlueBulletSpeed - 2f);
-                    BulletFactory.CreateBulletAndShoot(BlueBulletId, Master.transform, Layers.EnemyBullet, data);
+                    BulletFactory.CreateBulletShoot(BlueBulletId, Master.transform, Layers.EnemyBullet, data);
                 }
             }
 

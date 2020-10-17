@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class MoveAI_UpToDown : MoveAI_Base
 {
 
-    private Vector2 BornPosFight = new Vector2(0, 100);
+    private Vector2 BornPosFight = new Vector2(0, 144f);
     protected override Vector2 BornPos => Vector2Fight.New(BornPosFight.x, BornPosFight.y);
 
     public override void Init(Enemy enemy)

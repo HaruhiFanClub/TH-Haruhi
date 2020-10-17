@@ -12,7 +12,7 @@ public class AI_Test : AI_Base
     {
         base.Init(enemy);
 
-        Master.MoveToTarget(Vector2Fight.New(0, 50), 3);
+        Master.MoveToTarget(Vector2Fight.New(0, 144), 3);
 
     }
 

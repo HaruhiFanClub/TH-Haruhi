@@ -47,11 +47,14 @@ public static class BulletFactory
         BulletTab = TableUtility.GetTable<BulletDeploy>();
     }
 
-    public static void CreateBulletAndShoot(int id, Transform master, int layer, MoveData moveData, List<EventData> eventList = null, int atk = 1)
+    public static void CreateBulletShoot(int id, Transform master, int layer,
+        MoveData moveData, List<EventData> eventList = null, int atk = 1,
+        bool boundDestroy = true, Action<Bullet> onCreate = null, Action<Bullet> onDestroy = null) 
     {
         CreateBullet(id, master, layer, bullet =>
         {
-            bullet.Shoot(moveData, eventList, atk);
+            bullet.Shoot(moveData, eventList, atk, boundDestroy, onDestroy);
+            onCreate?.Invoke(bullet);
         });
     }
 

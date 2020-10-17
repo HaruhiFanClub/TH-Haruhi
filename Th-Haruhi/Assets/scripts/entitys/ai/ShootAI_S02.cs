@@ -11,7 +11,7 @@ public class ShootAI_S02 : AI_Base
     public override void Init(Enemy enemy)
     {
         base.Init(enemy);
-        Master.MoveToTarget(Vector2Fight.New(0, 50), 3);
+        Master.MoveToTarget(Vector2Fight.New(0, 144f), 3);
     }
 
     private Vector3 _nextShootForward;
@@ -45,14 +45,14 @@ public class ShootAI_S02 : AI_Base
             bulletMoveData.HelixRefretFrame = 20;
             bulletMoveData.EulurPerFrame = 6f;
 
-            BulletFactory.CreateBulletAndShoot(1009, Master.transform, Layers.EnemyBullet, bulletMoveData);
+            BulletFactory.CreateBulletShoot(1009, Master.transform, Layers.EnemyBullet, bulletMoveData);
 
             var f2 = Quaternion.Euler(0, 0, 60f) * _nextShootForward;
             var bulletMoveData2 = MoveData.New(Master.transform.position, f2, 10f);
             bulletMoveData2.HelixToward = MoveData.EHelixToward.Left;
             bulletMoveData2.HelixRefretFrame = 20;
             bulletMoveData2.EulurPerFrame = 6f;
-            BulletFactory.CreateBulletAndShoot(1009, Master.transform, Layers.EnemyBullet, bulletMoveData2);
+            BulletFactory.CreateBulletShoot(1009, Master.transform, Layers.EnemyBullet, bulletMoveData2);
 
             _nextShootFrame = GameSystem.FixedFrameCount + 2;
 

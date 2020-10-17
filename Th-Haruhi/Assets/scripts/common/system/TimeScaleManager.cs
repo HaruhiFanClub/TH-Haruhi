@@ -12,13 +12,18 @@ public static class TimeScaleManager
 {
     private static float timeScaleBulletTime = 1;       //用于子弹时间
     private static float timeScaleForPause = 1;         //用于暂停
+    private static float timeScaleForDebug = 1;         //用于debug
 
     public static void SetTimeScaleForPause(float value)
     {
         timeScaleForPause = value;
         CalcTimeScale();
     }
-
+    public static void SetTimeScaleForDebug(float value)
+    {
+        timeScaleForDebug = value;
+        CalcTimeScale();
+    }
     public static void SetTimeScaleForBulletTime(float value)
     {
         timeScaleBulletTime = value;
@@ -28,7 +33,7 @@ public static class TimeScaleManager
     private static void CalcTimeScale()
     {
         //Debug.Log("SetTimeScale:" + timeScaleBulletTime + "*" + timeScaleForRunCover + "*" + timeScaleForPause);
-        Time.timeScale = timeScaleBulletTime  * timeScaleForPause ;
+        Time.timeScale = timeScaleBulletTime  * timeScaleForPause * timeScaleForDebug;
         GameEventCenter.Send(GameEvent.TimeScaleChanged, Time.timeScale);
     }
 
@@ -66,7 +71,7 @@ public static class TimeScaleManager
 
     public static void ResetTimeScale()
     {
-        timeScaleBulletTime = timeScaleForPause =  1;
+        timeScaleBulletTime = timeScaleForPause = timeScaleForDebug =  1;
         Time.timeScale = 1;
     }
 }

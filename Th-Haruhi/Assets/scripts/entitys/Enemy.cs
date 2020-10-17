@@ -204,6 +204,21 @@ public class Enemy : EntityBase
         _currPos = transform.position;
     }
 
+    public void Wander(Vector2 xRange, Vector2 yRange, Vector2 xAmp, Vector2 yAmp, float speed)
+    {
+        var curPos = Vector2Fight.WorldPosToFightPos(transform.position);
+        //Debug.LogError("wander:" + curPos);
+
+        var ampX = UnityEngine.Random.Range(xAmp.x, xAmp.y);
+        var ampY = UnityEngine.Random.Range(yAmp.x, yAmp.y);
+        var targetX = UnityEngine.Random.Range(0, 2) == 0 ? -ampX : ampX;
+        var targetY = UnityEngine.Random.Range(0, 2) == 0 ? -ampY : ampY;
+        targetX = Mathf.Clamp(targetX, xRange.x, xRange.y);
+        targetY = Mathf.Clamp(targetY, yRange.x, yRange.y);
+
+        MoveToTarget(Vector2Fight.New(targetX, targetY), speed);
+    }
+
     private void UpdateMovePos()
     {
         var delta = Time.deltaTime;

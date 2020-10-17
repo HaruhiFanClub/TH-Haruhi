@@ -64,7 +64,7 @@ public class BossCard2 : BossCardBase
         {
             _moveLeft = !_moveLeft;
 
-            Master.MoveToTarget(Vector2Fight.New(_moveLeft ? -60f : 60f, 50f), 0.4f);
+            Master.MoveToTarget(Vector2Fight.New(_moveLeft ? -60f : 60f, 144f), 0.4f);
             _lastMoveTime = Time.time;
         }
     }
@@ -88,14 +88,14 @@ public class BossCard2 : BossCardBase
             {
                 var f1 = Quaternion.Euler(0, 0, _redBulletAngel + 120 + i * 5) * Master.transform.up;
                 var moveData = MoveData.New(shootPos, f1, RedBulletSpeed - i * 0.1f);
-                BulletFactory.CreateBulletAndShoot(RedBulletId, Master.transform, Layers.EnemyBullet, moveData);
+                BulletFactory.CreateBulletShoot(RedBulletId, Master.transform, Layers.EnemyBullet, moveData);
             }
 
             for (int i = 0; i < RedBulletCount; i++)
             {
                 var f1 = Quaternion.Euler(0, 0, _redBulletAngel - 120 - i * 5) * Master.transform.up;
                 var moveData = MoveData.New(shootPos, f1, RedBulletSpeed - i * 0.1f);
-                BulletFactory.CreateBulletAndShoot(RedBulletId, Master.transform, Layers.EnemyBullet, moveData);
+                BulletFactory.CreateBulletShoot(RedBulletId, Master.transform, Layers.EnemyBullet, moveData);
             }
 
             _redShootIndex++;
@@ -125,7 +125,7 @@ public class BossCard2 : BossCardBase
             {
                 var f1 = Quaternion.Euler(0, 0, _blueBulletAngel + i * 10) * Master.transform.up;
                 var data = MoveData.New(Master.transform.position, f1, BlueBulletSpeed);
-                BulletFactory.CreateBulletAndShoot(BlueBulletId, Master.transform, Layers.EnemyBullet, data);
+                BulletFactory.CreateBulletShoot(BlueBulletId, Master.transform, Layers.EnemyBullet, data);
             }
             _blueShootIndex++;
 

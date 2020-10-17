@@ -256,6 +256,8 @@ public class UIBattle : UiInstance
     //debug
 
     private bool _inInvincible;
+    private bool _inSlow;
+
     private void InitDebug()
     {
         /*
@@ -270,6 +272,13 @@ public class UIBattle : UiInstance
         _bind.DebugTest.onClick.AddListener(() =>
         {
           
+        });
+
+        _bind.DebugSlow.onClick.AddListener(() =>
+        {
+            _inSlow = !_inSlow;
+            TimeScaleManager.SetTimeScaleForDebug(_inSlow ? 0.1f : 1f);
+            RefreshDebugBtn();
         });
 
         _bind.DebugWudi.onClick.AddListener(() =>
@@ -297,6 +306,13 @@ public class UIBattle : UiInstance
         {
             txt.color = _inInvincible ? Color.green : Color.white;
             txt.text = _inInvincible ? "无敌ON" : "无敌OFF";
+        }
+
+        var txt2 = _bind.DebugSlow.GetComponentInChildren<UiText>();
+        if (txt2)
+        {
+            txt2.color = _inSlow ? Color.green : Color.white;
+            txt2.text = _inSlow ? "Slow On" : "Slow Off";
         }
     }
 }

@@ -9,7 +9,8 @@ public class EventData
         Frame_ChangeSpeed,
         Frame_ChangeForward,
         Distance_ChangeFoward,
-        Frame_Destroy
+        Frame_Destroy,
+        Frame_Update,
     }
 
     public class ChangeSpeedData
@@ -20,7 +21,7 @@ public class EventData
     }
     public class ChangeForwardData
     {
-        public Vector3 Forward;
+        public Vector3? Forward;
         public MoveData.EHelixToward HelixToward;  //螺旋方向 0:不螺旋 1：右边 -1：左边
         public int HelixRefretFrame;      //螺旋翻转时间
         public float EulurPerFrame;       //螺旋每帧改变角度 < 0 左   > 0 向右
@@ -28,9 +29,11 @@ public class EventData
 
     public EventType Type;
     public int FrameCount;
+    public int UpdateInterval;
     public float Distance;
     public ChangeSpeedData SpeedData;
     public ChangeForwardData ForwardData;
+    public Action<Bullet> OnUpdate;
 
     public static EventData NewFrame_Destroy(int frame)
     {
@@ -40,7 +43,18 @@ public class EventData
         return e;
     }
 
-    public static EventData NewDistance_ChangeForward(float distance, Vector3 forward, MoveData.EHelixToward helixToward = MoveData.EHelixToward.None, float eulurPerFrame = 0, int helixRefretFrame = 0)
+    public static EventData NewFrame_Update(int startFrame, int updateInterval, Action<Bullet> onUpdate = null)
+    {
+        var e = new EventData();
+        e.Type = EventType.Frame_Update;
+        e.FrameCount = startFrame;
+        e.UpdateInterval = updateInterval;
+        e.OnUpdate = onUpdate;
+        return e;
+    }
+
+
+    public static EventData NewDistance_ChangeForward(float distance, Vector3? forward, MoveData.EHelixToward helixToward = MoveData.EHelixToward.None, float eulurPerFrame = 0, int helixRefretFrame = 0)
     {
         var e = new EventData();
         e.Type = EventType.Distance_ChangeFoward;
@@ -55,7 +69,7 @@ public class EventData
         return e;
     }
 
-    public static EventData NewFrame_ChangeForward(int frameCount, Vector3 forward, MoveData.EHelixToward helixToward = MoveData.EHelixToward.None, float eulurPerFrame = 0, int helixRefretFrame = 0)
+    public static EventData NewFrame_ChangeForward(int frameCount, Vector3? forward = null, MoveData.EHelixToward helixToward = MoveData.EHelixToward.None, float eulurPerFrame = 0, int helixRefretFrame = 0)
     {
         var e = new EventData();
         e.Type = EventType.Frame_ChangeForward;

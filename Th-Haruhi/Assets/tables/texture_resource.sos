@@ -44,7 +44,7 @@ id	texture	name	startX	startY	width	height	xCount	yCount
 								
 #effect								
 501	effects_tex/etbreak.png	×Óµ¯±¬Õ¨	0	0	64	64	4	2
-								
+502	effects_tex/etbreak.png	×Óµ¯±¬Õ¨	0	64	64	64	4	1
 								
 #bulletShoot								
 901	bullet/bullet1.png	ºì	80	0	32	32	1	1

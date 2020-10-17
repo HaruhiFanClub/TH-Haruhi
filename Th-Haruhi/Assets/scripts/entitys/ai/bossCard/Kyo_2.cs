@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 
 //boss 符卡2
-public class BossCard_AllStar : BossCardBase
+public class Kyo_2 : BossCardBase
 {
-    public override string CardName => "有希符「资讯爆炸」";
+    public override string CardName => "「市井牛郎与奇幻织女星」";
 
     public override float TotalTime => 30f;
 

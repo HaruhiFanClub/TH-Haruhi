@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : EntityBase
@@ -44,6 +45,14 @@ public class Bullet : EntityBase
 
     private bool _isAni;
 
+    public bool BoundDestroy = true;
+
+    private Action<Bullet> _onDestroy;
+
+
+    public List<Bullet> SonBullets = new List<Bullet>();
+    
+
     public static int TotalBulletCount;
 
     private void OnEnable()
@@ -70,9 +79,11 @@ public class Bullet : EntityBase
         Master = t;
     }
  
-    public virtual void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1)
+    public virtual void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1, bool boundDestroy = true, Action<Bullet> onDestroy = null)
     {
         Atk = atk;
+        BoundDestroy = boundDestroy;
+        _onDestroy = onDestroy;
 
         CacheTransform = transform;
         CacheTransform.position = moveData.StartPos;
@@ -101,17 +112,25 @@ public class Bullet : EntityBase
 
         float delta = Time.deltaTime;
         UpdateAnimation();
-        UpdateBulletMove(delta);
+
+        if (MoveData.Forward != Vector3.zero)
+        {
+            UpdateBulletMove(delta);
+        }
         UpdateEventList();
     }
     protected bool CheckBulletOutSide(Vector3 bulletCenter)
     {
         //超出边界销毁
-        if (bulletCenter.x < -15f || bulletCenter.x > 5f || bulletCenter.y < -12f || bulletCenter.y > 12f)
+        if(BoundDestroy)
         {
-            BulletFactory.DestroyBullet(this);
-            return true;
+            if (bulletCenter.x < -15f || bulletCenter.x > 5f || bulletCenter.y < -12f || bulletCenter.y > 12f)
+            {
+                BulletFactory.DestroyBullet(this);
+                return true;
+            }
         }
+       
         return false;
     }
 
@@ -144,12 +163,20 @@ public class Bullet : EntityBase
             var e = EventList[i];
             switch (e.Type)
             {
+                case EventData.EventType.Frame_Update:
+                    {
+                        if (_totalFrame >= e.FrameCount && _totalFrame % e.UpdateInterval == 0)
+                        {
+                            e.OnUpdate?.Invoke(this);
+                        }
+                    }
+                    break;
                 case EventData.EventType.Frame_Destroy:
 
                     if (_totalFrame >= e.FrameCount)
                     {
                         EventList.RemoveAt(i);
-                        BulletFactory.DestroyBullet(this);
+                        PlayEffectAndDestroy(502);
                     }
                     break;
                 case EventData.EventType.Frame_ChangeSpeed:
@@ -170,7 +197,11 @@ public class Bullet : EntityBase
 
                     if (_totalFrame >= e.FrameCount)
                     {
-                        MoveData.Forward = e.ForwardData.Forward;
+                        if(e.ForwardData.Forward != null)
+                        {
+                            MoveData.Forward = (Vector3)e.ForwardData.Forward;
+                        }
+                       
                         MoveData.HelixRefretFrame = e.ForwardData.HelixRefretFrame;
                         MoveData.HelixToward = e.ForwardData.HelixToward;
                         MoveData.EulurPerFrame = e.ForwardData.EulurPerFrame;
@@ -180,7 +211,10 @@ public class Bullet : EntityBase
                 case EventData.EventType.Distance_ChangeFoward:
                     if(_movedDistance >= e.Distance)
                     {
-                        MoveData.Forward = e.ForwardData.Forward;
+                        if (e.ForwardData.Forward != null)
+                        {
+                            MoveData.Forward = (Vector3)e.ForwardData.Forward;
+                        }
                         MoveData.HelixRefretFrame = e.ForwardData.HelixRefretFrame;
                         MoveData.HelixToward = e.ForwardData.HelixToward;
                         MoveData.EulurPerFrame = e.ForwardData.EulurPerFrame;
@@ -229,11 +263,38 @@ public class Bullet : EntityBase
     public override void OnRecycle()
     {
         base.OnRecycle();
+
+        EventList?.Clear();
+        EventList = null;
+
+        for (int i = 0; i < SonBullets.Count; i++)
+        {
+            if(!SonBullets[i].InCache)
+                BulletFactory.DestroyBullet(SonBullets[i]);
+        }
+        SonBullets.Clear();
+
+
+        _onDestroy?.Invoke(this);
+        _onDestroy = null;
+
         _currAniIdx = 0;
         _movedDistance = 0;
-        Shooted = false;
         _totalFrame = 0;
+        Shooted = false;
         Pool.Free(MoveData);
+    }
+
+    public void PlayEffectAndDestroy(int effectId = 501)
+    {
+        var pos = CacheTransform.position;
+        BulletFactory.DestroyBullet(this);
+        TextureEffectFactroy.CreateEffect(effectId, SortingOrder.ShootEffect, effect =>
+        {
+            effect.Renderer.material.SetColor("_TintColor", ColorUtility.GetColor(Deploy.ExplosionColor));
+            effect.transform.position = pos;
+            effect.AutoDestroy();
+        });
     }
 }
 

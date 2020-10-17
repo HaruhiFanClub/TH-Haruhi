@@ -35,5 +35,6 @@ public class UIBattleComponent : MonoBehaviour
 
     //debug
     public UiButton DebugWudi;
+    public UiButton DebugSlow;
     public UiButton DebugTest;
 }

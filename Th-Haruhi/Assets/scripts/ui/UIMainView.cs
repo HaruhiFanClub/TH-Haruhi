@@ -94,7 +94,8 @@ public class UIMainView : UiFullView
 
     private void Btn_SpellParctice()
     {
-        UiTips.Show("Btn_SpellParctice");
+        LuaStg.LoadLuaSTG("nonspell.luastg");
+        //UiTips.Show("Btn_SpellParctice");
     }
     private void Btn_Replay()
     {

@@ -83,6 +83,8 @@ public abstract class BossCardBase
 
         Master.ShowCircleRaoDong(true);
         Inited = true;
+
+        Start();
     }
 
     public void OnDisable()
@@ -100,6 +102,20 @@ public abstract class BossCardBase
         UIBossBg.FadeOut();
         UIBattle.ShowBossTime(false);
         UIBattle.HideBossCard();
+
+        Stop();
+    }
+
+
+    protected virtual void Start()
+    {
+
+    }
+
+
+    protected virtual void Stop()
+    {
+
     }
 
     public virtual void OnFixedUpdate()

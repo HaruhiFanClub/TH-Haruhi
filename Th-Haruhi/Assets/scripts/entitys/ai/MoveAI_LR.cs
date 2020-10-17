@@ -6,7 +6,7 @@ public class MoveAI_LR : MoveAI_Base
     private float _nextMoveTime;
     private bool _textMoveLeft;
 
-    protected override Vector2 BornPos => Vector2Fight.New(0, 130);
+    protected override Vector2 BornPos => Vector2Fight.New(0, 144f);
 
     public override void OnUpdate()
     {
@@ -17,11 +17,11 @@ public class MoveAI_LR : MoveAI_Base
             _nextMoveTime = Time.time + 5f;
             if (_textMoveLeft)
             {
-                Master.MoveToTarget(Vector2Fight.New(-75f, 80f), 0.3f);
+                Master.MoveToTarget(Vector2Fight.New(-75f, 144f), 0.3f);
             }
             else
             {
-                Master.MoveToTarget(Vector2Fight.New(75f, 80f), 0.3f);
+                Master.MoveToTarget(Vector2Fight.New(75f, 144f), 0.3f);
             }
         }
     }

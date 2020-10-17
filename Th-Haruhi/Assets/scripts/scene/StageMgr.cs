@@ -8,7 +8,7 @@ public class StageData
     public ELevelDifficult Difficult;
 
     //出生坐标
-    public Vector2 PlayerBornPos = Vector2Fight.New(0, -80f);
+    public Vector2 PlayerBornPos = Vector2Fight.New(0, -144f);
 
     public int GrazeCount = 0;          //擦弹数
     public int DefaultLifeCount = 3;    //默认3条命
@@ -123,7 +123,7 @@ public static class StageMgr
             MainPlayer = p;
 
             //从屏幕外移动进来
-            p.transform.position = Vector2Fight.New(0, -110);
+            p.transform.position = Vector2Fight.New(0, -220f);
             p.transform.DOMove(Data.PlayerBornPos, 0.5f).SetEase(Ease.Linear);
 
             //给5秒无敌时间

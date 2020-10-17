@@ -19,6 +19,6 @@ public class Stage2 : StageBase
     protected override IEnumerator LoopLevel()
     {
         yield return new WaitForSeconds(2f);
-        yield return Enemy.Create(999);
+        yield return Enemy.Create(1002);
     }
 }

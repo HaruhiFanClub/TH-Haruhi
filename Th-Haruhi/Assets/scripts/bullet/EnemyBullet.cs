@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBullet : Bullet
@@ -7,9 +8,9 @@ public class EnemyBullet : Bullet
     //是否被擦过弹
     private bool _isGrazed;
 
-    public override void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1)
+    public override void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1, bool boundDestroy = true, Action<Bullet> onDestroy = null)
     {
-        base.Shoot(moveData, eventList, atk);
+        base.Shoot(moveData, eventList, atk, boundDestroy, onDestroy);
         _isGrazed = false;
     }
 
@@ -55,13 +56,7 @@ public class EnemyBullet : Bullet
         var sqrDist = MathUtility.SqrDistanceXY(pos, BulletExplosion.Center);
         if (sqrDist < radius * radius)
         {
-            BulletFactory.DestroyBullet(this);
-            TextureEffectFactroy.CreateEffect(501, SortingOrder.ShootEffect, effect =>
-            {
-                effect.Renderer.material.SetColor("_TintColor", ColorUtility.GetColor(Deploy.ExplosionColor));
-                effect.transform.position = pos;
-                effect.AutoDestroy();
-            });
+            PlayEffectAndDestroy();
             return true;
         }
         return false;

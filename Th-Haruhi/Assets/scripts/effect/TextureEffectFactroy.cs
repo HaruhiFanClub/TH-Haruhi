@@ -157,7 +157,10 @@ public static class TextureEffectFactroy
                 mainTexture = resource.texture
             };
             material.SetFloat("_AlphaScale", deploy.alpha);
-
+            if (deploy.brightNess > 0)
+            {
+                material.SetFloat("_Brightness", deploy.brightNess);
+            }
             _materialCache[deploy.id] = material;
         }
 

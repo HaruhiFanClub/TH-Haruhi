@@ -18,7 +18,7 @@ public class Boss : Enemy
     private const string BossHpCircle = "ui/prefabs/battle/UIBossCircle.prefab";
 
     //上方中心位置
-    public static Vector3 BossUpCenter = Vector2Fight.New(0f, 50f);
+    public static Vector3 BossUpCenter = Vector2Fight.New(0f, 144f);
 
     //中心位置
     public static Vector3 BossMidCenter = Vector2Fight.New(0f, 0f);

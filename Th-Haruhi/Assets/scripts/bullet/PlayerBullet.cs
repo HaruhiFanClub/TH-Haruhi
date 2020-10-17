@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class PlayerBullet : Bullet
 {
     private bool _bHitEnemy;
     private float _hitEnemyFrame;
 
-    public override void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1)
+    public override void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1, bool boundDestroy = true, Action<Bullet> onDestroy = null)
     {
-        base.Shoot(moveData, eventList, atk);
+        base.Shoot(moveData, eventList, atk, boundDestroy, onDestroy);
         _bHitEnemy = false;
     }
 
