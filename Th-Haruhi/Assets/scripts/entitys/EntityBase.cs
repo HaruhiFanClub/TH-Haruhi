@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,6 +26,27 @@ public abstract class EntityBase : MonoBehaviour
     public abstract EEntityType EntityType { get; }
 
     private Rigidbody2D _rigidBody2d;
+
+    protected Transform CacheTransform { private set; get; }
+
+    public bool InMove { private set; get; }
+
+    public Vector3 MoveTarget { private set; get; }
+
+    public bool InCache { private set; get; }
+    public void SetInCache(bool b)
+    {
+        InCache = b;
+    }
+
+    public Rigidbody2D Rigid2D
+    {
+        get
+        {
+            InitRigid();
+            return _rigidBody2d;
+        }
+    }
 
     public void InitRigid()
     {
@@ -58,54 +80,7 @@ public abstract class EntityBase : MonoBehaviour
         }
     }
 
-    public void PlayShootEffect(EColor color, float startScale = 1f, Vector3? startPos = null)
-    {
-        var effectId = 0;
-        switch (color)
-        {
-            case EColor.Red:
-                effectId = 901;
-                break;
-            case EColor.Purple:
-                effectId = 902;
-                break;
-            case EColor.Blue:
-                effectId = 903;
-                break;
-            case EColor.BlueLight:
-                effectId = 904;
-                break;
-            case EColor.Green:
-                effectId = 905;
-                break;
-            case EColor.Yellow:
-                effectId = 906;
-                break;
-            case EColor.Orange:
-                effectId = 907;
-                break;
-            case EColor.White:
-                effectId = 908;
-                break;
-        }
-
-        if (effectId > 0)
-        {
-            var pos = startPos == null ? transform.position : (Vector3)startPos;
-            TextureEffectFactroy.CreateEffect(effectId, SortingOrder.ShootEffect, effect =>
-            {
-                effect.transform.position = pos;
-                effect.transform.localScale = Vector3.one * startScale;
-                effect.transform.DOScale(0f, 0.4f).onComplete = () =>
-                {
-                    TextureEffectFactroy.DestroyEffect(effect);
-                };
-            });
-        }
-    }
-
-
-
+    
     private Dictionary<EShootSound, int> ShootSoundCd = new Dictionary<EShootSound, int>();
 
     private int GetShootSoundCdFrame(EShootSound e)
@@ -113,18 +88,18 @@ public abstract class EntityBase : MonoBehaviour
         switch (e)
         {
             case EShootSound.Laser:
-                return 20;
+                return 5;
             case EShootSound.Tan00:
             case EShootSound.Tan01:
             case EShootSound.Tan02:
-                return 5;
+                return 2;
             case EShootSound.Noraml:
-                return 3;
+                return 1;
         }
         return 0;
     }
 
-    public void PlayShootSound(EShootSound sound)
+    public void PlayShootSound(EShootSound sound, float volume = 1f)
     {
         if(ShootSoundCd.TryGetValue(sound, out int lastframe))
         {
@@ -136,31 +111,113 @@ public abstract class EntityBase : MonoBehaviour
         }
 
         ShootSoundCd[sound] = GameSystem.FixedFrameCount;
-        Sound.PlayUiAudioOneShot((int)sound, true);
+        Sound.PlayUiAudioOneShot((int)sound, true, volume);
     }
 
-    public Rigidbody2D Rigid2D
-    { 
-        get 
-        {
-            InitRigid();
-            return _rigidBody2d;
-        }
-    }
 
-    public bool InCache { private set; get; }
-    public void SetInCache(bool b)
+    //移動到指定坐標
+    public void MoveToPos(Vector3 target, int t, MovementMode mode, bool setRotation = false)
     {
-        InCache = b;
+        StartCoroutine(MoveTo(target, t, mode, setRotation));
     }
-    protected virtual void Awake() {
 
+    private IEnumerator MoveTo(Vector3 target, int t, MovementMode mode, bool setRotation)
+    {
+        InMove = true;
+        MoveTarget = target;
+
+        var diff = target - CacheTransform.position;
+
+        if (setRotation) 
+        {
+            CacheTransform.up = diff;
+        }
         
+        float prevDist = 0f;
+
+        for (float s = 1f / t; s < 1f + 0.5f / t; s += 1f / t)
+        {
+            float dist = s;
+            switch (mode)
+            {
+                case MovementMode.MOVE_ACCEL:
+                    dist = s * s;
+                    break;
+                case MovementMode.MOVE_DECEL:
+                    dist = s * 2 - s * s;
+                    break;
+                case MovementMode.MOVE_ACC_DEC:
+                    dist = s < 0.5f ? s * s * 2 : -2 * s * s + 4 * s - 1;
+                    break;
+            }
+
+            CacheTransform.position += (dist - prevDist) * diff;
+            yield return new WaitForFixedUpdate();
+            prevDist = dist;
+        }
+        InMove = false;
     }
+
+    //向Player移動, 怪物巡邏用
+    public void MoveToPlayer(int frame, Vector2 xRange, Vector2 yRange, Vector2 xAmp, Vector2 yAmp, MovementMode mMode, DirectionMode dMode)
+    {
+        var dirX = LuaStg.RandomSign();
+        var dirY = LuaStg.RandomSign();
+        var player = StageMgr.MainPlayer;
+        if (player == null) return;
+
+        var selfX = CacheTransform.position.x;
+        var selfY = CacheTransform.position.y;
+        var playerX = player.CacheTransform.position.x;
+        var playerY = player.CacheTransform.position.y;
+
+        if ((int)dMode < 2)
+        {
+            dirX = selfX > playerX ? -1 : 1;
+        }
+        if((int)dMode == 0 || (int)dMode == 2)
+        {
+            dirY = selfY > playerY ? -1 : 1;
+        }
+
+
+        var dx = Random.Range(xAmp.x, xAmp.y);
+        var dy = Random.Range(yAmp.x, yAmp.y);
+
+        if (selfX + dx * dirX < xRange.x)
+        {
+            dirX = 1;
+        }
+        if (selfX + dx * dirX > xRange.y)
+        {
+            dirX = -1;
+        }
+        if(selfY + dy * dirY < yRange.x)
+        {
+            dirY = 1;
+        }
+        if(selfY + dy * dirY > yRange.y)
+        {
+            dirY = -1;
+        }
+
+        MoveToPos(new Vector3(selfX + dx * dirX, selfY + dy * dirY), frame, mMode);
+    }
+
+ 
+    protected virtual void Awake() 
+    {
+        CacheTransform = transform;
+    }
+
     protected virtual void OnDestroy() { }
     protected virtual void Update() { }
     protected virtual void FixedUpdate() { }
-    public virtual void OnRecycle() { }
+    public virtual void OnRecycle() 
+    {
+        InMove = false;
+        MoveTarget = Vector3.zero;
+    }
 
     public static void DestroyEntity(EntityBase b)
     {

@@ -56,7 +56,7 @@ public class EnemyBullet : Bullet
         var sqrDist = MathUtility.SqrDistanceXY(pos, BulletExplosion.Center);
         if (sqrDist < radius * radius)
         {
-            PlayEffectAndDestroy();
+            this.PlayEffectAndDestroy();
             return true;
         }
         return false;

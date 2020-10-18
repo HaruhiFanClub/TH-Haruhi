@@ -1,5 +1,5 @@
 #Sound表				
-#	描述	名称	资源路径	音量[0.0,1.0]
+#	描述	名称	资源路径	"音量[0.0,1.0]"
 id	remark	name	resource	volume
 				
 #Bgm(1-10)				
@@ -40,7 +40,7 @@ id	remark	name	resource	volume
 #bullet				
 2001	普攻		audios/se/se_plst00.wav	0.2
 2002	激光		audios/se/se_lazer02.wav	0.1
-2003	fast_tan00		audios/se/se_tan00.wav	0.1
+2003	fast_tan00		audios/se/se_tan00.wav	0.5
 2004	tan01		audios/se/se_tan01.wav	0.5
 2005	tan02		audios/se/se_tan02.wav	0.5
 2006	laser		audios/se/se_lazer00.wav	0.25

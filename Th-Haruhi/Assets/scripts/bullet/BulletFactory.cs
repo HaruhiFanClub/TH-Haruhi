@@ -47,18 +47,19 @@ public static class BulletFactory
         BulletTab = TableUtility.GetTable<BulletDeploy>();
     }
 
-    public static void CreateBulletShoot(int id, Transform master, int layer,
+    public static void CreateEnemyBullet(int id, 
         MoveData moveData, List<EventData> eventList = null, int atk = 1,
         bool boundDestroy = true, Action<Bullet> onCreate = null, Action<Bullet> onDestroy = null) 
     {
-        CreateBullet(id, master, layer, bullet =>
+        CreateBullet(id, Layers.EnemyBullet, bullet =>
         {
             bullet.Shoot(moveData, eventList, atk, boundDestroy, onDestroy);
+            bullet.PlayShootEffect();
             onCreate?.Invoke(bullet);
         });
     }
 
-    public static void CreateBullet(int id, Transform master, int layer, CreatedNotify notify)
+    public static void CreateBullet(int id, int layer, CreatedNotify notify)
     {
         var deploy = BulletTab[id];
         if (!deploy)
@@ -80,13 +81,13 @@ public static class BulletFactory
                         bullet.gameObject.layer = layer;
                         bullet.SetInCache(false);
                         bullet.transform.SetParent(null, false);
-                        bullet.ReInit(master);
+                        bullet.ReInit();
                     }
                     notify(bullet);
                 }
                 else
                 {
-                    CreateBulletDirect(holder.SpriteList, holder.Resource,deploy, master, layer, bulletObj =>
+                    CreateBulletDirect(holder.SpriteList, holder.Resource,deploy, layer, bulletObj =>
                     {
                         bullet = bulletObj;
                         notify(bullet);
@@ -95,12 +96,12 @@ public static class BulletFactory
             }
             else
             {
-                CreateNewBullet(id, master, layer,  deploy, notify);
+                CreateNewBullet(id, layer,  deploy, notify);
             }
         }
     }
 
-    private static void CreateNewBullet(int id, Transform master, int layer,BulletDeploy deploy, CreatedNotify notify)
+    private static void CreateNewBullet(int id, int layer,BulletDeploy deploy, CreatedNotify notify)
     {
         GameSystem.CoroutineStart(TextureUtility.LoadResourceById(deploy.resourceId, spriteList =>
         {
@@ -123,7 +124,7 @@ public static class BulletFactory
                 CachePool.Add(id, holder);
             }
 
-            CreateBulletDirect(spriteList, sprite, deploy, master, layer, bullet =>
+            CreateBulletDirect(spriteList, sprite, deploy,  layer, bullet =>
             {
                 notify(bullet);
             });
@@ -157,7 +158,7 @@ public static class BulletFactory
     }
 
     
-    private static void CreateBulletDirect(List<Sprite> spriteList, Sprite resource, BulletDeploy deploy, Transform master, int layer,  Action<Bullet> notify)
+    private static void CreateBulletDirect(List<Sprite> spriteList, Sprite resource, BulletDeploy deploy, int layer,  Action<Bullet> notify)
     {
         Type type = null;
 
@@ -252,7 +253,7 @@ public static class BulletFactory
         {
             bullet.CollisionInfo = collisionInfo;
             bullet.gameObject.layer = layer;
-            bullet.Init(deploy, master, mr);
+            bullet.Init(deploy,  mr);
         }
 
         //ani

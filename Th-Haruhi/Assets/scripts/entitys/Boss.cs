@@ -18,10 +18,10 @@ public class Boss : Enemy
     private const string BossHpCircle = "ui/prefabs/battle/UIBossCircle.prefab";
 
     //上方中心位置
-    public static Vector3 BossUpCenter = Vector2Fight.New(0f, 144f);
+    public static Vector3 BossUpCenter = Vector2Fight.NewWorld(0f, 144f);
 
     //中心位置
-    public static Vector3 BossMidCenter = Vector2Fight.New(0f, 0f);
+    public static Vector3 BossMidCenter = Vector2Fight.NewWorld(0f, 0f);
 
     //boss符卡管理器
     private BossCardMgr CardMgr;
@@ -40,9 +40,6 @@ public class Boss : Enemy
         Invisible = true;
 
         TryDialog();
-
-        //场景卷轴减慢
-        StageSceneBase.ChangeSpeed(5f);
     }
 
     private void TryDialog()
@@ -56,7 +53,7 @@ public class Boss : Enemy
                 UIDrawingChat.Show(list, 
                     ()=> 
                     { 
-                        MoveToTarget(BossUpCenter, 10f); 
+                        MoveToPos(BossUpCenter, 60, MovementMode.MOVE_NORMAL); 
                     },
                     () =>
                     {
@@ -72,7 +69,7 @@ public class Boss : Enemy
         }
 
         //如果没有对话，直接移动到指定位置，并开始战斗
-        MoveToTarget(BossUpCenter, 10f);
+        MoveToPos(BossUpCenter, 60, MovementMode.MOVE_NORMAL);
         DOVirtual.DelayedCall(1.15F, StartFight, false);
     }
 
@@ -104,9 +101,6 @@ public class Boss : Enemy
 
         //禁止无敌
         Invisible = false;
-
-        //场景卷轴恢复
-        StageSceneBase.RevertSpeed();
     }
 
     //显示隐藏boss气流扰动效果

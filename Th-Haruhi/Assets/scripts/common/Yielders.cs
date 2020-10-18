@@ -10,6 +10,6 @@ public class Yielders
 
     public static WaitForSeconds WaitFrame(int frameCount)
     {
-        return new WaitForSeconds(frameCount * Time.fixedDeltaTime);
+        return new WaitForSeconds((frameCount - 1) * Time.fixedDeltaTime);
     }
 }

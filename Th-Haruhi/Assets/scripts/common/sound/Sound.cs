@@ -19,7 +19,6 @@ public static class Sound
 
     private static float _musicVolume;
     private static float _environmentVolume;
-    private static float _uiVolume;
     private static float _audioVolume;
 
     private static float _globalMusicVolume;
@@ -85,7 +84,6 @@ public static class Sound
         _audioVolume = 1f;
         _musicVolume = 1f;
         _environmentVolume = 1f;
-        _uiVolume = 1f;
         GlobalMusicVolume = 1f;
         GlobalAudioVolume = 1f;
         _soundTableT = TableUtility.GetTable<SoundDeploy>();
@@ -426,7 +424,7 @@ public static class Sound
     }
 
     private static Dictionary<int, bool> _oneFrameDic = new Dictionary<int, bool>();
-    public static void PlayUiAudioOneShot(int soundId, bool oneFrameOnce = false)
+    public static void PlayUiAudioOneShot(int soundId, bool oneFrameOnce = false, float volume = 1f)
     {
         Load(soundId, soundClip=>
         {
@@ -438,13 +436,13 @@ public static class Sound
                 }
                 _oneFrameDic[soundId] = true;
             }
-            PlayUiAudioOneShot(soundClip);
+            PlayUiAudioOneShot(soundClip, volume);
         });
     }
 
-    private static void PlayUiAudioOneShot(SoundClip soundClip)
+    private static void PlayUiAudioOneShot(SoundClip soundClip, float volume)
     {
-        if (_globalAudioVolume <= 0 || _uiVolume <= 0)
+        if (_globalAudioVolume <= 0)
         {
 
             return;
@@ -457,7 +455,7 @@ public static class Sound
 
         if (_uiAudio != null)
         {
-            _uiAudio.PlayOneShot(soundClip.clip, soundClip.volume * _uiVolume * _globalAudioVolume);
+            _uiAudio.PlayOneShot(soundClip.clip, soundClip.volume * volume * _globalAudioVolume);
         }
     }
 

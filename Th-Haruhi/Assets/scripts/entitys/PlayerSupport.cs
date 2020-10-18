@@ -74,9 +74,10 @@ public class PlayerSupport : MonoBehaviour
                 if (GameSystem.FixedFrameCount > NextShootFrame)
                 {
                     NextShootFrame = GameSystem.FixedFrameCount + shootFrame;
-                    BulletFactory.CreateBullet(bulletId, transform, layer, bullet =>
+                    BulletFactory.CreateBullet(bulletId, layer, bullet =>
                     {
                         var data = MoveData.New(transform.position, MathUtility.SwapYZ(transform.forward), bulletSpeed);
+                        bullet.SetMaster(transform);
                         bullet.Shoot(data, atk:atk);
                     });
                 }
@@ -87,9 +88,10 @@ public class PlayerSupport : MonoBehaviour
             //射击间隔为0的，表示激光类型，射击状态下持续显示，非射击销毁
             if(!_prevInLoopShoot && inShoot)
             {
-                BulletFactory.CreateBullet(bulletId, transform, layer, bullet =>
+                BulletFactory.CreateBullet(bulletId, layer, bullet =>
                 {
                     _currBullet = bullet;
+                    bullet.SetMaster(transform);
                     bullet.Shoot(MoveData.New(transform.position, transform.up, bulletSpeed), atk: atk);
                 });
             }

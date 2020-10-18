@@ -20,6 +20,8 @@ public class LuaStgInfo
 
 public static class LuaStg 
 {
+    public const float LuaStgSpeedChange = 2.3f;
+
     public static void LoadLuaSTG(string name)
     {
         var source = LocalStorage.Read<string>(name, LocalStorage.EStorageType.BulletCfg);
@@ -36,8 +38,13 @@ public static class LuaStg
         return Mathf.Cos(Mathf.Deg2Rad * degree);
     }
 
-    public static float ToLuaStgSpeed(this float unitySpeed)
+    public static Vector3 AngelToForward(this float angle)
     {
-        return unitySpeed * 2.3f;
+        return Quaternion.Euler(0, 0, angle) * Vector3.up;
+    }
+
+    public static float RandomSign()
+    {
+        return Random.Range(0, 2) == 0 ? -1 : 1;
     }
 }

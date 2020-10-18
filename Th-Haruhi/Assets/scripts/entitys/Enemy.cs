@@ -31,8 +31,6 @@ public class Enemy : EntityBase
 
     public Material Material { private set; get; }
 
-    public bool InMoveToTarget { private set; get; }
-    public bool InMove { private set; get; }
     public bool IsDead { private set; get; }
 
     //private MoveAI_Base MoveAI;
@@ -72,7 +70,6 @@ public class Enemy : EntityBase
         HPMax = HP;
 
         _aniStyle = EnemyMoveStyle.Idle;
-        _currPos = transform.position;
 
         InitRigid(); 
 
@@ -104,8 +101,6 @@ public class Enemy : EntityBase
 
         if (GamePause.InPause != false)
             return;
-       
-        UpdateMovePos();
 
         if (AIMoudle != null)
         {
@@ -180,95 +175,13 @@ public class Enemy : EntityBase
         Destroy(gameObject);
     }
 
-
-    private MoveData _moveData;
-    private int _totalFrame;
-    private float _lastHelixFrame;
-    public void Move(MoveData moveData, float moveSpeed)
-    {
-        InMove = true;
-        _moveData = moveData;
-        _totalFrame = 0;
-        _lastHelixFrame = 0;
-        _moveSpeed = moveSpeed;
-    }
-
-    private Vector3 _moveTarget;
-    private Vector3 _currPos;
-    private float _moveSpeed;
-    public void MoveToTarget(Vector3 targetPoint, float moveSpeed)
-    {
-        InMoveToTarget = true;
-        _moveTarget = targetPoint;
-        _moveSpeed = moveSpeed;
-        _currPos = transform.position;
-    }
-
-    public void Wander(Vector2 xRange, Vector2 yRange, Vector2 xAmp, Vector2 yAmp, float speed)
-    {
-        var curPos = Vector2Fight.WorldPosToFightPos(transform.position);
-        //Debug.LogError("wander:" + curPos);
-
-        var ampX = UnityEngine.Random.Range(xAmp.x, xAmp.y);
-        var ampY = UnityEngine.Random.Range(yAmp.x, yAmp.y);
-        var targetX = UnityEngine.Random.Range(0, 2) == 0 ? -ampX : ampX;
-        var targetY = UnityEngine.Random.Range(0, 2) == 0 ? -ampY : ampY;
-        targetX = Mathf.Clamp(targetX, xRange.x, xRange.y);
-        targetY = Mathf.Clamp(targetY, yRange.x, yRange.y);
-
-        MoveToTarget(Vector2Fight.New(targetX, targetY), speed);
-    }
-
-    private void UpdateMovePos()
-    {
-        var delta = Time.deltaTime;
-        if (InMoveToTarget)
-        {
-            _currPos = Vector3.MoveTowards(_currPos, _moveTarget, delta * _moveSpeed);
-            Rigid2D.MovePosition(_currPos);
-
-            if (MathUtility.DistanceXY(_currPos, _moveTarget) < 0.5f)
-            {
-                StopMove();
-            }
-        }
-        else if (InMove)
-        {
-            _totalFrame += 1;
-
-            //螺旋移动
-            if (_moveData.HelixToward != MoveData.EHelixToward.None)
-            {
-                var eulurZ = (int)_moveData.HelixToward * _moveData.EulurPerFrame * delta * 60f;
-                _moveData.Forward = Quaternion.Euler(0, 0, eulurZ) * _moveData.Forward;
-
-                if (_totalFrame - _lastHelixFrame >= _moveData.HelixRefretFrame)
-                {
-                    _lastHelixFrame = _totalFrame;
-                    _moveData.HelixToward = _moveData.HelixToward == MoveData.EHelixToward.Right ?
-                                                    MoveData.EHelixToward.Left :
-                                                    MoveData.EHelixToward.Right;
-                }
-            }
-            Rigid2D.MovePosition(transform.position + _moveData.Forward.normalized * delta * _moveSpeed);
-        }
-    }
-
     private void UpdateMoveStyle()
     {
-        if(InMoveToTarget || InMove)
+        if(InMove)
         {
-            float moveX;
-            if(InMove)
-            {
-                moveX = _moveData.Forward.normalized.x;
-            }
-            else
-            {
-                moveX = (_moveTarget - transform.position).normalized.x;
-            }
+            var moveX = (MoveTarget - CacheTransform.position).normalized.x;
 
-            if(moveX > 0.01f)
+            if (moveX > 0.01f)
             {
                 //right
                 if(AniStyle != EnemyMoveStyle.MoveIdle)
@@ -293,19 +206,6 @@ public class Enemy : EntityBase
             AniStyle = EnemyMoveStyle.Idle;
         }
     }
-    
-    private void StopMove()
-    {
-        InMoveToTarget = false;
-        InMove = false;
-        AniStyle = EnemyMoveStyle.Idle;
-
-        if(_moveData != null)
-        {
-            Pool.Free(_moveData);
-        }
-    }
-
 
     private void UpdateAnimation()
     {
@@ -334,11 +234,6 @@ public class Enemy : EntityBase
 
     protected override void OnDestroy()
     {
-        if (_moveData != null)
-        {
-            Pool.Free(_moveData);
-        }
-
         if (AIMoudle != null)
         {
             AIMoudle.OnDestroy();
@@ -382,10 +277,10 @@ public class Enemy : EntityBase
         collider.isTrigger = true;
 
         //init
-        enemy.Material = mainSprite.material;
-        enemy.transform.position = Vector2Fight.New(bornX, bornY);
-        enemy.Init(mainSprite, deploy);
         gameObj.SetActiveSafe(true);
+        enemy.Material = mainSprite.material;
+        enemy.transform.position = Vector2Fight.NewWorld(bornX, bornY);
+        enemy.Init(mainSprite, deploy);
     }
 }
 

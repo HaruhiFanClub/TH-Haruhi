@@ -64,7 +64,7 @@ public class BossCard2 : BossCardBase
         {
             _moveLeft = !_moveLeft;
 
-            Master.MoveToTarget(Vector2Fight.New(_moveLeft ? -60f : 60f, 144f), 0.4f);
+            Master.MoveToPos(Vector2Fight.NewWorld(_moveLeft ? -60f : 60f, 144f), 60, MovementMode.MOVE_NORMAL);
             _lastMoveTime = Time.time;
         }
     }
@@ -80,22 +80,20 @@ public class BossCard2 : BossCardBase
             var shootPos = Master.transform.position + fwd.normalized * 3f;
 
             Master.PlayShootSound(EShootSound.Noraml);
-            Master.PlayShootEffect(EColor.Red, 2f, shootPos);
-
 
             //2组子弹，往反方向
             for (int i = 0; i < RedBulletCount; i++)
             {
                 var f1 = Quaternion.Euler(0, 0, _redBulletAngel + 120 + i * 5) * Master.transform.up;
                 var moveData = MoveData.New(shootPos, f1, RedBulletSpeed - i * 0.1f);
-                BulletFactory.CreateBulletShoot(RedBulletId, Master.transform, Layers.EnemyBullet, moveData);
+                BulletFactory.CreateEnemyBullet(RedBulletId, moveData);
             }
 
             for (int i = 0; i < RedBulletCount; i++)
             {
                 var f1 = Quaternion.Euler(0, 0, _redBulletAngel - 120 - i * 5) * Master.transform.up;
                 var moveData = MoveData.New(shootPos, f1, RedBulletSpeed - i * 0.1f);
-                BulletFactory.CreateBulletShoot(RedBulletId, Master.transform, Layers.EnemyBullet, moveData);
+                BulletFactory.CreateEnemyBullet(RedBulletId, moveData);
             }
 
             _redShootIndex++;
@@ -125,11 +123,10 @@ public class BossCard2 : BossCardBase
             {
                 var f1 = Quaternion.Euler(0, 0, _blueBulletAngel + i * 10) * Master.transform.up;
                 var data = MoveData.New(Master.transform.position, f1, BlueBulletSpeed);
-                BulletFactory.CreateBulletShoot(BlueBulletId, Master.transform, Layers.EnemyBullet, data);
+                BulletFactory.CreateEnemyBullet(BlueBulletId, data);
             }
             _blueShootIndex++;
 
-            Master.PlayShootEffect(EColor.BlueLight, 2f);
 
             if(_blueShootIndex % Random.Range(4, 6) == 0) 
                 _blueBulletAngel += Random.Range(90, 110);

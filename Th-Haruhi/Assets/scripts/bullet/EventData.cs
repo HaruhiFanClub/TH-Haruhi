@@ -11,6 +11,7 @@ public class EventData
         Distance_ChangeFoward,
         Frame_Destroy,
         Frame_Update,
+        Frame_AimToPlayer,
     }
 
     public class ChangeSpeedData
@@ -27,14 +28,22 @@ public class EventData
         public float EulurPerFrame;       //螺旋每帧改变角度 < 0 左   > 0 向右
     }
 
+    public class AimPlayerData
+    {
+        public float Speed;
+        public float Angel;
+    }
+
     public EventType Type;
     public int FrameCount;
     public int UpdateInterval;
+    public int UpdateTimes;
     public float Distance;
     public ChangeSpeedData SpeedData;
     public ChangeForwardData ForwardData;
+    public AimPlayerData AimToPlayerData;
     public Action<Bullet> OnUpdate;
-
+    
     public static EventData NewFrame_Destroy(int frame)
     {
         var e = new EventData();
@@ -43,13 +52,27 @@ public class EventData
         return e;
     }
 
-    public static EventData NewFrame_Update(int startFrame, int updateInterval, Action<Bullet> onUpdate = null)
+    public static EventData Frame_AimToPlayer(int frame, float speed, float angleMin, float angleMax)
+    {
+        var e = new EventData();
+        e.Type = EventType.Frame_AimToPlayer;
+        e.FrameCount = frame;
+        e.AimToPlayerData = new AimPlayerData
+        {
+            Speed = speed,
+            Angel = UnityEngine.Random.Range(angleMin, angleMax),
+        };
+        return e;
+    }
+
+    public static EventData NewFrame_Update(int startFrame, int updateInterval, Action<Bullet> onUpdate = null, int updateTimes = -1)
     {
         var e = new EventData();
         e.Type = EventType.Frame_Update;
         e.FrameCount = startFrame;
         e.UpdateInterval = updateInterval;
         e.OnUpdate = onUpdate;
+        e.UpdateTimes = updateTimes;
         return e;
     }
 

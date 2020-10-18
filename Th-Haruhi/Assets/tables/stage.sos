@@ -2,4 +2,4 @@
 #	描述		资源路径	默认背景音乐
 id	name	levelClass	resource	bgmId
 1	第一关	Stage1	scenes/Stage1.unity	2
-2	test	Stage2	scenes/Stage1.unity	3
+2	test	Stage2	scenes/Stage2.unity	3

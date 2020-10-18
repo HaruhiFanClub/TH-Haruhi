@@ -50,7 +50,7 @@ public class UIDebugBulletLib : UiInstance
 
             //createBullet
             Bullet bullet = null;
-            BulletFactory.CreateBullet(deploy.id, bulletObj.transform, Layers.Ui, b =>
+            BulletFactory.CreateBullet(deploy.id, Layers.Ui, b =>
             {
                 bullet = b;
             });

@@ -10,9 +10,14 @@ public class Vector2Fight
     //-192 192  -224 224
     private static float _trans = 24f;    
 
-    public static Vector3 New(float x, float y)
+    public static Vector3 NewWorld(float x, float y)
     {
         return new Vector3(x / _trans, y / _trans) + Center;
+    }
+
+    public static Vector3 NewLocal(float x, float y)
+    {
+        return new Vector3(x / _trans, y / _trans);
     }
 
     public static Vector3 WorldPosToFightPos(Vector3 pos)

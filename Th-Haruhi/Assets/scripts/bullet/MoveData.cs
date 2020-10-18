@@ -2,11 +2,16 @@
 
 public class MoveData : IPool
 {
-    public static MoveData New(Vector3 startPos, Vector3 forward, float speed, float accelertion = 0, float endSpeed = 0)
+    public static MoveData New(Vector3 startPos, Vector3? forward = null, float speed = 0, float accelertion = 0, float endSpeed = 0)
     {
         var bulletData = Pool.New<MoveData>() as MoveData;
+
+        if(forward != null)
+        {
+            bulletData.Forward = (Vector3)forward;
+        }
+       
         bulletData.StartPos = startPos;
-        bulletData.Forward = forward;
         bulletData.Speed = speed;
         bulletData.Acceleration = accelertion;
         bulletData.EndSpeed = endSpeed;

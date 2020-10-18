@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/res/scenes/Stage1.unity
     guid: 8d871fd8124a99845a108ccd4716cb85
   - enabled: 1
+    path: Assets/res/scenes/Stage2.unity
+    guid: 04f42b2a1a3e1bb47bfe77e4fbf4e835
+  - enabled: 1
     path: Assets/res/effects/Demo/Scenes/etfx_2ddemo.unity
     guid: 0ef9b490e5d6bad4ea1935d07d1c2ea9
   - enabled: 1

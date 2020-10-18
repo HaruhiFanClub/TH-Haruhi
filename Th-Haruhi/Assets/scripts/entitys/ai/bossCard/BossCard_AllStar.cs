@@ -54,12 +54,12 @@ public class BossCard_AllStar : BossCardBase
     private int MiniStartId = 1460;
     private int StarCount = 17;
     private int StarFrame = 8;
-    private int StarSpeed = 10;
+    private float StarSpeed = 4f;
 
     private int RedStarId = 1189;
     private int RedStarFrame = 20;
     private int RedStarCount = 9;
-    private int RedStarSpeed = 3;
+    private float RedStarSpeed = 1.3f;
     private float TurnSpeed = 0.5f;
 
 
@@ -102,16 +102,14 @@ public class BossCard_AllStar : BossCardBase
             if (ShootIdx % RedStarFrame == 0)
             {
                 _shootedRedStarCount++;
-                Master.PlayShootEffect(EColor.BlueLight, 4);
                 Master.PlayShootSound(EShootSound.Tan01);
 
                 var z = _starAngel + _shootedRedStarCount * 60;
                 if (z > 360) z -= 360;
                 z += Random.Range(-30, 30);
 
-                var shootForward = Quaternion.Euler(0, 0, z) * Master.transform.up;
-                var moveData = MoveData.New(Master.transform.position, shootForward, RedStarSpeed);
-                BulletFactory.CreateBulletShoot(RedStarId, Master.transform, Layers.EnemyBullet, moveData);
+                var moveData = MoveData.New(Master.transform.position, z.AngelToForward(), RedStarSpeed);
+                BulletFactory.CreateEnemyBullet(RedStarId, moveData);
             }
         }
     }
@@ -119,9 +117,9 @@ public class BossCard_AllStar : BossCardBase
     {
         for (int i = 0; i < 6; i++)
         {
-            var shootForward = Quaternion.Euler(0, 0, _starAngel + i * 60) * Master.transform.up;
-            var moveData = MoveData.New(Master.transform.position, shootForward, StarSpeed - 2f);
-            BulletFactory.CreateBulletShoot(BigStarId, Master.transform, Layers.EnemyBullet, moveData);
+            var shootForward = (_starAngel + i * 60).AngelToForward();
+            var moveData = MoveData.New(Master.transform.position, shootForward, StarSpeed - 0.8f);
+            BulletFactory.CreateEnemyBullet(BigStarId,  moveData);
         }
     }
 
@@ -135,7 +133,6 @@ public class BossCard_AllStar : BossCardBase
         //int 
         if (ShootIdx  % StarFrame == 0)
         {
-            Master.PlayShootEffect(EColor.BlueLight, 4);
             Master.PlayShootSound(EShootSound.Tan00);
 
             for (int i = 0; i < 6; i++)
@@ -171,11 +168,11 @@ public class BossCard_AllStar : BossCardBase
                         speed = StarSpeed - rowCount * 0.2f - (rowCount - 1) * 0.1f;
                     }
 
-                    
-                    var shootForward =  Quaternion.Euler(0, 0, forZ) * Master.transform.up;
+
+                    var shootForward = forZ.AngelToForward();
                     var shootPos = Master.transform.position;
 
-                    var delayTurnForward = Quaternion.Euler(0, 0, forZ + (bTurnLeft ? 90f : -90f)) * Master.transform.up;
+                    var delayTurnForward = (forZ + (bTurnLeft ? 90f : -90f)).AngelToForward();
                     var moveData = MoveData.New(shootPos, shootForward, speed); 
 
                     List<EventData> eventList = new List<EventData>();
@@ -189,7 +186,7 @@ public class BossCard_AllStar : BossCardBase
                         eventList.Add(EventData.NewFrame_ChangeSpeed(t, -1, 3f, speed + 3f));
                     }
 
-                    BulletFactory.CreateBulletShoot(MiniStartId, Master.transform, Layers.EnemyBullet, moveData, eventList);
+                    BulletFactory.CreateEnemyBullet(MiniStartId, moveData, eventList);
                 }
             }
         }

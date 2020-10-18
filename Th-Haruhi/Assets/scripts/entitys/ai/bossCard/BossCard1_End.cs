@@ -81,13 +81,12 @@ public class BossCard1_End : BossCardBase
         if (ShootIdx % RedBulletFrame == 0)
         {
             Master.PlayShootSound(EShootSound.Noraml);
-            Master.PlayShootEffect(EColor.Red, 2f);
 
             for(int i = 0; i < RedBulletCount; i++)
             {
                 var fwd = Quaternion.Euler(0, 0, i * (360f / RedBulletCount) + Random.Range(-30f, 30f)) * Master.transform.up;
                 var moveData = MoveData.New(Master.transform.position, fwd, RedBulletSpeed, -1, RedBulletSpeed - 2);
-                BulletFactory.CreateBulletShoot(RedBulletId, Master.transform, Layers.EnemyBullet, moveData);
+                BulletFactory.CreateEnemyBullet(RedBulletId, moveData);
             }
         }
     }
@@ -97,8 +96,6 @@ public class BossCard1_End : BossCardBase
     {
         if (ShootIdx % LaserFrame == 0)
         {
-            Master.PlayShootEffect(EColor.Red, 3f);
-
             var fwd = Quaternion.Euler(0, 0, _laserAngel) * Master.transform.up;
             var moveData = MoveData.New(Master.transform.position, fwd, LaserFastSpeed);
 
@@ -106,7 +103,7 @@ public class BossCard1_End : BossCardBase
             eventList.Add(EventData.NewFrame_ChangeSpeed(20, LaserSlowSpeed));
             eventList.Add(EventData.NewFrame_ChangeSpeed(48, LaserSlowSpeed, 4, LaserFastSpeed));
 
-            BulletFactory.CreateBulletShoot(LaserBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList);
+            BulletFactory.CreateEnemyBullet(LaserBulletId,  moveData, eventList);
 
             _laserAngel += Random.Range(45, 75);
             if (_laserAngel > 360) _laserAngel -= 360;
@@ -127,13 +124,11 @@ public class BossCard1_End : BossCardBase
                 {
                     var f1 = Quaternion.Euler(0, 0, _blueBulletAngel + i * -12 + j * 120) * Master.transform.up;
                     var data = MoveData.New(Master.transform.position, f1, BlueBulletSpeed + i * 0.05f, -0.2f, BlueBulletSpeed - 1f);
-                    BulletFactory.CreateBulletShoot(BlueBulletId, Master.transform, Layers.EnemyBullet, data);
+                    BulletFactory.CreateEnemyBullet(BlueBulletId, data);
                 }
             }
 
             
-            Master.PlayShootEffect(EColor.BlueLight, 2f);
-
             _blueBulletAngel += 15;
             if (_blueBulletAngel > 360)
                 _blueBulletAngel -= 360;

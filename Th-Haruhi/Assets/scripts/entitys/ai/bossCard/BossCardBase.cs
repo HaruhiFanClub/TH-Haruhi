@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public abstract class BossCardBase
 {
@@ -49,7 +50,7 @@ public abstract class BossCardBase
 
         if(StartPos != Vector3.zero)
         {
-            Master.MoveToTarget(StartPos, 3f);
+            Master.MoveToPos(StartPos, 60, MovementMode.MOVE_NORMAL);
         }
     }
 
@@ -107,22 +108,27 @@ public abstract class BossCardBase
     }
 
 
+    protected LuaStgTask MainTask;
     protected virtual void Start()
     {
-
+        MainTask = new LuaStgTask(Master, 0, 1, -1, null, LuaStgTask.TaskExecuseType.All);
     }
-
 
     protected virtual void Stop()
     {
-
+        MainTask = null;
     }
+
 
     public virtual void OnFixedUpdate()
     {
         ShootIdx++;
         if (ShootIdx > 10000000)
             ShootIdx = 0;
+
+        if (!CanShoot || Master.IsDead) return;
+
+        MainTask?.OnUpdate();
     }
 
     public virtual void OnDestroy()

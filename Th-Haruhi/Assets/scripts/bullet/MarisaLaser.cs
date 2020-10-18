@@ -17,10 +17,10 @@ public class MarisaLaser : PlayerBullet
     private int HurtEnemyFrame = 4;
     private int SoundFrame = 12;
 
-    public override void Init(BulletDeploy deploy, Transform master, MeshRenderer model)
+    public override void Init(BulletDeploy deploy,  MeshRenderer model)
     {
         _material = model.material;
-        base.Init(deploy, master, model);
+        base.Init(deploy, model);
 
         //初始化被击特效
         TextureEffectFactroy.CreateEffect(HitEffectId, SortingOrder.Effect, e => 
@@ -30,9 +30,9 @@ public class MarisaLaser : PlayerBullet
         });
     }
 
-    public override void ReInit(Transform t)
+    public override void ReInit()
     {
-        base.ReInit(t);
+        base.ReInit();
         _material.mainTextureOffset = Vector2.zero;
         transform.localScale = new Vector2(1f, 0f);
     }
@@ -55,7 +55,7 @@ public class MarisaLaser : PlayerBullet
         if (!Shooted) return;
         if (Master == null) return;
 
-        CacheTransform.position = Master.position;
+        //CacheTransform.position = Master.position;
 
         var delteTime = Time.deltaTime;
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,7 +32,6 @@ public class Bullet : EntityBase
     public BulletDeploy Deploy { private set; get; }
     protected Transform Master { private set; get; }
     public MeshRenderer Renderer { private set; get; }
-    protected Transform CacheTransform { private set; get; }
     protected bool Shooted { private set; get; }
 
     public int Atk { protected set; get; }
@@ -39,9 +40,7 @@ public class Bullet : EntityBase
 
     private int _lastHelixFrame;
 
-
     private float _movedDistance;
-
 
     private bool _isAni;
 
@@ -49,10 +48,10 @@ public class Bullet : EntityBase
 
     private Action<Bullet> _onDestroy;
 
-
     public List<Bullet> SonBullets = new List<Bullet>();
-    
 
+    private int _updateCallBackCount;
+    
     public static int TotalBulletCount;
 
     private void OnEnable()
@@ -65,18 +64,16 @@ public class Bullet : EntityBase
         TotalBulletCount--;
     }
 
-    public virtual void Init(BulletDeploy deploy, Transform master, MeshRenderer renderer)
+    public virtual void Init(BulletDeploy deploy,  MeshRenderer renderer)
     {
         Deploy = deploy;
-        Master = master;
         Renderer = renderer;
         _isAni = deploy.isAni;
-        ReInit(master);
+        ReInit();
     }
 
-    public virtual void ReInit(Transform t)
+    public virtual void ReInit()
     {
-        Master = t;
     }
  
     public virtual void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1, bool boundDestroy = true, Action<Bullet> onDestroy = null)
@@ -85,20 +82,16 @@ public class Bullet : EntityBase
         BoundDestroy = boundDestroy;
         _onDestroy = onDestroy;
 
-        CacheTransform = transform;
         CacheTransform.position = moveData.StartPos;
 
         _movedDistance = 0;
         _totalFrame = 0;
         _lastHelixFrame = 0;
+        _updateCallBackCount = 0;
 
         EventList = eventList;
-
-        if (moveData != null)
-        {
-            MoveData = moveData;
-            transform.up = MoveData.Forward;
-        }
+        MoveData = moveData;
+        UpdateForward();
 
         Shooted = true;
     }
@@ -113,10 +106,8 @@ public class Bullet : EntityBase
         float delta = Time.deltaTime;
         UpdateAnimation();
 
-        if (MoveData.Forward != Vector3.zero)
-        {
-            UpdateBulletMove(delta);
-        }
+        //update movement
+        UpdateMoveByForward(delta);
         UpdateEventList();
     }
     protected bool CheckBulletOutSide(Vector3 bulletCenter)
@@ -167,7 +158,12 @@ public class Bullet : EntityBase
                     {
                         if (_totalFrame >= e.FrameCount && _totalFrame % e.UpdateInterval == 0)
                         {
+                            _updateCallBackCount++;
                             e.OnUpdate?.Invoke(this);
+                            if(e.UpdateTimes > 0 && _updateCallBackCount > e.UpdateTimes)
+                            {
+                                EventList.RemoveAt(i);
+                            }
                         }
                     }
                     break;
@@ -176,9 +172,29 @@ public class Bullet : EntityBase
                     if (_totalFrame >= e.FrameCount)
                     {
                         EventList.RemoveAt(i);
-                        PlayEffectAndDestroy(502);
+                        this.PlayEffectAndDestroy(502);
                     }
                     break;
+
+                //狙击玩家
+                case EventData.EventType.Frame_AimToPlayer:
+                    if (_totalFrame >= e.FrameCount)
+                    {
+                        EventList.RemoveAt(i);
+                        MoveData.Speed = e.AimToPlayerData.Speed;
+
+                        var player = StageMgr.MainPlayer;
+                        if (player != null) 
+                        {
+                            var fwd = (player.transform.position - CacheTransform.position).normalized;
+                            fwd = Quaternion.Euler(0, 0, e.AimToPlayerData.Angel) * fwd;
+                            MoveData.Forward = fwd;
+                            UpdateForward();
+                        }
+                    }
+                    break;
+
+                //改变速度信息
                 case EventData.EventType.Frame_ChangeSpeed:
 
                     if( _totalFrame >= e.FrameCount)
@@ -200,6 +216,7 @@ public class Bullet : EntityBase
                         if(e.ForwardData.Forward != null)
                         {
                             MoveData.Forward = (Vector3)e.ForwardData.Forward;
+                            UpdateForward();
                         }
                        
                         MoveData.HelixRefretFrame = e.ForwardData.HelixRefretFrame;
@@ -214,6 +231,7 @@ public class Bullet : EntityBase
                         if (e.ForwardData.Forward != null)
                         {
                             MoveData.Forward = (Vector3)e.ForwardData.Forward;
+                            UpdateForward();
                         }
                         MoveData.HelixRefretFrame = e.ForwardData.HelixRefretFrame;
                         MoveData.HelixToward = e.ForwardData.HelixToward;
@@ -225,15 +243,20 @@ public class Bullet : EntityBase
         }
     }
 
-    
-    private void UpdateBulletMove(float deltaTime)
+    private void UpdateMoveByForward(float deltaTime)
     {
+        //无移动方向不处理
+        if (MoveData.Forward == Vector3.zero) 
+        {
+            return;
+        }
+
         //螺旋移动
         if (MoveData.HelixToward != MoveData.EHelixToward.None) 
         {
             var eulurZ = (int)MoveData.HelixToward * MoveData.EulurPerFrame * deltaTime * 60f;
             MoveData.Forward = Quaternion.Euler(0, 0, eulurZ) * MoveData.Forward;
-            CacheTransform.up = MoveData.Forward;
+            UpdateForward();
 
             if (MoveData.HelixRefretFrame > 0 && _totalFrame - _lastHelixFrame >= MoveData.HelixRefretFrame)
             {
@@ -254,11 +277,61 @@ public class Bullet : EntityBase
             }
         }
 
-        var dist = deltaTime * MoveData.Speed;
+        var dist = deltaTime * MoveData.Speed * LuaStg.LuaStgSpeedChange;
         _movedDistance += dist;
         CacheTransform.position += MoveData.Forward * dist;
     }
 
+    public void SetMaster(Transform master)
+    {
+        Master = master;
+    }
+
+    public void SetForward(float z)
+    {
+        MoveData.Forward = z.AngelToForward();
+        
+    }
+
+    private void UpdateForward()
+    {
+        if(MoveData.Forward != Vector3.zero)
+        {
+            CacheTransform.up = MoveData.Forward;
+        }
+    }
+
+
+    private float _defaultBrightness = 1;
+    private float _defaultGamma = 1;
+    private float _defaultAlpha = 1;
+    private bool _bChangedBrightness;
+    public void SetHighLight()
+    {
+        var m = Renderer.material;
+        if (!_bChangedBrightness)
+        {
+            _bChangedBrightness = true;
+            _defaultBrightness = m.GetFloat("_Brightness");
+            _defaultGamma = m.GetFloat("_Gamma");
+            _defaultAlpha = m.GetFloat("_AlphaScale");
+        }
+        m.SetFloat("_Brightness", 5f);
+        m.SetFloat("_Gamma", 0.8f);
+        m.SetFloat("_AlphaScale", 0.5f);
+    }
+
+    public void RevertBrightness()
+    {
+        if(_bChangedBrightness)
+        {
+            var m = Renderer.material;
+            m.SetFloat("_Brightness", _defaultBrightness);
+            m.SetFloat("_Gamma", _defaultGamma);
+            m.SetFloat("_AlphaScale", _defaultAlpha);
+            _bChangedBrightness = false;
+        }
+    }
 
     public override void OnRecycle()
     {
@@ -274,6 +347,7 @@ public class Bullet : EntityBase
         }
         SonBullets.Clear();
 
+        RevertBrightness();
 
         _onDestroy?.Invoke(this);
         _onDestroy = null;
@@ -283,18 +357,6 @@ public class Bullet : EntityBase
         _totalFrame = 0;
         Shooted = false;
         Pool.Free(MoveData);
-    }
-
-    public void PlayEffectAndDestroy(int effectId = 501)
-    {
-        var pos = CacheTransform.position;
-        BulletFactory.DestroyBullet(this);
-        TextureEffectFactroy.CreateEffect(effectId, SortingOrder.ShootEffect, effect =>
-        {
-            effect.Renderer.material.SetColor("_TintColor", ColorUtility.GetColor(Deploy.ExplosionColor));
-            effect.transform.position = pos;
-            effect.AutoDestroy();
-        });
     }
 }
 
@@ -318,5 +380,5 @@ public class BulletDeploy : Conditionable
     public float sizeY;
     public float brightness;
     public bool delayDestroy;
-    public EColor ExplosionColor;
+    public EColor EColor;
 }

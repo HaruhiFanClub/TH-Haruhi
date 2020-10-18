@@ -44,7 +44,8 @@ public class Kyo_NoSpell: BossCardBase
         }
         else if(_task2Idx == 120)
         {
-            Master.Wander(new Vector2(-96, 96), new Vector2(112, 144), new Vector2(16, 32), new Vector2(8, 16), 1);
+            
+            Master.MoveToPlayer(60, Vector2Fight.NewLocal(-96, 96), Vector2Fight.NewLocal(112, 144), Vector2Fight.NewLocal(16, 32), Vector2Fight.NewLocal(8, 16), MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
         }
         else if (_task2Idx == 180)
         {
@@ -53,7 +54,7 @@ public class Kyo_NoSpell: BossCardBase
         else if(_task2Idx == 240)
         {
             _task2Idx = 0;
-            Master.Wander(new Vector2(-96, 96), new Vector2(112, 144), new Vector2(16, 32), new Vector2(8, 16), 1);
+            Master.MoveToPlayer(60, Vector2Fight.NewLocal(-96, 96), Vector2Fight.NewLocal(112, 144), Vector2Fight.NewLocal(16, 32), Vector2Fight.NewLocal(8, 16), MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
         }
     }
 
@@ -65,7 +66,7 @@ public class Kyo_NoSpell: BossCardBase
         {
             var ang = i * 30 * sign;
             var shootForward = Quaternion.Euler(0, 0, ang) * Master.transform.up;
-            var moveData = MoveData.New(Master.transform.position, shootForward, 3f.ToLuaStgSpeed());
+            var moveData = MoveData.New(Master.transform.position, shootForward, 3f);
 
             List<EventData> eventList = new List<EventData>();
             eventList.Add(EventData.NewFrame_ChangeForward(60, shootForward, sign < 0 ? 
@@ -74,7 +75,7 @@ public class Kyo_NoSpell: BossCardBase
             eventList.Add(EventData.NewFrame_ChangeForward(180, null, MoveData.EHelixToward.None));
             eventList.Add(EventData.NewFrame_Destroy(400));
 
-            BulletFactory.CreateBulletShoot(BigBulletId, Master.transform, Layers.EnemyBullet, moveData, eventList, boundDestroy: false, 
+            BulletFactory.CreateEnemyBullet(BigBulletId,  moveData, eventList, boundDestroy: false, 
             onCreate : bigBullet =>
             {
                 //环绕子弹（红）
@@ -91,7 +92,7 @@ public class Kyo_NoSpell: BossCardBase
                             //position
                             var posX = LuaStg.Cos(angservant2) * 40 * LuaStg.Sin(wuhu);
                             var posY = LuaStg.Sin(angservant2) * 40 * LuaStg.Cos(wuhu);
-                            bullet.transform.position = bigBullet.transform.position + Vector2Fight.New(posX, posY) - Vector2Fight.Center;
+                            bullet.transform.position = bigBullet.transform.position + Vector2Fight.NewWorld(posX, posY) - Vector2Fight.Center;
 
                             //rotation
                             var eulurZ = angservant2 - 120 * sign;
@@ -104,7 +105,7 @@ public class Kyo_NoSpell: BossCardBase
                         })
                     };
                     
-                    BulletFactory.CreateBulletShoot(RedBulletId, Master.transform, Layers.EnemyBullet, m2, e, boundDestroy: false, onCreate: bullet=>
+                    BulletFactory.CreateEnemyBullet(RedBulletId, m2, e, boundDestroy: false, onCreate: bullet=>
                     {
                         bigBullet.SonBullets.Add(bullet);
                     });
@@ -146,7 +147,6 @@ public class Kyo_NoSpell: BossCardBase
 
     private void FireSmallBullet()
     {
-        Master.PlayShootEffect(EColor.BlueLight, 2.5f);
 
         var sin = LuaStg.Sin(Mathf.Abs(_curAngel));
         var turn = _inTurnLeft ? 1f : -1f;
@@ -161,17 +161,16 @@ public class Kyo_NoSpell: BossCardBase
             eventList.Add(EventData.NewFrame_Destroy(40));
 
             var speed = 2.5f + sin;
-            var moveData = MoveData.New(Master.transform.position, shootForward, speed.ToLuaStgSpeed());
-            BulletFactory.CreateBulletShoot(BulletId, Master.transform, Layers.EnemyBullet, moveData, eventList, onDestroy: bullet=>
+            var moveData = MoveData.New(Master.transform.position, shootForward, speed);
+            BulletFactory.CreateEnemyBullet(BulletId, moveData, eventList, onDestroy: bullet=>
             {
                 var pos = bullet.transform.position;
                 var fwd = bullet.transform.forward;
-                Master.PlayShootEffect(EColor.BlueLight, 1.5f, pos);
                 var sf = Quaternion.Euler(0, 0, huhu * turn + turn * 30) * Master.transform.up;
                 for (int j = 0; j < 5; j++)
                 {
-                    var d = MoveData.New(pos, sf, 2f.ToLuaStgSpeed(), 0.2f.ToLuaStgSpeed() * j);
-                    BulletFactory.CreateBulletShoot(BulletId, Master.transform, Layers.EnemyBullet, d);
+                    var d = MoveData.New(pos, sf, 2f, 0.2f * j);
+                    BulletFactory.CreateEnemyBullet(BulletId, d);
                 }
             });
 
