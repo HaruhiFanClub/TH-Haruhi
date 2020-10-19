@@ -105,35 +105,35 @@ public class BossCard1 : BossCardBase
     {
         if (ShootIdx % RedBulletFrame == 0)
         {
-            Master.PlayShootSound(EShootSound.Noraml);
+            Sound.PlayTHSound("plst00", true, 0.2f);
 
             for(int i = 0; i < RedBulletCount; i++)
             {
-                var fwd = (i * (360f / RedBulletCount) + Random.Range(-30f, 30f)).AngelToForward();
+                var fwd = (i * (360f / RedBulletCount) + Random.Range(-30f, 30f)).AngleToForward();
                 var moveData = MoveData.New(Master.transform.position, fwd, RedBulletSpeed, -1, RedBulletSpeed - 0.8f);
                 BulletFactory.CreateEnemyBullet(RedBulletId, moveData);
             }
         }
     }
 
-    private float _burstHugeAngel = 0;
+    private float _burstHugeAngle = 0;
     private void BurstHugeBullet()
     {
         if (ShootIdx % BurstHurgeInterval == 0)
         {
-            Master.PlayShootSound(EShootSound.Tan01);
+            Sound.PlayTHSound("tan01", true, 0.5f);
 
             for (int i = 0; i < HugeBulletCount; i++)
             {
-                var fwd = (_burstHugeAngel + i * (360f / HugeBulletCount)).AngelToForward();
+                var fwd = (_burstHugeAngle + i * (360f / HugeBulletCount)).AngleToForward();
                 var moveData = MoveData.New(Master.transform.position, fwd, HugeSlowSpeed, 5f, HugeFastSpeed);
 
                 List<EventData> eventList = new List<EventData>();
                 eventList.Add(EventData.NewFrame_ChangeSpeed(48, HugeFastSpeed, -5f, HugeSlowSpeed));
                 BulletFactory.CreateEnemyBullet(HugeBulletId, moveData, eventList);
             }
-            _burstHugeAngel += 13f;
-            if (_burstHugeAngel > 360f) _burstHugeAngel -= 360f;
+            _burstHugeAngle += 13f;
+            if (_burstHugeAngle > 360f) _burstHugeAngle -= 360f;
         }
     }
 
@@ -141,7 +141,7 @@ public class BossCard1 : BossCardBase
     {
         if(ShootIdx >= HugeFrame && ShootIdx % HugeFrame == 0)
         {
-            Master.PlayShootSound(EShootSound.Tan01);
+            Sound.PlayTHSound("tan01", true, 0.5f);
 
             var startAngle = Random.Range(0, 360f);
 
@@ -157,12 +157,12 @@ public class BossCard1 : BossCardBase
         }
     }
 
-    private float _laserAngel;
+    private float _laserAngle;
     private void FireLaser()
     {
         if (ShootIdx % LaserFrame == 0)
         {
-            var fwd = _laserAngel.AngelToForward();
+            var fwd = _laserAngle.AngleToForward();
             var moveData = MoveData.New(Master.transform.position, fwd, LaserFastSpeed);
 
             List<EventData> eventList = new List<EventData>();
@@ -171,24 +171,24 @@ public class BossCard1 : BossCardBase
 
             BulletFactory.CreateEnemyBullet(LaserBulletId, moveData, eventList);
 
-            _laserAngel += Random.Range(45, 75);
-            if (_laserAngel > 360) _laserAngel -= 360;
+            _laserAngle += Random.Range(45, 75);
+            if (_laserAngle > 360) _laserAngle -= 360;
         }
     }
 
-    private int _blueBulletAngel;
+    private int _blueBulletAngle;
     private void FireBlueBullet()
     {
         //蓝色子弹
         if (ShootIdx % BlueBulletFrame == 0)
         {
+            Sound.PlayTHSound("tan00", true, 0.5f);
 
-            Master.PlayShootSound(EShootSound.Tan00);
             for (int i = 0; i < BlueBulletCount; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    var f1 = (_blueBulletAngel + i * -12f + j * 120).AngelToForward();
+                    var f1 = (_blueBulletAngle + i * -12f + j * 120).AngleToForward();
                     var data = MoveData.New(Master.transform.position, f1, BlueBulletSpeed + i * 0.05f, -0.5f, BlueBulletSpeed - 0.8f);
                     BulletFactory.CreateEnemyBullet(BlueBulletId, data);
                 }
@@ -196,9 +196,9 @@ public class BossCard1 : BossCardBase
 
             
 
-            _blueBulletAngel += 15;
-            if (_blueBulletAngel > 360)
-                _blueBulletAngel -= 360;
+            _blueBulletAngle += 15;
+            if (_blueBulletAngle > 360)
+                _blueBulletAngle -= 360;
         }
     }
 }

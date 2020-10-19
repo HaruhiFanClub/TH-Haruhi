@@ -31,7 +31,6 @@ public class Bullet : EntityBase
     public override EEntityType EntityType => EEntityType.Bullet;
     public BulletDeploy Deploy { private set; get; }
     protected Transform Master { private set; get; }
-    public MeshRenderer Renderer { private set; get; }
     protected bool Shooted { private set; get; }
 
     public int Atk { protected set; get; }
@@ -51,8 +50,15 @@ public class Bullet : EntityBase
     public List<Bullet> SonBullets = new List<Bullet>();
 
     private int _updateCallBackCount;
-    
+
+    private int DefaultSortOrder;
+
+    public LuaStgTask MainTask;
+
+
+
     public static int TotalBulletCount;
+
 
     private void OnEnable()
     {
@@ -64,11 +70,11 @@ public class Bullet : EntityBase
         TotalBulletCount--;
     }
 
-    public virtual void Init(BulletDeploy deploy,  MeshRenderer renderer)
+    public virtual void Init(BulletDeploy deploy)
     {
         Deploy = deploy;
-        Renderer = renderer;
         _isAni = deploy.isAni;
+        DefaultSortOrder = Renderer.sortingOrder;
         ReInit();
     }
 
@@ -76,10 +82,10 @@ public class Bullet : EntityBase
     {
     }
  
-    public virtual void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1, bool boundDestroy = true, Action<Bullet> onDestroy = null)
+    public virtual void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1, Action<Bullet> onDestroy = null)
     {
         Atk = atk;
-        BoundDestroy = boundDestroy;
+
         _onDestroy = onDestroy;
 
         CacheTransform.position = moveData.StartPos;
@@ -94,6 +100,9 @@ public class Bullet : EntityBase
         UpdateForward();
 
         Shooted = true;
+
+
+        MainTask = new LuaStgTask(this, 0, 1, -1, null, LuaStgTask.TaskExecuseType.Sequence);
     }
 
     protected override void FixedUpdate()
@@ -109,6 +118,8 @@ public class Bullet : EntityBase
         //update movement
         UpdateMoveByForward(delta);
         UpdateEventList();
+
+        MainTask?.OnUpdate();
     }
     protected bool CheckBulletOutSide(Vector3 bulletCenter)
     {
@@ -156,10 +167,23 @@ public class Bullet : EntityBase
             {
                 case EventData.EventType.Frame_Update:
                     {
-                        if (_totalFrame >= e.FrameCount && _totalFrame % e.UpdateInterval == 0)
+                        if (_totalFrame >= e.FrameCount)
                         {
-                            _updateCallBackCount++;
-                            e.OnUpdate?.Invoke(this);
+                            if(e.UpdateInterval == 0)
+                            {
+                                for(int t = 0; t < e.UpdateTimes; t++)
+                                {
+                                    _updateCallBackCount++;
+                                    e.OnUpdate?.Invoke(this);
+                                }
+                            }
+                            else if(_totalFrame % e.UpdateInterval == 0)
+                            {
+                                _updateCallBackCount++;
+                                e.OnUpdate?.Invoke(this);
+                            }
+
+                            
                             if(e.UpdateTimes > 0 && _updateCallBackCount > e.UpdateTimes)
                             {
                                 EventList.RemoveAt(i);
@@ -187,7 +211,7 @@ public class Bullet : EntityBase
                         if (player != null) 
                         {
                             var fwd = (player.transform.position - CacheTransform.position).normalized;
-                            fwd = Quaternion.Euler(0, 0, e.AimToPlayerData.Angel) * fwd;
+                            fwd = Quaternion.Euler(0, 0, e.AimToPlayerData.Angle) * fwd;
                             MoveData.Forward = fwd;
                             UpdateForward();
                         }
@@ -267,10 +291,18 @@ public class Bullet : EntityBase
             }
         }
 
+        //角度加速度
+        if(MoveData.AngleData != null)
+        {
+            MoveData.Forward = Vector3.Lerp(MoveData.Forward, MoveData.AngleData.TargetAngle.AngleToForward(), deltaTime);
+            UpdateForward();
+        }
 
+
+        //速度加速度
         if (!MathUtility.FloatEqual(MoveData.Acceleration, 0f))
         {
-            MoveData.Speed += MoveData.Acceleration * deltaTime;
+            MoveData.Speed += MoveData.Acceleration * LuaStg.LuaStgSpeedChange * deltaTime;
             if (!MathUtility.FloatEqual(MoveData.EndSpeed, 0) && Mathf.Abs(MoveData.EndSpeed - MoveData.Speed) < 0.1f)
             {
                 MoveData.Speed = MoveData.EndSpeed;
@@ -282,6 +314,7 @@ public class Bullet : EntityBase
         CacheTransform.position += MoveData.Forward * dist;
     }
 
+
     public void SetMaster(Transform master)
     {
         Master = master;
@@ -289,8 +322,8 @@ public class Bullet : EntityBase
 
     public void SetForward(float z)
     {
-        MoveData.Forward = z.AngelToForward();
-        
+        MoveData.Forward = z.AngleToForward();
+        UpdateForward();
     }
 
     private void UpdateForward()
@@ -301,41 +334,19 @@ public class Bullet : EntityBase
         }
     }
 
-
-    private float _defaultBrightness = 1;
-    private float _defaultGamma = 1;
-    private float _defaultAlpha = 1;
-    private bool _bChangedBrightness;
-    public void SetHighLight()
+    public void SetBoundDestroy(bool b)
     {
-        var m = Renderer.material;
-        if (!_bChangedBrightness)
-        {
-            _bChangedBrightness = true;
-            _defaultBrightness = m.GetFloat("_Brightness");
-            _defaultGamma = m.GetFloat("_Gamma");
-            _defaultAlpha = m.GetFloat("_AlphaScale");
-        }
-        m.SetFloat("_Brightness", 5f);
-        m.SetFloat("_Gamma", 0.8f);
-        m.SetFloat("_AlphaScale", 0.5f);
+        BoundDestroy = b;
     }
 
-    public void RevertBrightness()
-    {
-        if(_bChangedBrightness)
-        {
-            var m = Renderer.material;
-            m.SetFloat("_Brightness", _defaultBrightness);
-            m.SetFloat("_Gamma", _defaultGamma);
-            m.SetFloat("_AlphaScale", _defaultAlpha);
-            _bChangedBrightness = false;
-        }
-    }
 
     public override void OnRecycle()
     {
         base.OnRecycle();
+
+        MainTask = null;
+
+        SetBoundDestroy(true);
 
         EventList?.Clear();
         EventList = null;
@@ -347,8 +358,6 @@ public class Bullet : EntityBase
         }
         SonBullets.Clear();
 
-        RevertBrightness();
-
         _onDestroy?.Invoke(this);
         _onDestroy = null;
 
@@ -356,7 +365,9 @@ public class Bullet : EntityBase
         _movedDistance = 0;
         _totalFrame = 0;
         Shooted = false;
-        Pool.Free(MoveData);
+        Renderer.sortingOrder = DefaultSortOrder;
+
+        MoveData = null;
     }
 }
 

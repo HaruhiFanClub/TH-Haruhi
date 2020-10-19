@@ -31,7 +31,7 @@ public class EventData
     public class AimPlayerData
     {
         public float Speed;
-        public float Angel;
+        public float Angle;
     }
 
     public EventType Type;
@@ -60,7 +60,7 @@ public class EventData
         e.AimToPlayerData = new AimPlayerData
         {
             Speed = speed,
-            Angel = UnityEngine.Random.Range(angleMin, angleMax),
+            Angle = UnityEngine.Random.Range(angleMin, angleMax),
         };
         return e;
     }

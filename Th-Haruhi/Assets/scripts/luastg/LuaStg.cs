@@ -38,7 +38,7 @@ public static class LuaStg
         return Mathf.Cos(Mathf.Deg2Rad * degree);
     }
 
-    public static Vector3 AngelToForward(this float angle)
+    public static Vector3 AngleToForward(this float angle)
     {
         return Quaternion.Euler(0, 0, angle) * Vector3.up;
     }
@@ -46,5 +46,16 @@ public static class LuaStg
     public static float RandomSign()
     {
         return Random.Range(0, 2) == 0 ? -1 : 1;
+    }
+
+    public static float AnglePlayer(this Transform trans)
+    {
+        var f = Player.CurrPos - trans.position;
+        return Vector3.Angle(f, Vector3.up);
+    }
+
+    public static LuaStgTask NewTask(this EntityBase master, int waitFrame, int interval, int repeat, LuaStgTask parent, LuaStgTask.TaskExecuseType sonExeType = LuaStgTask.TaskExecuseType.Sequence)
+    {
+        return new LuaStgTask(master, waitFrame, interval, repeat, parent, sonExeType);
     }
 }

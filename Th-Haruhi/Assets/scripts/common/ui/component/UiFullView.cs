@@ -45,8 +45,7 @@ public abstract class UiFullView : UiInstance
             _inClose = false;
         });
         _inClose = true;
-        Sound.PlayUiAudioOneShot(1003);
-       
+        Sound.PlayTHSound("cancel00");
     }
 
     protected abstract Animator Animator { get; }

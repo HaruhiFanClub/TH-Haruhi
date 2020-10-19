@@ -5,24 +5,25 @@ using UnityEngine;
 
 public static class BulletUtility
 {
-    private static Vector3 _lastPlayPos;
-    private static int _lastPlayFrame;
+    private static Dictionary<int, float> ShootEffectCd = new Dictionary<int, float>();
 
     public static void PlayShootEffect(this Bullet bullet)
     {
+        if (bullet.InHidden) return;
+
         //同一位置加2fps cd
         var pos = bullet.Renderer.transform.position;
         var scale = bullet.Renderer.transform.localScale.x;
+        scale = Mathf.Clamp(scale, 1.2f, scale);
 
-
-        if(GameSystem.FixedFrameCount - _lastPlayFrame < 2)
+        var key = (int)(pos.x * 100) + ((int)(pos.y * 100) * 100);
+        if (ShootEffectCd.TryGetValue(key, out var lastFrame))
         {
-            if (_lastPlayPos != Vector3.zero && MathUtility.Distance(_lastPlayPos, pos) < 1f)
-            {
+            if (GameSystem.FixedFrameCount - lastFrame < 2)
                 return;
-            }
         }
-        _lastPlayFrame = GameSystem.FixedFrameCount;
+
+        ShootEffectCd[key] = GameSystem.FixedFrameCount;
 
         var effectId = 0;
         switch (bullet.Deploy.EColor)
@@ -55,7 +56,6 @@ public static class BulletUtility
 
         if (effectId > 0)
         {
-           
             TextureEffectFactroy.CreateEffect(effectId, SortingOrder.ShootEffect, effect =>
             {
                 effect.transform.position = pos;
@@ -66,8 +66,6 @@ public static class BulletUtility
                     TextureEffectFactroy.DestroyEffect(effect);
                 };
             });
-
-            _lastPlayPos = pos;
         }
     }
 
@@ -76,14 +74,16 @@ public static class BulletUtility
     {
         var pos = bullet.Renderer.transform.position;
         BulletFactory.DestroyBullet(bullet);
-        TextureEffectFactroy.CreateEffect(effectId, SortingOrder.ShootEffect, effect =>
+
+        if(!bullet.InHidden)
         {
-            effect.Renderer.material.SetColor("_TintColor", ColorUtility.GetColor(bullet.Deploy.EColor));
-            effect.transform.position = pos;
-            effect.AutoDestroy();
-        });
+            TextureEffectFactroy.CreateEffect(effectId, SortingOrder.ShootEffect, effect =>
+            {
+                effect.Renderer.material.SetColor("_TintColor", ColorUtility.GetColor(bullet.Deploy.EColor));
+                effect.transform.position = pos;
+                effect.AutoDestroy();
+            });
+        }
     }
-
-
 }
 

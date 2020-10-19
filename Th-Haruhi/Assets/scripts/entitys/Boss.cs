@@ -30,9 +30,9 @@ public class Boss : Enemy
     private bool _initedHpBar;
 
 
-    public override void Init(SpriteRenderer renderer, EnemyDeploy deploy)
+    public override void Init(EnemyDeploy deploy)
     {
-        base.Init(renderer, deploy);
+        base.Init(deploy);
 
         CardMgr = new BossCardMgr();
         CardMgr.Init(this, HPMax);
@@ -158,7 +158,7 @@ public class Boss : Enemy
     public void PlayShirnkEffect(bool bPlayAmplify = false)
     {
         //音效
-        Sound.PlayUiAudioOneShot(107);
+        Sound.PlayTHSound("power3", true, 0.8f);
 
         var effect = ResourceMgr.Instantiate(ResourceMgr.LoadImmediately("effects_tex/prefab/bossStart2.prefab"));
         effect.SetRendererOrderSort(SortingOrder.Top);
@@ -188,7 +188,7 @@ public class Boss : Enemy
                 eff.transform.SetParent(transform, false);
             }
             eff.gameObject.SetRendererOrderSort(SortingOrder.Top);
-            Sound.PlayUiAudioOneShot(110);
+            Sound.PlayTHSound("tan02", false, 0.4f);
             eff.AutoDestory();
         });
     }
@@ -222,7 +222,7 @@ public class Boss : Enemy
         if(StageCamera2D.Instance) StageCamera2D.Instance.Shake(0.7f, 1.2f);
         if(StageCamera3D.Instance) StageCamera3D.Instance.Shake(0.7f, 1.2f);
 
-        Sound.PlayUiAudioOneShot(105);
+        Sound.PlayTHSound("enep01", false, 0.3f);
 
         //播放shader特效
         StageCamera2D.Instance.PlayDeadEffect(transform.position);

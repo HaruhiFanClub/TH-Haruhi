@@ -29,8 +29,6 @@ public class Enemy : EntityBase
   
     public SpriteRenderer MainRenderer { private set; get; }
 
-    public Material Material { private set; get; }
-
     public bool IsDead { private set; get; }
 
     //private MoveAI_Base MoveAI;
@@ -57,14 +55,19 @@ public class Enemy : EntityBase
     }
 
 
-     public virtual void Init(SpriteRenderer renderer, EnemyDeploy deploy)
+    public override void SetRenderer(Renderer r)
+    {
+        base.SetRenderer(r);
+        MainRenderer = (SpriteRenderer)r;
+    }
+
+    public virtual void Init(EnemyDeploy deploy)
     {
         transform.SetLayer(Layers.Enemy);
 
         transform.localScale = Vector3.one * deploy.scale;
 
         Deploy = deploy;
-        MainRenderer = renderer;
 
         HP = deploy.maxHp;
         HPMax = HP;
@@ -114,14 +117,14 @@ public class Enemy : EntityBase
     private float _curBrightness = 1f;
     private void UpdateHitBrightness()
     {
-        Material.SetFloat("_Brightness", _curBrightness);
+        MainRenderer.material.SetFloat("_Brightness", _curBrightness);
         _curBrightness = Mathf.Lerp(_curBrightness, 1f, Time.deltaTime * 30f);
     }
 
     private void SetBrightness()
     {
         _curBrightness = 1.5f;
-        Material.SetFloat("_Brightness", 1.5f);
+        MainRenderer.material.SetFloat("_Brightness", 1.5f);
     }
 
     /// <summary>
@@ -168,7 +171,7 @@ public class Enemy : EntityBase
         //特效
         EffectFactory.PlayEffectOnce(Deploy.deadEffect, transform.position);
 
-        Sound.PlayUiAudioOneShot(104);
+        Sound.PlayTHSound("enep00");
 
         GameEventCenter.Send(GameEvent.OnEnemyDie);
 
@@ -278,9 +281,9 @@ public class Enemy : EntityBase
 
         //init
         gameObj.SetActiveSafe(true);
-        enemy.Material = mainSprite.material;
         enemy.transform.position = Vector2Fight.NewWorld(bornX, bornY);
-        enemy.Init(mainSprite, deploy);
+        enemy.SetRenderer(mainSprite);
+        enemy.Init(deploy);
     }
 }
 

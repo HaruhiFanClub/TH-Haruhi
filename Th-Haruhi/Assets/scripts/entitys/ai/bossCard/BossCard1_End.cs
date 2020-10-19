@@ -80,7 +80,7 @@ public class BossCard1_End : BossCardBase
     {
         if (ShootIdx % RedBulletFrame == 0)
         {
-            Master.PlayShootSound(EShootSound.Noraml);
+            Sound.PlayTHSound("plst00", true, 0.2f);
 
             for(int i = 0; i < RedBulletCount; i++)
             {
@@ -91,12 +91,12 @@ public class BossCard1_End : BossCardBase
         }
     }
 
-    private int _laserAngel;
+    private int _laserAngle;
     private void FireLaser()
     {
         if (ShootIdx % LaserFrame == 0)
         {
-            var fwd = Quaternion.Euler(0, 0, _laserAngel) * Master.transform.up;
+            var fwd = Quaternion.Euler(0, 0, _laserAngle) * Master.transform.up;
             var moveData = MoveData.New(Master.transform.position, fwd, LaserFastSpeed);
 
             List<EventData> eventList = new List<EventData>();
@@ -105,33 +105,33 @@ public class BossCard1_End : BossCardBase
 
             BulletFactory.CreateEnemyBullet(LaserBulletId,  moveData, eventList);
 
-            _laserAngel += Random.Range(45, 75);
-            if (_laserAngel > 360) _laserAngel -= 360;
+            _laserAngle += Random.Range(45, 75);
+            if (_laserAngle > 360) _laserAngle -= 360;
         }
     }
 
-    private int _blueBulletAngel;
+    private int _blueBulletAngle;
     private void FireBlueBullet()
     {
         //蓝色子弹
         if (ShootIdx % BlueBulletFrame == 0)
         {
+            Sound.PlayTHSound("tan00", true, 0.5f);
 
-            Master.PlayShootSound(EShootSound.Tan00);
             for (int i = 0; i < BlueBulletCount; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    var f1 = Quaternion.Euler(0, 0, _blueBulletAngel + i * -12 + j * 120) * Master.transform.up;
+                    var f1 = Quaternion.Euler(0, 0, _blueBulletAngle + i * -12 + j * 120) * Master.transform.up;
                     var data = MoveData.New(Master.transform.position, f1, BlueBulletSpeed + i * 0.05f, -0.2f, BlueBulletSpeed - 1f);
                     BulletFactory.CreateEnemyBullet(BlueBulletId, data);
                 }
             }
 
             
-            _blueBulletAngel += 15;
-            if (_blueBulletAngel > 360)
-                _blueBulletAngel -= 360;
+            _blueBulletAngle += 15;
+            if (_blueBulletAngle > 360)
+                _blueBulletAngle -= 360;
         }
     }
 }

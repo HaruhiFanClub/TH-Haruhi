@@ -29,7 +29,7 @@ public class UIPauseView : UiInstance
     {
         base.OnShow();
         _bind.Menu.Enable = true;
-        Sound.PlayUiAudioOneShot(1004);
+        Sound.PlayTHSound("pause");
         Sound.PauseMusic();
         GamePause.PauseGame(EPauseFrom.Esc);
     }

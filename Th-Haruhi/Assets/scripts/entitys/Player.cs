@@ -7,6 +7,16 @@ using DG.Tweening;
 
 public class Player : EntityBase
 {
+    public static Vector3 CurrPos
+    {
+        get
+        {
+            if (Instance != null)
+                return Instance.transform.position;
+            return Vector3.zero;
+        }
+    }
+
     public static Player Instance { private set; get; }
 
     public enum PlayerMoveStyle
@@ -94,13 +104,17 @@ public class Player : EntityBase
         }
     }
 
-    public void Init(SpriteRenderer renderer, SlowPoint point, PlayerDeploy deploy)
+    public override void SetRenderer(Renderer r)
+    {
+        base.SetRenderer(r);
+        SpriteRenderer = (SpriteRenderer)r;
+    }
+
+    public void Init(SlowPoint point, PlayerDeploy deploy)
     {
         transform.SetLayer(Layers.Player);
 
         Deploy = deploy;
-        SpriteRenderer = renderer;
-       // Material = renderer.material;
 
         RedPoint = point;
         Actions = ControllerPc.GetActions();
@@ -221,7 +235,7 @@ public class Player : EntityBase
             });
         }
 
-        Sound.PlayUiAudioOneShot(Deploy.shootSound);
+        Sound.PlayTHSound(Deploy.shootSound, false, 0.2f);
     }
 
     //移动
@@ -288,7 +302,7 @@ public class Player : EntityBase
         IsDead = true;
 
         //音效
-        Sound.PlayUiAudioOneShot(Deploy.deadSound);
+        Sound.PlayTHSound(Deploy.deadSound);
 
         //特效
         EffectFactory.PlayEffectOnce(Deploy.deadEffect, transform.position);
@@ -322,7 +336,7 @@ public class Player : EntityBase
             EffectFactory.PlayEffectOnce("effects_tex/prefab/Graze.prefab", transform.position);
 
             //播放音效
-            Sound.PlayUiAudioOneShot(109, true);
+            Sound.PlayTHSound("graze", true, 0.8f);
         }
 
         //事件
@@ -403,8 +417,9 @@ public class Player : EntityBase
         point.transform.SetParent(playerObject.transform, false);
         var script = point.GetComponent<SlowPoint>();
 
-        player.Init(mainSprite, script, deploy);
         playerObject.SetActiveSafe(true);
+        player.SetRenderer(mainSprite);
+        player.Init(script, deploy);
         callBack(player);
         player.AfterInit();
     }
@@ -425,7 +440,7 @@ public class PlayerDeploy : Conditionable
     public int bulletSpeed;
     public int bulletAtk;
     public float[][] shootPos;
-    public int shootSound;
+    public string shootSound;
     public int supprotId;
     public float[] supportUp;
     public float[] supportDown;
@@ -434,7 +449,7 @@ public class PlayerDeploy : Conditionable
     public float supportDownRota;
     public float supportDownRotaSlow;
     public string deadEffect;
-    public int deadSound;
+    public string deadSound;
     public float radius;
 }
 

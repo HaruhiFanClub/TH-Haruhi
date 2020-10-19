@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
+using DG.Tweening;
 
 public static class BulletFactory
 {
@@ -47,13 +48,25 @@ public static class BulletFactory
         BulletTab = TableUtility.GetTable<BulletDeploy>();
     }
 
-    public static void CreateEnemyBullet(int id, 
-        MoveData moveData, List<EventData> eventList = null, int atk = 1,
-        bool boundDestroy = true, Action<Bullet> onCreate = null, Action<Bullet> onDestroy = null) 
+    public static void CreateEnemyLaser(int id, float length, float width, int turnOnFrame, MoveData moveData, List<EventData> eventList = null, Action<Laser> onCreate = null, Action<Bullet> onDestroy = null)
     {
         CreateBullet(id, Layers.EnemyBullet, bullet =>
         {
-            bullet.Shoot(moveData, eventList, atk, boundDestroy, onDestroy);
+            var laser = (Laser)bullet;
+            laser.transform.localScale = Vector2Fight.NewLocal(width, length);
+            laser.Shoot(moveData, eventList, 1, onDestroy);
+            laser.TurnOn(turnOnFrame);
+            onCreate?.Invoke(laser);
+        });
+    }
+
+    public static void CreateEnemyBullet(int id, 
+        MoveData moveData, List<EventData> eventList = null,
+        Action<Bullet> onCreate = null, Action<Bullet> onDestroy = null) 
+    {
+        CreateBullet(id, Layers.EnemyBullet, bullet =>
+        {
+            bullet.Shoot(moveData, eventList, 1,  onDestroy);
             bullet.PlayShootEffect();
             onCreate?.Invoke(bullet);
         });
@@ -253,7 +266,8 @@ public static class BulletFactory
         {
             bullet.CollisionInfo = collisionInfo;
             bullet.gameObject.layer = layer;
-            bullet.Init(deploy,  mr);
+            bullet.SetRenderer(mr);
+            bullet.Init(deploy);
         }
 
         //ani

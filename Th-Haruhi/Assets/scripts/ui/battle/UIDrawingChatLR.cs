@@ -92,7 +92,7 @@ public class UIDrawingChatLR : MonoBehaviour
             yield return new WaitForSeconds(0.15f);
         }
 
-        Sound.PlayUiAudioOneShot(1006);
+        Sound.PlayTHSound("plst00", false, 0.6f);
         Dialog.transform.DOScaleX(_dialogOriginScale.x, 0.2f);
     }
 

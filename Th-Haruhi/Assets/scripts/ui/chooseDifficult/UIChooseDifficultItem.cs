@@ -32,7 +32,7 @@ public class UIChooseDifficultItem : MonoBehaviour, ISelectAble
         if (InClick) return;
         Btn.onClick.Invoke();
         InClick = true;
-        Sound.PlayUiAudioOneShot(1002);
+        Sound.PlayTHSound("ok00");
 
         DOVirtual.DelayedCall(ClickWaitTime, () =>
         {

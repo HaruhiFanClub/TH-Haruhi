@@ -133,7 +133,7 @@ public class Kyo_Telephone : BossCardBase
     private void ShootSniper(Vector3 pos, float eulurZ, int bulletId)
     {
         //sound 
-        Master.PlayShootSound(EShootSound.Tan02 , 0.5f);
+        Sound.PlayTHSound("tan02", true, 0.5f);
     
         var targetX = LuaStg.Cos(eulurZ) * 200;
         var targetY = LuaStg.Sin(eulurZ) * 200;
@@ -155,9 +155,9 @@ public class Kyo_Telephone : BossCardBase
     private void ShootBullet(Vector3 pos, float eulurZ, int bulletId)
     {
         //sound 
-        Master.PlayShootSound(EShootSound.Tan01, 0.5f);
+        Sound.PlayTHSound("tan01", true, 0.5f);
 
-        var moveData = MoveData.New(pos, eulurZ.AngelToForward(), 0f);
+        var moveData = MoveData.New(pos, eulurZ.AngleToForward(), 0f);
         var yysh = 0f;
 
         List<EventData> e = new List<EventData>
@@ -166,7 +166,7 @@ public class Kyo_Telephone : BossCardBase
             {
                 bullet.MoveData.Speed = (2f * LuaStg.Sin(yysh));
                 bullet.SetForward(eulurZ);
-                bullet.RevertBrightness();
+                bullet.RevertHighLight();
                 yysh += 2f;
             }, 60)
         };

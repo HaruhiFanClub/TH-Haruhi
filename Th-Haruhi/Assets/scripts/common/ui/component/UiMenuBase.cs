@@ -86,7 +86,7 @@ public class UiMenuBase : MonoBehaviour
     public void OnSelected(ISelectAble selected, ISelectAble unSelect, bool bNext)
     {
         selected.SetSelect(true);
-        Sound.PlayUiAudioOneShot(1001);
+        Sound.PlayTHSound("select00");
 
         if (_parentUIType != null)
         {

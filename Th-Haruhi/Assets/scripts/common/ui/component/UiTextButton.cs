@@ -198,7 +198,7 @@ public class UiTextButton : Button, ISelectAble
         if (InClick) return;
 
         InClick = true;
-        Sound.PlayUiAudioOneShot(1002);
+        Sound.PlayTHSound("ok00");
 
         DOVirtual.DelayedCall(ClickWaitTime, () =>
         {

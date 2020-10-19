@@ -1,6 +1,6 @@
 #自机配置							"[左待机,左移,待机,右移,右待机]"	"[左待机,左移,待机,右移,右待机]"															
 #	描述	立绘配置(对应drawing表)	缩放	碰撞大小	快速速度	慢速速度	待机动画帧率{60为基准)	资源Id	普通攻击子弹Id	普通攻击射击间隔	基础子弹速度	基础子弹攻击力	普通攻击位置	射击音效	僚机ID，对应supprotId表Id	上排僚机间隔	下排僚机间隔	上排僚机间隔（Slow）	下排僚机间隔（Slow）	下排僚机偏转(快速)	下排僚机偏转(慢速)	死亡特效	死亡音效
 id	name	drawingId	scale	radius	speed	slowSpeed	frameSpeed	resoureIds	normalBulletId	shootFrame	bulletSpeed	bulletAtk	shootPos	shootSound	supprotId	supportUp	supportDown	supportUpSlow	supportDownSlow	supportDownRota	supportDownRotaSlow	deadEffect	deadSound
-1	魔理沙	1	1	0.1	13	5	"[6,1,6,1,6]"	"[3,2,1,4,5]"	1	4	25	10	"[[0.4,0.5],[-0.4,0.5]]"	2001	1	"[0.7,1.2]"	"[1.3,0]"	"[0.3,1]"	"[0.8,0.5]"	8	0	effects/Prefabs/Environment/Firework/FireworkPurple.prefab	101
-2	灵梦	2	1	0.1	13	5	"[6,1,6,1,6]"	"[103,102,101,104,105]"	2	4	25	10	"[[0.5,0.5],[-0.5,0.5]]"	2001	2	"[0.7,1.6]"	"[1.8,0.8]"	"[0.4,1.4]"	"[1,0.7]"	0	0	effects/Prefabs/Environment/Firework/FireworkPurple.prefab	101
-3	sakuya	3	1	0.1	13	5	"[6,1,6,1,6]"	"[203,202,201,204,205]"	1	4	25	10	"[[0.5,0],[-0.5,0]]"	2001	3	"[0.5,0.7]"	"[2,0.7]"	"[1,0.2]"	"[1,0.2]"	0	0	effects/Prefabs/Environment/Firework/FireworkPurple.prefab	101
+1	魔理沙	1	1	0.1	13	5	"[6,1,6,1,6]"	"[3,2,1,4,5]"	1	4	25	10	"[[0.4,0.5],[-0.4,0.5]]"	plst00	1	"[0.7,1.2]"	"[1.3,0]"	"[0.3,1]"	"[0.8,0.5]"	8	0	effects/Prefabs/Environment/Firework/FireworkPurple.prefab	pldead00
+2	灵梦	2	1	0.1	13	5	"[6,1,6,1,6]"	"[103,102,101,104,105]"	2	4	25	10	"[[0.5,0.5],[-0.5,0.5]]"	plst00	2	"[0.7,1.6]"	"[1.8,0.8]"	"[0.4,1.4]"	"[1,0.7]"	0	0	effects/Prefabs/Environment/Firework/FireworkPurple.prefab	pldead00
+3	sakuya	3	1	0.1	13	5	"[6,1,6,1,6]"	"[203,202,201,204,205]"	1	4	25	10	"[[0.5,0],[-0.5,0]]"	plst00	3	"[0.5,0.7]"	"[2,0.7]"	"[1,0.2]"	"[1,0.2]"	0	0	effects/Prefabs/Environment/Firework/FireworkPurple.prefab	pldead00

@@ -8,9 +8,9 @@ public class EnemyBullet : Bullet
     //是否被擦过弹
     private bool _isGrazed;
 
-    public override void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1, bool boundDestroy = true, Action<Bullet> onDestroy = null)
+    public override void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1,Action<Bullet> onDestroy = null)
     {
-        base.Shoot(moveData, eventList, atk, boundDestroy, onDestroy);
+        base.Shoot(moveData, eventList, atk, onDestroy);
         _isGrazed = false;
     }
 
@@ -18,7 +18,6 @@ public class EnemyBullet : Bullet
     {
         if (InCache) return;
         if (!Shooted) return;
-        if (Deploy.radius <= 0) return;
 
         var bulletCenter = CacheTransform.position + CollisionInfo.Center;
 
@@ -65,6 +64,9 @@ public class EnemyBullet : Bullet
     //circleCollider类型子弹检测命中
     private void CheckCircleColliderHit(Vector3 bulletCenter)
     {
+        //无碰撞子弹不处理
+        if (CollisionInfo.Radius <= 0 || InHidden || InBanCollision) return;
+
         var mainPlayer = StageMgr.MainPlayer;
         if (mainPlayer != null)
         {
@@ -97,6 +99,9 @@ public class EnemyBullet : Bullet
     //boxCollider类型子弹检测命中
     private void CheckBoxColliderBullet(Vector3 bulletCenter)
     {
+        //无碰撞子弹不处理
+        if (CollisionInfo.BoxHeight <= 0 && CollisionInfo.BoxWidth <= 0 || InHidden || InBanCollision) return;
+
         var distUD = CollisionInfo.BoxHeight / 2f;
         var distLR = CollisionInfo.BoxWidth / 2f;
 

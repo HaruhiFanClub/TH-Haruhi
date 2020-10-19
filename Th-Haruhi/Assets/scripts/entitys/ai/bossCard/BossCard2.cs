@@ -70,28 +70,28 @@ public class BossCard2 : BossCardBase
     }
 
     private int _redShootIndex = 1;
-    private int _redBulletAngel;
+    private int _redBulletAngle;
     private void FireBulletRed()
     {
         if (ShootIdx % RedBulletFrame == 0)
         {
           
-            var fwd = Quaternion.Euler(0, 0, _redBulletAngel) * Master.transform.up;
+            var fwd = Quaternion.Euler(0, 0, _redBulletAngle) * Master.transform.up;
             var shootPos = Master.transform.position + fwd.normalized * 3f;
 
-            Master.PlayShootSound(EShootSound.Noraml);
+            Sound.PlayTHSound("plst00", true, 0.2f);
 
             //2组子弹，往反方向
             for (int i = 0; i < RedBulletCount; i++)
             {
-                var f1 = Quaternion.Euler(0, 0, _redBulletAngel + 120 + i * 5) * Master.transform.up;
+                var f1 = Quaternion.Euler(0, 0, _redBulletAngle + 120 + i * 5) * Master.transform.up;
                 var moveData = MoveData.New(shootPos, f1, RedBulletSpeed - i * 0.1f);
                 BulletFactory.CreateEnemyBullet(RedBulletId, moveData);
             }
 
             for (int i = 0; i < RedBulletCount; i++)
             {
-                var f1 = Quaternion.Euler(0, 0, _redBulletAngel - 120 - i * 5) * Master.transform.up;
+                var f1 = Quaternion.Euler(0, 0, _redBulletAngle - 120 - i * 5) * Master.transform.up;
                 var moveData = MoveData.New(shootPos, f1, RedBulletSpeed - i * 0.1f);
                 BulletFactory.CreateEnemyBullet(RedBulletId, moveData);
             }
@@ -99,29 +99,29 @@ public class BossCard2 : BossCardBase
             _redShootIndex++;
 
             if (_redShootIndex % Random.Range(4, 6) == 0)
-                _redBulletAngel += 120;
+                _redBulletAngle += 120;
             else
-                _redBulletAngel += 60;
+                _redBulletAngle += 60;
 
 
-            if (_redBulletAngel > 360)
-                _redBulletAngel -= 360;
+            if (_redBulletAngle > 360)
+                _redBulletAngle -= 360;
         }
     }
 
-    private int _blueBulletAngel;
+    private int _blueBulletAngle;
     private int _blueShootIndex = 1;
     private void FireBlueBullet()
     {
         //蓝色子弹
         if (ShootIdx % BlueBulletFrame == 0)
         {
-            Master.PlayShootSound(EShootSound.Tan00);
+            Sound.PlayTHSound("tan00", true, 0.5f);
 
             //6发换角度
             for (int i = 0; i < BlueBulletCount; i++)
             {
-                var f1 = Quaternion.Euler(0, 0, _blueBulletAngel + i * 10) * Master.transform.up;
+                var f1 = Quaternion.Euler(0, 0, _blueBulletAngle + i * 10) * Master.transform.up;
                 var data = MoveData.New(Master.transform.position, f1, BlueBulletSpeed);
                 BulletFactory.CreateEnemyBullet(BlueBulletId, data);
             }
@@ -129,13 +129,13 @@ public class BossCard2 : BossCardBase
 
 
             if(_blueShootIndex % Random.Range(4, 6) == 0) 
-                _blueBulletAngel += Random.Range(90, 110);
+                _blueBulletAngle += Random.Range(90, 110);
             else
-                _blueBulletAngel += Random.Range(25, 35);
+                _blueBulletAngle += Random.Range(25, 35);
 
 
-            if (_blueBulletAngel > 360)
-                _blueBulletAngel -= 360;
+            if (_blueBulletAngle > 360)
+                _blueBulletAngle -= 360;
         }
     }
 }

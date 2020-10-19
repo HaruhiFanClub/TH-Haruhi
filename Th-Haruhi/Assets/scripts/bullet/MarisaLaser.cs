@@ -17,10 +17,16 @@ public class MarisaLaser : PlayerBullet
     private int HurtEnemyFrame = 4;
     private int SoundFrame = 12;
 
-    public override void Init(BulletDeploy deploy,  MeshRenderer model)
+    public override void SetRenderer(Renderer r)
     {
-        _material = model.material;
-        base.Init(deploy, model);
+        base.SetRenderer(r);
+        _material = r.material;
+    }
+
+    public override void Init(BulletDeploy deploy)
+    {
+      
+        base.Init(deploy);
 
         //初始化被击特效
         TextureEffectFactroy.CreateEffect(HitEffectId, SortingOrder.Effect, e => 
@@ -119,7 +125,7 @@ public class MarisaLaser : PlayerBullet
     {
         if (GameSystem.FixedFrameCount > _nextSoundFrame)
         {
-            Sound.PlayUiAudioOneShot(2002, true);
+            Sound.PlayTHSound("lazer02", true, 0.1f);
             _nextSoundFrame = GameSystem.FixedFrameCount + SoundFrame;
         }
     }

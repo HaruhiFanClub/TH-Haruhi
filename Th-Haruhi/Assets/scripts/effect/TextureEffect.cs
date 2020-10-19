@@ -7,7 +7,6 @@ public class TextureEffect : EntityBase
 {
     public override EEntityType EntityType => EEntityType.Effect;
 
-    public MeshRenderer Renderer { set; get; }
     public TextureEffectDeploy Deploy { private set; get; }
     public List<Sprite> SpriteList { private set; get; }
 

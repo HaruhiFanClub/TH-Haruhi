@@ -186,7 +186,7 @@ public static class TextureEffectFactroy
         }
         else
         {
-            effect.Renderer = mr;
+            effect.SetRenderer(mr);
             effect.Renderer.sortingOrder = sortingOrder;
             effect.Init(deploy, spriteList);
         }

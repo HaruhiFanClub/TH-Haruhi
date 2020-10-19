@@ -129,7 +129,7 @@ public class BossCardMgr
 
             //播放音效(success or failed)
             //todo
-            Sound.PlayUiAudioOneShot(106);
+            Sound.PlayTHSound("cardget");
 
             _currCard.OnDisable();
             _currCard.OnDestroy();

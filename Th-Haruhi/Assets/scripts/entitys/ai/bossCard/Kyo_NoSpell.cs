@@ -61,7 +61,7 @@ public class Kyo_NoSpell: BossCardBase
 
     private void ShootBigBullet(int sign, float sss)
     {
-        Master.PlayShootSound(EShootSound.Tan02);
+        Sound.PlayTHSound("tan02", true, 0.5f);
         for (int i = 0; i < 12; i++)
         {
             var ang = i * 30 * sign;
@@ -75,9 +75,11 @@ public class Kyo_NoSpell: BossCardBase
             eventList.Add(EventData.NewFrame_ChangeForward(180, null, MoveData.EHelixToward.None));
             eventList.Add(EventData.NewFrame_Destroy(400));
 
-            BulletFactory.CreateEnemyBullet(BigBulletId,  moveData, eventList, boundDestroy: false, 
+            BulletFactory.CreateEnemyBullet(BigBulletId,  moveData, eventList,
             onCreate : bigBullet =>
             {
+                bigBullet.SetBoundDestroy(false);
+
                 //环绕子弹（红）
                 var angServent = 0;
                 for (int j = 0; j < 10; j++)
@@ -105,8 +107,9 @@ public class Kyo_NoSpell: BossCardBase
                         })
                     };
                     
-                    BulletFactory.CreateEnemyBullet(RedBulletId, m2, e, boundDestroy: false, onCreate: bullet=>
+                    BulletFactory.CreateEnemyBullet(RedBulletId, m2, e, onCreate: bullet=>
                     {
+                        bullet.SetBoundDestroy(false);
                         bigBullet.SonBullets.Add(bullet);
                     });
 
@@ -118,14 +121,14 @@ public class Kyo_NoSpell: BossCardBase
     }
 
     private int _curIdx;
-    private int _curAngel = 0;
+    private int _curAngle = 0;
     private bool _inTurnLeft;
     private float _sing;
     private void TaskBullet1()
     {
         if (_curIdx == 0)
         {
-            _curAngel = 0;
+            _curAngle = 0;
             _inTurnLeft = !_inTurnLeft;
             _sing = Random.Range(0f, 120f);
 
@@ -148,7 +151,7 @@ public class Kyo_NoSpell: BossCardBase
     private void FireSmallBullet()
     {
 
-        var sin = LuaStg.Sin(Mathf.Abs(_curAngel));
+        var sin = LuaStg.Sin(Mathf.Abs(_curAngle));
         var turn = _inTurnLeft ? 1f : -1f;
 
         for (int i = 0; i < 3; i++)
@@ -175,7 +178,7 @@ public class Kyo_NoSpell: BossCardBase
             });
 
         }
-        _curAngel += 12; 
+        _curAngle += 12; 
         _sing += 12;
     }
 

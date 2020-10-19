@@ -379,86 +379,86 @@ id	name	classType	isAni	isBoxCollider	resourceId	scale	spriteIdx	radius	alpha	br
 1366		EnemyBullet	TRUE		1057	1	0	0.2	1	1		Yellow					
 1367		EnemyBullet	TRUE		1058	1	0	0.2	1	1		Orange					
 1368		EnemyBullet	TRUE		1059	1	0	0.2	1	1		White					
-1369		EnemyBullet		TRUE	1060	0.4	0	0.8	1	1	1	Red					
-1370		EnemyBullet		TRUE	1060	0.4	1	0.8	1	1	1	Red					
-1371		EnemyBullet		TRUE	1060	0.4	2	0.8	1	1	1	Purple					
-1372		EnemyBullet		TRUE	1060	0.4	3	0.8	1	1	1	Purple					
-1373		EnemyBullet		TRUE	1060	0.4	4	0.8	1	1	1	Blue					
-1374		EnemyBullet		TRUE	1060	0.4	5	0.8	1	1	1	Blue					
-1375		EnemyBullet		TRUE	1060	0.4	6	0.8	1	1	1	BlueLight					
-1376		EnemyBullet		TRUE	1060	0.4	7	0.8	1	1	1	BlueLight					
-1377		EnemyBullet		TRUE	1060	0.4	8	0.8	1	1	1	Green					
-1378		EnemyBullet		TRUE	1060	0.4	9	0.8	1	1	1	Green					
-1379		EnemyBullet		TRUE	1060	0.4	10	0.8	1	1	1	Yellow					
-1380		EnemyBullet		TRUE	1060	0.4	11	0.8	1	1	1	Yellow					
-1381		EnemyBullet		TRUE	1060	0.4	12	0.8	1	1	1	Orange					
-1382		EnemyBullet		TRUE	1060	0.4	13	0.8	1	1	1	Orange					
-1383		EnemyBullet		TRUE	1060	0.4	14	0.8	1	1	1	White					
-1384		EnemyBullet		TRUE	1060	0.4	15	0.8	1	1	1	White					
-1385		EnemyBullet		TRUE	1061	0.4	0	0.8	1	1	1	Red					
-1386		EnemyBullet		TRUE	1061	0.4	1	0.8	1	1	1	Red					
-1387		EnemyBullet		TRUE	1061	0.4	2	0.8	1	1	1	Purple					
-1388		EnemyBullet		TRUE	1061	0.4	3	0.8	1	1	1	Purple					
-1389		EnemyBullet		TRUE	1061	0.4	4	0.8	1	1	1	Blue					
-1390		EnemyBullet		TRUE	1061	0.4	5	0.8	1	1	1	Blue					
-1391		EnemyBullet		TRUE	1061	0.4	6	0.8	1	1	1	BlueLight					
-1392		EnemyBullet		TRUE	1061	0.4	7	0.8	1	1	1	BlueLight					
-1393		EnemyBullet		TRUE	1061	0.4	8	0.8	1	1	1	Green					
-1394		EnemyBullet		TRUE	1061	0.4	9	0.8	1	1	1	Green					
-1395		EnemyBullet		TRUE	1061	0.4	10	0.8	1	1	1	Yellow					
-1396		EnemyBullet		TRUE	1061	0.4	11	0.8	1	1	1	Yellow					
-1397		EnemyBullet		TRUE	1061	0.4	12	0.8	1	1	1	Orange					
-1398		EnemyBullet		TRUE	1061	0.4	13	0.8	1	1	1	Orange					
-1399		EnemyBullet		TRUE	1061	0.4	14	0.8	1	1	1	White					
-1400		EnemyBullet		TRUE	1061	0.4	15	0.8	1	1	1	White					
-1401		EnemyBullet		TRUE	1062	0.4	0	0.8	1	1	1	Red					
-1402		EnemyBullet		TRUE	1062	0.4	1	0.8	1	1	1	Red					
-1403		EnemyBullet		TRUE	1062	0.4	2	0.8	1	1	1	Purple					
-1404		EnemyBullet		TRUE	1062	0.4	3	0.8	1	1	1	Purple					
-1405		EnemyBullet		TRUE	1062	0.4	4	0.8	1	1	1	Blue					
-1406		EnemyBullet		TRUE	1062	0.4	5	0.8	1	1	1	Blue					
-1407		EnemyBullet		TRUE	1062	0.4	6	0.8	1	1	1	BlueLight					
-1408		EnemyBullet		TRUE	1062	0.4	7	0.8	1	1	1	BlueLight					
-1409		EnemyBullet		TRUE	1062	0.4	8	0.8	1	1	1	Green					
-1410		EnemyBullet		TRUE	1062	0.4	9	0.8	1	1	1	Green					
-1411		EnemyBullet		TRUE	1062	0.4	10	0.8	1	1	1	Yellow					
-1412		EnemyBullet		TRUE	1062	0.4	11	0.8	1	1	1	Yellow					
-1413		EnemyBullet		TRUE	1062	0.4	12	0.8	1	1	1	Orange					
-1414		EnemyBullet		TRUE	1062	0.4	13	0.8	1	1	1	Orange					
-1415		EnemyBullet		TRUE	1062	0.4	14	0.8	1	1	1	White					
-1416		EnemyBullet		TRUE	1062	0.4	15	0.8	1	1	1	White					
-1417		EnemyBullet		TRUE	1063	0.4	0	0.8	1	1	1	Red					
-1418		EnemyBullet		TRUE	1063	0.4	1	0.8	1	1	1	Red					
-1419		EnemyBullet		TRUE	1063	0.4	2	0.8	1	1	1	Purple					
-1420		EnemyBullet		TRUE	1063	0.4	3	0.8	1	1	1	Purple					
-1421		EnemyBullet		TRUE	1063	0.4	4	0.8	1	1	1	Blue					
-1422		EnemyBullet		TRUE	1063	0.4	5	0.8	1	1	1	Blue					
-1423		EnemyBullet		TRUE	1063	0.4	6	0.8	1	1	1	BlueLight					
-1424		EnemyBullet		TRUE	1063	0.4	7	0.8	1	1	1	BlueLight					
-1425		EnemyBullet		TRUE	1063	0.4	8	0.8	1	1	1	Green					
-1426		EnemyBullet		TRUE	1063	0.4	9	0.8	1	1	1	Green					
-1427		EnemyBullet		TRUE	1063	0.4	10	0.8	1	1	1	Yellow					
-1428		EnemyBullet		TRUE	1063	0.4	11	0.8	1	1	1	Yellow					
-1429		EnemyBullet		TRUE	1063	0.4	12	0.8	1	1	1	Orange					
-1430		EnemyBullet		TRUE	1063	0.4	13	0.8	1	1	1	Orange					
-1431		EnemyBullet		TRUE	1063	0.4	14	0.8	1	1	1	White					
-1432		EnemyBullet		TRUE	1063	0.4	15	0.8	1	1	1	White					
-1433		EnemyBullet		TRUE	1064	0.4	0	0.8	1	1	1	Red					
-1434		EnemyBullet		TRUE	1064	0.4	1	0.8	1	1	1	Red					
-1435		EnemyBullet		TRUE	1064	0.4	2	0.8	1	1	1	Purple					
-1436		EnemyBullet		TRUE	1064	0.4	3	0.8	1	1	1	Purple					
-1437		EnemyBullet		TRUE	1064	0.4	4	0.8	1	1	1	Blue					
-1438		EnemyBullet		TRUE	1064	0.4	5	0.8	1	1	1	Blue					
-1439		EnemyBullet		TRUE	1064	0.4	6	0.8	1	1	1	BlueLight					
-1440		EnemyBullet		TRUE	1064	0.4	7	0.8	1	1	1	BlueLight					
-1441		EnemyBullet		TRUE	1064	0.4	8	0.8	1	1	1	Green					
-1442		EnemyBullet		TRUE	1064	0.4	9	0.8	1	1	1	Green					
-1443		EnemyBullet		TRUE	1064	0.4	10	0.8	1	1	1	Yellow					
-1444		EnemyBullet		TRUE	1064	0.4	11	0.8	1	1	1	Yellow					
-1445		EnemyBullet		TRUE	1064	0.4	12	0.8	1	1	1	Orange					
-1446		EnemyBullet		TRUE	1064	0.4	13	0.8	1	1	1	Orange					
-1447		EnemyBullet		TRUE	1064	0.4	14	0.8	1	1	1	White					
-1448		EnemyBullet		TRUE	1064	0.4	15	0.8	1	1	1	White					
+1369		Laser		TRUE	1060	0.4	0	0.8	1	1	1	Red					
+1370		Laser		TRUE	1060	0.4	1	0.8	1	1	1	Red					
+1371		Laser		TRUE	1060	0.4	2	0.8	1	1	1	Purple					
+1372		Laser		TRUE	1060	0.4	3	0.8	1	1	1	Purple					
+1373		Laser		TRUE	1060	0.4	4	0.8	1	1	1	Blue					
+1374		Laser		TRUE	1060	0.4	5	0.8	1	1	1	Blue					
+1375		Laser		TRUE	1060	0.4	6	0.8	1	1	1	BlueLight					
+1376		Laser		TRUE	1060	0.4	7	0.8	1	1	1	BlueLight					
+1377		Laser		TRUE	1060	0.4	8	0.8	1	1	1	Green					
+1378		Laser		TRUE	1060	0.4	9	0.8	1	1	1	Green					
+1379		Laser		TRUE	1060	0.4	10	0.8	1	1	1	Yellow					
+1380		Laser		TRUE	1060	0.4	11	0.8	1	1	1	Yellow					
+1381		Laser		TRUE	1060	0.4	12	0.8	1	1	1	Orange					
+1382		Laser		TRUE	1060	0.4	13	0.8	1	1	1	Orange					
+1383		Laser		TRUE	1060	0.4	14	0.8	1	1	1	White					
+1384		Laser		TRUE	1060	0.4	15	0.8	1	1	1	White					
+1385		Laser		TRUE	1061	0.4	0	0.8	1	1	1	Red					
+1386		Laser		TRUE	1061	0.4	1	0.8	1	1	1	Red					
+1387		Laser		TRUE	1061	0.4	2	0.8	1	1	1	Purple					
+1388		Laser		TRUE	1061	0.4	3	0.8	1	1	1	Purple					
+1389		Laser		TRUE	1061	0.4	4	0.8	1	1	1	Blue					
+1390		Laser		TRUE	1061	0.4	5	0.8	1	1	1	Blue					
+1391		Laser		TRUE	1061	0.4	6	0.8	1	1	1	BlueLight					
+1392		Laser		TRUE	1061	0.4	7	0.8	1	1	1	BlueLight					
+1393		Laser		TRUE	1061	0.4	8	0.8	1	1	1	Green					
+1394		Laser		TRUE	1061	0.4	9	0.8	1	1	1	Green					
+1395		Laser		TRUE	1061	0.4	10	0.8	1	1	1	Yellow					
+1396		Laser		TRUE	1061	0.4	11	0.8	1	1	1	Yellow					
+1397		Laser		TRUE	1061	0.4	12	0.8	1	1	1	Orange					
+1398		Laser		TRUE	1061	0.4	13	0.8	1	1	1	Orange					
+1399		Laser		TRUE	1061	0.4	14	0.8	1	1	1	White					
+1400		Laser		TRUE	1061	0.4	15	0.8	1	1	1	White					
+1401		Laser		TRUE	1062	0.4	0	0.8	1	1	1	Red					
+1402		Laser		TRUE	1062	0.4	1	0.8	1	1	1	Red					
+1403		Laser		TRUE	1062	0.4	2	0.8	1	1	1	Purple					
+1404		Laser		TRUE	1062	0.4	3	0.8	1	1	1	Purple					
+1405		Laser		TRUE	1062	0.4	4	0.8	1	1	1	Blue					
+1406		Laser		TRUE	1062	0.4	5	0.8	1	1	1	Blue					
+1407		Laser		TRUE	1062	0.4	6	0.8	1	1	1	BlueLight					
+1408		Laser		TRUE	1062	0.4	7	0.8	1	1	1	BlueLight					
+1409		Laser		TRUE	1062	0.4	8	0.8	1	1	1	Green					
+1410		Laser		TRUE	1062	0.4	9	0.8	1	1	1	Green					
+1411		Laser		TRUE	1062	0.4	10	0.8	1	1	1	Yellow					
+1412		Laser		TRUE	1062	0.4	11	0.8	1	1	1	Yellow					
+1413		Laser		TRUE	1062	0.4	12	0.8	1	1	1	Orange					
+1414		Laser		TRUE	1062	0.4	13	0.8	1	1	1	Orange					
+1415		Laser		TRUE	1062	0.4	14	0.8	1	1	1	White					
+1416		Laser		TRUE	1062	0.4	15	0.8	1	1	1	White					
+1417		Laser		TRUE	1063	0.4	0	0.8	1	1	1	Red					
+1418		Laser		TRUE	1063	0.4	1	0.8	1	1	1	Red					
+1419		Laser		TRUE	1063	0.4	2	0.8	1	1	1	Purple					
+1420		Laser		TRUE	1063	0.4	3	0.8	1	1	1	Purple					
+1421		Laser		TRUE	1063	0.4	4	0.8	1	1	1	Blue					
+1422		Laser		TRUE	1063	0.4	5	0.8	1	1	1	Blue					
+1423		Laser		TRUE	1063	0.4	6	0.8	1	1	1	BlueLight					
+1424		Laser		TRUE	1063	0.4	7	0.8	1	1	1	BlueLight					
+1425		Laser		TRUE	1063	0.4	8	0.8	1	1	1	Green					
+1426		Laser		TRUE	1063	0.4	9	0.8	1	1	1	Green					
+1427		Laser		TRUE	1063	0.4	10	0.8	1	1	1	Yellow					
+1428		Laser		TRUE	1063	0.4	11	0.8	1	1	1	Yellow					
+1429		Laser		TRUE	1063	0.4	12	0.8	1	1	1	Orange					
+1430		Laser		TRUE	1063	0.4	13	0.8	1	1	1	Orange					
+1431		Laser		TRUE	1063	0.4	14	0.8	1	1	1	White					
+1432		Laser		TRUE	1063	0.4	15	0.8	1	1	1	White					
+1433		Laser		TRUE	1064	0.4	0	0.8	1	1	1	Red					
+1434		Laser		TRUE	1064	0.4	1	0.8	1	1	1	Red					
+1435		Laser		TRUE	1064	0.4	2	0.8	1	1	1	Purple					
+1436		Laser		TRUE	1064	0.4	3	0.8	1	1	1	Purple					
+1437		Laser		TRUE	1064	0.4	4	0.8	1	1	1	Blue					
+1438		Laser		TRUE	1064	0.4	5	0.8	1	1	1	Blue					
+1439		Laser		TRUE	1064	0.4	6	0.8	1	1	1	BlueLight					
+1440		Laser		TRUE	1064	0.4	7	0.8	1	1	1	BlueLight					
+1441		Laser		TRUE	1064	0.4	8	0.8	1	1	1	Green					
+1442		Laser		TRUE	1064	0.4	9	0.8	1	1	1	Green					
+1443		Laser		TRUE	1064	0.4	10	0.8	1	1	1	Yellow					
+1444		Laser		TRUE	1064	0.4	11	0.8	1	1	1	Yellow					
+1445		Laser		TRUE	1064	0.4	12	0.8	1	1	1	Orange					
+1446		Laser		TRUE	1064	0.4	13	0.8	1	1	1	Orange					
+1447		Laser		TRUE	1064	0.4	14	0.8	1	1	1	White					
+1448		Laser		TRUE	1064	0.4	15	0.8	1	1	1	White					
 1449		EnemyBullet			1065	1	0	0.2	1	1		Red					
 1450		EnemyBullet			1065	1	1	0.2	1	1		Green					
 1451		EnemyBullet			1065	1	2	0.2	1	1		Blue					
@@ -467,15 +467,17 @@ id	name	classType	isAni	isBoxCollider	resourceId	scale	spriteIdx	radius	alpha	br
 1454		EnemyBullet	TRUE	TRUE	1039	1	0	0.3	0.5	1.5		Yellow	6	0.5			
 1455		EnemyBullet	TRUE	TRUE	1040	1	0	0.3	0.5	1.5		Red	6	0.5			
 1456		EnemyBullet	TRUE	TRUE	1041	1	0	0.3	0.5	1.5		Purple	6	0.5			
-1457	Star_Mini	EnemyBullet			1016	0.42	0	0.2	1	1.1		Red					
-1458	Star_Mini	EnemyBullet			1016	0.42	1	0.2	1	1.1		Purple					
-1459	Star_Mini	EnemyBullet			1016	0.42	2	0.2	1	1.1		Blue					
-1460	Star_Mini	EnemyBullet			1016	0.42	3	0.2	1	1.1		BlueLight					
-1461	Star_Mini	EnemyBullet			1016	0.42	4	0.2	1	1.1		Green					
-1462	Star_Mini	EnemyBullet			1016	0.42	5	0.2	1	1.1		Yellow					
-1463	Star_Mini	EnemyBullet			1016	0.42	6	0.2	1	1.1		Orange					
-1464	Star_Mini	EnemyBullet			1016	0.42	7	0.2	1	1.1		White					
+1457	Star_Mini	EnemyBullet			1016	0.4	0	0.2	1	1.1		Red					
+1458	Star_Mini	EnemyBullet			1016	0.4	1	0.2	1	1.1		Purple					
+1459	Star_Mini	EnemyBullet			1016	0.4	2	0.2	1	1.1		Blue					
+1460	Star_Mini	EnemyBullet			1016	0.4	3	0.2	1	1.1		BlueLight					
+1461	Star_Mini	EnemyBullet			1016	0.4	4	0.2	1	1.1		Green					
+1462	Star_Mini	EnemyBullet			1016	0.4	5	0.2	1	1.1		Yellow					
+1463	Star_Mini	EnemyBullet			1016	0.4	6	0.2	1	1.1		Orange					
+1464	Star_Mini	EnemyBullet			1016	0.4	7	0.2	1	1.1		White					
 																	
 																	
 2001	被环绕子弹	EnemyBullet			1043	1	3	0.6	0.2	3		BlueLight					
 2002	环绕子弹	EnemyBullet			1007	1	0	0.1	0.8	1.5		Red					
+																	
+2003	BigStar(无碰撞)	EnemyBullet			1016	1.2	3	0	1	1		BlueLight					

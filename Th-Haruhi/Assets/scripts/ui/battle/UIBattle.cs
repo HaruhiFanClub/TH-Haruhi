@@ -179,7 +179,7 @@ public class UIBattle : UiInstance
             var cd = 1f;
             if (Time.time - _lastTimeOutTime > cd)
             {
-                Sound.PlayUiAudioOneShot(1005);
+                Sound.PlayTHSound("timeout");
                 _lastTimeOutTime = Time.time;
             }
         }
