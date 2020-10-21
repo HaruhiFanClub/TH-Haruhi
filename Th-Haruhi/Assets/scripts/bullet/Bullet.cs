@@ -37,25 +37,15 @@ public class Bullet : EntityBase
 
     private int _totalFrame;
 
-    private int _lastHelixFrame;
-
-    private float _movedDistance;
-
     private bool _isAni;
 
     public bool BoundDestroy = true;
 
     private Action<Bullet> _onDestroy;
 
-    public List<Bullet> SonBullets = new List<Bullet>();
-
     private int _updateCallBackCount;
 
     private int DefaultSortOrder;
-
-    public LuaStgTask MainTask;
-
-
 
     public static int TotalBulletCount;
 
@@ -90,9 +80,7 @@ public class Bullet : EntityBase
 
         CacheTransform.position = moveData.StartPos;
 
-        _movedDistance = 0;
         _totalFrame = 0;
-        _lastHelixFrame = 0;
         _updateCallBackCount = 0;
 
         EventList = eventList;
@@ -100,9 +88,6 @@ public class Bullet : EntityBase
         UpdateForward();
 
         Shooted = true;
-
-
-        MainTask = new LuaStgTask(this, 0, 1, -1, null, LuaStgTask.TaskExecuseType.Sequence);
     }
 
     protected override void FixedUpdate()
@@ -118,9 +103,8 @@ public class Bullet : EntityBase
         //update movement
         UpdateMoveByForward(delta);
         UpdateEventList();
-
-        MainTask?.OnUpdate();
     }
+
     protected bool CheckBulletOutSide(Vector3 bulletCenter)
     {
         //超出边界销毁
@@ -223,9 +207,6 @@ public class Bullet : EntityBase
 
                     if( _totalFrame >= e.FrameCount)
                     {
-                        MoveData.EndSpeed = e.SpeedData.EndSpeed;
-                        MoveData.Acceleration = e.SpeedData.Acceleration;
-
                         if (e.SpeedData.Speed > 0f)
                         {
                             MoveData.Speed = e.SpeedData.Speed;
@@ -242,24 +223,6 @@ public class Bullet : EntityBase
                             MoveData.Forward = (Vector3)e.ForwardData.Forward;
                             UpdateForward();
                         }
-                       
-                        MoveData.HelixRefretFrame = e.ForwardData.HelixRefretFrame;
-                        MoveData.HelixToward = e.ForwardData.HelixToward;
-                        MoveData.EulurPerFrame = e.ForwardData.EulurPerFrame;
-                        EventList.RemoveAt(i);
-                    }
-                    break;
-                case EventData.EventType.Distance_ChangeFoward:
-                    if(_movedDistance >= e.Distance)
-                    {
-                        if (e.ForwardData.Forward != null)
-                        {
-                            MoveData.Forward = (Vector3)e.ForwardData.Forward;
-                            UpdateForward();
-                        }
-                        MoveData.HelixRefretFrame = e.ForwardData.HelixRefretFrame;
-                        MoveData.HelixToward = e.ForwardData.HelixToward;
-                        MoveData.EulurPerFrame = e.ForwardData.EulurPerFrame;
                         EventList.RemoveAt(i);
                     }
                     break;
@@ -275,43 +238,20 @@ public class Bullet : EntityBase
             return;
         }
 
-        //螺旋移动
-        if (MoveData.HelixToward != MoveData.EHelixToward.None) 
+        //Acceleration
+        if (!MathUtility.FloatEqual(AccelerationX, 0f) || !MathUtility.FloatEqual(AccelerationY, 0f))
         {
-            var eulurZ = (int)MoveData.HelixToward * MoveData.EulurPerFrame * deltaTime * 60f;
-            MoveData.Forward = Quaternion.Euler(0, 0, eulurZ) * MoveData.Forward;
-            UpdateForward();
-
-            if (MoveData.HelixRefretFrame > 0 && _totalFrame - _lastHelixFrame >= MoveData.HelixRefretFrame)
-            {
-                _lastHelixFrame = _totalFrame;
-                MoveData.HelixToward = MoveData.HelixToward == MoveData.EHelixToward.Right ? 
-                                                MoveData.EHelixToward.Left : 
-                                                MoveData.EHelixToward.Right;
-            }
+            MoveData.SpeedX += AccelerationX * 5f;
+            MoveData.SpeedY += AccelerationY * 5f;
         }
 
-        //角度加速度
-        if(MoveData.AngleData != null)
-        {
-            MoveData.Forward = Vector3.Lerp(MoveData.Forward, MoveData.AngleData.TargetAngle.AngleToForward(), deltaTime);
-            UpdateForward();
-        }
+        var distX = deltaTime * MoveData.SpeedX * LuaStg.LuaStgSpeedChange;
+        var distY = deltaTime * MoveData.SpeedY * LuaStg.LuaStgSpeedChange;
 
-
-        //速度加速度
-        if (!MathUtility.FloatEqual(MoveData.Acceleration, 0f))
-        {
-            MoveData.Speed += MoveData.Acceleration * LuaStg.LuaStgSpeedChange * deltaTime;
-            if (!MathUtility.FloatEqual(MoveData.EndSpeed, 0) && Mathf.Abs(MoveData.EndSpeed - MoveData.Speed) < 0.1f)
-            {
-                MoveData.Speed = MoveData.EndSpeed;
-            }
-        }
-
-        var dist = deltaTime * MoveData.Speed * LuaStg.LuaStgSpeedChange;
-        _movedDistance += dist;
-        CacheTransform.position += MoveData.Forward * dist;
+        var currPos = CacheTransform.transform.position;
+        currPos.x += MoveData.Forward.x * distX;
+        currPos.y += MoveData.Forward.y * distY;
+        CacheTransform.position =  currPos;
     }
 
 
@@ -320,7 +260,7 @@ public class Bullet : EntityBase
         Master = master;
     }
 
-    public void SetForward(float z)
+    public void SetAngle(float z)
     {
         MoveData.Forward = z.AngleToForward();
         UpdateForward();
@@ -344,25 +284,16 @@ public class Bullet : EntityBase
     {
         base.OnRecycle();
 
-        MainTask = null;
-
         SetBoundDestroy(true);
 
         EventList?.Clear();
         EventList = null;
 
-        for (int i = 0; i < SonBullets.Count; i++)
-        {
-            if(!SonBullets[i].InCache)
-                BulletFactory.DestroyBullet(SonBullets[i]);
-        }
-        SonBullets.Clear();
 
         _onDestroy?.Invoke(this);
         _onDestroy = null;
 
         _currAniIdx = 0;
-        _movedDistance = 0;
         _totalFrame = 0;
         Shooted = false;
         Renderer.sortingOrder = DefaultSortOrder;

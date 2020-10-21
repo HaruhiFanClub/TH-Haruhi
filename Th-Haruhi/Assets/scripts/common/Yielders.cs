@@ -1,4 +1,5 @@
 ﻿
+using System.Collections;
 using UnityEngine;
 
 public class Yielders
@@ -8,8 +9,12 @@ public class Yielders
     public static WaitForSeconds HalfSecond = new WaitForSeconds(0.5f);
     public static WaitForSeconds OneSecond = new WaitForSeconds(1f);
 
-    public static WaitForSeconds WaitFrame(int frameCount)
+    public static IEnumerator WaitFrame(int frameCount)
     {
-        return new WaitForSeconds((frameCount - 1) * Time.fixedDeltaTime);
+        if (frameCount > 0) frameCount--;
+        for (int j = 0; j < frameCount; j++)
+        {
+            yield return FixedFrame;
+        }
     }
 }

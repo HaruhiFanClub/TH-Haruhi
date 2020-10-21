@@ -8,7 +8,6 @@ public class EventData
     {
         Frame_ChangeSpeed,
         Frame_ChangeForward,
-        Distance_ChangeFoward,
         Frame_Destroy,
         Frame_Update,
         Frame_AimToPlayer,
@@ -73,22 +72,6 @@ public class EventData
         e.UpdateInterval = updateInterval;
         e.OnUpdate = onUpdate;
         e.UpdateTimes = updateTimes;
-        return e;
-    }
-
-
-    public static EventData NewDistance_ChangeForward(float distance, Vector3? forward, MoveData.EHelixToward helixToward = MoveData.EHelixToward.None, float eulurPerFrame = 0, int helixRefretFrame = 0)
-    {
-        var e = new EventData();
-        e.Type = EventType.Distance_ChangeFoward;
-        e.Distance = distance;
-        e.ForwardData = new ChangeForwardData
-        {
-            Forward = forward,
-            HelixToward = helixToward,
-            EulurPerFrame = eulurPerFrame,
-            HelixRefretFrame = helixRefretFrame
-        };
         return e;
     }
 

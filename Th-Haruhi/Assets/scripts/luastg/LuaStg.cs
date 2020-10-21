@@ -54,8 +54,9 @@ public static class LuaStg
         return Vector3.Angle(f, Vector3.up);
     }
 
-    public static LuaStgTask NewTask(this EntityBase master, int waitFrame, int interval, int repeat, LuaStgTask parent, LuaStgTask.TaskExecuseType sonExeType = LuaStgTask.TaskExecuseType.Sequence)
+    public static LuaStgTask NewTask(this EntityBase master)
     {
-        return new LuaStgTask(master, waitFrame, interval, repeat, parent, sonExeType);
+        var luaStgTask = master.gameObject.AddComponent<LuaStgTask>();
+        return luaStgTask;
     }
 }

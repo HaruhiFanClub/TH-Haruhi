@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,6 +36,7 @@ public abstract class EntityBase : MonoBehaviour
         Renderer = r;
     }
 
+    #region rigidBody
     public Rigidbody2D Rigid2D
     {
         get
@@ -75,6 +77,9 @@ public abstract class EntityBase : MonoBehaviour
             }
         }
     }
+
+    #endregion
+
 
     public float Rot
     {
@@ -152,8 +157,8 @@ public abstract class EntityBase : MonoBehaviour
         }
 
 
-        var dx = Random.Range(xAmp.x, xAmp.y);
-        var dy = Random.Range(yAmp.x, yAmp.y);
+        var dx = UnityEngine.Random.Range(xAmp.x, xAmp.y);
+        var dy = UnityEngine.Random.Range(yAmp.x, yAmp.y);
 
         if (selfX + dx * dirX < xRange.x)
         {
@@ -293,6 +298,64 @@ public abstract class EntityBase : MonoBehaviour
         Renderer.enabled = true;
     }
 
+
+    //angelSpeed
+    public float AccelerationX;        //加速度X
+    public float AccelerationY;        //加速度Y
+
+    public void SetAcceleration(float accleration, float rot, bool aimPlayer = false)
+    {
+        if (aimPlayer)
+        {
+            rot += LuaStg.AnglePlayer(transform);
+        }
+        AccelerationX = accleration * LuaStg.Cos(rot);
+        AccelerationY = accleration * LuaStg.Sin(rot);
+    }
+
+    public void RevertAcceleration()
+    {
+        AccelerationX = 0;
+        AccelerationY = 0;
+    }
+
+    public void SetPos(float stgPosX, float stgPosY)
+    {
+        if(Father != null)
+        {
+            CacheTransform.position = Father.CacheTransform.position + Vector2Fight.NewLocal(stgPosX, stgPosY);
+        }
+        else
+        {
+            CacheTransform.position = Vector2Fight.NewWorld(stgPosX, stgPosY);
+        }
+    }
+
+
+    public List<EntityBase> SonEntitys = new List<EntityBase>();
+    public EntityBase Father;
+
+    public void SetFather(EntityBase father)
+    {
+        if (father == null) return;
+        Father = father;
+        father.SonEntitys.Add(this);
+    }
+
+    public void DestoryAllSons()
+    {
+        for (int i = 0; i < SonEntitys.Count; i++)
+        {
+            SonEntitys[i].Father = null;
+            if (!SonEntitys[i].InCache)
+            {
+                SonEntitys[i].RecycleEnetity();
+            }
+        }
+        SonEntitys.Clear();
+    }
+
+
     protected virtual void Awake() 
     {
         CacheTransform = transform;
@@ -312,6 +375,9 @@ public abstract class EntityBase : MonoBehaviour
 
     public virtual void OnRecycle()
     {
+        DestoryAllSons();
+        DestroyAllTask();
+        RevertAcceleration();
         RevertBanCollision();
         RevertHidden();
         RevertSmear();
@@ -321,11 +387,39 @@ public abstract class EntityBase : MonoBehaviour
         MoveTarget = Vector3.zero;
     }
 
+    private void DestroyAllTask()
+    {
+        var tasks = GetComponents<LuaStgTask>();
+        for(int i = 0; i < tasks.Length; i++)
+        {
+            Destroy(tasks[i]);
+        }
+    }
+
     public static void DestroyEntity(EntityBase b)
     {
         if(b != null && b.gameObject != null)
         {
             Destroy(b.gameObject);
+        }
+    }
+
+    public void RecycleEnetity()
+    {
+        switch (EntityType)
+        {
+            case EEntityType.Player:
+                DestroyEntity(this);
+                break;
+            case EEntityType.Enemy:
+                DestroyEntity(this);
+                break;
+            case EEntityType.Effect:
+                TextureEffectFactroy.DestroyEffect((TextureEffect)this);
+                break;
+            case EEntityType.Bullet:
+                BulletFactory.DestroyBullet((Bullet)this);
+                break;
         }
     }
 }

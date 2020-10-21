@@ -110,7 +110,7 @@ public class BossCard1 : BossCardBase
             for(int i = 0; i < RedBulletCount; i++)
             {
                 var fwd = (i * (360f / RedBulletCount) + Random.Range(-30f, 30f)).AngleToForward();
-                var moveData = MoveData.New(Master.transform.position, fwd, RedBulletSpeed, -1, RedBulletSpeed - 0.8f);
+                var moveData = MoveData.New(Master.transform.position, fwd, RedBulletSpeed);
                 BulletFactory.CreateEnemyBullet(RedBulletId, moveData);
             }
         }
@@ -126,7 +126,7 @@ public class BossCard1 : BossCardBase
             for (int i = 0; i < HugeBulletCount; i++)
             {
                 var fwd = (_burstHugeAngle + i * (360f / HugeBulletCount)).AngleToForward();
-                var moveData = MoveData.New(Master.transform.position, fwd, HugeSlowSpeed, 5f, HugeFastSpeed);
+                var moveData = MoveData.New(Master.transform.position, fwd, HugeSlowSpeed);
 
                 List<EventData> eventList = new List<EventData>();
                 eventList.Add(EventData.NewFrame_ChangeSpeed(48, HugeFastSpeed, -5f, HugeSlowSpeed));
@@ -148,7 +148,7 @@ public class BossCard1 : BossCardBase
             for(int i = 0; i < HugeBulletCount; i++)
             {
                 var fwd = Quaternion.Euler(0, 0, startAngle + i * (360f / HugeBulletCount)) * Master.transform.up;
-                var moveData = MoveData.New(Master.transform.position, fwd, HugeSlowSpeed, 5f, HugeFastSpeed);
+                var moveData = MoveData.New(Master.transform.position, fwd, HugeSlowSpeed);
 
                 List<EventData> eventList = new List<EventData>();
                 eventList.Add(EventData.NewFrame_ChangeSpeed(48, HugeFastSpeed, -5f, HugeSlowSpeed));
@@ -189,7 +189,7 @@ public class BossCard1 : BossCardBase
                 for (int j = 0; j < 3; j++)
                 {
                     var f1 = (_blueBulletAngle + i * -12f + j * 120).AngleToForward();
-                    var data = MoveData.New(Master.transform.position, f1, BlueBulletSpeed + i * 0.05f, -0.5f, BlueBulletSpeed - 0.8f);
+                    var data = MoveData.New(Master.transform.position, f1, BlueBulletSpeed + i * 0.05f);
                     BulletFactory.CreateEnemyBullet(BlueBulletId, data);
                 }
             }

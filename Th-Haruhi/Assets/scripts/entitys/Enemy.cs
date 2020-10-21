@@ -91,7 +91,7 @@ public class Enemy : EntityBase
         base.Update();
         UpdateHitBrightness();
 
-        if (GamePause.InPause != false)
+        if (GamePause.InPause != false) 
             return;
 
         UpdateMoveStyle();

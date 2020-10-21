@@ -7,14 +7,12 @@ public static class BulletUtility
 {
     private static Dictionary<int, float> ShootEffectCd = new Dictionary<int, float>();
 
-    public static void PlayShootEffect(this Bullet bullet)
+    public static void PlayShootEffect(this Bullet bullet, float shootEffectScale = 1.5f)
     {
         if (bullet.InHidden) return;
 
         //同一位置加2fps cd
         var pos = bullet.Renderer.transform.position;
-        var scale = bullet.Renderer.transform.localScale.x;
-        scale = Mathf.Clamp(scale, 1.2f, scale);
 
         var key = (int)(pos.x * 100) + ((int)(pos.y * 100) * 100);
         if (ShootEffectCd.TryGetValue(key, out var lastFrame))
@@ -59,7 +57,7 @@ public static class BulletUtility
             TextureEffectFactroy.CreateEffect(effectId, SortingOrder.ShootEffect, effect =>
             {
                 effect.transform.position = pos;
-                effect.transform.localScale = Vector3.one * scale;
+                effect.transform.localScale = Vector3.one * shootEffectScale;
                 effect.Renderer.material.SetFloat("_Brightness", 3f);
                 effect.transform.DOScale(0f, 0.4f).onComplete = () =>
                 {

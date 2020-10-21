@@ -60,14 +60,14 @@ public static class BulletFactory
         });
     }
 
-    public static void CreateEnemyBullet(int id, 
+    public static void CreateEnemyBullet(int id,
         MoveData moveData, List<EventData> eventList = null,
-        Action<Bullet> onCreate = null, Action<Bullet> onDestroy = null) 
+        Action<Bullet> onCreate = null, Action<Bullet> onDestroy = null, float shootEffectScale = 1.5f) 
     {
         CreateBullet(id, Layers.EnemyBullet, bullet =>
         {
             bullet.Shoot(moveData, eventList, 1,  onDestroy);
-            bullet.PlayShootEffect();
+            if(shootEffectScale > 0) bullet.PlayShootEffect(shootEffectScale);
             onCreate?.Invoke(bullet);
         });
     }

@@ -275,16 +275,17 @@ public static class Sound
     private static Dictionary<string, bool> _oneFrameDic = new Dictionary<string, bool>();
     public static void PlayTHSound(string name, bool oneFrameOnce = false, float volume = 1f)
     {
+        if (oneFrameOnce)
+        {
+            if (_oneFrameDic.ContainsKey(name))
+            {
+                return;
+            }
+            _oneFrameDic[name] = true;
+        }
+
         Load(name, soundClip=>
         {
-            if (oneFrameOnce)
-            {
-                if (_oneFrameDic.ContainsKey(name))
-                {
-                    return;
-                }
-                _oneFrameDic[name] = true;
-            }
             PlayThSoundOneShot(soundClip, volume);
         });
     }

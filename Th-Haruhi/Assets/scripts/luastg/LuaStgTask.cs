@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,209 +21,320 @@ public enum DirectionMode
     MOVE_RANDOM = 3
 }
 
-public class LuaStgTask
+public class TaskParms
 {
-    public enum TaskType
+    public string name;
+    public float value;
+    public float increment;
+
+    public static List<TaskParms> New(string name1, float value1, float increment1,
+                                string name2 = null, float value2 = 0, float increment2 = 0,
+                                string name3 = null, float value3 = 0, float increment3 = 0,
+                                string name4 = null, float value4 = 0, float increment4 = 0,
+                                string name5 = null, float value5 = 0, float increment5 = 0)
     {
-        Wander,
-        PlaySound,
-        Wait,
-        AddRepeat,
-        MoveTo
+        List<TaskParms> list = new List<TaskParms>();
+        list.Add(new TaskParms { name = name1, value = value1, increment = increment1 });
+
+        if (!string.IsNullOrEmpty(name2))
+            list.Add(new TaskParms { name = name2, value = value2, increment = increment2 });
+
+        if (!string.IsNullOrEmpty(name3))
+            list.Add(new TaskParms { name = name3, value = value3, increment = increment3 });
+
+        if (!string.IsNullOrEmpty(name4))
+            list.Add(new TaskParms { name = name4, value = value4, increment = increment4 });
+
+        if (!string.IsNullOrEmpty(name5))
+            list.Add(new TaskParms { name = name5, value = value5, increment = increment5 });
+
+        return list;
     }
-
-    public class AutoTaskExecuse
-    {
-        public TaskType Type;
-        public WanderData WanderData;
-        public RepeatData RepeatData;
-        public MoveToData MoveToData;
-        public int WaitFrame;
-    }
-
-    public class RepeatData
-    {
-        public int Times;
-        public int Interval;
-        public List<TaskParms> Params;
-        public Action<LuaStgTask> Execuse;
-    }
+}
 
 
-    public class WanderData
-    {
-        public int nFrame;
-        public Vector2 xRange;
-        public Vector2 yRange;
-        public Vector2 xAmplitude;
-        public Vector2 yAmplitude;
-        public MovementMode MovementMode;
-        public DirectionMode DirectionMode;
-    }
+public enum ActionType
+{
+    Wander,
+    PlaySound,
+    Wait,
+    AddRepeat,
+    MoveTo,
+    Custom
+}
 
-    public class MoveToData
-    {
-        public int nFrame;
-        public float X;
-        public float Y;
-        public MovementMode MovementMode;
-    }
+public class TaskExecuse
+{
+    public ActionType Type;
+    public TaskWander WanderData;
+    public TaskRepeat RepeatData;
+    public TaskMoveTo MoveToData;
+    public TaskWait WaitData;
+    public Action CustomAction;
+}
 
-    public class SoundData
-    {
-        public string Name;
-        public float Volume;
-    }
+public class TaskWait
+{
+    public int Frame;
+    public Action AfterAction;
+}
 
-    public class CreateBullet
-    {
-        public int BulletId;
-        public Vector2 Position;
-        public float Velocity;
-        public float Angle;
-        public bool AimToPlayer;
-        public float RotationVelocity;
-        public bool StayOnCreate;
-        public bool Destroyable;
-        public float Time;
-        public bool Rebound;
-        public float Acceleration;
-        public float MaxVelocity;
-        public bool Shuttle;
+public class TaskSound
+{
+    public string Name;
+    public float Volume;
+}
 
-    }
+public class TaskBullet
+{
+    public int BulletId;
+    public Vector2 Position;
+    public float Velocity;
+    public float Angle;
+    public bool AimToPlayer;
+    public float RotationVelocity;
+    public bool StayOnCreate;
+    public bool Destroyable;
+    public float Time;
+    public bool Rebound;
+    public float Acceleration;
+    public float MaxVelocity;
+    public bool Shuttle;
+}
 
-    public class TaskParms
-    {
-        public string name;
-        public float value;
-        public float increment;
-    }
 
-    public enum TaskExecuseType
-    {
-        Sequence = 1,
-        All = 2
-    }
+public class TaskWander
+{
+    public int nFrame;
+    public Vector2 xRange;
+    public Vector2 yRange;
+    public Vector2 xAmplitude;
+    public Vector2 yAmplitude;
+    public MovementMode MovementMode;
+    public DirectionMode DirectionMode;
+}
 
-    public LuaStgTask(EntityBase master, int waitFrame, int interval, int repeat, LuaStgTask parent, TaskExecuseType sonExeType = TaskExecuseType.Sequence)
-    {
-        Master = master;
-        WaitFrame = waitFrame;
-        Interval = interval;
-        Repeat = repeat;
-        SonExeType = sonExeType;
+public class TaskMoveTo
+{
+    public int nFrame;
+    public float X;
+    public float Y;
+    public MovementMode MovementMode;
+}
 
-        if (parent != null)
-        {
-            parent.SonTasks.Add(this); 
-        }
+public class TaskRepeat
+{
+    public int Times;
+    public int Interval;
+    public List<TaskParms> DefaultParams;
+    public List<TaskParms> Params = new List<TaskParms>();
+    public Action<TaskRepeat> Execuse;
 
-        if (Repeat <= 0 && Interval <= 0)
-        {
-            Debug.LogError("Task 得Interval 和 Repeat 不能同时等于0!");
-            Repeat = 1;
-        }
-    }
+    public List<TaskExecuse> AutoExecuse = new List<TaskExecuse>();
+    public int CurExecuseIdx;
+    public TaskTools TaskTools;
+
+    //用于缓存参数，方便使用
+    public TaskRepeat Root;
+    public Dictionary<string, TaskParms> ParamsDic = new Dictionary<string, TaskParms>();
+
 
     private EntityBase Master;
-    private int WaitFrame;
-    private int Interval;
-    private int Repeat;
-    private TaskExecuseType SonExeType;
-    private List<AutoTaskExecuse> AutoExecuse = new List<AutoTaskExecuse>();
-    private List<TaskParms> Params = new List<TaskParms>();
-    private List<LuaStgTask> SonTasks = new List<LuaStgTask>();
-    public Action Execuse;
-    public Action OnStart;
-    public Action OnEnd;
-
-
-    //自動執行的行爲
-    private void CheckAutoExecuse()
+    public TaskRepeat(EntityBase master)
     {
-        if (AutoExecuse.Count <= 0)
-        {
-            return;
-        }
-
-        var e = AutoExecuse[0];
-        if(e.Type == TaskType.Wait)
-        {
-            return;
-        }
-
-        switch (e.Type)
-        {
-            case TaskType.Wander:
-                var data = e.WanderData;
-                Master.MoveToPlayer(data.nFrame, data.xRange, data.yRange, data.xAmplitude, data.yAmplitude, data.MovementMode, data.DirectionMode);
-                break;
-
-            case TaskType.PlaySound:
-                break;
-
-            case TaskType.MoveTo:
-                var md = e.MoveToData;
-                Master.MoveToPos(Vector2Fight.NewWorld(md.X, md.Y), md.nFrame, md.MovementMode);
-                break;
-
-
-            case TaskType.AddRepeat:
-
-                var d = e.RepeatData;
-                var task = Master.NewTask(0, d.Interval, d.Times, this);
-                task.Execuse = ()=> { d.Execuse(task); };
-
-                if (d.Params != null)
-                {
-                    for(int i = 0; i < d.Params.Count; i++)
-                    {
-                        var p = d.Params[i];
-                        task.SetP(p.name, p.value, p.increment);
-                    }
-                }
-                break;
-        }
-
-        AutoExecuse.RemoveAt(0);
+        Master = master;
     }
 
-    private bool CheckWait()
+    //獲取參數
+    public float Get(string name)
     {
-        if (AutoExecuse.Count > 0)
+        if (Root.ParamsDic.TryGetValue(name, out var param))
         {
-            var e = AutoExecuse[0];
-            if(e.Type == TaskType.Wait)
-            {
-                WaitFrame += e.WaitFrame;
-                AutoExecuse.RemoveAt(0);
-                return true;
-            }
+            return param.value;
         }
-        return false;
+        Debug.LogError("GetParamsValue Error, Cant Find :" + name);
+        return 0f;
     }
 
-    public void AddWait(int frame)
+    public void UpdateParams()
     {
-        AutoExecuse.Add(new AutoTaskExecuse { Type = TaskType.Wait, WaitFrame = frame });
-    }
-
-    public void AddRepeat(int times, int interval, Action<LuaStgTask> execute, List<TaskParms> paramList = null)
-    {
-        var repeatData = new RepeatData
+        //参数 
+        for (int i = 0; i < Params.Count; i++)
         {
-            Times = times,
-            Interval = interval,
-            Execuse = execute,
-            Params = paramList
-        };
-        AutoExecuse.Add(new AutoTaskExecuse { Type = TaskType.AddRepeat, RepeatData = repeatData });
+            Params[i].value += Params[i].increment;
+        }
+    }
+
+    public void ResetParams()
+    {
+        Params.Clear();
+        for (int i = 0; DefaultParams != null && i < DefaultParams.Count; i++)
+        {
+            var data = DefaultParams[i];
+            var param = new TaskParms { name = data.name, value = data.value, increment = data.increment };
+
+            Params.Add(param);
+            Root.ParamsDic[data.name] = param;
+        }
+    }
+
+    public void AddWait(int frame, Action afterAction = null)
+    {
+        AutoExecuse.Add(TaskTools.NewWait(frame, afterAction));
+    }
+
+    public void AddCustom(Action customAction)
+    {
+        AutoExecuse.Add(TaskTools.NewCustom(customAction));
+    }
+
+    public TaskRepeat AddRepeat(int times, int interval, List<TaskParms> par = null, Action<TaskRepeat> execuse = null)
+    {
+        var e = TaskTools.NewRepeat(Master, times, interval, par, execuse);
+        e.RepeatData.Root = Root;
+        AutoExecuse.Add(e);
+        return e.RepeatData;
     }
 
     public void AddWander(int frame, float xMin, float xMax, float yMin, float yMax, float xAmpMin, float xAmpMax, float yAmpMin, float yAmpMax, MovementMode mMode, DirectionMode dMode)
     {
-        var wanderData = new WanderData
+        AutoExecuse.Add(TaskTools.NewWander(frame, xMin, xMax, yMin, yMax, xAmpMin, xAmpMax, yAmpMin, yAmpMax, mMode, dMode));
+    }
+
+    public void AddMoveTo(int frame, float x, float y, MovementMode moveType)
+    {
+        AutoExecuse.Add(TaskTools.NewMoveTo(frame, x, y, moveType));
+    }
+}
+
+public class TaskTools
+{
+    public static IEnumerator UpdateExecuse(EntityBase Master, TaskExecuse e)
+    {
+        switch (e.Type)
+        {
+            //wait
+            case ActionType.Wait:
+
+                yield return Yielders.WaitFrame(e.WaitData.Frame);
+                e.WaitData.AfterAction?.Invoke();
+                break;
+
+            //repeat
+            case ActionType.AddRepeat:
+
+                yield return DoRepeat(Master, e.RepeatData);
+                break;
+
+            //wander
+            case ActionType.Wander:
+
+                var data = e.WanderData;
+                Master.MoveToPlayer(data.nFrame, data.xRange, data.yRange, data.xAmplitude, data.yAmplitude, data.MovementMode, data.DirectionMode);
+                yield return Yielders.WaitFrame(data.nFrame);
+                break;
+
+            //moveto
+            case ActionType.MoveTo:
+
+                var md = e.MoveToData;
+                Master.MoveToPos(Vector2Fight.NewWorld(md.X, md.Y), md.nFrame, md.MovementMode);
+                yield return Yielders.WaitFrame(md.nFrame);
+                break;
+
+            //无需等待的事件
+            case ActionType.PlaySound:
+                break;
+
+            case ActionType.Custom:
+                e.CustomAction?.Invoke();
+                e.CustomAction = null;
+                break;
+        }
+    }
+
+    private static IEnumerator DoRepeat(EntityBase Master, TaskRepeat data)
+    {
+        //防死循环处理
+        if (data.Interval == 0 && data.Times == 0)
+        {
+            data.Interval = 1;
+        }
+
+        //一直循环处理
+        var loopTimes = data.Times;
+        if (data.Times == 0)
+        {
+            loopTimes = int.MaxValue;
+        }
+
+        data.ResetParams();
+
+        for (int i = 0; i < loopTimes; i++)
+        {
+            //执行子任务
+            //如果自己是无限次的 或 自己的ROOT是无限次的，则按顺序执行子任务，否则执行完子任务就remove
+            if(data.AutoExecuse.Count > 0)
+            {
+                if(data.Root.Times <= 0)
+                {
+                    //循环执行
+                    var execuse = data.AutoExecuse[data.CurExecuseIdx];
+                    yield return UpdateExecuse(Master, execuse);
+
+                    data.CurExecuseIdx++;
+                    if (data.CurExecuseIdx >= data.AutoExecuse.Count)
+                    {
+                        data.CurExecuseIdx = 0;
+                    }
+                }
+                else
+                {
+                    var execuse = data.AutoExecuse[0];
+                    data.AutoExecuse.RemoveAt(0);
+                    yield return UpdateExecuse(Master, execuse); 
+                }
+            }
+
+            //执行自己
+            data.Execuse?.Invoke(data);
+            data.UpdateParams();
+
+            //interval, 最后一次不等待
+            if (i < loopTimes - 1 && data.Interval > 0)
+            {
+                yield return Yielders.WaitFrame(data.Interval);
+            }
+        }
+    }
+
+
+    public static TaskExecuse NewWait(int frame, Action afterAction = null)
+    {
+        return new TaskExecuse { Type = ActionType.Wait, WaitData = new TaskWait { Frame = frame, AfterAction = afterAction }};
+    }
+
+    public static TaskExecuse NewCustom(Action customAction)
+    {
+        return new TaskExecuse { Type = ActionType.Custom, CustomAction = customAction };
+    }
+
+    public static TaskExecuse NewRepeat(EntityBase master, int times, int interval, List<TaskParms> par = null, Action<TaskRepeat> execuse = null)
+    {
+        var repeatData = new TaskRepeat(master)
+        {
+            Times = times,
+            Interval = interval,
+            Execuse = execuse,
+            DefaultParams = par,
+
+        };
+        return new TaskExecuse { Type = ActionType.AddRepeat, RepeatData = repeatData };
+    }
+
+    public static TaskExecuse NewWander(int frame, float xMin, float xMax, float yMin, float yMax, float xAmpMin, float xAmpMax, float yAmpMin, float yAmpMax, MovementMode mMode, DirectionMode dMode)
+    {
+        var wanderData = new TaskWander
         {
             nFrame = frame,
             xRange = Vector2Fight.NewLocal(xMin, xMax),
@@ -232,146 +344,77 @@ public class LuaStgTask
             MovementMode = mMode,
             DirectionMode = dMode
         };
-        AutoExecuse.Add(new AutoTaskExecuse { Type = TaskType.Wander, WanderData = wanderData });
+        return new TaskExecuse { Type = ActionType.Wander, WanderData = wanderData };
     }
 
-    public void AddMoveTo(int frame, float x, float y, MovementMode moveType)
+    public static TaskExecuse NewMoveTo(int frame, float x, float y, MovementMode moveType)
     {
-        var moveData = new MoveToData
+        var moveData = new TaskMoveTo
         {
             nFrame = frame,
             MovementMode = moveType,
             X = x,
             Y = y
         };
-        AutoExecuse.Add(new AutoTaskExecuse { Type = TaskType.MoveTo, MoveToData = moveData });
+        return new TaskExecuse { Type = ActionType.MoveTo, MoveToData = moveData };
     }
+}
 
-    //設置參數
-    public void SetP(string name, float value, float increment = 0)
+
+public class LuaStgTask : MonoBehaviour
+{
+    public string Name;
+    public List<TaskExecuse> AutoExecuse = new List<TaskExecuse>();
+
+    private EntityBase Master;
+    private void Awake()
     {
-        Params.Add(new TaskParms
-        {
-            name = name,
-            value = value,
-            increment = increment
-        });
+        Master = GetComponent<EntityBase>();
+        StartCoroutine(MainLoop());
     }
 
-    //獲取參數
-    public float GetP(string name)
-    { 
-        for(int i = 0; i < Params.Count; i++)
-        {
-            if (Params[i].name == name)
-                return Params[i].value;
-        }
-        Debug.LogError("GetParamsValue Error, Cant Find :" + name);
-        return 0f;
-    }
-
-
-    private int _alreadyRepeatCount;
-    private int _execusedFrame;
-    public void OnExecuse()
+    private IEnumerator MainLoop()
     {
-        Execuse?.Invoke();
-        for (int i = 0; i < Params.Count; i++)
+        while (true)
         {
-            Params[i].value += Params[i].increment;
-        }
-    }
-
-    public bool OnUpdate()
-    {
-        if (WaitFrame > 0)
-        {
-            WaitFrame--;
-            return false;
-        }
-
-        //先检查有无wait
-        if (CheckWait())
-        {
-            return false;
-        }
-
-        bool result = false;
-
-        //无间隔时间，一次执行完
-        if (Interval <= 0)
-        {
-            for (int i = 0; i < Repeat; i++)
+            if (AutoExecuse.Count > 0)
             {
-                if (_alreadyRepeatCount == 0)
-                {
-                    OnStart?.Invoke();
-                }
-
-                OnExecuse();
-                CheckAutoExecuse();
-
-                if (!CheckWait())
-                {
-                    _alreadyRepeatCount++;
-                }
+                var execuse = AutoExecuse[0];
+                AutoExecuse.RemoveAt(0);
+                yield return TaskTools.UpdateExecuse(Master, execuse);
             }
-        }
-        else
-        {
-            if ((_execusedFrame + WaitFrame) % Interval == 0)
-            {
-                if (_alreadyRepeatCount == 0)
-                {
-                    OnStart?.Invoke();
-                }
-                OnExecuse();
-                CheckAutoExecuse();
-
-                if (!CheckWait())
-                {
-                    _alreadyRepeatCount++;
-                }
-            }
-        }
-
-        if (Repeat > 0 && _alreadyRepeatCount >= Repeat)
-        {
-            OnEnd?.Invoke();
-            result = true;
-        }
-
-        UpdateSonTasks();
-        _execusedFrame++;
-        return result;
-    }
-
-    private void UpdateSonTasks()
-    {
-        if (SonTasks.Count > 0)
-        {
-            //顺序执行
-            if(SonExeType == TaskExecuseType.Sequence)
-            {
-                var sonTask = SonTasks[0];
-                var bOver = sonTask.OnUpdate();
-                if (bOver) 
-                {
-                    SonTasks.RemoveAt(0);
-                }
-            }
-            //一起执行
             else
             {
-                for (int i = SonTasks.Count - 1; i >= 0; i--)
-                {
-                    var bOver = SonTasks[i].OnUpdate();
-                    if (bOver)
-                    {
-                        SonTasks.RemoveAt(i);
-                    }
-                }
+                yield return Yielders.FixedFrame;
             }
         }
+    }
+
+    public void AddWait(int frame, Action afterAction = null)
+    {
+        AutoExecuse.Add(TaskTools.NewWait(frame, afterAction));
+    }
+
+    public void AddCustom(Action customAction)
+    {
+        AutoExecuse.Add(TaskTools.NewCustom(customAction));
+    }
+
+    public TaskRepeat AddRepeat(int times, int interval, List<TaskParms> par = null, Action<TaskRepeat> execuse = null)
+    {
+        var e = TaskTools.NewRepeat(Master, times, interval, par, execuse);
+        e.RepeatData.Root = e.RepeatData;
+        AutoExecuse.Add(e);
+        return e.RepeatData;
+    }
+
+    public void AddWander(int frame, float xMin, float xMax, float yMin, float yMax, float xAmpMin, float xAmpMax, float yAmpMin, float yAmpMax, MovementMode mMode, DirectionMode dMode)
+    {
+        AutoExecuse.Add(TaskTools.NewWander(frame, xMin, xMax, yMin, yMax, xAmpMin, xAmpMax, yAmpMin, yAmpMax, mMode, dMode));
+    }
+
+    public void AddMoveTo(int frame, float x, float y, MovementMode moveType)
+    {
+        AutoExecuse.Add(TaskTools.NewMoveTo(frame, x, y, moveType));
     }
 }

@@ -10,7 +10,17 @@ public class Kyo_Telephone : BossCardBase
     public override float TotalTime => 30f;
 
     public override Vector3 StartPos => Vector2Fight.NewWorld(0, 110);
-   
+
+    protected override void InitDifficult(ELevelDifficult diff)
+    {
+
+    }
+
+    public int BulletIdBlue = 1339;
+    public int BulletIdRed = 1337;
+    public int BulletIdSniper = 1250;
+
+    /*
     protected override void Start()
     {
         base.Start();
@@ -21,7 +31,7 @@ public class Kyo_Telephone : BossCardBase
 
         //shoot task(800fps loop)
         var shootTask = new LuaStgTask(Master, 0, 800, -1, MainTask);
-        shootTask.Execuse = () =>
+        shootTask.OnRepeat = () =>
         {
             var an4 = Random.Range(-120f, 120f);
             var an3 = Random.Range(-15f, 15f);
@@ -30,13 +40,13 @@ public class Kyo_Telephone : BossCardBase
             var task1 = new LuaStgTask(Master, 0, 2, 75, shootTask);
             task1.SetP("y", 0, 2);
             task1.SetP("an", 0, 15);
-            task1.Execuse = () =>
+            task1.OnRepeat = () =>
             {
                 var task2 = new LuaStgTask(Master, 0, 0, 6, task1);
                 task2.SetP("an2", an3, 60);
                 task2.SetP("an5", task1.GetP("an"), an4);
 
-                task2.Execuse = () =>
+                task2.OnRepeat = () =>
                 {
                     var an2 = task2.GetP("an2");
                     var y = task1.GetP("y");
@@ -53,15 +63,15 @@ public class Kyo_Telephone : BossCardBase
             var task3 = new LuaStgTask(Master, 0, 2, 6, shootTask);
             task3.SetP("y", 150, 0);
             task3.SetP("an", 0, 20);
-            task3.Execuse = () =>
+            task3.OnRepeat = () =>
             {
                 var task4 = new LuaStgTask(Master, 0, 1, 3, task3);
                 task4.SetP("an4", 0, 120);
-                task4.Execuse = () =>
+                task4.OnRepeat = () =>
                 {
                     var task5 = new LuaStgTask(Master, 0, 0, 6, task4);
                     task5.SetP("an2", an3, 60);
-                    task5.Execuse = () =>
+                    task5.OnRepeat = () =>
                     {
                         var an2 = task5.GetP("an2");
                         var y = task3.GetP("y");
@@ -92,13 +102,13 @@ public class Kyo_Telephone : BossCardBase
             t1.SetP("cos", 0, 16);
             t1.SetP("an", 0, 16);
             t1.SetP("xxxp", xxx0, LuaStg.RandomSign() * 2);
-            t1.Execuse = () =>
+            t1.OnRepeat = () =>
             {
                 var t2 = new LuaStgTask(Master, 0, 0, 3, t1);
                 t2.SetP("an2", 0, aa3);
                 t2.SetP("sign", -1, 1);
 
-                t2.Execuse = () =>
+                t2.OnRepeat = () =>
                 {
                     //BulletIdRed
                     var posX = t1.GetP("xxxp") + 80f * LuaStg.Sin(t1.GetP("cos")) * t2.GetP("sign");
@@ -115,11 +125,11 @@ public class Kyo_Telephone : BossCardBase
 
             //狙击
             var t3 = new LuaStgTask(Master, 0, 15, 7, shootTask);
-            t3.Execuse =  () =>
+            t3.OnRepeat =  () =>
             {
                 var t4 = new LuaStgTask(Master, 0, 0, 12, t3);
                 t4.SetP("ang", 0, 30);
-                t4.Execuse = () =>
+                t4.OnRepeat = () =>
                 {
                     var pos = Master.transform.position;
                     var ang = t4.GetP("ang");
@@ -165,7 +175,7 @@ public class Kyo_Telephone : BossCardBase
             EventData.NewFrame_Update(150, 3, bullet =>
             {
                 bullet.MoveData.Speed = (2f * LuaStg.Sin(yysh));
-                bullet.SetForward(eulurZ);
+                bullet.SetAngle(eulurZ);
                 bullet.RevertHighLight();
                 yysh += 2f;
             }, 60)
@@ -179,11 +189,6 @@ public class Kyo_Telephone : BossCardBase
 
     }
 
-    public int BulletIdBlue = 1339;
-    public int BulletIdRed = 1337;
-    public int BulletIdSniper = 1250;
-    protected override void InitDifficult(ELevelDifficult diff)
-    {
-       
-    }
+    
+    */
 }

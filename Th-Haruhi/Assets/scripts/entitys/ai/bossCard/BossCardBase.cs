@@ -108,15 +108,12 @@ public abstract class BossCardBase
     }
 
 
-    protected LuaStgTask MainTask;
     protected virtual void Start()
     {
-        MainTask = new LuaStgTask(Master, 0, 1, -1, null, LuaStgTask.TaskExecuseType.All);
     }
 
     protected virtual void Stop()
     {
-        MainTask = null;
     }
 
 
@@ -127,8 +124,6 @@ public abstract class BossCardBase
             ShootIdx = 0;
 
         if (!CanShoot || Master.IsDead) return;
-
-        MainTask?.OnUpdate();
     }
 
     public virtual void OnDestroy()

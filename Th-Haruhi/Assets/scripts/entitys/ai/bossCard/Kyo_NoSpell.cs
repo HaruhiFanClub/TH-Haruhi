@@ -7,179 +7,137 @@ public class Kyo_NoSpell: BossCardBase
 {
     public override string CardName => "Kyo_NoSpell";
 
-    public override float TotalTime => 30f;
+    public override float TotalTime => 33330f;
 
     public override Vector3 StartPos => Boss.BossUpCenter;
 
-    
-    public override void OnFixedUpdate()
-    {
-        base.OnFixedUpdate();
-        
-        if (!CanShoot || Master.IsDead) return;
-
-        TaskBullet1();
-        Task2();
-    }
 
     public int BulletId = 1008;
-    public int BulletSpeed = 8;
-    public int BulletInterval = 2;
     public int BigBulletId = 2001;
-    private int RedBulletId = 2002;
+    public int RedBulletId = 2002;
 
     protected override void InitDifficult(ELevelDifficult diff)
     {
 
     }
 
-    private int _task2Idx;
-    private void Task2()
+    protected override void Start()
     {
-        _task2Idx++;
+        base.Start();
 
-        if(_task2Idx == 60)
+        var task1 = Master.NewTask();
+        var r1 = task1.AddRepeat(0, 60);
+        DoTask1(r1, 1);
+        DoTask1(r1, -1);
+
+        var x = Master.NewTask();
+        x.AddRepeat(0, 1, execuse: task2 =>
         {
-            ShootBigBullet(-1, Random.Range(0f, 360f));
-        }
-        else if(_task2Idx == 120)
-        {
-            
-            Master.MoveToPlayer(60, Vector2Fight.NewLocal(-96, 96), Vector2Fight.NewLocal(112, 144), Vector2Fight.NewLocal(16, 32), Vector2Fight.NewLocal(8, 16), MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
-        }
-        else if (_task2Idx == 180)
-        {
-            ShootBigBullet(1, Random.Range(0f, 360f));
-        }
-        else if(_task2Idx == 240)
-        {
-            _task2Idx = 0;
-            Master.MoveToPlayer(60, Vector2Fight.NewLocal(-96, 96), Vector2Fight.NewLocal(112, 144), Vector2Fight.NewLocal(16, 32), Vector2Fight.NewLocal(8, 16), MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
-        }
-    }
-
-
-    private void ShootBigBullet(int sign, float sss)
-    {
-        Sound.PlayTHSound("tan02", true, 0.5f);
-        for (int i = 0; i < 12; i++)
-        {
-            var ang = i * 30 * sign;
-            var shootForward = Quaternion.Euler(0, 0, ang) * Master.transform.up;
-            var moveData = MoveData.New(Master.transform.position, shootForward, 3f);
-
-            List<EventData> eventList = new List<EventData>();
-            eventList.Add(EventData.NewFrame_ChangeForward(60, shootForward, sign < 0 ? 
-                MoveData.EHelixToward.Left : MoveData.EHelixToward.Right, 1));
-
-            eventList.Add(EventData.NewFrame_ChangeForward(180, null, MoveData.EHelixToward.None));
-            eventList.Add(EventData.NewFrame_Destroy(400));
-
-            BulletFactory.CreateEnemyBullet(BigBulletId,  moveData, eventList,
-            onCreate : bigBullet =>
+            task2.AddWait(60);
+            task2.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
+            task2.AddRepeat(12, 0, TaskParms.New("ang", 0, 30), p =>
             {
-                bigBullet.SetBoundDestroy(false);
-
-                //环绕子弹（红）
-                var angServent = 0;
-                for (int j = 0; j < 10; j++)
-                {
-                    var m2 = MoveData.New(Master.transform.position, Vector3.zero, 0f);
-                    var angservant2 = angServent * sign;
-                    var wuhu = sss;
-                    List<EventData> e = new List<EventData>
-                    {
-                        EventData.NewFrame_Update(0, 1, bullet =>
-                        {
-                            //position
-                            var posX = LuaStg.Cos(angservant2) * 40 * LuaStg.Sin(wuhu);
-                            var posY = LuaStg.Sin(angservant2) * 40 * LuaStg.Cos(wuhu);
-                            bullet.transform.position = bigBullet.transform.position + Vector2Fight.NewWorld(posX, posY) - Vector2Fight.Center;
-
-                            //rotation
-                            var eulurZ = angservant2 - 120 * sign;
-                            var eulur = bullet.transform.eulerAngles;
-                            eulur.z = eulurZ;
-                            bullet.transform.eulerAngles = eulur;
-
-                            angservant2 += 1 * sign;
-                            wuhu += 0.5f;
-                        })
-                    };
-                    
-                    BulletFactory.CreateEnemyBullet(RedBulletId, m2, e, onCreate: bullet=>
-                    {
-                        bullet.SetBoundDestroy(false);
-                        bigBullet.SonBullets.Add(bullet);
-                    });
-
-
-                    angServent += sign * 36;
-                }
-            });
-        }
-    }
-
-    private int _curIdx;
-    private int _curAngle = 0;
-    private bool _inTurnLeft;
-    private float _sing;
-    private void TaskBullet1()
-    {
-        if (_curIdx == 0)
-        {
-            _curAngle = 0;
-            _inTurnLeft = !_inTurnLeft;
-            _sing = Random.Range(0f, 120f);
-
-        }
-        if (_curIdx <= 180)
-        {
-            if (_curIdx % BulletInterval == 0)
-            {
-                FireSmallBullet();
-            }
-        }
-
-        _curIdx++;
-        if (_curIdx > 240)
-        {
-            _curIdx = 0;
-        }
-    }
-
-    private void FireSmallBullet()
-    {
-
-        var sin = LuaStg.Sin(Mathf.Abs(_curAngle));
-        var turn = _inTurnLeft ? 1f : -1f;
-
-        for (int i = 0; i < 3; i++)
-        {
-            var ang = i * 120f;
-            var huhu = (_sing + ang - sin * 10);
-            var shootForward = Quaternion.Euler(0, 0, huhu * turn) * Master.transform.up;
-
-            List<EventData> eventList = new List<EventData>();
-            eventList.Add(EventData.NewFrame_Destroy(40));
-
-            var speed = 2.5f + sin;
-            var moveData = MoveData.New(Master.transform.position, shootForward, speed);
-            BulletFactory.CreateEnemyBullet(BulletId, moveData, eventList, onDestroy: bullet=>
-            {
-                var pos = bullet.transform.position;
-                var fwd = bullet.transform.forward;
-                var sf = Quaternion.Euler(0, 0, huhu * turn + turn * 30) * Master.transform.up;
-                for (int j = 0; j < 5; j++)
-                {
-                    var d = MoveData.New(pos, sf, 2f, 0.2f * j);
-                    BulletFactory.CreateEnemyBullet(BulletId, d);
-                }
+                BigBallBullet(Master.transform.position, p.Get("ang"), -1);
             });
 
-        }
-        _curAngle += 12; 
-        _sing += 12;
+            task2.AddWait(150);
+            task2.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
+            task2.AddRepeat(12, 0, TaskParms.New("ang", 0, 30), p =>
+            {
+                BigBallBullet(Master.transform.position, p.Get("ang"), 1);
+            });
+        });
+        
     }
 
+    private void DoTask1(TaskRepeat r1, float sign)
+    {
+        r1.AddRepeat(1, 60).
+        AddRepeat(90, 2, TaskParms.New("sing", Random.Range(0f, 120f), 12, "ain", 0, 12)).
+        AddRepeat(3, 0, TaskParms.New("ANG", 0, 120),  p =>
+        {
+            var haha = 2.5f + LuaStg.Sin(p.Get("ain")) * 1;
+            var huhu = p.Get("sing") + p.Get("ANG") + LuaStg.Sin(p.Get("ain")) * 10;
+            MRY(Master.transform.position, haha, huhu, sign);
+        });
+    }
+
+    private void MRY(Vector3 pos, float HAHA, float HUHU, float sign)
+    {
+        var moveData = MoveData.New(pos, (HUHU * sign).AngleToForward(), HAHA);
+        BulletFactory.CreateEnemyBullet(BulletId, moveData, shootEffectScale: 1.6f, onCreate: bullet =>
+        {
+            var task = bullet.NewTask();
+
+            task.AddWait(40);
+            task.AddRepeat(5, 0, TaskParms.New("VE", 2, 0.2F), p =>
+            {
+                var angle = HUHU * sign + sign * 30;
+                BulletArrowBig(bullet.transform.position, angle, p.Get("VE"));
+            });
+
+            task.AddCustom(() =>
+            {
+                bullet.PlayEffectAndDestroy(502);
+            });
+        });
+    }
+
+    private void BulletArrowBig(Vector3 pos, float angle, float speed)
+    {
+        var moveData = MoveData.New(pos, angle.AngleToForward(), speed);
+        BulletFactory.CreateEnemyBullet(BulletId, moveData);
+    }
+
+    private void BigBallBullet(Vector3 pos, float ang, float sign)
+    {
+        var moveData = MoveData.New(pos, ang.AngleToForward(), 3);
+        BulletFactory.CreateEnemyBullet(BigBulletId, moveData, onCreate: bullet =>
+        {
+            Sound.PlayTHSound("tan02", true, 1f);
+            bullet.SetBoundDestroy(false);
+
+            var taskRot = bullet.NewTask();
+            taskRot.AddWait(60);
+            taskRot.AddRepeat(120, 1, execuse : p =>
+            {
+                var newAngle = sign * 1 + bullet.Rot;
+                bullet.MoveData.Speed = 2f;
+                bullet.SetAngle(newAngle);
+            });
+
+            var taskBullet = bullet.NewTask();
+            var randomAngle = Random.Range(0f, 360f);
+            taskBullet.AddRepeat(10, 1, TaskParms.New("angservant", 0, 36 * sign),  p =>
+            {
+                AroundBallBullet(p.Get("angservant"), sign, randomAngle, bullet);
+            });
+
+            var taskDestroy = bullet.NewTask();
+            taskDestroy.AddWait(500);
+            taskDestroy.AddCustom(() =>
+            {
+                BulletFactory.DestroyBullet(bullet);
+            });
+        });
+    }
+
+    private void AroundBallBullet(float angservant, float sign, float randomAngle, Bullet father)
+    {
+        var moveData = MoveData.New(father.transform.position);
+        BulletFactory.CreateEnemyBullet(RedBulletId, moveData, shootEffectScale: 0f, onCreate: bullet =>
+        {
+            bullet.SetFather(father);
+            bullet.SetHighLight();
+            bullet.SetBoundDestroy(false);
+
+            var task = bullet.NewTask();
+            task.AddRepeat(0, 1, TaskParms.New("angservant2", angservant * sign, 1 * sign, "wuhu", randomAngle, 0.5f), p =>
+            {
+                var posX = LuaStg.Cos(p.Get("angservant2")) * 40 * LuaStg.Sin(p.Get("wuhu"));
+                var posY = LuaStg.Sin(p.Get("angservant2")) * 40 * LuaStg.Cos(p.Get("wuhu"));
+                bullet.SetPos(posX, posY);
+            });
+        });
+     }
 }
