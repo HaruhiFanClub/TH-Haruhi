@@ -54,7 +54,7 @@ public static class LuaStg
         return Vector3.Angle(f, Vector3.up);
     }
 
-    public static LuaStgTask NewTask(this EntityBase master)
+    public static LuaStgTask CreateTask(this EntityBase master)
     {
         var luaStgTask = master.gameObject.AddComponent<LuaStgTask>();
         return luaStgTask;

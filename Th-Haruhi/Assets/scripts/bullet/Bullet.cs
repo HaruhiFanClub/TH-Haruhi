@@ -189,16 +189,7 @@ public class Bullet : EntityBase
                     if (_totalFrame >= e.FrameCount)
                     {
                         EventList.RemoveAt(i);
-                        MoveData.Speed = e.AimToPlayerData.Speed;
-
-                        var player = StageMgr.MainPlayer;
-                        if (player != null) 
-                        {
-                            var fwd = (player.transform.position - CacheTransform.position).normalized;
-                            fwd = Quaternion.Euler(0, 0, e.AimToPlayerData.Angle) * fwd;
-                            MoveData.Forward = fwd;
-                            UpdateForward();
-                        }
+                       
                     }
                     break;
 
@@ -279,6 +270,23 @@ public class Bullet : EntityBase
         BoundDestroy = b;
     }
 
+    public void AimToPlayer(float speed, float angleMin, float angleMax, bool setRot)
+    {
+        MoveData.Speed = speed;
+
+        var player = StageMgr.MainPlayer;
+        if (player != null)
+        {
+            var rndAngle = UnityEngine.Random.Range(angleMin, angleMax);
+            var fwd = (player.transform.position - CacheTransform.position).normalized;
+            fwd = Quaternion.Euler(0, 0, rndAngle) * fwd;
+            MoveData.Forward = fwd;
+            if(setRot)
+            {
+                UpdateForward();
+            }
+        }
+    }
 
     public override void OnRecycle()
     {

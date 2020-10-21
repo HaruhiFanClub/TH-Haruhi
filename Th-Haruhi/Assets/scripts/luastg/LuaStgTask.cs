@@ -27,6 +27,8 @@ public class TaskParms
     public float value;
     public float increment;
 
+    public delegate List<TaskParms> NewParamFunc();
+  
     public static List<TaskParms> New(string name1, float value1, float increment1,
                                 string name2 = null, float value2 = 0, float increment2 = 0,
                                 string name3 = null, float value3 = 0, float increment3 = 0,
@@ -47,7 +49,6 @@ public class TaskParms
 
         if (!string.IsNullOrEmpty(name5))
             list.Add(new TaskParms { name = name5, value = value5, increment = increment5 });
-
         return list;
     }
 }
@@ -126,13 +127,14 @@ public class TaskRepeat
 {
     public int Times;
     public int Interval;
-    public List<TaskParms> DefaultParams;
+    public TaskParms.NewParamFunc InitParams;
     public List<TaskParms> Params = new List<TaskParms>();
     public Action<TaskRepeat> Execuse;
 
     public List<TaskExecuse> AutoExecuse = new List<TaskExecuse>();
     public int CurExecuseIdx;
-    public TaskTools TaskTools;
+    public int ExecusedTimes;
+
 
     //用于缓存参数，方便使用
     public TaskRepeat Root;
@@ -168,13 +170,15 @@ public class TaskRepeat
     public void ResetParams()
     {
         Params.Clear();
-        for (int i = 0; DefaultParams != null && i < DefaultParams.Count; i++)
-        {
-            var data = DefaultParams[i];
-            var param = new TaskParms { name = data.name, value = data.value, increment = data.increment };
 
-            Params.Add(param);
-            Root.ParamsDic[data.name] = param;
+        if(InitParams != null)
+        {
+            Params = InitParams();
+
+            for (int i = 0;  i < Params.Count; i++)
+            {
+                Root.ParamsDic[Params[i].name] = Params[i];
+            }
         }
     }
 
@@ -188,9 +192,9 @@ public class TaskRepeat
         AutoExecuse.Add(TaskTools.NewCustom(customAction));
     }
 
-    public TaskRepeat AddRepeat(int times, int interval, List<TaskParms> par = null, Action<TaskRepeat> execuse = null)
+    public TaskRepeat AddRepeat(int times, int interval, TaskParms.NewParamFunc paramsFunc = null, Action<TaskRepeat> execuse = null)
     {
-        var e = TaskTools.NewRepeat(Master, times, interval, par, execuse);
+        var e = TaskTools.NewRepeat(Master, times, interval, paramsFunc, execuse);
         e.RepeatData.Root = Root;
         AutoExecuse.Add(e);
         return e.RepeatData;
@@ -291,7 +295,11 @@ public class TaskTools
                 else
                 {
                     var execuse = data.AutoExecuse[0];
-                    data.AutoExecuse.RemoveAt(0);
+
+                    if(data.ExecusedTimes >= data.Times)
+                    {
+                        data.AutoExecuse.RemoveAt(0);
+                    }
                     yield return UpdateExecuse(Master, execuse); 
                 }
             }
@@ -299,6 +307,7 @@ public class TaskTools
             //执行自己
             data.Execuse?.Invoke(data);
             data.UpdateParams();
+            data.ExecusedTimes++;
 
             //interval, 最后一次不等待
             if (i < loopTimes - 1 && data.Interval > 0)
@@ -319,14 +328,14 @@ public class TaskTools
         return new TaskExecuse { Type = ActionType.Custom, CustomAction = customAction };
     }
 
-    public static TaskExecuse NewRepeat(EntityBase master, int times, int interval, List<TaskParms> par = null, Action<TaskRepeat> execuse = null)
+    public static TaskExecuse NewRepeat(EntityBase master, int times, int interval, TaskParms.NewParamFunc paramsFunc = null, Action<TaskRepeat> execuse = null)
     {
         var repeatData = new TaskRepeat(master)
         {
             Times = times,
             Interval = interval,
             Execuse = execuse,
-            DefaultParams = par,
+            InitParams = paramsFunc,
 
         };
         return new TaskExecuse { Type = ActionType.AddRepeat, RepeatData = repeatData };
@@ -400,9 +409,9 @@ public class LuaStgTask : MonoBehaviour
         AutoExecuse.Add(TaskTools.NewCustom(customAction));
     }
 
-    public TaskRepeat AddRepeat(int times, int interval, List<TaskParms> par = null, Action<TaskRepeat> execuse = null)
+    public TaskRepeat AddRepeat(int times, int interval, TaskParms.NewParamFunc paramsFunc = null, Action<TaskRepeat> execuse = null)
     {
-        var e = TaskTools.NewRepeat(Master, times, interval, par, execuse);
+        var e = TaskTools.NewRepeat(Master, times, interval, paramsFunc, execuse);
         e.RepeatData.Root = e.RepeatData;
         AutoExecuse.Add(e);
         return e.RepeatData;
