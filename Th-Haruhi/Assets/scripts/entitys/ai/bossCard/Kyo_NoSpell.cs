@@ -37,14 +37,14 @@ public class Kyo_NoSpell: BossCardBase
             task2.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
             task2.AddRepeat(12, 0, () => TaskParms.New("ang", 0, 30), p =>
             {
-                BigBallBullet(Master.transform.position, p.Get("ang"), -1);
+                BigBallBullet(Master.Pos, p.Get("ang"), -1);
             });
 
             task2.AddWait(150);
             task2.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
             task2.AddRepeat(12, 0, () => TaskParms.New("ang", 0, 30), p =>
             {
-                BigBallBullet(Master.transform.position, p.Get("ang"), 1);
+                BigBallBullet(Master.Pos, p.Get("ang"), 1);
             });
         });
         
@@ -58,22 +58,23 @@ public class Kyo_NoSpell: BossCardBase
         {
             var haha = 2.5f + LuaStg.Sin(p.Get("ain")) * 1;
             var huhu = p.Get("sing") + p.Get("ANG") + LuaStg.Sin(p.Get("ain")) * 10;
-            MRY(Master.transform.position, haha, huhu, sign);
+            MRY(Master.Pos, haha, huhu, sign);
         });
     }
 
-    private void MRY(Vector3 pos, float HAHA, float HUHU, float sign)
+    private void MRY(Vector2 pos, float HAHA, float HUHU, float sign)
     {
-        var moveData = MoveData.New(pos, (HUHU * sign).AngleToForward(), HAHA);
-        BulletFactory.CreateEnemyBullet(BulletId, moveData, shootEffectScale: 1.6f, onCreate: bullet =>
+        LuaStg.ShootBullet(BulletId, pos.x, pos.y,  shootEffectScale: 1.6f, onCreate: bullet =>
         {
+            bullet.SetVelocity(HAHA, HUHU * sign, false, true);
+
             var task = bullet.CreateTask();
 
             task.AddWait(40);
             task.AddRepeat(5, 0, () => TaskParms.New("VE", 2, 0.2F), p =>
             {
                 var angle = HUHU * sign + sign * 30;
-                BulletArrowBig(bullet.transform.position, angle, p.Get("VE"));
+                BulletArrowBig(bullet.Pos, angle, p.Get("VE"));
             });
 
             task.AddCustom(() =>
@@ -83,18 +84,21 @@ public class Kyo_NoSpell: BossCardBase
         });
     }
 
-    private void BulletArrowBig(Vector3 pos, float angle, float speed)
+    private void BulletArrowBig(Vector2 pos, float angle, float speed)
     {
-        var moveData = MoveData.New(pos, angle.AngleToForward(), speed);
-        BulletFactory.CreateEnemyBullet(BulletId, moveData);
+        LuaStg.ShootBullet(BulletId, pos.x, pos.y, bullet =>
+        {
+            bullet.SetVelocity(speed, angle, false, true);
+        });
     }
 
-    private void BigBallBullet(Vector3 pos, float ang, float sign)
+    private void BigBallBullet(Vector2 pos, float ang, float sign)
     {
-        var moveData = MoveData.New(pos, ang.AngleToForward(), 3);
-        BulletFactory.CreateEnemyBullet(BigBulletId, moveData, onCreate: bullet =>
+        Sound.PlayTHSound("tan02", true, 1f);
+
+        LuaStg.ShootBullet(BigBulletId, pos.x, pos.y, onCreate: bullet =>
         {
-            Sound.PlayTHSound("tan02", true, 1f);
+            bullet.SetVelocity(3, ang, true, true);
             bullet.SetBoundDestroy(false);
 
             var taskRot = bullet.CreateTask();
@@ -102,8 +106,7 @@ public class Kyo_NoSpell: BossCardBase
             taskRot.AddRepeat(120, 1, execuse : p =>
             {
                 var newAngle = sign * 1 + bullet.Rot;
-                bullet.MoveData.Speed = 2f;
-                bullet.SetAngle(newAngle);
+                bullet.SetVelocity(2F, newAngle, false, true);
             });
 
             var taskBullet = bullet.CreateTask();
@@ -124,8 +127,7 @@ public class Kyo_NoSpell: BossCardBase
 
     private void AroundBallBullet(float angservant, float sign, float randomAngle, Bullet father)
     {
-        var moveData = MoveData.New(father.transform.position);
-        BulletFactory.CreateEnemyBullet(RedBulletId, moveData, shootEffectScale: 0f, onCreate: bullet =>
+        LuaStg.ShootBullet(RedBulletId, father.Pos.x, father.Pos.y, shootEffectScale: 0f, onCreate: bullet =>
         {
             bullet.SetFather(father);
             bullet.SetHighLight();
@@ -136,7 +138,9 @@ public class Kyo_NoSpell: BossCardBase
             {
                 var posX = LuaStg.Cos(p.Get("angservant2")) * 40 * LuaStg.Sin(p.Get("wuhu"));
                 var posY = LuaStg.Sin(p.Get("angservant2")) * 40 * LuaStg.Cos(p.Get("wuhu"));
-                bullet.SetPos(posX, posY);
+                var rot = p.Get("angservant2") - 120 * sign;
+
+                bullet.SetRelativePosition(posX, posY, rot);
             });
         });
      }

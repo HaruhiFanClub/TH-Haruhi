@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum MovementMode
 {
     MOVE_NORMAL = 0,
@@ -71,6 +70,7 @@ public class TaskExecuse
     public TaskRepeat RepeatData;
     public TaskMoveTo MoveToData;
     public TaskWait WaitData;
+    public TaskSound SoundData;
     public Action CustomAction;
 }
 
@@ -121,6 +121,7 @@ public class TaskMoveTo
     public float X;
     public float Y;
     public MovementMode MovementMode;
+    public bool SetRotation;
 }
 
 public class TaskRepeat
@@ -130,11 +131,9 @@ public class TaskRepeat
     public TaskParms.NewParamFunc InitParams;
     public List<TaskParms> Params = new List<TaskParms>();
     public Action<TaskRepeat> Execuse;
+    public int ExecuseTimes;
 
     public List<TaskExecuse> AutoExecuse = new List<TaskExecuse>();
-    public int CurExecuseIdx;
-    public int ExecusedTimes;
-
 
     //用于缓存参数，方便使用
     public TaskRepeat Root;
@@ -205,11 +204,18 @@ public class TaskRepeat
         AutoExecuse.Add(TaskTools.NewWander(frame, xMin, xMax, yMin, yMax, xAmpMin, xAmpMax, yAmpMin, yAmpMax, mMode, dMode));
     }
 
-    public void AddMoveTo(int frame, float x, float y, MovementMode moveType)
+    public void AddMoveTo(int frame, float x, float y, MovementMode moveType, bool setRotation = true)
     {
-        AutoExecuse.Add(TaskTools.NewMoveTo(frame, x, y, moveType));
+        AutoExecuse.Add(TaskTools.NewMoveTo(frame, x, y, moveType, setRotation));
+    }
+
+    public void AddSoundPlay(string name, float volume)
+    {
+        AutoExecuse.Add(TaskTools.NewSoundPlay(name, volume));
     }
 }
+
+
 
 public class TaskTools
 {
@@ -242,14 +248,16 @@ public class TaskTools
             case ActionType.MoveTo:
 
                 var md = e.MoveToData;
-                Master.MoveToPos(Vector2Fight.NewWorld(md.X, md.Y), md.nFrame, md.MovementMode);
+                Master.MoveToPos(Vector2Fight.NewWorld(md.X, md.Y), md.nFrame, md.MovementMode, md.SetRotation);
                 yield return Yielders.WaitFrame(md.nFrame);
                 break;
 
-            //无需等待的事件
+            //playsound noWait
             case ActionType.PlaySound:
+                Sound.PlayTHSound(e.SoundData.Name, true, e.SoundData.Volume);
                 break;
 
+            //custome noWait
             case ActionType.Custom:
                 e.CustomAction?.Invoke();
                 e.CustomAction = null;
@@ -277,37 +285,16 @@ public class TaskTools
         for (int i = 0; i < loopTimes; i++)
         {
             //执行子任务
-            //如果自己是无限次的 或 自己的ROOT是无限次的，则按顺序执行子任务，否则执行完子任务就remove
-            if(data.AutoExecuse.Count > 0)
+            for (int j = 0; j < data.AutoExecuse.Count; j++)
             {
-                if(data.Root.Times <= 0)
-                {
-                    //循环执行
-                    var execuse = data.AutoExecuse[data.CurExecuseIdx];
-                    yield return UpdateExecuse(Master, execuse);
-
-                    data.CurExecuseIdx++;
-                    if (data.CurExecuseIdx >= data.AutoExecuse.Count)
-                    {
-                        data.CurExecuseIdx = 0;
-                    }
-                }
-                else
-                {
-                    var execuse = data.AutoExecuse[0];
-
-                    if(data.ExecusedTimes >= data.Times)
-                    {
-                        data.AutoExecuse.RemoveAt(0);
-                    }
-                    yield return UpdateExecuse(Master, execuse); 
-                }
+                var execuse = data.AutoExecuse[j];
+                yield return UpdateExecuse(Master, execuse);
             }
 
             //执行自己
             data.Execuse?.Invoke(data);
             data.UpdateParams();
-            data.ExecusedTimes++;
+            data.ExecuseTimes++;
 
             //interval, 最后一次不等待
             if (i < loopTimes - 1 && data.Interval > 0)
@@ -315,6 +302,10 @@ public class TaskTools
                 yield return Yielders.WaitFrame(data.Interval);
             }
         }
+
+        //remove
+        if(data.Root.Times > 0 && data.Root.ExecuseTimes >= data.Root.Times)
+            data.AutoExecuse.Clear();
     }
 
 
@@ -356,16 +347,27 @@ public class TaskTools
         return new TaskExecuse { Type = ActionType.Wander, WanderData = wanderData };
     }
 
-    public static TaskExecuse NewMoveTo(int frame, float x, float y, MovementMode moveType)
+    public static TaskExecuse NewMoveTo(int frame, float x, float y, MovementMode moveType, bool setRotation)
     {
         var moveData = new TaskMoveTo
         {
             nFrame = frame,
             MovementMode = moveType,
             X = x,
-            Y = y
+            Y = y,
+            SetRotation = setRotation
         };
         return new TaskExecuse { Type = ActionType.MoveTo, MoveToData = moveData };
+    }
+
+    public static TaskExecuse NewSoundPlay(string name, float volume)
+    {
+        var soundData = new TaskSound
+        {
+            Name = name,
+            Volume = volume
+        };
+        return new TaskExecuse { Type = ActionType.PlaySound, SoundData = soundData };
     }
 }
 
@@ -422,8 +424,12 @@ public class LuaStgTask : MonoBehaviour
         AutoExecuse.Add(TaskTools.NewWander(frame, xMin, xMax, yMin, yMax, xAmpMin, xAmpMax, yAmpMin, yAmpMax, mMode, dMode));
     }
 
-    public void AddMoveTo(int frame, float x, float y, MovementMode moveType)
+    public void AddMoveTo(int frame, float x, float y, MovementMode moveType, bool setRotation = true)
     {
-        AutoExecuse.Add(TaskTools.NewMoveTo(frame, x, y, moveType));
+        AutoExecuse.Add(TaskTools.NewMoveTo(frame, x, y, moveType, setRotation));
+    }
+    public void AddSoundPlay(string name, float volume)
+    {
+        AutoExecuse.Add(TaskTools.NewSoundPlay(name, volume));
     }
 }

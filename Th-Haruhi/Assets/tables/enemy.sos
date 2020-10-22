@@ -16,9 +16,11 @@ id	name	scale	isBoss	frameSpeed	resoureIds	radius	maxHp	AIScript	BossCard	BossDr
 											
 #boss											
 1001	≥§√≈”–œ£	1	TRUE	"[6,3,6]"	"[9999,9999,9999]"	1.5	30000		"[""BossCard1"",""BossCard1_End"",BossCard2"",""BossCard_AllStar""]"	drawing/nagato1.png	
-1002	∞°–È	1	TRUE	"[6,3,6]"	"[9999,9999,9999]"	1.5	30000		"[""Kyo_Telephone""]"	drawing/nagato1.png	
+1002	∞°–È	1	TRUE	"[6,3,6]"	"[9999,9999,9999]"	1.5	30000		"[""Kyo_Star""]"	drawing/nagato1.png	
 											
 									"[""Kyo_NoSpell""]"		
 									"[""Kyo_Telephone""]"		
 											
 									"[""Kyo_Star""]"		
+											
+									"[""Kyo_NoSpell""]"		

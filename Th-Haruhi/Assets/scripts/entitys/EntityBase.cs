@@ -14,80 +14,114 @@ public enum EEntityType
 
 public abstract class EntityBase : MonoBehaviour
 {
+    //entity类型
     public abstract EEntityType EntityType { get; }
 
-    private Rigidbody2D _rigidBody2d;
-
+    //transform缓存(效率)
     protected Transform CacheTransform { private set; get; }
 
-    public bool InMove { private set; get; }
-
-    public Vector3 MoveTarget { private set; get; }
-
+    //是否在池中(效率)
     public bool InCache { private set; get; }
     public void SetInCache(bool b)
     {
         InCache = b;
     }
 
+    //Renderer
     public Renderer Renderer { private set; get; }
     public virtual void SetRenderer(Renderer r)
     {
         Renderer = r;
     }
 
-    #region rigidBody
-    public Rigidbody2D Rigid2D
+    //移动状态
+    public bool InMove { private set; get; }
+
+    //当前移动目标点
+    public Vector3 MoveTarget { private set; get; }
+
+    //当前移动朝向
+    private Vector3 MoveFoward;
+
+    private float _angle;
+    protected float Angle
+    {
+        get { return _angle; }
+        set
+        {
+            _angle = value;
+            MoveFoward = value.AngleToForward();
+        }
+    }
+
+    //移动速度
+    private float SpeedX;
+    private float SpeedY;
+
+    protected float Velocity
+    {
+        set { SpeedX = SpeedY = value; }
+    }
+
+    //加速度
+    public float AccelerationX;       
+    public float AccelerationY;
+
+    //父子绑定关系
+    public List<EntityBase> SonEntitys = new List<EntityBase>();
+    public EntityBase Father;
+
+
+    //当前位置(战斗坐标)
+    public Vector2 Pos
     {
         get
         {
-            InitRigid();
-            return _rigidBody2d;
+            return Vector2Fight.WorldPosToFightPos(CacheTransform.position);
         }
     }
 
-    public void InitRigid()
-    {
-        if (_rigidBody2d == null)
-        {
-            var r = GetComponent<Rigidbody2D>();
-            if (r != null)
-            {
-                _rigidBody2d = r;
-            }
-            else
-            {
-                _rigidBody2d = gameObject.AddComponent<Rigidbody2D>();
 
-                if (EntityType == EEntityType.Player)
-                {
-                    _rigidBody2d.bodyType = RigidbodyType2D.Dynamic;
-                    _rigidBody2d.simulated = true;
-                    _rigidBody2d.useAutoMass = false;
-                    _rigidBody2d.mass = 10;
-                    _rigidBody2d.drag = 30;
-                    _rigidBody2d.gravityScale = 0f;
-                    _rigidBody2d.angularDrag = 0f;
-                }
-                else
-                {
-                    _rigidBody2d.bodyType = RigidbodyType2D.Kinematic;
-                }
-                _rigidBody2d.freezeRotation = true;
-            }
-        }
-    }
-
-    #endregion
-
-
+    //当前朝向
     public float Rot
     {
         get { return CacheTransform.eulerAngles.z; }
         set
         {
-            CacheTransform.up = value.AngleToForward();
+            var localEuler = CacheTransform.eulerAngles;
+            localEuler.z = value;
+            CacheTransform.eulerAngles = localEuler;
         }
+    }
+
+    //根据朝向移动
+    private void UpdateMove()
+    {
+        if(SpeedX <= 0 || SpeedY <= 0)
+        {
+            return;
+        }
+        if (MoveFoward == Vector3.zero) 
+        {
+            return;
+        }
+
+        float deltaTime = Time.deltaTime;
+
+        //加速度处理
+        if (!MathUtility.FloatEqual(AccelerationX, 0f) || !MathUtility.FloatEqual(AccelerationY, 0f))
+        {
+            SpeedX += SpeedX * AccelerationX;
+            SpeedY += SpeedY * AccelerationY;
+        }
+        
+        var distX = deltaTime * SpeedX * LuaStg.LuaStgSpeedChange;
+        var distY = deltaTime * SpeedY * LuaStg.LuaStgSpeedChange;
+
+        var currPos = CacheTransform.position;
+        currPos.x += MoveFoward.x * distX;
+        currPos.y += MoveFoward.y * distY;
+        CacheTransform.position = currPos;
     }
 
 
@@ -180,30 +214,29 @@ public abstract class EntityBase : MonoBehaviour
         MoveToPos(new Vector3(selfX + dx * dirX, selfY + dy * dirY), frame, mMode);
     }
 
-
     //自旋转
     private bool _inSelfRota;
     private float _selfRotaAngle;
-    public void SetSelfRota(float anglePerFrame)
+    public void SetOmiga(float anglePerFrame)
     {
         _inSelfRota = true;
         _selfRotaAngle = anglePerFrame;
     }
 
-    public void RevertSelfRota()
+    public void RevertOmiga()
     {
         _inSelfRota = false;
         _selfRotaAngle = 0;
-        CacheTransform.localEulerAngles = Vector3.zero;
+        CacheTransform.eulerAngles = Vector3.zero;
     }
 
     private void UpdateLocalRota()
     {
         if (_inSelfRota)
         {
-            var localEuler = CacheTransform.localEulerAngles;
+            var localEuler = CacheTransform.eulerAngles;
             localEuler.z += _selfRotaAngle;
-            CacheTransform.localEulerAngles = localEuler;
+            CacheTransform.eulerAngles = localEuler;
         }
     }
 
@@ -298,42 +331,48 @@ public abstract class EntityBase : MonoBehaviour
         Renderer.enabled = true;
     }
 
-
-    //angelSpeed
-    public float AccelerationX;        //加速度X
-    public float AccelerationY;        //加速度Y
-
-    public void SetAcceleration(float accleration, float rot, bool aimPlayer = false)
+    public void SetRelativePosition(float x, float y, float rot)
     {
-        if (aimPlayer)
+        if (Father != null)
         {
-            rot += LuaStg.AnglePlayer(transform);
-        }
-        AccelerationX = accleration * LuaStg.Cos(rot);
-        AccelerationY = accleration * LuaStg.Sin(rot);
-    }
-
-    public void RevertAcceleration()
-    {
-        AccelerationX = 0;
-        AccelerationY = 0;
-    }
-
-    public void SetPos(float stgPosX, float stgPosY)
-    {
-        if(Father != null)
-        {
-            CacheTransform.position = Father.CacheTransform.position + Vector2Fight.NewLocal(stgPosX, stgPosY);
+            CacheTransform.position = Father.CacheTransform.position + Vector2Fight.NewLocal(x, y);
         }
         else
         {
-            CacheTransform.position = Vector2Fight.NewWorld(stgPosX, stgPosY);
+            CacheTransform.position = Vector2Fight.NewWorld(x, y);
+        }
+
+        Rot = rot;
+    }
+
+    //移动行为
+    public void SetVelocity(float velocity, float angle, bool aimPlayer, bool setRot)
+    {
+        if (aimPlayer)
+        {
+            angle += LuaStg.AnglePlayer(transform);
+        }
+
+        Angle = angle;
+        SpeedX = velocity;
+        SpeedY = velocity;
+
+        if (setRot) 
+        {
+            Rot = angle;
         }
     }
 
-
-    public List<EntityBase> SonEntitys = new List<EntityBase>();
-    public EntityBase Father;
+    //acceleration
+    public void SetAcceleration(float accleration, float angle, bool aimPlayer)
+    {
+        if (aimPlayer)
+        {
+            angle += LuaStg.AnglePlayer(transform);
+        }
+        AccelerationX = accleration * LuaStg.Cos(angle);
+        AccelerationY = accleration * LuaStg.Sin(angle);
+    }
 
     public void SetFather(EntityBase father)
     {
@@ -369,22 +408,31 @@ public abstract class EntityBase : MonoBehaviour
     protected virtual void Update() { }
     protected virtual void FixedUpdate() 
     {
+        if (InCache) return;
         UpdateLocalRota();
         UpdateSmear();
+        UpdateMove();
     }
 
     public virtual void OnRecycle()
     {
+        MoveFoward = Vector3.zero;
+        SpeedX = 0;
+        SpeedY = 0;
+        AccelerationX = 0;
+        AccelerationY = 0;
+        Angle = 0;
+        Rot = 0;
+        InMove = false;
+        MoveTarget = Vector3.zero;
+
         DestoryAllSons();
         DestroyAllTask();
-        RevertAcceleration();
         RevertBanCollision();
         RevertHidden();
         RevertSmear();
         RevertHighLight();
-        RevertSelfRota();
-        InMove = false;
-        MoveTarget = Vector3.zero;
+        RevertOmiga();
     }
 
     private void DestroyAllTask()

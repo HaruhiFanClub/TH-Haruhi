@@ -74,7 +74,7 @@ public class Enemy : EntityBase
 
         _aniStyle = EnemyMoveStyle.Idle;
 
-        InitRigid(); 
+        this.AddRigidBody(); 
 
         if(!string.IsNullOrEmpty(deploy.AIScript))
         {

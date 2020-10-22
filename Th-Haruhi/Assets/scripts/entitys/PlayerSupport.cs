@@ -76,9 +76,10 @@ public class PlayerSupport : MonoBehaviour
                     NextShootFrame = GameSystem.FixedFrameCount + shootFrame;
                     BulletFactory.CreateBullet(bulletId, layer, bullet =>
                     {
-                        var data = MoveData.New(transform.position, MathUtility.SwapYZ(transform.forward), bulletSpeed);
                         bullet.SetMaster(transform);
-                        bullet.Shoot(data, atk:atk);
+                        bullet.SetAtk(atk);
+                        bullet.SetVelocity(bulletSpeed, transform.eulerAngles.z, false, true);
+                        bullet.Shoot(transform.position);
                     });
                 }
             }
@@ -92,7 +93,9 @@ public class PlayerSupport : MonoBehaviour
                 {
                     _currBullet = bullet;
                     bullet.SetMaster(transform);
-                    bullet.Shoot(MoveData.New(transform.position, transform.up, bulletSpeed), atk: atk);
+                    bullet.SetAtk(atk);
+                    bullet.SetVelocity(bulletSpeed, transform.eulerAngles.z, false, true);
+                    bullet.Shoot(transform.position);
                 });
             }
             if(_prevInLoopShoot && !inShoot)

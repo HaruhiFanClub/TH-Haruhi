@@ -48,6 +48,7 @@ public class BossCard2 : BossCardBase
 
     }
 
+    /*
     private float _lastMoveTime;
     private bool _moveLeft;
 
@@ -138,4 +139,5 @@ public class BossCard2 : BossCardBase
                 _blueBulletAngle -= 360;
         }
     }
+    */
 }

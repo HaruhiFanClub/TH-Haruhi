@@ -52,6 +52,9 @@ public class Player : EntityBase
     //僚机管理器
     public PlayerSupportMgr SupportMgr { private set; get; }
 
+    //rigidBody
+    private Rigidbody2D _rigidBody;
+
     //是否无敌
     private bool _invincible;
     public bool Invincible
@@ -121,7 +124,7 @@ public class Player : EntityBase
         _aniStyle = PlayerMoveStyle.Idle;
 
         transform.localScale = Vector3.one * deploy.scale;
-        InitRigid();
+        _rigidBody = this.AddRigidBody();
 
         SupportMgr = new PlayerSupportMgr();
         SupportMgr.Init(this);
@@ -230,8 +233,9 @@ public class Player : EntityBase
             var pos = transform.position + new Vector3(Deploy.shootPos[i][0], Deploy.shootPos[i][1]);
             BulletFactory.CreateBullet(Deploy.normalBulletId, Layers.PlayerBullet,  bullet =>
             {
+                bullet.SetAtk(Deploy.bulletAtk);
                 bullet.SetMaster(transform);
-                bullet.Shoot(MoveData.New(pos, Vector3.up, Deploy.bulletSpeed), atk: Deploy.bulletAtk);
+                bullet.SetVelocity(Deploy.bulletSpeed, CacheTransform.eulerAngles.z, false, true);
             });
         }
 
@@ -243,7 +247,7 @@ public class Player : EntityBase
     {
         var moveSpeed = InSlow ? Deploy.slowSpeed : Deploy.speed;
         var targetPos = transform.position + dir * Time.fixedDeltaTime * moveSpeed;
-        Rigid2D.MovePosition(targetPos);
+        _rigidBody?.MovePosition(targetPos);
 
         if (MathUtility.FloatEqual(dir.x, 0))
         {

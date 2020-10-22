@@ -22,7 +22,7 @@ public class Vector2Fight
 
     public static Vector3 WorldPosToFightPos(Vector3 pos)
     {
-        return new Vector3(pos.x * _trans, pos.y * _trans) - Center;
+        return new Vector3(pos.x * _trans, pos.y * _trans) - Center * _trans;
     }
 
     public static Vector2 WordPosToUIPos(Vector3 pos)

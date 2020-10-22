@@ -48,30 +48,6 @@ public static class BulletFactory
         BulletTab = TableUtility.GetTable<BulletDeploy>();
     }
 
-    public static void CreateEnemyLaser(int id, float length, float width, int turnOnFrame, MoveData moveData, List<EventData> eventList = null, Action<Laser> onCreate = null, Action<Bullet> onDestroy = null)
-    {
-        CreateBullet(id, Layers.EnemyBullet, bullet =>
-        {
-            var laser = (Laser)bullet;
-            laser.transform.localScale = Vector2Fight.NewLocal(width, length);
-            laser.Shoot(moveData, eventList, 1, onDestroy);
-            laser.TurnOn(turnOnFrame);
-            onCreate?.Invoke(laser);
-        });
-    }
-
-    public static void CreateEnemyBullet(int id,
-        MoveData moveData, List<EventData> eventList = null,
-        Action<Bullet> onCreate = null, Action<Bullet> onDestroy = null, float shootEffectScale = 1.5f) 
-    {
-        CreateBullet(id, Layers.EnemyBullet, bullet =>
-        {
-            bullet.Shoot(moveData, eventList, 1,  onDestroy);
-            if(shootEffectScale > 0) bullet.PlayShootEffect(shootEffectScale);
-            onCreate?.Invoke(bullet);
-        });
-    }
-
     public static void CreateBullet(int id, int layer, CreatedNotify notify)
     {
         var deploy = BulletTab[id];

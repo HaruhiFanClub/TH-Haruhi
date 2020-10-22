@@ -7,9 +7,9 @@ public class PlayerBullet : Bullet
     private bool _bHitEnemy;
     private float _hitEnemyFrame;
 
-    public override void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1,  Action<Bullet> onDestroy = null)
+    public override void Shoot(Vector3 realPos)
     {
-        base.Shoot(moveData, eventList, atk,  onDestroy);
+        base.Shoot(realPos);
         _bHitEnemy = false;
     }
 
@@ -72,7 +72,7 @@ public class PlayerBullet : Bullet
         //击中敌人后速度减慢
         if (Deploy.delayDestroy)
         {
-            MoveData.Speed = 3.5f;
+            Velocity = 3.5f;
             Renderer.material.SetFloat("_Brightness", 3f);
         }
         else
@@ -93,7 +93,7 @@ public class PlayerBullet : Bullet
         if (Deploy.bombEffectId > 0)
         {
             var pos = Renderer.transform.position;
-            var forward = MoveData.Forward;
+            var forward = CacheTransform.up;
             var speed = Deploy.bombEffectSpeed;
             TextureEffectFactroy.CreateEffect(Deploy.bombEffectId, SortingOrder.EnemyBullet, effect =>
             {

@@ -70,6 +70,8 @@ public class BossCard1 : BossCardBase
                 break;
         }
     }
+
+    /*
     public override void OnFixedUpdate()
     {
         base.OnFixedUpdate();
@@ -201,4 +203,5 @@ public class BossCard1 : BossCardBase
                 _blueBulletAngle -= 360;
         }
     }
+    */
 }

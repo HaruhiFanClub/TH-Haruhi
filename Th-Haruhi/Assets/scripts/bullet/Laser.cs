@@ -11,9 +11,10 @@ public class Laser : EnemyBullet
     private float _defaultBoxWidth;
     private float _defaultBoxHeight;
 
-    public override void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1, Action<Bullet> onDestroy = null)
+    public override void Shoot(Vector3 realPos)
     {
-        base.Shoot(moveData, eventList, atk, onDestroy);
+        base.Shoot(realPos);
+
         Sound.PlayTHSound("lazer00", true, 0.5f);
 
         _defaultWidth = CacheTransform.localScale.x;

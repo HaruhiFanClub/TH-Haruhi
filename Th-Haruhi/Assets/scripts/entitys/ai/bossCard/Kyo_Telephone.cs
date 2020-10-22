@@ -28,9 +28,8 @@ public class Kyo_Telephone : BossCardBase
         //task wander
         var taskWander = Master.CreateTask();
         taskWander.AddWait(240);
-        taskWander.AddRepeat(0, 240, execuse: p => { 
-            p.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
-        });
+        var repeat = taskWander.AddRepeat(0, 240);
+        repeat.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
 
 
         //shoot task(800fps loop)
@@ -47,10 +46,7 @@ public class Kyo_Telephone : BossCardBase
                 var posX = LuaStg.Cos(p.Get("an2")) * p.Get("y");
                 var posY = LuaStg.Sin(p.Get("an2")) * p.Get("y");
 
-                var pos = Master.transform.position + Vector2Fight.NewLocal(posX, posY);
-
-
-                ShootBullet(pos, p.Get("an5"), p.Get("an2"), 0, BulletIdBlue);
+                ShootBullet(new Vector2(Master.Pos.x + posX, Master.Pos.y + posY), p.Get("an5"), p.Get("an2"), 0, BulletIdBlue);
             });
 
             shoot.AddRepeat(6, 2, () => TaskParms.New("an", 0, 20, "y", 150, 0)).
@@ -59,9 +55,8 @@ public class Kyo_Telephone : BossCardBase
                   {
                       var posX = LuaStg.Cos(p.Get("an2")) * p.Get("y");
                       var posY = LuaStg.Sin(p.Get("an2")) * p.Get("y");
-                      var pos = Master.transform.position + Vector2Fight.NewLocal(posX, posY);
 
-                      ShootBullet(pos, p.Get("an"), p.Get("an2") + p.Get("an4"), 0, BulletIdBlue);
+                      ShootBullet(new Vector2(Master.Pos.x + posX, Master.Pos.y + posY), p.Get("an"), p.Get("an2") + p.Get("an4"), 0, BulletIdBlue);
                   });
 
 
@@ -76,65 +71,62 @@ public class Kyo_Telephone : BossCardBase
                       //BulletIdRed
                       var posX = p.Get("xxxp") + 80f * LuaStg.Sin(p.Get("cos")) * p.Get("sign");
                       var posY = p.Get("yyy1");
-                      var pos = Master.transform.position + Vector2Fight.NewLocal(posX, posY);
 
-                      ShootBullet(pos, p.Get("an") + p.Get("an2"), 0, 0, BulletIdRed);
+                      
+                      ShootBullet(new Vector2(Master.Pos.x + posX, Master.Pos.y + posY), p.Get("an") + p.Get("an2"), 0, 0, BulletIdRed);
                   });
 
             shoot.AddWait(175);
             shoot.AddRepeat(7, 15).AddRepeat(12, 0, () => TaskParms.New("ang", 0, 30), p =>
             {
-                var pos = Vector2Fight.WorldPosToFightPos(Master.transform.position);
                 var ang = p.Get("ang");
                 var eulurZ = ang + Random.Range(-10f, 10f) + ang;
-                ShootSniper(pos, eulurZ, BulletIdSniper);
+                ShootSniper(Master.Pos, eulurZ, BulletIdSniper);
             });
         });
     }
 
-    private void ShootSniper(Vector3 pos, float eulurZ, int bulletId)
+    private void ShootSniper(Vector2 pos, float ang, int bulletId)
     {
         //sound 
         Sound.PlayTHSound("tan02", true, 0.2f);
-        var targetX = pos.x + LuaStg.Cos(eulurZ) * 200;
-        var targetY = pos.y + LuaStg.Sin(eulurZ) * 200;
 
-        BulletFactory.CreateEnemyBullet(bulletId, MoveData.New(pos, eulurZ.AngleToForward()), onCreate: bullet =>
+        var targetX = pos.x + LuaStg.Cos(ang) * 200;
+        var targetY = pos.y + LuaStg.Sin(ang) * 200;
+
+        LuaStg.ShootBullet(bulletId, pos.x, pos.y, onCreate: bullet =>
         {
+            bullet.SetVelocity(0, ang, false, true);
+
             var task = bullet.CreateTask();
-            task.AddMoveTo(120, targetX, targetY, MovementMode.MOVE_DECEL);
+            task.AddMoveTo(120, targetX, targetY, MovementMode.MOVE_DECEL, true);
             task.AddCustom(() =>
             {
-                bullet.AimToPlayer(5f, -10f, 10f, true);
+                bullet.SetVelocity(5, Random.Range(-5f, 5f), true, true);
             });
         });
     }
 
-    private void ShootBullet(Vector3 pos, float an, float an2, int t, int bulletId)
+    private void ShootBullet(Vector2 pos, float an, float an2, int t, int bulletId)
     {
-
         Sound.PlayTHSound("tan01", true, 0.1f);
-        var eulurZ = an + an2;
-        var moveData = MoveData.New(pos, eulurZ.AngleToForward(), 0f);
 
-        BulletFactory.CreateEnemyBullet(bulletId, moveData, onCreate: bullet =>
-        {
-            bullet.SetHighLight();
+        LuaStg.ShootBullet(bulletId, pos.x, pos.y, onCreate: bullet =>
+         {
+             bullet.Rot = an + an2;
+             bullet.SetHighLight();
 
-            var task = bullet.CreateTask();
-            task.AddWait(150 + t, ()=>
-            {
-                bullet.RevertHighLight();
-            });
+             var task = bullet.CreateTask();
+             task.AddWait(150 + t, () =>
+             {
+                 bullet.RevertHighLight();
+             });
 
-
-            task.AddRepeat(60, 3, () => TaskParms.New("yjsh", 0, 2), p => 
-            {
-                bullet.MoveData.Speed = (2f * LuaStg.Sin(p.Get("yjsh")));
-                bullet.SetAngle(eulurZ);
-            });
-        });
-
+             task.AddRepeat(60, 3, () => TaskParms.New("yjsh", 0, 2), p =>
+             {
+                 bullet.SetVelocity(2f * LuaStg.Sin(p.Get("yjsh")), bullet.Rot, false, true);
+             });
+         }) ;
     }
 
 }

@@ -440,4 +440,30 @@ public static class GameObjectTools
             }
         }
     }
+
+    public static Rigidbody2D AddRigidBody(this EntityBase entity)
+    {
+        var r = entity.GetComponent<Rigidbody2D>();
+        if (r == null) 
+        {
+            r = entity.gameObject.AddComponent<Rigidbody2D>();
+        }
+
+        if (entity.EntityType == EEntityType.Player)
+        {
+            r.bodyType = RigidbodyType2D.Dynamic;
+            r.simulated = true;
+            r.useAutoMass = false;
+            r.mass = 10;
+            r.drag = 30;
+            r.gravityScale = 0f;
+            r.angularDrag = 0f;
+        }
+        else
+        {
+            r.bodyType = RigidbodyType2D.Kinematic;
+        }
+        r.freezeRotation = true;
+        return r;
+    }
 }

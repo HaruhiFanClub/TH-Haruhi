@@ -61,7 +61,7 @@ public class MarisaLaser : PlayerBullet
         if (!Shooted) return;
         if (Master == null) return;
 
-        //CacheTransform.position = Master.position;
+        CacheTransform.position = Master.position;
 
         var delteTime = Time.deltaTime;
 

@@ -8,9 +8,9 @@ public class EnemyBullet : Bullet
     //是否被擦过弹
     private bool _isGrazed;
 
-    public override void Shoot(MoveData moveData, List<EventData> eventList = null, int atk = 1,Action<Bullet> onDestroy = null)
+    public override void Shoot(Vector3 realPos)
     {
-        base.Shoot(moveData, eventList, atk, onDestroy);
+        base.Shoot(realPos);
         _isGrazed = false;
     }
 
