@@ -1,9 +1,7 @@
 ﻿
+using LitJson;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using InControl;
-using LitJson;
 using UnityEngine;
 
 public class LuaStgCfg
@@ -34,6 +32,7 @@ public static class LuaStg
     {
         return Mathf.Sin(Mathf.Deg2Rad * degree);
     }
+
     public static float Cos(float degree)
     {
         return Mathf.Cos(Mathf.Deg2Rad * degree);
@@ -72,6 +71,15 @@ public static class LuaStg
     {
         var luaStgTask = master.gameObject.AddComponent<LuaStgTask>();
         return luaStgTask;
+    }
+
+    public static void RemoveAllTask(this EntityBase master)
+    {
+        var tasks = master.GetComponents<LuaStgTask>();
+        for(int i = 0; i < tasks.Length; i++)
+        {
+            UnityEngine.Object.Destroy(tasks[i]);
+        }
     }
 
     public static void ShootEnemyBullet(int id, float x, float y,

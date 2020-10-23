@@ -4,36 +4,36 @@
 #									
 #playerId		段落Id	对话ID	左边	水平翻转立绘	自机立绘类型	左侧对话	结束后刷boss	结束后强制等待时间
 id	remark	paragraphId	dialogId	isLeft	revertImage	drawing	text	refreshBoss	forceWaitTime
-1	灵梦_长门Start	1	1	TRUE	TRUE	drawing/drawing_reimu.png	今天天气真不错，出来散步真的太对了！		
-2	灵梦_长门Start	1	2	TRUE	TRUE	drawing/drawing_reimu2.png	咦？前面好像有个不认识的人。	TRUE	1.5
-3	灵梦_长门Start	1	3	TRUE	TRUE	drawing/drawing_reimu4.png	你是谁？要塞钱么？		
-4	灵梦_长门Start	1	4	FALSE	FALSE	drawing/nagato4.png	…………		
-5	灵梦_长门Start	1	5	TRUE	TRUE	drawing/drawing_reimu3.png	怎么不说话？你好像不是幻想乡的人吧？		
-6	灵梦_长门Start	1	6	FALSE	FALSE	drawing/nagato2.png	可能吧。。。		
-7	灵梦_长门Start	1	7	TRUE	TRUE	drawing/drawing_reimu2.png	啊！！你要干什么？？		
-8	灵梦_长门Start	1	8	FALSE	FALSE	drawing/nagato2.png	你完蛋了。。。		
-9	魔理沙_长门Start	2	1	TRUE	TRUE	drawing/drawing_marisa7.png	啦啦啦啦啦！今天心情真不错。		
-10	魔理沙_长门Start	2	2	TRUE	TRUE	drawing/drawing_marisa5.png	咦？前面好像有个不认识的人。	TRUE	1.5
-11	魔理沙_长门Start	2	3	TRUE	TRUE	drawing/drawing_marisa7.png	你是谁？		
-12	魔理沙_长门Start	2	4	FALSE	FALSE	drawing/nagato4.png	…………		
-13	魔理沙_长门Start	2	5	TRUE	TRUE	drawing/drawing_marisa5.png	怎么不说话？		
-14	魔理沙_长门Start	2	6	FALSE	FALSE	drawing/nagato2.png	…………		
-15	魔理沙_长门Start	2	7	TRUE	TRUE	drawing/drawing_marisa4.png	你这是要干什么？		
-16	魔理沙_长门Start	2	8	FALSE	FALSE	drawing/nagato2.png	你完蛋了。。。		
-17	sakuya_长门Start	3	1	TRUE	TRUE	drawing/drawing_sakuya.png	要赶紧回到红魔馆才行。		
-18	sakuya_长门Start	3	2	TRUE	TRUE	drawing/drawing_sakuya.png	咦？前面好像有个不认识的人。	TRUE	1.5
-19	sakuya_长门Start	3	3	TRUE	TRUE	drawing/drawing_sakuya.png	Hello？		
-20	sakuya_长门Start	3	4	FALSE	FALSE	drawing/nagato4.png	…………		
-21	sakuya_长门Start	3	5	TRUE	TRUE	drawing/drawing_sakuya.png	哦吼，一马平川啊，看来和我水平差不多！		
-22	sakuya_长门Start	3	6	FALSE	FALSE	drawing/nagato2.png	…………		
-23	sakuya_长门Start	3	7	TRUE	TRUE	drawing/drawing_sakuya.png	你这是要干什么？		
-24	sakuya_长门Start	3	8	FALSE	FALSE	drawing/nagato2.png	你完蛋了。。。		
-25	灵梦_长门End	4	1	TRUE	TRUE	drawing/drawing_reimu4.png	看来你也不怎么样么。		
-26	灵梦_长门End	4	2			drawing/nagato4.png	…………		
-27	灵梦_长门End	4	1	TRUE	TRUE	drawing/drawing_reimu.png	总之，谢谢游玩~~		
-28	魔理沙_长门End	5	1	TRUE	TRUE	drawing/drawing_marisa7.png	看来你也不怎么样么。		
-29	魔理沙_长门End	5	2			drawing/nagato4.png	…………		
-30	魔理沙_长门End	5	1	TRUE	TRUE	drawing/drawing_marisa7.png	总之，谢谢游玩~~		
-31	sakuya_长门End	6	1	TRUE	TRUE	drawing/drawing_sakuya.png	看来你也不怎么样么。		
-32	sakuya_长门End	6	2			drawing/nagato4.png	…………		
-33	sakuya_长门End	6	1	TRUE	TRUE	drawing/drawing_sakuya.png	总之，谢谢游玩~~		
+1	灵梦_长门Start	1	1	TRUE	TRUE	drawing/drawing_reimu.png	防止剧透，暂时屏蔽了内容。		
+2	灵梦_长门Start	1	2	TRUE	TRUE	drawing/drawing_reimu2.png	防止剧透，暂时屏蔽了内容。	TRUE	1.5
+3	灵梦_长门Start	1	3	TRUE	TRUE	drawing/drawing_reimu4.png	防止剧透，暂时屏蔽了内容。		
+4	灵梦_长门Start	1	4	FALSE	FALSE	drawing/nagato4.png	防止剧透，暂时屏蔽了内容。		
+5	灵梦_长门Start	1	5	TRUE	TRUE	drawing/drawing_reimu3.png	防止剧透，暂时屏蔽了内容。		
+6	灵梦_长门Start	1	6	FALSE	FALSE	drawing/nagato2.png	防止剧透，暂时屏蔽了内容。		
+7	灵梦_长门Start	1	7	TRUE	TRUE	drawing/drawing_reimu2.png	防止剧透，暂时屏蔽了内容。		
+8	灵梦_长门Start	1	8	FALSE	FALSE	drawing/nagato2.png	防止剧透，暂时屏蔽了内容。		
+9	魔理沙_长门Start	2	1	TRUE	TRUE	drawing/drawing_marisa7.png	防止剧透，暂时屏蔽了内容。		
+10	魔理沙_长门Start	2	2	TRUE	TRUE	drawing/drawing_marisa5.png	防止剧透，暂时屏蔽了内容。	TRUE	1.5
+11	魔理沙_长门Start	2	3	TRUE	TRUE	drawing/drawing_marisa7.png	防止剧透，暂时屏蔽了内容。		
+12	魔理沙_长门Start	2	4	FALSE	FALSE	drawing/nagato4.png	防止剧透，暂时屏蔽了内容。		
+13	魔理沙_长门Start	2	5	TRUE	TRUE	drawing/drawing_marisa5.png	防止剧透，暂时屏蔽了内容。		
+14	魔理沙_长门Start	2	6	FALSE	FALSE	drawing/nagato2.png	防止剧透，暂时屏蔽了内容。		
+15	魔理沙_长门Start	2	7	TRUE	TRUE	drawing/drawing_marisa4.png	防止剧透，暂时屏蔽了内容。		
+16	魔理沙_长门Start	2	8	FALSE	FALSE	drawing/nagato2.png	防止剧透，暂时屏蔽了内容。		
+17	sakuya_长门Start	3	1	TRUE	TRUE	drawing/drawing_sakuya.png	防止剧透，暂时屏蔽了内容。		
+18	sakuya_长门Start	3	2	TRUE	TRUE	drawing/drawing_sakuya.png	防止剧透，暂时屏蔽了内容。	TRUE	1.5
+19	sakuya_长门Start	3	3	TRUE	TRUE	drawing/drawing_sakuya.png	防止剧透，暂时屏蔽了内容。		
+20	sakuya_长门Start	3	4	FALSE	FALSE	drawing/nagato4.png	防止剧透，暂时屏蔽了内容。		
+21	sakuya_长门Start	3	5	TRUE	TRUE	drawing/drawing_sakuya.png	防止剧透，暂时屏蔽了内容。		
+22	sakuya_长门Start	3	6	FALSE	FALSE	drawing/nagato2.png	防止剧透，暂时屏蔽了内容。		
+23	sakuya_长门Start	3	7	TRUE	TRUE	drawing/drawing_sakuya.png	防止剧透，暂时屏蔽了内容。		
+24	sakuya_长门Start	3	8	FALSE	FALSE	drawing/nagato2.png	防止剧透，暂时屏蔽了内容。		
+25	灵梦_长门End	4	1	TRUE	TRUE	drawing/drawing_reimu4.png	防止剧透，暂时屏蔽了内容。		
+26	灵梦_长门End	4	2			drawing/nagato4.png	防止剧透，暂时屏蔽了内容。		
+27	灵梦_长门End	4	1	TRUE	TRUE	drawing/drawing_reimu.png	防止剧透，暂时屏蔽了内容。		
+28	魔理沙_长门End	5	1	TRUE	TRUE	drawing/drawing_marisa7.png	防止剧透，暂时屏蔽了内容。		
+29	魔理沙_长门End	5	2			drawing/nagato4.png	防止剧透，暂时屏蔽了内容。		
+30	魔理沙_长门End	5	1	TRUE	TRUE	drawing/drawing_marisa7.png	防止剧透，暂时屏蔽了内容。		
+31	sakuya_长门End	6	1	TRUE	TRUE	drawing/drawing_sakuya.png	防止剧透，暂时屏蔽了内容。		
+32	sakuya_长门End	6	2			drawing/nagato4.png	防止剧透，暂时屏蔽了内容。		
+33	sakuya_长门End	6	1	TRUE	TRUE	drawing/drawing_sakuya.png	防止剧透，暂时屏蔽了内容。		

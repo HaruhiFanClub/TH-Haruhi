@@ -435,6 +435,8 @@ public abstract class EntityBase : MonoBehaviour
 
     public virtual void OnRecycle()
     {
+        this.RemoveAllTask();
+
         VelocityX = 0;
         VelocityY = 0;
         AccelX = 0;

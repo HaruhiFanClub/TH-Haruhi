@@ -101,7 +101,7 @@ public abstract class BossCardBase
         {
             Master.SetHpHudActive(false);
         }
-
+        Master.RemoveAllTask();
         Master.ShowCircleRaoDong(false);
         UIBossBg.FadeOut();
         UIBattle.ShowBossTime(false);

@@ -21,22 +21,30 @@ public static class ShellBuild
     private static readonly string buidPathIOS;
     private static readonly string buidPathAndroid;
     private static readonly string buidPathWindows;
+    private static readonly string buidPathWebGL;
+
     private static BuildOptions buildOption;
     private static readonly string buildAndroidPass;
     private static readonly string buildAndroidAlias;
     private static readonly string buildAndroidKeyStore;
     private static readonly string buildOutPath;
+    private static readonly string buildOutWebGL;
+    private static readonly string buildOutWindows;
     public static bool g_bSkipBundle = false;
     public static bool g_bSkipBuildPlayer = false;
 
     static ShellBuild()
 	{
 		buildOutPath = PathUtility.ProjectPath + "/build";
-		buidPathIOS = buildOutPath + "/ios";
-		buidPathAndroid = buildOutPath + "/android";
-        buidPathWindows = buildOutPath + "/TH-Haruhi.exe";
-        buildOption = BuildOptions.None;
+        buildOutWindows = buildOutPath + "/standalone";
+        buildOutWebGL = buildOutPath + "/standalone";
 
+        buidPathIOS = buildOutPath + "/ios";
+		buidPathAndroid = buildOutPath + "/android";
+        buidPathWindows = buildOutWindows + "/TH-Haruhi.exe";
+        buidPathWebGL = buildOutWebGL + "/TH-Haruhi";
+
+        buildOption = BuildOptions.None;
 
 		buildAndroidPass = "";
 		buildAndroidAlias = "";
@@ -100,6 +108,15 @@ public static class ShellBuild
         AssetDatabase.Refresh();
         FastBuild(buidPathWindows, BuildTarget.StandaloneWindows64, BuildTargetGroup.Standalone);
     }
+
+    [MenuItem("Haruhi/Build/BuildWebGL", false, 1)]
+    public static void BuildWebGL()
+    {
+        SetBuildSetting(false);
+        AssetDatabase.Refresh();
+        FastBuild(buidPathWindows, BuildTarget.WebGL, BuildTargetGroup.WebGL);
+    }
+
     /*
     [MenuItem("Haruhi/Build/CommandLineBuildFastIOS", false, 1)]
     public static void CommandLineBuildFast()
@@ -220,7 +237,13 @@ public static class ShellBuild
 		if (!Directory.Exists(buildOutPath))
 			Directory.CreateDirectory(buildOutPath);
 
-		var resourceList = ResourceBuildTool.GetBuildResources(PathUtility.FullPathToProjectPath(PathUtility.ResourcesPath));
+        if (!Directory.Exists(buildOutWebGL))
+            Directory.CreateDirectory(buildOutWebGL);
+
+        if (!Directory.Exists(buildOutWindows))
+            Directory.CreateDirectory(buildOutWindows);
+
+        var resourceList = ResourceBuildTool.GetBuildResources(PathUtility.FullPathToProjectPath(PathUtility.ResourcesPath));
         BuildGame(buildPath, target, buildOption, resourceList);
     }
 
