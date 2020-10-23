@@ -257,18 +257,14 @@ public class TaskTools
             //wander
             case ActionType.Wander:
 
-               // Debug.LogError("wander:" + GameSystem.FixedFrameCount);
                 var data = e.WanderData;
-                Master.MoveToPlayer(data.nFrame, data.xRange, data.yRange, data.xAmplitude, data.yAmplitude, data.MovementMode, data.DirectionMode);
-                yield return Yielders.WaitFrame(data.nFrame);
+                yield return Master.MoveToPlayer(data.nFrame, data.xRange, data.yRange, data.xAmplitude, data.yAmplitude, data.MovementMode, data.DirectionMode);
                 break;
 
             //moveto
             case ActionType.MoveTo:
-               // Debug.LogError("MoveTo:" + GameSystem.FixedFrameCount);
                 var md = e.MoveToData;
-                Master.MoveToPos(Vector2Fight.NewWorld(md.X, md.Y), md.nFrame, md.MovementMode, md.SetRotation);
-                yield return Yielders.WaitFrame(md.nFrame);
+                yield return Master.MoveTo(Vector2Fight.NewWorld(md.X, md.Y), md.nFrame, md.MovementMode, md.SetRotation);
                 break;
 
             //playsound noWait
@@ -315,7 +311,7 @@ public class TaskTools
             data.ExecuseTimes++;
 
             //interval, 最后一次不等待
-            if (i < loopTimes - 1 && data.Interval > 0)
+            if (data.Interval > 0)
             {
                 yield return Yielders.WaitFrame(data.Interval);
             }

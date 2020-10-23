@@ -162,7 +162,7 @@ public class Kyo_Star : BossCardBase
         LuaStg.ShootBullet(RedHugeBulletId, pos.x, pos.y, onCreate: bullet => 
         {
             bullet.SetVelocity(2f * cuxi, an, false, true);
-            bullet.SetAcceleration(0.0223f * cuxi, an + 180, false);
+            bullet.SetAcceleration(0.02f * cuxi, an + 180, false);
 
             var task = bullet.CreateTask();
             task.AddWait(100);
@@ -226,7 +226,7 @@ public class Kyo_Star : BossCardBase
 
         //星星集群
         var r1 = repeat.AddRepeat(24, 6, () => TaskParms.New("an2", an, 3));
-        r1.AddRepeat(6, 0, () => TaskParms.New("an4", r1.Get("an2"), 60, "ad", -15f, 5f), p => 
+        r1.AddRepeat(6, 0, () => TaskParms.New("an4", r1.Get("an2"), 60, "ad", -15f, 5f), p =>
         {
             ShootStarHide(Master.Pos, p.Get("an4") * sign);
         });

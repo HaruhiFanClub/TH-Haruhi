@@ -21,7 +21,7 @@ public class LuaStgInfo
 
 public static class LuaStg 
 {
-    public const float LuaStgSpeedChange = 2.3f;
+    public const float LuaStgSpeedChange = 2.2f;
 
     public static void LoadLuaSTG(string name)
     {

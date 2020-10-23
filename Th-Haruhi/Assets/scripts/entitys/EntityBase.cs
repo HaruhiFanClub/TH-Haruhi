@@ -148,7 +148,7 @@ public abstract class EntityBase : MonoBehaviour
         StartCoroutine(MoveTo(target, t, mode, setRotation));
     }
 
-    private IEnumerator MoveTo(Vector3 target, int t, MovementMode mode, bool setRotation)
+    public IEnumerator MoveTo(Vector3 target, int t, MovementMode mode, bool setRotation)
     {
         InMove = true;
         MoveTarget = target;
@@ -179,19 +179,19 @@ public abstract class EntityBase : MonoBehaviour
             }
 
             CacheTransform.position += (dist - prevDist) * diff;
-            yield return new WaitForFixedUpdate();
+            yield return Yielders.FixedFrame;
             prevDist = dist;
         }
         InMove = false;
     }
 
     //向Player移動, 怪物巡邏用
-    public void MoveToPlayer(int frame, Vector2 xRange, Vector2 yRange, Vector2 xAmp, Vector2 yAmp, MovementMode mMode, DirectionMode dMode)
+    public IEnumerator MoveToPlayer(int frame, Vector2 xRange, Vector2 yRange, Vector2 xAmp, Vector2 yAmp, MovementMode mMode, DirectionMode dMode)
     {
         var dirX = LuaStg.RandomSign();
         var dirY = LuaStg.RandomSign();
         var player = StageMgr.MainPlayer;
-        if (player == null) return;
+        if (player == null) yield break;
 
         var selfX = CacheTransform.position.x;
         var selfY = CacheTransform.position.y;
@@ -228,7 +228,7 @@ public abstract class EntityBase : MonoBehaviour
             dirY = -1;
         }
 
-        MoveToPos(new Vector3(selfX + dx * dirX, selfY + dy * dirY), frame, mMode);
+        yield return MoveTo(new Vector3(selfX + dx * dirX, selfY + dy * dirY), frame, mMode, false);
     }
 
     //自旋转
