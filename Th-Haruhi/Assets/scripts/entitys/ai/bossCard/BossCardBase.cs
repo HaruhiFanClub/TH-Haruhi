@@ -10,13 +10,11 @@ public abstract class BossCardBase
     //符卡时间
     public abstract float TotalTime { get; }
 
+    //符卡状态阶段
+    public EBossCardPhase Phase = EBossCardPhase.Single;
+
     //难度设置
     protected abstract void InitDifficult(ELevelDifficult diff);
-
-
-    protected Boss Master;
-
-    public EBossCardPhase Phase { set; get; }
 
     //出生位置
     public virtual Vector3 StartPos { get { return Vector3.zero; } }
@@ -26,6 +24,8 @@ public abstract class BossCardBase
 
     public bool BanShoot;
     public bool Inited { private set; get; }
+    
+    protected Boss Master;
 
     public bool CanShoot 
     {
@@ -41,8 +41,11 @@ public abstract class BossCardBase
     {
         Master = enemy;
         CurrentHp = MaxHp = maxHp;
+        InitPhase();
         InitDifficult(StageMgr.Data.Difficult);
     }
+
+    protected abstract void InitPhase();
 
     public void OnEnable(bool isFirstCard)
     {

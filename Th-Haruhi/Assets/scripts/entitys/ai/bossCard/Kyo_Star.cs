@@ -6,12 +6,18 @@ public class Kyo_Star : BossCardBase
 {
     public override string CardName => "『诺维科夫所见的宇宙』";
 
-    public override float TotalTime => 303f;
+    public override float TotalTime => 35f;
 
     public override Vector3 StartPos => Boss.BossMidCenter;
 
+    protected override void InitPhase()
+    {
+        Phase = EBossCardPhase.Two;
+    }
+
     protected override void InitDifficult(ELevelDifficult diff)
     {
+
     }
 
     public int WarnStarId = 2003;
@@ -101,7 +107,7 @@ public class Kyo_Star : BossCardBase
 
    private void ShootRedStar(Vector2 pos, float ang)
    {
-        LuaStg.ShootBullet(RedStarId, pos.x, pos.y, bullet => 
+        LuaStg.ShootEnemyBullet(RedStarId, pos.x, pos.y, bullet => 
         {
             bullet.SetVelocity(4, ang + Random.Range(-15f, 15f), false, true);
 
@@ -129,7 +135,7 @@ public class Kyo_Star : BossCardBase
 
    private void ShootWeidao(float x, float y, float ang, float xmddd)
    {
-        LuaStg.ShootBullet(WeiDaoBulletId, x, y, onCreate: bullet =>
+        LuaStg.ShootEnemyBullet(WeiDaoBulletId, x, y, onCreate: bullet =>
         {
             bullet.SetHidden();
             var task = bullet.CreateTask();
@@ -148,7 +154,7 @@ public class Kyo_Star : BossCardBase
 
    private void ShootWeidaoDan(Vector2 pos, float ang, float xmddd, float ang2, float number)
    {
-        LuaStg.ShootBullet(WeiDaoBulletId, pos.x, pos.y, bullet =>
+        LuaStg.ShootEnemyBullet(WeiDaoBulletId, pos.x, pos.y, bullet =>
         {
             bullet.SetVelocity(3, ang + 180 + ang2, false, true);
             bullet.Navi = true;
@@ -159,7 +165,7 @@ public class Kyo_Star : BossCardBase
 
    private void ShootRedBall(Vector2 pos, float an, float cuxi)
    {
-        LuaStg.ShootBullet(RedHugeBulletId, pos.x, pos.y, onCreate: bullet => 
+        LuaStg.ShootEnemyBullet(RedHugeBulletId, pos.x, pos.y, onCreate: bullet => 
         {
             bullet.SetVelocity(2f * cuxi, an, false, true);
             bullet.SetAcceleration(0.02f * cuxi, an + 180, false);
@@ -211,7 +217,7 @@ public class Kyo_Star : BossCardBase
         repeat.AddRepeat(6, 0, () => TaskParms.New("an4", an, 60), w1 =>
         {
             var angle = w1.Get("an4");
-            LuaStg.ShootBullet(WarnStarId, Master.Pos.x, Master.Pos.y,  bullet => 
+            LuaStg.ShootEnemyBullet(WarnStarId, Master.Pos.x, Master.Pos.y,  bullet => 
             {
                 bullet.SetVelocity(3.5f, angle, false, true);
                 bullet.SetSmear(7);
@@ -234,7 +240,7 @@ public class Kyo_Star : BossCardBase
 
    private void ShootStarHide(Vector2 pos, float an)
    {
-        LuaStg.ShootBullet(HiddenBulletId, pos.x, pos.y, bullet =>
+        LuaStg.ShootEnemyBullet(HiddenBulletId, pos.x, pos.y, bullet =>
         {
             bullet.SetVelocity(2f, an, false, true);
             bullet.SetHidden();
@@ -257,7 +263,7 @@ public class Kyo_Star : BossCardBase
 
    private void ShootMiniStar(Vector2 pos, float ang, float sign)
    {
-        LuaStg.ShootBullet(MiniStarId, pos.x, pos.y, bullet =>
+        LuaStg.ShootEnemyBullet(MiniStarId, pos.x, pos.y, bullet =>
         {
             bullet.SetVelocity(5f - 0.2f * Mathf.Abs(sign), ang, false, true);
             bullet.SetOmiga(2f * sign);

@@ -7,9 +7,15 @@ public class Kyo_Telephone : BossCardBase
 {
     public override string CardName => "虚线「如电话线缠在一起般的羁绊」";
 
-    public override float TotalTime => 330f;
+    public override float TotalTime => 35f;
 
     public override Vector3 StartPos => Vector2Fight.NewWorld(0, 110);
+
+
+    protected override void InitPhase()
+    {
+        Phase = EBossCardPhase.Two;
+    }
 
     protected override void InitDifficult(ELevelDifficult diff)
     {
@@ -94,7 +100,7 @@ public class Kyo_Telephone : BossCardBase
         var targetX = pos.x + LuaStg.Cos(ang) * 200;
         var targetY = pos.y + LuaStg.Sin(ang) * 200;
 
-        LuaStg.ShootBullet(bulletId, pos.x, pos.y, onCreate: bullet =>
+        LuaStg.ShootEnemyBullet(bulletId, pos.x, pos.y, onCreate: bullet =>
         {
             bullet.SetVelocity(0, ang, false, true);
 
@@ -111,7 +117,7 @@ public class Kyo_Telephone : BossCardBase
     {
         Sound.PlayTHSound("tan01", true, 0.1f);
 
-        LuaStg.ShootBullet(bulletId, pos.x, pos.y, onCreate: bullet =>
+        LuaStg.ShootEnemyBullet(bulletId, pos.x, pos.y, onCreate: bullet =>
          {
              bullet.Rot = an + an2;
              bullet.SetHighLight();

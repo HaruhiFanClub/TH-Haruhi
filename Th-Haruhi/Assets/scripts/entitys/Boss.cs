@@ -234,7 +234,7 @@ public class Boss : Enemy
             _bossCircle.SetActiveSafe(false);
         }
 
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.4f);
 
         //尝试显示对话
         if (dialogDeploy != null)

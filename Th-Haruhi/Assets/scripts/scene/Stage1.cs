@@ -46,6 +46,6 @@ public class Stage1 : StageBase
     {
         //create boss
         yield return new WaitForSeconds(3f);
-        yield return Enemy.Create(1001, 80, 150);
+        yield return Enemy.Create(1001, 80, 200);
     }
 }

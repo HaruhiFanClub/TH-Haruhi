@@ -184,6 +184,8 @@ public class TaskRepeat
     public List<TaskExecuse> AutoExecuse = new List<TaskExecuse>();
     public RepeatParams Params;
 
+    public Dictionary<string, float> Variables = new Dictionary<string, float>();
+
     public TaskRepeat Root;
 
     private EntityBase Master;
@@ -198,6 +200,20 @@ public class TaskRepeat
         return Params.Get(name);
     }
 
+    public void SetVariable(string name, float value)
+    {
+        Variables[name] = value;
+    }
+
+    public float GetVariable(string name)
+    {
+        if(Variables.TryGetValue(name, out var v))
+        {
+            return v;
+        }
+        Debug.LogError("Get Variable Error, name:" + name);
+        return 0;
+    }
 
     public void AddWait(int frame, Action afterAction = null)
     {

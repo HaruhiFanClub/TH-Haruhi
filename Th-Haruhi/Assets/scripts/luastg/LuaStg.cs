@@ -74,7 +74,7 @@ public static class LuaStg
         return luaStgTask;
     }
 
-    public static void ShootBullet(int id, float x, float y,
+    public static void ShootEnemyBullet(int id, float x, float y,
         Action<Bullet> onCreate = null, Action<Bullet> onDestroy = null, float shootEffectScale = 1.5f)
     {
         if (BulletExplosion.InExplosion) return;

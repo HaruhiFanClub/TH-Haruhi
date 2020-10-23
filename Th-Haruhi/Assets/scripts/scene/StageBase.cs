@@ -22,8 +22,22 @@ public abstract class StageBase : MonoBehaviour
         //2秒后显示bgm名称
         StartCoroutine(ShowBgmTip());
 
-        //关卡循环
-        StartCoroutine(LoopLevel());
+        if(StageMgr.Data.ParctiseBossId > 0)
+        { 
+            //练习模式
+            StartCoroutine(CreateParctiseBoss(StageMgr.Data.ParctiseBossId));
+        }
+        else
+        {
+            //默认关卡循环
+            StartCoroutine(LoopLevel());
+        }
+    }
+
+    private IEnumerator CreateParctiseBoss(int bossId)
+    {
+        yield return new WaitForSeconds(2f);
+        yield return Enemy.Create(bossId);
     }
 
     private IEnumerator ShowBgmTip()
@@ -31,7 +45,6 @@ public abstract class StageBase : MonoBehaviour
         yield return new WaitForSeconds(1f);
         UIBgmTip.Show(Deploy.bgmId);
     }
-
 
     protected abstract IEnumerator LoopLevel();
 

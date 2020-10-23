@@ -41,6 +41,23 @@ public class BossCardMgr
             }
         }
 
+        if(_cardList.Count >= 2)
+        {
+            for (int i = 0; i < _cardList.Count - 1; i++)
+            {
+                var card1 = _cardList[i];
+                var card2 = _cardList[i + 1];
+                if(card2.Phase == EBossCardPhase.Two)
+                {
+                    if (card1.Phase == EBossCardPhase.Single)
+                    {
+                        card1.Phase = EBossCardPhase.One;
+                    }
+                }
+            }
+        }
+
+        /*
         if(_cardList.Count == 1)
         {
             _cardList[0].Phase = EBossCardPhase.Single;
@@ -51,7 +68,7 @@ public class BossCardMgr
             {
                 _cardList[i].Phase = i % 2 == 0 ? EBossCardPhase.One : EBossCardPhase.Two;
             }
-        }
+        }*/
 
 
         GameEventCenter.AddListener(GameEvent.OnPlayerDead, OnPlayerDead);

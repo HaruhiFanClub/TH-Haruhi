@@ -86,15 +86,19 @@ public class UIMainView : UiFullView
     private void Btn_ParcticeStart()
     {
         UiTips.Show("Btn_ParcticeStart");
+        /*
         StageMgr.Data = new StageData();
         StageMgr.Data.CurLevelId = 2;
         StageMgr.Data.PlayerId = 2;
         StageMgr.StartGame();
+        */
     }
 
     private void Btn_SpellParctice()
     {
-        LuaStg.LoadLuaSTG("nonspell.luastg");
+        UiManager.Show<UISpellParctise>();
+
+        //LuaStg.LoadLuaSTG("nonspell.luastg");
         //UiTips.Show("Btn_SpellParctice");
     }
     private void Btn_Replay()

@@ -9,7 +9,8 @@ public class UiList
         _<UIGameView>       ("UIGameView.prefab",           UiLayer.Main,   UiLoadType.Multi);
         _<UIChooseDifficult>("UIChooseDifficult.prefab",    UiLayer.Main,   UiLoadType.Multi);
         _<UIChoosePlayer>   ("UIChoosePlayer.prefab",       UiLayer.Main,   UiLoadType.Multi);
-
+        _<UISpellParctise>  ("UISpellParctise.prefab",      UiLayer.Main,   UiLoadType.Multi);
+        
        // _<UILoading>        ("UILoading.prefab",            UiLayer.Loding, UiLoadType.Single);
 
         _<UiTips>           ("UiTips.prefab",               UiLayer.Tips,   UiLoadType.Multi);

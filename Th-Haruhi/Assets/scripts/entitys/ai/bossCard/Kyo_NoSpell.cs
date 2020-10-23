@@ -11,6 +11,10 @@ public class Kyo_NoSpell: BossCardBase
 
     public override Vector3 StartPos => Boss.BossUpCenter;
 
+    protected override void InitPhase()
+    {
+        Phase = EBossCardPhase.Single;
+    }
 
     public int BulletId = 1008;
     public int BigBulletId = 2001;
@@ -60,7 +64,7 @@ public class Kyo_NoSpell: BossCardBase
 
     private void MRY(Vector2 pos, float HAHA, float HUHU, float sign)
     {
-        LuaStg.ShootBullet(BulletId, pos.x, pos.y,  shootEffectScale: 1.6f, onCreate: bullet =>
+        LuaStg.ShootEnemyBullet(BulletId, pos.x, pos.y,  shootEffectScale: 1.6f, onCreate: bullet =>
         {
             bullet.SetVelocity(HAHA, HUHU * sign, false, true);
 
@@ -82,7 +86,7 @@ public class Kyo_NoSpell: BossCardBase
 
     private void BulletArrowBig(Vector2 pos, float angle, float speed)
     {
-        LuaStg.ShootBullet(BulletId, pos.x, pos.y, bullet =>
+        LuaStg.ShootEnemyBullet(BulletId, pos.x, pos.y, bullet =>
         {
             bullet.SetVelocity(speed, angle, false, true);
         });
@@ -92,9 +96,9 @@ public class Kyo_NoSpell: BossCardBase
     {
         Sound.PlayTHSound("tan02", true, 1f);
 
-        LuaStg.ShootBullet(BigBulletId, pos.x, pos.y, onCreate: bullet =>
+        LuaStg.ShootEnemyBullet(BigBulletId, pos.x, pos.y, onCreate: bullet =>
         {
-            bullet.SetVelocity(3, ang, true, true);
+            bullet.SetVelocity(3, ang + bullet.Rot, true, true);
             bullet.SetBoundDestroy(false);
 
             var taskRot = bullet.CreateTask();
@@ -123,7 +127,7 @@ public class Kyo_NoSpell: BossCardBase
 
     private void AroundBallBullet(float angservant, float sign, float randomAngle, Bullet father)
     {
-        LuaStg.ShootBullet(RedBulletId, father.Pos.x, father.Pos.y, shootEffectScale: 0f, onCreate: bullet =>
+        LuaStg.ShootEnemyBullet(RedBulletId, father.Pos.x, father.Pos.y, shootEffectScale: 0f, onCreate: bullet =>
         {
             bullet.SetFather(father);
             bullet.SetHighLight();

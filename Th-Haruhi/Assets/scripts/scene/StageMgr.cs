@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -27,6 +28,9 @@ public class StageData
             GameEventCenter.Send(GameEvent.LifeCountChanged);
         }
     }
+
+    //训练bossId
+    public int ParctiseBossId;
 }
 
 public enum ELevelDifficult
@@ -49,7 +53,9 @@ public static class StageMgr
         GameEventCenter.AddListener(GameEvent.OnPlayerDead, OnPlayerDead);
     }
 
+
     public static StageData Data;
+
     public static Player MainPlayer { private set; get; }
 
 

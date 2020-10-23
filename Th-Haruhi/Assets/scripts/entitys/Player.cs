@@ -134,11 +134,10 @@ public class Player : EntityBase
 
     public void AfterInit()
     {
-
         AddSupport();
         AddSupport();
-    //    AddSupport();
-     //   AddSupport();
+        AddSupport();
+        AddSupport();
     }
 
     protected override void Update()
