@@ -7,9 +7,10 @@ public class PlayerBullet : Bullet
     private bool _bHitEnemy;
     private float _hitEnemyFrame;
 
-    public override void Shoot(Vector3 realPos)
+
+    public override void OnCreate(Vector3 pos)
     {
-        base.Shoot(realPos);
+        base.OnCreate(pos);
         _bHitEnemy = false;
     }
 
@@ -23,7 +24,6 @@ public class PlayerBullet : Bullet
     protected virtual void CheckHitEnemy()
     {
         if (InCache) return;
-        if (!Shooted) return;
 
         //已经击中敌人的不处理，且0.1s后销毁子弹
         if (_bHitEnemy)
@@ -72,7 +72,7 @@ public class PlayerBullet : Bullet
         //击中敌人后速度减慢
         if (Deploy.delayDestroy)
         {
-            Velocity = 3.5f;
+            SetVelocity(3.5f, Angle, false, true);
             Renderer.material.SetFloat("_Brightness", 3f);
         }
         else

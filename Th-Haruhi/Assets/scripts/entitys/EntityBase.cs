@@ -35,37 +35,24 @@ public abstract class EntityBase : MonoBehaviour
     }
 
     //移动状态
-    public bool InMove { private set; get; }
+    public bool InMove;
 
     //当前移动目标点
-    public Vector3 MoveTarget { private set; get; }
+    public Vector3 MoveTarget;
 
-    //当前移动朝向
-    private Vector3 MoveFoward;
+    //移動角度
+    public float Angle;
 
-    private float _angle;
-    protected float Angle
-    {
-        get { return _angle; }
-        set
-        {
-            _angle = value;
-            MoveFoward = value.AngleToForward();
-        }
-    }
-
-    //移动速度
-    private float SpeedX;
-    private float SpeedY;
-
-    protected float Velocity
-    {
-        set { SpeedX = SpeedY = value; }
-    }
+    //移動速度
+    public float VelocityX;
+    public float VelocityY;
 
     //加速度
-    public float AccelerationX;       
-    public float AccelerationY;
+    public float AccelX;       
+    public float AccelY;
+
+    //根据移动方向自动进行rot旋转
+    public bool Navi;
 
     //父子绑定关系
     public List<EntityBase> SonEntitys = new List<EntityBase>();
@@ -94,36 +81,66 @@ public abstract class EntityBase : MonoBehaviour
         }
     }
 
+
+
+    //移动行为
+    public void SetVelocity(float velocity, float angle, bool aimPlayer, bool setRot)
+    {
+        if (aimPlayer)
+        {
+            angle += LuaStg.AnglePlayer(transform);
+        }
+
+        Angle = angle;
+        VelocityX = velocity * LuaStg.Cos(angle + 90);
+        VelocityY = velocity * LuaStg.Sin(angle + 90);
+
+        if (setRot)
+        {
+            Rot = angle;
+        }
+    }
+
+    //acceleration
+    public void SetAcceleration(float accleration, float angle, bool aimPlayer)
+    {
+        if (aimPlayer)
+        {
+            angle += LuaStg.AnglePlayer(transform);
+        }
+        AccelX = accleration * LuaStg.Cos(angle + 90);
+        AccelY = accleration * LuaStg.Sin(angle + 90);
+    }
+
     //根据朝向移动
     private void UpdateMove()
     {
-        if(SpeedX <= 0 || SpeedY <= 0)
-        {
-            return;
-        }
-        if (MoveFoward == Vector3.zero) 
-        {
-            return;
-        }
-
         float deltaTime = Time.deltaTime;
 
-        //加速度处理
-        if (!MathUtility.FloatEqual(AccelerationX, 0f) || !MathUtility.FloatEqual(AccelerationY, 0f))
-        {
-            SpeedX += SpeedX * AccelerationX;
-            SpeedY += SpeedY * AccelerationY;
-        }
-        
-        var distX = deltaTime * SpeedX * LuaStg.LuaStgSpeedChange;
-        var distY = deltaTime * SpeedY * LuaStg.LuaStgSpeedChange;
+        //根据移动角度算出移动的X距离和Y距离(Angle默认要+90, LuaStg默认是右)
+        var distX = deltaTime * VelocityX; 
+        var distY = deltaTime * VelocityY;
+
+        //加速度
+        VelocityX += AccelX;
+        VelocityY += AccelY;
+
+        //乘以luastg速度系数
+        distX *= LuaStg.LuaStgSpeedChange;
+        distY *= LuaStg.LuaStgSpeedChange;
 
         var currPos = CacheTransform.position;
-        currPos.x += MoveFoward.x * distX;
-        currPos.y += MoveFoward.y * distY;
-        CacheTransform.position = currPos;
-    }
+        currPos.x += distX;
+        currPos.y += distY;
 
+        var fwd = currPos - CacheTransform.position;
+        CacheTransform.position = currPos;
+
+        if (Navi) 
+        {
+            transform.up = fwd;
+        }
+    }
 
     //移動到指定坐標
     public void MoveToPos(Vector3 target, int t, MovementMode mode, bool setRotation = false)
@@ -244,13 +261,13 @@ public abstract class EntityBase : MonoBehaviour
     private float _defaultBrightness = 1;
     private float _defaultGamma = 1;
     private float _defaultAlpha = 1;
-    private bool _bChangedBrightness;
+    private bool _bChangedMaterial;
     public void SetHighLight()
     {
         var m = Renderer.material;
-        if (!_bChangedBrightness)
+        if (!_bChangedMaterial)
         {
-            _bChangedBrightness = true;
+            _bChangedMaterial = true;
             _defaultBrightness = m.GetFloat("_Brightness");
             _defaultGamma = m.GetFloat("_Gamma");
             _defaultAlpha = m.GetFloat("_AlphaScale");
@@ -262,17 +279,34 @@ public abstract class EntityBase : MonoBehaviour
 
     public void RevertHighLight()
     {
-        if (_bChangedBrightness)
+        if (_bChangedMaterial)
         {
             var m = Renderer.material;
             m.SetFloat("_Brightness", _defaultBrightness);
             m.SetFloat("_Gamma", _defaultGamma);
             m.SetFloat("_AlphaScale", _defaultAlpha);
-            _bChangedBrightness = false;
+            _bChangedMaterial = false;
         }
     }
 
+    
+    private Tweener _turnOffTween;
+    public void FadeOut(int frame)
+    {
+        FadeOutAllSons(frame);
+        DoFadeOut(frame);
+    }
 
+    public virtual void DoFadeOut(int frame)
+    {
+        _bChangedMaterial = true;
+        _turnOffTween?.onKill();
+        _turnOffTween = Renderer.material.DOFloat(0f, "_AlphaScale", frame * 0.01666f);
+        _turnOffTween.onComplete = () =>
+        {
+            RecycleEnetity();
+        };
+    }
 
     //拖尾
     private bool _inSmear;
@@ -345,40 +379,25 @@ public abstract class EntityBase : MonoBehaviour
         Rot = rot;
     }
 
-    //移动行为
-    public void SetVelocity(float velocity, float angle, bool aimPlayer, bool setRot)
-    {
-        if (aimPlayer)
-        {
-            angle += LuaStg.AnglePlayer(transform);
-        }
-
-        Angle = angle;
-        SpeedX = velocity;
-        SpeedY = velocity;
-
-        if (setRot) 
-        {
-            Rot = angle;
-        }
-    }
-
-    //acceleration
-    public void SetAcceleration(float accleration, float angle, bool aimPlayer)
-    {
-        if (aimPlayer)
-        {
-            angle += LuaStg.AnglePlayer(transform);
-        }
-        AccelerationX = accleration * LuaStg.Cos(angle);
-        AccelerationY = accleration * LuaStg.Sin(angle);
-    }
 
     public void SetFather(EntityBase father)
     {
         if (father == null) return;
         Father = father;
         father.SonEntitys.Add(this);
+    }
+
+    public void FadeOutAllSons(int frame)
+    {
+        for (int i = 0; i < SonEntitys.Count; i++)
+        {
+            SonEntitys[i].Father = null;
+            if (!SonEntitys[i].InCache)
+            {
+                SonEntitys[i].FadeOut(frame);
+            }
+        }
+        SonEntitys.Clear();
     }
 
     public void DestoryAllSons()
@@ -416,15 +435,18 @@ public abstract class EntityBase : MonoBehaviour
 
     public virtual void OnRecycle()
     {
-        MoveFoward = Vector3.zero;
-        SpeedX = 0;
-        SpeedY = 0;
-        AccelerationX = 0;
-        AccelerationY = 0;
+        VelocityX = 0;
+        VelocityY = 0;
+        AccelX = 0;
+        AccelY = 0;
         Angle = 0;
         Rot = 0;
         InMove = false;
+        Navi = false;
         MoveTarget = Vector3.zero;
+
+        _turnOffTween?.onKill();
+        _turnOffTween = null;
 
         DestoryAllSons();
         DestroyAllTask();

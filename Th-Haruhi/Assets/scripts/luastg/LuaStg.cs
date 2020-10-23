@@ -80,10 +80,9 @@ public static class LuaStg
         if (BulletExplosion.InExplosion) return;
 
         var pos = Vector2Fight.NewWorld(x, y);
-        BulletFactory.CreateBullet(id, Layers.EnemyBullet, bullet =>
+        BulletFactory.CreateBullet(id, pos, Layers.EnemyBullet, bullet =>
         {
             bullet.OnDestroyCallBack = onDestroy;
-            bullet.Shoot(pos);
 
             if (shootEffectScale > 0) bullet.PlayShootEffect(shootEffectScale);
             onCreate?.Invoke(bullet);
@@ -96,12 +95,11 @@ public static class LuaStg
 
         var pos = Vector2Fight.NewWorld(x, y);
 
-        BulletFactory.CreateBullet(id, Layers.EnemyBullet, bullet =>
+        BulletFactory.CreateBullet(id, pos, Layers.EnemyBullet, bullet =>
         {
             var laser = (Laser)bullet;
             laser.transform.localScale = Vector2Fight.NewLocal(width, length);
             laser.OnDestroyCallBack = onDestroy;
-            laser.Shoot(pos);
             laser.TurnOn(turnOnFrame);
             onCreate?.Invoke(laser);
         });

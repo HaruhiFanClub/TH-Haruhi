@@ -48,7 +48,7 @@ public static class BulletFactory
         BulletTab = TableUtility.GetTable<BulletDeploy>();
     }
 
-    public static void CreateBullet(int id, int layer, CreatedNotify notify)
+    public static void CreateBullet(int id, Vector3 pos, int layer, CreatedNotify notify)
     {
         var deploy = BulletTab[id];
         if (!deploy)
@@ -70,13 +70,13 @@ public static class BulletFactory
                         bullet.gameObject.layer = layer;
                         bullet.SetInCache(false);
                         bullet.transform.SetParent(null, false);
-                        bullet.ReInit();
+                        bullet.OnCreate(pos);
                     }
                     notify(bullet);
                 }
                 else
                 {
-                    CreateBulletDirect(holder.SpriteList, holder.Resource,deploy, layer, bulletObj =>
+                    CreateBulletDirect(holder.SpriteList, holder.Resource,deploy, pos, layer, bulletObj =>
                     {
                         bullet = bulletObj;
                         notify(bullet);
@@ -85,12 +85,12 @@ public static class BulletFactory
             }
             else
             {
-                CreateNewBullet(id, layer,  deploy, notify);
+                CreateNewBullet(id, layer, deploy, pos, notify);
             }
         }
     }
 
-    private static void CreateNewBullet(int id, int layer,BulletDeploy deploy, CreatedNotify notify)
+    private static void CreateNewBullet(int id, int layer, BulletDeploy deploy, Vector3 pos, CreatedNotify notify)
     {
         GameSystem.CoroutineStart(TextureUtility.LoadResourceById(deploy.resourceId, spriteList =>
         {
@@ -113,7 +113,7 @@ public static class BulletFactory
                 CachePool.Add(id, holder);
             }
 
-            CreateBulletDirect(spriteList, sprite, deploy,  layer, bullet =>
+            CreateBulletDirect(spriteList, sprite, deploy, pos, layer, bullet =>
             {
                 notify(bullet);
             });
@@ -147,7 +147,7 @@ public static class BulletFactory
     }
 
     
-    private static void CreateBulletDirect(List<Sprite> spriteList, Sprite resource, BulletDeploy deploy, int layer,  Action<Bullet> notify)
+    private static void CreateBulletDirect(List<Sprite> spriteList, Sprite resource, BulletDeploy deploy, Vector3 pos, int layer,  Action<Bullet> notify)
     {
         Type type = null;
 
@@ -244,6 +244,7 @@ public static class BulletFactory
             bullet.gameObject.layer = layer;
             bullet.SetRenderer(mr);
             bullet.Init(deploy);
+            bullet.OnCreate(pos);
         }
 
         //ani

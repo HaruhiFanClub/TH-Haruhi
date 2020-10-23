@@ -8,16 +8,15 @@ public class EnemyBullet : Bullet
     //是否被擦过弹
     private bool _isGrazed;
 
-    public override void Shoot(Vector3 realPos)
+    public override void OnCreate(Vector3 pos)
     {
-        base.Shoot(realPos);
+        base.OnCreate(pos);
         _isGrazed = false;
     }
 
     protected virtual void LateUpdate()
     {
         if (InCache) return;
-        if (!Shooted) return;
 
         var bulletCenter = CacheTransform.position + CollisionInfo.Center;
 

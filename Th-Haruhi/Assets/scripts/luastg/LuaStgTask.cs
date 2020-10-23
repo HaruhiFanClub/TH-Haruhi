@@ -124,62 +124,80 @@ public class TaskMoveTo
     public bool SetRotation;
 }
 
+
 public class TaskRepeat
 {
+    public class RepeatParams
+    {
+        public TaskParms.NewParamFunc InitParams;
+        public List<TaskParms> Params = new List<TaskParms>();
+        public Dictionary<string, TaskParms> ParamsDic = new Dictionary<string, TaskParms>();
+
+        public TaskRepeat Repeat;
+
+        public RepeatParams(TaskRepeat repeat)
+        {
+            Repeat = repeat;
+        }
+
+        //獲取參數
+        public float Get(string name)
+        {
+            if (Repeat.Root.Params.ParamsDic.TryGetValue(name, out var param))
+            {
+                return param.value;
+            }
+            Debug.LogError("GetParamsValue Error, Cant Find :" + name);
+            return 0f;
+        }
+
+        public void UpdateParams()
+        {
+            //参数 
+            for (int i = 0; i < Params.Count; i++)
+            {
+                Params[i].value += Params[i].increment;
+            }
+        }
+
+        public void ResetParams()
+        {
+            Params.Clear();
+
+            if (InitParams != null)
+            {
+                Params = InitParams();
+
+                for (int i = 0; i < Params.Count; i++)
+                {
+                    Repeat.Root.Params.ParamsDic[Params[i].name] = Params[i];
+                }
+            }
+        }
+    }
+
     public int Times;
     public int Interval;
-    public TaskParms.NewParamFunc InitParams;
-    public List<TaskParms> Params = new List<TaskParms>();
-    public Action<TaskRepeat> Execuse;
+    public Action<RepeatParams> Execuse;
     public int ExecuseTimes;
 
     public List<TaskExecuse> AutoExecuse = new List<TaskExecuse>();
+    public RepeatParams Params;
 
-    //用于缓存参数，方便使用
     public TaskRepeat Root;
-    public Dictionary<string, TaskParms> ParamsDic = new Dictionary<string, TaskParms>();
-
 
     private EntityBase Master;
     public TaskRepeat(EntityBase master)
     {
         Master = master;
+        Params = new RepeatParams(this);
     }
 
-    //獲取參數
     public float Get(string name)
     {
-        if (Root.ParamsDic.TryGetValue(name, out var param))
-        {
-            return param.value;
-        }
-        Debug.LogError("GetParamsValue Error, Cant Find :" + name);
-        return 0f;
+        return Params.Get(name);
     }
 
-    public void UpdateParams()
-    {
-        //参数 
-        for (int i = 0; i < Params.Count; i++)
-        {
-            Params[i].value += Params[i].increment;
-        }
-    }
-
-    public void ResetParams()
-    {
-        Params.Clear();
-
-        if(InitParams != null)
-        {
-            Params = InitParams();
-
-            for (int i = 0;  i < Params.Count; i++)
-            {
-                Root.ParamsDic[Params[i].name] = Params[i];
-            }
-        }
-    }
 
     public void AddWait(int frame, Action afterAction = null)
     {
@@ -191,7 +209,7 @@ public class TaskRepeat
         AutoExecuse.Add(TaskTools.NewCustom(customAction));
     }
 
-    public TaskRepeat AddRepeat(int times, int interval, TaskParms.NewParamFunc paramsFunc = null, Action<TaskRepeat> execuse = null)
+    public TaskRepeat AddRepeat(int times, int interval, TaskParms.NewParamFunc paramsFunc = null, Action<RepeatParams> execuse = null)
     {
         var e = TaskTools.NewRepeat(Master, times, interval, paramsFunc, execuse);
         e.RepeatData.Root = Root;
@@ -204,7 +222,7 @@ public class TaskRepeat
         AutoExecuse.Add(TaskTools.NewWander(frame, xMin, xMax, yMin, yMax, xAmpMin, xAmpMax, yAmpMin, yAmpMax, mMode, dMode));
     }
 
-    public void AddMoveTo(int frame, float x, float y, MovementMode moveType, bool setRotation = true)
+    public void AddMoveTo(int frame, float x, float y, MovementMode moveType, bool setRotation = false)
     {
         AutoExecuse.Add(TaskTools.NewMoveTo(frame, x, y, moveType, setRotation));
     }
@@ -239,6 +257,7 @@ public class TaskTools
             //wander
             case ActionType.Wander:
 
+               // Debug.LogError("wander:" + GameSystem.FixedFrameCount);
                 var data = e.WanderData;
                 Master.MoveToPlayer(data.nFrame, data.xRange, data.yRange, data.xAmplitude, data.yAmplitude, data.MovementMode, data.DirectionMode);
                 yield return Yielders.WaitFrame(data.nFrame);
@@ -246,7 +265,7 @@ public class TaskTools
 
             //moveto
             case ActionType.MoveTo:
-
+               // Debug.LogError("MoveTo:" + GameSystem.FixedFrameCount);
                 var md = e.MoveToData;
                 Master.MoveToPos(Vector2Fight.NewWorld(md.X, md.Y), md.nFrame, md.MovementMode, md.SetRotation);
                 yield return Yielders.WaitFrame(md.nFrame);
@@ -260,7 +279,6 @@ public class TaskTools
             //custome noWait
             case ActionType.Custom:
                 e.CustomAction?.Invoke();
-                e.CustomAction = null;
                 break;
         }
     }
@@ -280,7 +298,7 @@ public class TaskTools
             loopTimes = int.MaxValue;
         }
 
-        data.ResetParams();
+        data.Params.ResetParams();
 
         for (int i = 0; i < loopTimes; i++)
         {
@@ -292,8 +310,8 @@ public class TaskTools
             }
 
             //执行自己
-            data.Execuse?.Invoke(data);
-            data.UpdateParams();
+            data.Execuse?.Invoke(data.Params);
+            data.Params.UpdateParams();
             data.ExecuseTimes++;
 
             //interval, 最后一次不等待
@@ -319,16 +337,15 @@ public class TaskTools
         return new TaskExecuse { Type = ActionType.Custom, CustomAction = customAction };
     }
 
-    public static TaskExecuse NewRepeat(EntityBase master, int times, int interval, TaskParms.NewParamFunc paramsFunc = null, Action<TaskRepeat> execuse = null)
+    public static TaskExecuse NewRepeat(EntityBase master, int times, int interval, TaskParms.NewParamFunc paramsFunc = null, Action<TaskRepeat.RepeatParams> execuse = null)
     {
         var repeatData = new TaskRepeat(master)
         {
             Times = times,
             Interval = interval,
             Execuse = execuse,
-            InitParams = paramsFunc,
-
         };
+        repeatData.Params.InitParams = paramsFunc;
         return new TaskExecuse { Type = ActionType.AddRepeat, RepeatData = repeatData };
     }
 
@@ -411,7 +428,7 @@ public class LuaStgTask : MonoBehaviour
         AutoExecuse.Add(TaskTools.NewCustom(customAction));
     }
 
-    public TaskRepeat AddRepeat(int times, int interval, TaskParms.NewParamFunc paramsFunc = null, Action<TaskRepeat> execuse = null)
+    public TaskRepeat AddRepeat(int times, int interval, TaskParms.NewParamFunc paramsFunc = null, Action<TaskRepeat.RepeatParams> execuse = null)
     {
         var e = TaskTools.NewRepeat(Master, times, interval, paramsFunc, execuse);
         e.RepeatData.Root = e.RepeatData;
@@ -424,7 +441,7 @@ public class LuaStgTask : MonoBehaviour
         AutoExecuse.Add(TaskTools.NewWander(frame, xMin, xMax, yMin, yMax, xAmpMin, xAmpMax, yAmpMin, yAmpMax, mMode, dMode));
     }
 
-    public void AddMoveTo(int frame, float x, float y, MovementMode moveType, bool setRotation = true)
+    public void AddMoveTo(int frame, float x, float y, MovementMode moveType, bool setRotation = false)
     {
         AutoExecuse.Add(TaskTools.NewMoveTo(frame, x, y, moveType, setRotation));
     }

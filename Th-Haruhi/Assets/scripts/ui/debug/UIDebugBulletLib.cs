@@ -50,9 +50,10 @@ public class UIDebugBulletLib : UiInstance
 
             //createBullet
             Bullet bullet = null;
-            BulletFactory.CreateBullet(deploy.id, Layers.Ui, b =>
+            BulletFactory.CreateBullet(deploy.id, Vector3.zero, Layers.Ui, b =>
             {
                 bullet = b;
+                bullet.BoundDestroy = false;
             });
             yield return new WaitUntil(() => bullet != null);
 

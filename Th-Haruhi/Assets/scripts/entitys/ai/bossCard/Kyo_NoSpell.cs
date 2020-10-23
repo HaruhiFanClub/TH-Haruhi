@@ -30,24 +30,20 @@ public class Kyo_NoSpell: BossCardBase
         DoTask1(r1, 1);
         DoTask1(r1, -1);
 
-        var x = Master.CreateTask();
-        x.AddRepeat(0, 1, execuse: task2 =>
+        var task2 = Master.CreateTask().AddRepeat(0, 1);
+        task2.AddWait(60);
+        task2.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
+        task2.AddRepeat(12, 0, () => TaskParms.New("ang", 0, 30), p =>
         {
-            task2.AddWait(60);
-            task2.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
-            task2.AddRepeat(12, 0, () => TaskParms.New("ang", 0, 30), p =>
-            {
-                BigBallBullet(Master.Pos, p.Get("ang"), -1);
-            });
-
-            task2.AddWait(150);
-            task2.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
-            task2.AddRepeat(12, 0, () => TaskParms.New("ang", 0, 30), p =>
-            {
-                BigBallBullet(Master.Pos, p.Get("ang"), 1);
-            });
+            BigBallBullet(Master.Pos, p.Get("ang"), -1);
         });
-        
+
+        task2.AddWait(150);
+        task2.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_X_TOWARDS_PLAYER);
+        task2.AddRepeat(12, 0, () => TaskParms.New("ang", 0, 30), p =>
+        {
+            BigBallBullet(Master.Pos, p.Get("ang"), 1);
+        });
     }
 
     private void DoTask1(TaskRepeat r1, float sign)

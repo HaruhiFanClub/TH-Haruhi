@@ -36,9 +36,9 @@ public class MarisaLaser : PlayerBullet
         });
     }
 
-    public override void ReInit()
+    public override void OnCreate(Vector3 pos)
     {
-        base.ReInit();
+        base.OnCreate(pos);
         _material.mainTextureOffset = Vector2.zero;
         transform.localScale = new Vector2(1f, 0f);
     }
@@ -58,7 +58,6 @@ public class MarisaLaser : PlayerBullet
     protected override void CheckHitEnemy()
     {
         if (InCache) return;
-        if (!Shooted) return;
         if (Master == null) return;
 
         CacheTransform.position = Master.position;

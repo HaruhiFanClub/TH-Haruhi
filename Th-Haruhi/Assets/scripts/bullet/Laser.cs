@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DG.Tweening;
 using UnityEngine;
-using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 
 public class Laser : EnemyBullet
 {
@@ -11,11 +7,9 @@ public class Laser : EnemyBullet
     private float _defaultBoxWidth;
     private float _defaultBoxHeight;
 
-    public override void Shoot(Vector3 realPos)
+    public override void OnCreate(Vector3 pos)
     {
-        base.Shoot(realPos);
-
-        Sound.PlayTHSound("lazer00", true, 0.5f);
+        base.OnCreate(pos);
 
         _defaultWidth = CacheTransform.localScale.x;
         _defaultBoxWidth = CollisionInfo.BoxWidth;
@@ -43,9 +37,11 @@ public class Laser : EnemyBullet
         CacheTransform.localScale = scale;
     }
 
-    private TweenerCore<Vector3, Vector3, VectorOptions> _turnOnTween;
+    private Tweener _turnOnTween;
     public void TurnOn(int frame)
     {
+        Sound.PlayTHSound("lazer00", true, 0.5f);
+
         if (_turnOnTween != null) _turnOnTween.Kill();
         _turnOnTween = CacheTransform.DOScaleX(_defaultWidth, frame * 0.01666f);
         _turnOnTween.onComplete = () =>
@@ -54,8 +50,8 @@ public class Laser : EnemyBullet
         };
     }
 
-    private TweenerCore<Vector3, Vector3, VectorOptions> _turnOffTween;
-    public void TurnOff(int frame)
+    private Tweener _turnOffTween;
+    public override void DoFadeOut(int frame)
     {
         if (_turnOnTween != null) _turnOnTween.Kill();
         if (_turnOffTween != null) _turnOffTween.Kill();

@@ -25,8 +25,7 @@ public class Bullet : EntityBase
     public override EEntityType EntityType => EEntityType.Bullet;
     public BulletDeploy Deploy { private set; get; }
     protected Transform Master { private set; get; }
-    protected bool Shooted { private set; get; }
-
+    
     public int Atk { protected set; get; }
 
     private int _totalFrame;
@@ -57,7 +56,6 @@ public class Bullet : EntityBase
         Deploy = deploy;
         _isAni = deploy.isAni;
         DefaultSortOrder = Renderer.sortingOrder;
-        ReInit();
     }
 
     public void SetAtk(int atk)
@@ -70,23 +68,16 @@ public class Bullet : EntityBase
         Master = master;
     }
 
-    public virtual void ReInit()
-    {
-    }
- 
-    public virtual void Shoot(Vector3 realPos)
+    public virtual void OnCreate(Vector3 pos)
     {
         _totalFrame = 0;
-        CacheTransform.position = realPos;
-        Shooted = true;
+        CacheTransform.position = pos;
     }
-
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
         if (InCache) return;
-        if (!Shooted) return;
         _totalFrame++;
         UpdateAnimation();
     }
@@ -142,7 +133,6 @@ public class Bullet : EntityBase
 
         _currAniIdx = 0;
         _totalFrame = 0;
-        Shooted = false;
         Renderer.sortingOrder = DefaultSortOrder;
     }
 }

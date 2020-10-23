@@ -231,7 +231,7 @@ public class Player : EntityBase
         for (int i = 0; i < Deploy.shootPos.Length; i++)
         {
             var pos = transform.position + new Vector3(Deploy.shootPos[i][0], Deploy.shootPos[i][1]);
-            BulletFactory.CreateBullet(Deploy.normalBulletId, Layers.PlayerBullet,  bullet =>
+            BulletFactory.CreateBullet(Deploy.normalBulletId, pos, Layers.PlayerBullet,  bullet =>
             {
                 bullet.SetAtk(Deploy.bulletAtk);
                 bullet.SetMaster(transform);

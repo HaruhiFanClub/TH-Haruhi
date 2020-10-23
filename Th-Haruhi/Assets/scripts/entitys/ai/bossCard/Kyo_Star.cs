@@ -27,23 +27,19 @@ public class Kyo_Star : BossCardBase
    {
        base.Start();
 
-        /*
         //Boss 移动逻辑
         var taskWander = Master.CreateTask();
         taskWander.AddWait(120);
         taskWander.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_RANDOM);
         taskWander.AddWait(200);
 
-        taskWander.AddRepeat(0, 240, execuse: r =>
-        {
-            r.AddMoveTo(60, 0, 120, MovementMode.MOVE_NORMAL);
-            r.AddWait(240);
-            r.AddMoveTo(60, Random.Range(-30f, 30f), 0, MovementMode.MOVE_NORMAL);
-            r.AddWait(240);
-            r.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_RANDOM);
-        });
+        var wanderRepeat = taskWander.AddRepeat(0, 240);
+        wanderRepeat.AddMoveTo(60, 0, 120, MovementMode.MOVE_NORMAL);
+        wanderRepeat.AddWait(240);
+        wanderRepeat.AddMoveTo(60, Random.Range(-30f, 30f), 0, MovementMode.MOVE_NORMAL);
+        wanderRepeat.AddWait(240);
+        wanderRepeat.AddWander(60, -96, 96, 112, 144, 16, 32, 8, 16, MovementMode.MOVE_NORMAL, DirectionMode.MOVE_RANDOM);
 
-    */
         //射击逻辑
         var taskShoot = Master.CreateTask();
         taskShoot.AddWait(60);
@@ -81,30 +77,27 @@ public class Kyo_Star : BossCardBase
             ShootWeidao(x, y, p.Get("ang"), p.Get("xmddd"));
         });
 
-        /*
         //red star
         var taskStar = Master.CreateTask();
         taskStar.AddWait(120);
-        taskStar.AddRepeat(0, 273, execuse: r1 => 
+        var repeatStar = taskStar.AddRepeat(0, 273);
+
+        repeatStar.AddRepeat(9, 13).AddRepeat(6, 0, () => TaskParms.New("ang", Random.Range(-30f, 30f), 60f), p =>
         {
-            r1.AddRepeat(9, 13).AddRepeat(6, 0, () => TaskParms.New("ang", Random.Range(-30f, 30f), 60f), p =>
-            {
-                ShootRedStar(Master.Pos, p.Get("ang"));
-                Sound.PlayTHSound("tan00", true, 0.1f);
-            });
-
-            r1.AddWait(73);
-
-            r1.AddRepeat(9, 13).AddRepeat(6, 0, () => TaskParms.New("ang", Random.Range(-30f, 30f), 60f), p =>
-            {
-                ShootRedStar(Master.Pos, p.Get("ang"));
-                Sound.PlayTHSound("tan00", true, 0.1f);
-            });
-
-            r1.AddWait(300);
+            ShootRedStar(Master.Pos, p.Get("ang"));
+            Sound.PlayTHSound("tan00", true, 0.1f);
         });
-        */
-   }
+
+        repeatStar.AddWait(73);
+
+        repeatStar.AddRepeat(9, 13).AddRepeat(6, 0, () => TaskParms.New("ang", Random.Range(-30f, 30f), 60f), p =>
+        {
+            ShootRedStar(Master.Pos, p.Get("ang"));
+            Sound.PlayTHSound("tan00", true, 0.1f);
+        });
+
+        repeatStar.AddWait(300);
+    }
 
    private void ShootRedStar(Vector2 pos, float ang)
    {
@@ -126,6 +119,7 @@ public class Kyo_Star : BossCardBase
 
             task.AddCustom(() =>
             {
+                bullet.SetSmear(8);
                 bullet.SetAcceleration(0f, ang + Random.Range(-15f, 15f) + 180f, false);
                 Sound.PlayTHSound("enep00", true, 1f);
                 bullet.SetVelocity(4, ang + Random.Range(-60f, 60f), false, false);
@@ -157,9 +151,7 @@ public class Kyo_Star : BossCardBase
         LuaStg.ShootBullet(WeiDaoBulletId, pos.x, pos.y, bullet =>
         {
             bullet.SetVelocity(3, ang + 180 + ang2, false, true);
-
-            //navi?
-
+            bullet.Navi = true;
             bullet.Renderer.sortingOrder = SortingOrder.EnemyBullet + (int)number;
             bullet.SetAcceleration(0.05F, xmddd + ang2, false);
         });
@@ -169,7 +161,8 @@ public class Kyo_Star : BossCardBase
    {
         LuaStg.ShootBullet(RedHugeBulletId, pos.x, pos.y, onCreate: bullet => 
         {
-            bullet.SetVelocity(0.02f * cuxi, an, false, true);
+            bullet.SetVelocity(2f * cuxi, an, false, true);
+            bullet.SetAcceleration(0.0223f * cuxi, an + 180, false);
 
             var task = bullet.CreateTask();
             task.AddWait(100);
@@ -189,7 +182,7 @@ public class Kyo_Star : BossCardBase
             });
             task.AddWait(360, ()=>
             {
-                BulletFactory.DestroyBullet(bullet);
+                bullet.FadeOut(30);
             });
         });
    }
@@ -200,6 +193,8 @@ public class Kyo_Star : BossCardBase
         {
             bullet.SetFather(master);
             bullet.SetHighLight();
+            bullet.SetVelocity(0f, ang, false, true);
+
             var task = bullet.CreateTask();
             task.AddRepeat(45, 2, ()=> TaskParms.New("sin2", 0, sign * 2), p =>
             {
@@ -230,7 +225,7 @@ public class Kyo_Star : BossCardBase
         repeat.AddWait(10);
 
         //星星集群
-        var r1 = repeat.AddRepeat(26, 6, () => TaskParms.New("an2", an, 3));
+        var r1 = repeat.AddRepeat(24, 6, () => TaskParms.New("an2", an, 3));
         r1.AddRepeat(6, 0, () => TaskParms.New("an4", r1.Get("an2"), 60, "ad", -15f, 5f), p => 
         {
             ShootStarHide(Master.Pos, p.Get("an4") * sign);

@@ -12,8 +12,9 @@ public class Yielders
     public static IEnumerator WaitFrame(int frameCount)
     {
         if (frameCount > 0) frameCount--;
-
-        yield return new WaitForSeconds(frameCount * Time.fixedDeltaTime);
-        
+        for (int j = 0; j < frameCount; j++)
+        {
+            yield return FixedFrame;
+        }
     }
 }
