@@ -64,7 +64,7 @@ public abstract class EntityBase : MonoBehaviour
     {
         get
         {
-            return Vector2Fight.WorldPosToFightPos(CacheTransform.position);
+            return CacheTransform.position;
         }
     }
 
@@ -115,19 +115,13 @@ public abstract class EntityBase : MonoBehaviour
     //根据朝向移动
     private void UpdateMove()
     {
-        float deltaTime = Time.deltaTime;
-
         //根据移动角度算出移动的X距离和Y距离(Angle默认要+90, LuaStg默认是右)
-        var distX = deltaTime * VelocityX; 
-        var distY = deltaTime * VelocityY;
+        var distX = VelocityX; 
+        var distY = VelocityY;
 
         //加速度
         VelocityX += AccelX;
         VelocityY += AccelY;
-
-        //乘以luastg速度系数
-        distX *= LuaStg.LuaStgSpeedChange;
-        distY *= LuaStg.LuaStgSpeedChange;
 
         var currPos = CacheTransform.position;
         currPos.x += distX;
@@ -258,34 +252,23 @@ public abstract class EntityBase : MonoBehaviour
     }
 
     //高亮
-    private float _defaultBrightness = 1;
-    private float _defaultGamma = 1;
-    private float _defaultAlpha = 1;
-    private bool _bChangedMaterial;
-    public void SetHighLight()
+    private bool _bChangedShader;
+    public void SetShaderAdditive()
     {
-        var m = Renderer.material;
-        if (!_bChangedMaterial)
+        if(!_bChangedShader)
         {
-            _bChangedMaterial = true;
-            _defaultBrightness = m.GetFloat("_Brightness");
-            _defaultGamma = m.GetFloat("_Gamma");
-            _defaultAlpha = m.GetFloat("_AlphaScale");
+            _bChangedShader = true;
+            var m = Renderer.material;
+            m.shader = GameSystem.DefaultRes.AlphaAdditive;
         }
-        m.SetFloat("_Brightness", 4f);
-        m.SetFloat("_Gamma", 0.8f);
-        m.SetFloat("_AlphaScale", 0.3f);
     }
 
-    public void RevertHighLight()
+    public void RevertShader()
     {
-        if (_bChangedMaterial)
+        if (_bChangedShader)
         {
-            var m = Renderer.material;
-            m.SetFloat("_Brightness", _defaultBrightness);
-            m.SetFloat("_Gamma", _defaultGamma);
-            m.SetFloat("_AlphaScale", _defaultAlpha);
-            _bChangedMaterial = false;
+            Renderer.material.shader = GameSystem.DefaultRes.AlphaBlended;
+            _bChangedShader = false;
         }
     }
 
@@ -299,7 +282,7 @@ public abstract class EntityBase : MonoBehaviour
 
     public virtual void DoFadeOut(int frame)
     {
-        _bChangedMaterial = true;
+        _bChangedShader = true;
         _turnOffTween?.Kill();
         _turnOffTween = Renderer.material.DOFloat(0f, "_AlphaScale", frame * 0.01666f);
         _turnOffTween.onComplete = () =>
@@ -369,11 +352,11 @@ public abstract class EntityBase : MonoBehaviour
     {
         if (Father != null)
         {
-            CacheTransform.position = Father.CacheTransform.position + Vector2Fight.NewLocal(x, y);
+            CacheTransform.position = Father.CacheTransform.position + new Vector3(x, y);
         }
         else
         {
-            CacheTransform.position = Vector2Fight.NewWorld(x, y);
+            CacheTransform.position = new Vector3(x, y);
         }
 
         Rot = rot;
@@ -419,19 +402,36 @@ public abstract class EntityBase : MonoBehaviour
         CacheTransform = transform;
     }
 
-    protected virtual void OnDestroy()
+    private void Update()
     {
-        
+        if (!InCache && !GamePause.InPause)
+        {
+            OnUpdate();
+        }
     }
 
-    protected virtual void Update() { }
-    protected virtual void FixedUpdate() 
+    private void LateUpdate() 
     {
-        if (InCache) return;
-        UpdateLocalRota();
-        UpdateSmear();
-        UpdateMove();
+        if (!InCache && !GamePause.InPause)
+        {
+            OnLateUpdate();
+        }
     }
+
+    private void FixedUpdate() 
+    {
+        if (!InCache && !GamePause.InPause)
+        {
+            UpdateLocalRota();
+            UpdateSmear();
+            UpdateMove();
+            OnFixedUpdate();
+        }
+    }
+
+    protected virtual void OnUpdate() { }
+    protected virtual void OnLateUpdate() { }
+    protected virtual void OnFixedUpdate() { }
 
     public virtual void OnRecycle()
     {
@@ -455,7 +455,7 @@ public abstract class EntityBase : MonoBehaviour
         RevertBanCollision();
         RevertHidden();
         RevertSmear();
-        RevertHighLight();
+        RevertShader();
         RevertOmiga();
     }
 
@@ -494,4 +494,6 @@ public abstract class EntityBase : MonoBehaviour
                 break;
         }
     }
+
+    protected virtual void OnDestroy() { }
 }

@@ -63,8 +63,9 @@ public class AssetBundleManager
     public static IEnumerator Initialize()
     {
 #if UNITY_EDITOR && !STANDALONE_BUNDLE
+        Inited = true;
         yield break;
-#endif
+#else
         string abName = "streamingassets.haruhi";
         if (_assetBundleManifest == null)
         {
@@ -85,6 +86,8 @@ public class AssetBundleManager
             yield return 0;
             Inited = true;
         }
+#endif
+
     }
 
 

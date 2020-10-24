@@ -52,8 +52,6 @@ public class Player : EntityBase
     //僚机管理器
     public PlayerSupportMgr SupportMgr { private set; get; }
 
-    //rigidBody
-    private Rigidbody2D _rigidBody;
 
     //是否无敌
     private bool _invincible;
@@ -124,7 +122,6 @@ public class Player : EntityBase
         _aniStyle = PlayerMoveStyle.Idle;
 
         transform.localScale = Vector3.one * deploy.scale;
-        _rigidBody = this.AddRigidBody();
 
         SupportMgr = new PlayerSupportMgr();
         SupportMgr.Init(this);
@@ -140,11 +137,10 @@ public class Player : EntityBase
         AddSupport();
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        base.Update();
-        if (GamePause.InPause != false)
-            return;
+        base.OnUpdate();
+
 
         UpdateInvicibleTime();
         UpdateOperation();
@@ -152,12 +148,9 @@ public class Player : EntityBase
         SupportMgr.OnUpdate();
     }
 
-    protected override void FixedUpdate()
+    protected override void OnFixedUpdate()
     {
-        base.FixedUpdate();
-        
-        if (GamePause.InPause != false)
-            return;
+        base.OnFixedUpdate();
 
         UpdateShoot();
         SupportMgr.OnFixedUpdate();
@@ -245,8 +238,14 @@ public class Player : EntityBase
     private void Move(Vector3 dir)
     {
         var moveSpeed = InSlow ? Deploy.slowSpeed : Deploy.speed;
-        var targetPos = transform.position + dir * Time.fixedDeltaTime * moveSpeed;
-        _rigidBody?.MovePosition(targetPos);
+
+        var targetPos = transform.position + dir  * moveSpeed * (Time.deltaTime / 0.0166666f);
+        var xLimit = 15f;
+        var yLimit = 25f;
+        targetPos.x = Mathf.Clamp(targetPos.x, Vector2Fight.Left + xLimit, Vector2Fight.Right - xLimit);
+        targetPos.y = Mathf.Clamp(targetPos.y, Vector2Fight.Down + yLimit, Vector2Fight.Up - yLimit);
+
+        CacheTransform.position = targetPos;
 
         if (MathUtility.FloatEqual(dir.x, 0))
         {
@@ -254,7 +253,7 @@ public class Player : EntityBase
             return;
         }
 
-         if (dir.x > 0 && AniStyle != PlayerMoveStyle.RightIdle)
+        if (dir.x > 0 && AniStyle != PlayerMoveStyle.RightIdle)
             AniStyle = PlayerMoveStyle.RightMove;
 
         if (dir.x < 0 && AniStyle != PlayerMoveStyle.LeftIdle)
@@ -357,20 +356,6 @@ public class Player : EntityBase
         return true;
     }
 
-    //伤害判定
-    private void OnTriggerEnter2D(Collider2D c)
-    { 
-        //无敌中不处理
-        if (Invincible) return;
-        if (DialogMgr.InDrawingDialog) return;
-
-        //碰到怪就死
-        if (c.gameObject.layer == Layers.Enemy)
-        {
-            OnDead();
-        }
-    }
-
     protected override void OnDestroy()
     {
         base.OnDestroy();
@@ -392,7 +377,7 @@ public class Player : EntityBase
         var model = new GameObject(deploy.name + "_model");
         var mainSprite = model.AddComponent<SpriteRenderer>();
         mainSprite.sortingOrder = SortingOrder.Player;
-        mainSprite.material = new Material(GameSystem.DefaultRes.CommonShader);
+        mainSprite.material = new Material(GameSystem.DefaultRes.AlphaBlended);
         model.transform.SetParent(playerObject.transform, false);
         yield return Yielders.Frame;
 
@@ -409,10 +394,6 @@ public class Player : EntityBase
         }
         yield return Yielders.Frame;
 
-
-        //Collider
-        var collider = playerObject.AddComponent<CircleCollider2D>();
-        collider.radius = deploy.radius;
 
         //判定点
         ResourceMgr.LoadObject("player/point.prefab", pointObj =>

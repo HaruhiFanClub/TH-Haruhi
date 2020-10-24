@@ -74,9 +74,9 @@ public class Bullet : EntityBase
         CacheTransform.position = pos;
     }
 
-    protected override void FixedUpdate()
+    protected override void OnFixedUpdate()
     {
-        base.FixedUpdate();
+        base.OnFixedUpdate();
         if (InCache) return;
         _totalFrame++;
         UpdateAnimation();
@@ -87,7 +87,11 @@ public class Bullet : EntityBase
         //超出边界销毁
         if(BoundDestroy)
         {
-            if (bulletCenter.x < -15f || bulletCenter.x > 5f || bulletCenter.y < -12f || bulletCenter.y > 12f)
+            var factor = 1.5f;
+            if (bulletCenter.x < Vector2Fight.Left * factor || 
+                bulletCenter.x > Vector2Fight.Right * factor || 
+                bulletCenter.y < Vector2Fight.Down * factor || 
+                bulletCenter.y > Vector2Fight.Up * factor)
             {
                 BulletFactory.DestroyBullet(this);
                 return true;
@@ -122,6 +126,29 @@ public class Bullet : EntityBase
         BoundDestroy = b;
     }
 
+
+    public void SetBoxSize(float width, float length)
+    {
+        var size = Renderer.transform.localScale;
+        size.x = length;
+        size.y = width;
+        Renderer.transform.localScale = size;
+        
+        //中心点位置
+        if (Deploy.centerPivot == 1)
+        {
+            Renderer.transform.localPosition = new Vector3(0, length / 2f, 0);
+        }
+        else if (Deploy.centerPivot == 2)
+        {
+            Renderer.transform.localPosition = new Vector3(0, -length / 2f, 0);
+        }
+
+        CollisionInfo.IsBox = true;
+        CollisionInfo.BoxWidth = width * Deploy.radius;
+        CollisionInfo.BoxHeight = length * Deploy.radius;
+    }
+
     public override void OnRecycle()
     {
         base.OnRecycle();
@@ -143,7 +170,6 @@ public class BulletDeploy : Conditionable
     public int id;
     public string classType;
     public int resourceId;
-    public float rota = 90f;
     public float scale;
     public float alpha;
     public float radius;
@@ -152,9 +178,6 @@ public class BulletDeploy : Conditionable
     public float bombEffectSpeed;
     public int centerPivot;
     public bool isAni;
-    public bool isBoxCollider;
-    public float sizeX;
-    public float sizeY;
     public float brightness;
     public bool delayDestroy;
     public EColor EColor;

@@ -41,11 +41,7 @@ public abstract class BossCardBase
     public void OnEnable(bool isFirstCard)
     {
         Master.StartCoroutine(DoEnable(isFirstCard));
-
-        if(StartPos != Vector3.zero)
-        {
-            Master.MoveToPos(StartPos, 60, MovementMode.MOVE_NORMAL);
-        }
+        Master.MoveToPos(StartPos, 60, MovementMode.MOVE_NORMAL);
     }
 
     private IEnumerator DoEnable(bool isFirstCard)

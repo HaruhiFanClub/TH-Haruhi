@@ -4,20 +4,12 @@ using UnityEngine;
 public class Laser : EnemyBullet
 {
     private float _defaultWidth;
-    private float _defaultBoxWidth;
-    private float _defaultBoxHeight;
 
     public override void OnCreate(Vector3 pos)
     {
         base.OnCreate(pos);
 
         _defaultWidth = CacheTransform.localScale.x;
-        _defaultBoxWidth = CollisionInfo.BoxWidth;
-        _defaultBoxHeight = CollisionInfo.BoxHeight;
-
-        CollisionInfo.BoxWidth *= CacheTransform.localScale.x;
-        CollisionInfo.BoxHeight *= CacheTransform.localScale.y;
-
         Renderer.sortingOrder = SortingOrder.EnemyBullet - 1;
 
         //先turnoff
@@ -68,7 +60,5 @@ public class Laser : EnemyBullet
     {
         base.OnRecycle();
         SetWidth(_defaultWidth);
-        CollisionInfo.BoxWidth = _defaultBoxWidth;
-        CollisionInfo.BoxHeight = _defaultBoxHeight;
     }
 }

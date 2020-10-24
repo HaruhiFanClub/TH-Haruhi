@@ -152,7 +152,7 @@ public static class TextureEffectFactroy
         Material material;
         if (!_materialCache.TryGetValue(deploy.id, out material))
         {
-            material = new Material(GameSystem.DefaultRes.CommonShader)
+            material = new Material(GameSystem.DefaultRes.AlphaBlended)
             {
                 mainTexture = resource.texture
             };

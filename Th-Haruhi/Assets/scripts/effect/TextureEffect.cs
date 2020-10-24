@@ -36,15 +36,15 @@ public class TextureEffect : EntityBase
         _bAutoDestroy = true;
     }
 
-    protected override void FixedUpdate()
+    protected override void OnFixedUpdate()
     {
-        base.FixedUpdate();
+        base.OnFixedUpdate();
         UpdateAutoMove();
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        base.Update();
+        base.OnUpdate();
        
         if (SpriteList.Count <= 1) return;
         if (Deploy.frame <= 0) return;
@@ -80,8 +80,7 @@ public class TextureEffect : EntityBase
     {
         if (_bAutoMove)
         {
-            var dist = Time.deltaTime * _autoMoveSpeed;
-            transform.position += _autoMoveForward * dist;
+            transform.position += _autoMoveForward * _autoMoveSpeed;
         }
     }
 

@@ -168,7 +168,7 @@ public static class BulletFactory
         Material material;
         if (!BulletMaterialCache.TryGetValue(deploy.id, out material))
         {
-            material = new Material(GameSystem.DefaultRes.CommonShader);
+            material = new Material(GameSystem.DefaultRes.AlphaBlended);
             material.mainTexture = resource.texture;
             material.SetFloat("_AlphaScale", deploy.alpha);
             material.SetFloat("_Brightness", deploy.brightness);
@@ -193,44 +193,30 @@ public static class BulletFactory
                 break;
         }
 
-        model.transform.localEulerAngles = new Vector3(0, 0, deploy.rota);
+        //图片要默认转90度
+        model.transform.localEulerAngles = new Vector3(0, 0, 90f);
 
         var sizeX = resource.bounds.size.x;
         var sizeY = resource.bounds.size.y;
-        if (deploy.sizeX > 0 && deploy.sizeY > 0)
-        {
-            sizeX = deploy.sizeX;
-            sizeY = deploy.sizeY;
-        }
 
         model.transform.localScale = new Vector3(sizeX, sizeY, 1);
 
         //中心点位置
-        var bRota = (int)deploy.rota % 90 == 0;
         if(deploy.centerPivot == 1)
         {
-            model.transform.localPosition = new Vector3(0, bRota ? sizeX / 2f : sizeY / 2f, 0);
+            model.transform.localPosition = new Vector3(0, sizeX / 2f, 0);
         }
         else if(deploy.centerPivot == 2)
         {
-            model.transform.localPosition = new Vector3(0, -(bRota ? sizeX / 2f : sizeY / 2f), 0);
+            model.transform.localPosition = new Vector3(0, -sizeX / 2f, 0);
         }
 
-        var collisionInfo = new Bullet.ColliderInfo();
-        //加collider
-        if(deploy.isBoxCollider)
+        var collisionInfo = new Bullet.ColliderInfo
         {
-            collisionInfo.IsBox = true;
-            collisionInfo.BoxWidth = (bRota ? sizeY : sizeX) * deploy.radius;
-            collisionInfo.BoxHeight = (bRota ? sizeX : sizeY) * deploy.radius;
-            collisionInfo.Center = model.transform.localPosition;
-        }
-        else if (deploy.radius  > 0)
-        {
-            collisionInfo.IsBox = false;
-            collisionInfo.Radius = deploy.radius;
-            collisionInfo.Center = model.transform.localPosition;
-        }
+            IsBox = false,
+            Radius = deploy.radius,
+            Center = model.transform.localPosition
+        };
 
         var bullet = _object.AddComponent(type) as Bullet;
         if (!bullet)

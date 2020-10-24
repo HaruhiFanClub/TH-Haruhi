@@ -195,10 +195,10 @@ public class Kyo_Star : BossCardBase
 
    private void ShootLaser(EntityBase master, int sign, float ang, float sit)
    {
-        LuaStg.ShootLaser(LaserId, 280, 10, 30, master.Pos.x, master.Pos.y, onCreate: bullet =>
+        LuaStg.ShootLaser(LaserId, 600, 8, 30, master.Pos.x, master.Pos.y, onCreate: bullet =>
         {
             bullet.SetFather(master);
-            bullet.SetHighLight();
+            bullet.SetShaderAdditive();
             bullet.SetVelocity(0f, ang, false, true);
 
             var task = bullet.CreateTask();
@@ -222,7 +222,7 @@ public class Kyo_Star : BossCardBase
                 bullet.SetVelocity(3.5f, angle, false, true);
                 bullet.SetSmear(7);
                 bullet.SetOmiga(3);
-                bullet.SetHighLight();
+                bullet.SetShaderAdditive();
                 bullet.SetBanCollision();
             });
         });
@@ -267,7 +267,7 @@ public class Kyo_Star : BossCardBase
         {
             bullet.SetVelocity(5f - 0.2f * Mathf.Abs(sign), ang, false, true);
             bullet.SetOmiga(2f * sign);
-            bullet.SetHighLight();
+            bullet.SetShaderAdditive();
 
             var task = bullet.CreateTask();
             task.AddWait(30);

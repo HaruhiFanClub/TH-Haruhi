@@ -14,10 +14,8 @@ public class EnemyBullet : Bullet
         _isGrazed = false;
     }
 
-    protected virtual void LateUpdate()
+    protected override void OnLateUpdate()
     {
-        if (InCache) return;
-
         var bulletCenter = CacheTransform.position + CollisionInfo.Center;
 
         //超出边界，自动销毁

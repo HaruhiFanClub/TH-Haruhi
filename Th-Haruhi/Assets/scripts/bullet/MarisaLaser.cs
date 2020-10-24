@@ -66,8 +66,8 @@ public class MarisaLaser : PlayerBullet
 
         //根据射线，更新最长距离
         var bPlayHitEffect = false;
-        var maxDist = 20f;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, 100f, LayersMask.Enemy);
+        var maxDist = 480f;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, maxDist, LayersMask.Enemy);
         if (hit.collider != null)
         {
             maxDist = Vector2.Distance(hit.point, transform.position);

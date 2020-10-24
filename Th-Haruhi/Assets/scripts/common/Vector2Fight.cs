@@ -3,7 +3,14 @@ using UnityEngine;
 
 public class Vector2Fight
 {
-    //战斗区域坐标, 将战斗区域换算为 100 X 120 的范围
+    public static float Left = -192f;
+    public static float Right = 192f;
+    public static float Up = 224f;
+    public static float Down = -224f;
+
+    public static float ScaleFactor = 23.2f;
+
+    /*
 
     public static Vector3 Center = new Vector2(-4F, 0F);
 
@@ -24,19 +31,22 @@ public class Vector2Fight
     {
         return new Vector3(pos.x * _trans, pos.y * _trans) - Center * _trans;
     }
-
-    public static Vector2 WordPosToUIPos(Vector3 pos)
+    */
+    public static Vector2 FightPosToUiPos(Vector3 pos)
     {
         var canvas = UiManager.GetCanvas(UiLayer.Battle);
         var w = canvas.sizeDelta.x / 2f;
         var h = canvas.sizeDelta.y /2f;
 
-        //xRange : -13.35 --> 13.35
-        //yRange : -10    --> 10
+        //xRange : -192 --> 192
+        //yRange : -224 --> 224
 
-        //-13.35 为 - width / 2
-        var xRatio = w / 13.35f;
-        var yRatio = h / 10f;
-        return new Vector3(pos.x * xRatio, pos.y * yRatio);
+        //xRange : -220 --> 400
+        //yRange : -230 --> 230
+
+        var xRatio = w / 310f;
+        var yRatio = h / 230f;
+        return new Vector3((pos.x - 90f) * xRatio, pos.y * yRatio);
+
     }
 }

@@ -1,483 +1,479 @@
-#子弹配置											0:中心为中心 1:底部为中心 2:头部为中心						
-#		类型	序列帧子弹	是否为方形碰撞	资源ID	缩放	图集中的第几张图片	碰撞半径比例	透明度	亮度	中心点	爆炸特效颜色	自定义大小X	自定义大小Y	爆炸特效ID	爆炸特效移动速度	子弹变慢且延迟销毁
-id	name	classType	isAni	isBoxCollider	resourceId	scale	spriteIdx	radius	alpha	brightness	centerPivot	EColor	sizeX	sizeY	bombEffectId	bombEffectSpeed	delayDestroy
-																	
-#player bullet																	
-1	魔理沙普攻	PlayerBullet			6	1	0	0.3	0.6	1	2						TRUE
-2	灵梦普攻	PlayerBullet			107	1	0	0.3	0.6	1	2				11	8	
-101	魔理沙导弹	PlayerBullet			7	1	0	0.4	0.8	1	0				4		
-102	魔理沙激光	MarisaLaser			16	1	0	-1	0.8	1	1						
-																	
-																	
-#enemy_bullet																	
-																	
-1001		EnemyBullet			1001	1	0	0.1	1	1		Red					
-1002		EnemyBullet			1001	1	1	0.1	1	1		Red					
-1003		EnemyBullet			1001	1	2	0.1	1	1		Purple					
-1004		EnemyBullet			1001	1	3	0.1	1	1		Purple					
-1005		EnemyBullet			1001	1	4	0.1	1	1		Blue					
-1006		EnemyBullet			1001	1	5	0.1	1	1		Blue					
-1007		EnemyBullet			1001	1	6	0.1	1	1		BlueLight					
-1008		EnemyBullet			1001	1	7	0.1	1	1		BlueLight					
-1009		EnemyBullet			1001	1	8	0.1	1	1		Green					
-1010		EnemyBullet			1001	1	9	0.1	1	1		Green					
-1011		EnemyBullet			1001	1	10	0.1	1	1		Yellow					
-1012		EnemyBullet			1001	1	11	0.1	1	1		Yellow					
-1013		EnemyBullet			1001	1	12	0.1	1	1		Orange					
-1014		EnemyBullet			1001	1	13	0.1	1	1		Orange					
-1015		EnemyBullet			1001	1	14	0.1	1	1		White					
-1016		EnemyBullet			1001	1	15	0.1	1	1		White					
-1017		EnemyBullet			1002	1	0	0.1	1	1		Red					
-1018		EnemyBullet			1002	1	1	0.1	1	1		Red					
-1019		EnemyBullet			1002	1	2	0.1	1	1		Purple					
-1020		EnemyBullet			1002	1	3	0.1	1	1		Purple					
-1021		EnemyBullet			1002	1	4	0.1	1	1		Blue					
-1022		EnemyBullet			1002	1	5	0.1	1	1		Blue					
-1023		EnemyBullet			1002	1	6	0.1	1	1		BlueLight					
-1024		EnemyBullet			1002	1	7	0.1	1	1		BlueLight					
-1025		EnemyBullet			1002	1	8	0.1	1	1		Green					
-1026		EnemyBullet			1002	1	9	0.1	1	1		Green					
-1027		EnemyBullet			1002	1	10	0.1	1	1		Yellow					
-1028		EnemyBullet			1002	1	11	0.1	1	1		Yellow					
-1029		EnemyBullet			1002	1	12	0.1	1	1		Orange					
-1030		EnemyBullet			1002	1	13	0.1	1	1		Orange					
-1031		EnemyBullet			1002	1	14	0.1	1	1		White					
-1032		EnemyBullet			1002	1	15	0.1	1	1		White					
-1033		EnemyBullet			1003	1	0	0.1	1	1		Red					
-1034		EnemyBullet			1003	1	1	0.1	1	1		Red					
-1035		EnemyBullet			1003	1	2	0.1	1	1		Purple					
-1036		EnemyBullet			1003	1	3	0.1	1	1		Purple					
-1037		EnemyBullet			1003	1	4	0.1	1	1		Blue					
-1038		EnemyBullet			1003	1	5	0.1	1	1		Blue					
-1039		EnemyBullet			1003	1	6	0.1	1	1		BlueLight					
-1040		EnemyBullet			1003	1	7	0.1	1	1		BlueLight					
-1041		EnemyBullet			1003	1	8	0.1	1	1		Green					
-1042		EnemyBullet			1003	1	9	0.1	1	1		Green					
-1043		EnemyBullet			1003	1	10	0.1	1	1		Yellow					
-1044		EnemyBullet			1003	1	11	0.1	1	1		Yellow					
-1045		EnemyBullet			1003	1	12	0.1	1	1		Orange					
-1046		EnemyBullet			1003	1	13	0.1	1	1		Orange					
-1047		EnemyBullet			1003	1	14	0.1	1	1		White					
-1048		EnemyBullet			1003	1	15	0.1	1	1		White					
-1049		EnemyBullet			1004	1	0	0.2	1	1		Red					
-1050		EnemyBullet			1004	1	1	0.2	1	1		Purple					
-1051		EnemyBullet			1004	1	2	0.2	1	1		Blue					
-1052		EnemyBullet			1004	1	3	0.2	1	1		BlueLight					
-1053		EnemyBullet			1004	1	4	0.2	1	1		Green					
-1054		EnemyBullet			1004	1	5	0.2	1	1		Yellow					
-1055		EnemyBullet			1004	1	6	0.2	1	1		Orange					
-1056		EnemyBullet			1004	1	7	0.2	1	1		White					
-1057		EnemyBullet			1005	1	0	0.2	1	1		Red					
-1058		EnemyBullet			1005	1	1	0.2	1	1		Purple					
-1059		EnemyBullet			1005	1	2	0.2	1	1		Blue					
-1060		EnemyBullet			1005	1	3	0.2	1	1		BlueLight					
-1061		EnemyBullet			1005	1	4	0.2	1	1		Green					
-1062		EnemyBullet			1005	1	5	0.2	1	1		Yellow					
-1063		EnemyBullet			1005	1	6	0.2	1	1		Orange					
-1064		EnemyBullet			1005	1	7	0.2	1	1		White					
-1065		EnemyBullet			1006	1	0	0.1	1	1		Red					
-1066		EnemyBullet			1006	1	1	0.1	1	1		Red					
-1067		EnemyBullet			1006	1	2	0.1	1	1		Purple					
-1068		EnemyBullet			1006	1	3	0.1	1	1		Purple					
-1069		EnemyBullet			1006	1	4	0.1	1	1		Blue					
-1070		EnemyBullet			1006	1	5	0.1	1	1		Blue					
-1071		EnemyBullet			1006	1	6	0.1	1	1		BlueLight					
-1072		EnemyBullet			1006	1	7	0.1	1	1		BlueLight					
-1073		EnemyBullet			1006	1	8	0.1	1	1		Green					
-1074		EnemyBullet			1006	1	9	0.1	1	1		Green					
-1075		EnemyBullet			1006	1	10	0.1	1	1		Yellow					
-1076		EnemyBullet			1006	1	11	0.1	1	1		Yellow					
-1077		EnemyBullet			1006	1	12	0.1	1	1		Orange					
-1078		EnemyBullet			1006	1	13	0.1	1	1		Orange					
-1079		EnemyBullet			1006	1	14	0.1	1	1		White					
-1080		EnemyBullet			1006	1	15	0.1	1	1		White					
-1081		EnemyBullet			1007	1	0	0.1	1	1		Red					
-1082		EnemyBullet			1007	1	1	0.1	1	1		Purple					
-1083		EnemyBullet			1007	1	2	0.1	1	1		Blue					
-1084		EnemyBullet			1007	1	3	0.1	1	1		BlueLight					
-1085		EnemyBullet			1007	1	4	0.1	1	1		Green					
-1086		EnemyBullet			1007	1	5	0.1	1	1		Yellow					
-1087		EnemyBullet			1007	1	6	0.1	1	1		Orange					
-1088		EnemyBullet			1007	1	7	0.1	1	1		White					
-1089		EnemyBullet			1008	1	0	0.05	1	1		Red					
-1090		EnemyBullet			1008	1	1	0.05	1	1		Red					
-1091		EnemyBullet			1008	1	2	0.05	1	1		Purple					
-1092		EnemyBullet			1008	1	3	0.05	1	1		Purple					
-1093		EnemyBullet			1008	1	4	0.05	1	1		Blue					
-1094		EnemyBullet			1008	1	5	0.05	1	1		Blue					
-1095		EnemyBullet			1008	1	6	0.05	1	1		BlueLight					
-1096		EnemyBullet			1008	1	7	0.05	1	1		BlueLight					
-1097		EnemyBullet			1008	1	8	0.05	1	1		Green					
-1098		EnemyBullet			1008	1	9	0.05	1	1		Green					
-1099		EnemyBullet			1008	1	10	0.05	1	1		Yellow					
-1100		EnemyBullet			1008	1	11	0.05	1	1		Yellow					
-1101		EnemyBullet			1008	1	12	0.05	1	1		Orange					
-1102		EnemyBullet			1008	1	13	0.05	1	1		Orange					
-1103		EnemyBullet			1008	1	14	0.05	1	1		White					
-1104		EnemyBullet			1008	1	15	0.05	1	1		White					
-1105		EnemyBullet			1009	1	0	0.2	1	1		Red					
-1106		EnemyBullet			1009	1	1	0.2	1	1		Purple					
-1107		EnemyBullet			1009	1	2	0.2	1	1		Blue					
-1108		EnemyBullet			1009	1	3	0.2	1	1		BlueLight					
-1109		EnemyBullet			1009	1	4	0.2	1	1		Green					
-1110		EnemyBullet			1009	1	5	0.2	1	1		Yellow					
-1111		EnemyBullet			1009	1	6	0.2	1	1		Orange					
-1112		EnemyBullet			1009	1	7	0.2	1	1		White					
-1113		EnemyBullet			1010	1	0	0.8	1	1		Red					
-1114		EnemyBullet			1010	1	1	0.8	1	1		Purple					
-1115		EnemyBullet			1010	1	2	0.8	1	1		Green					
-1116		EnemyBullet			1010	1	3	0.8	1	1		Yellow					
-1117		EnemyBullet			1011	1	0	0.1	1	1		Red					
-1118		EnemyBullet			1011	1	1	0.1	1	1		Red					
-1119		EnemyBullet			1011	1	2	0.1	1	1		Purple					
-1120		EnemyBullet			1011	1	3	0.1	1	1		Purple					
-1121		EnemyBullet			1011	1	4	0.1	1	1		Blue					
-1122		EnemyBullet			1011	1	5	0.1	1	1		Blue					
-1123		EnemyBullet			1011	1	6	0.1	1	1		BlueLight					
-1124		EnemyBullet			1011	1	7	0.1	1	1		BlueLight					
-1125		EnemyBullet			1011	1	8	0.1	1	1		Green					
-1126		EnemyBullet			1011	1	9	0.1	1	1		Green					
-1127		EnemyBullet			1011	1	10	0.1	1	1		Yellow					
-1128		EnemyBullet			1011	1	11	0.1	1	1		Yellow					
-1129		EnemyBullet			1011	1	12	0.1	1	1		Orange					
-1130		EnemyBullet			1011	1	13	0.1	1	1		Orange					
-1131		EnemyBullet			1011	1	14	0.1	1	1		White					
-1132		EnemyBullet			1011	1	15	0.1	1	1		White					
-1133		EnemyBullet			1012	1	0	0.1	1	1		Red					
-1134		EnemyBullet			1012	1	1	0.1	1	1		Red					
-1135		EnemyBullet			1012	1	2	0.1	1	1		Purple					
-1136		EnemyBullet			1012	1	3	0.1	1	1		Purple					
-1137		EnemyBullet			1012	1	4	0.1	1	1		Blue					
-1138		EnemyBullet			1012	1	5	0.1	1	1		Blue					
-1139		EnemyBullet			1012	1	6	0.1	1	1		BlueLight					
-1140		EnemyBullet			1012	1	7	0.1	1	1		BlueLight					
-1141		EnemyBullet			1012	1	8	0.1	1	1		Green					
-1142		EnemyBullet			1012	1	9	0.1	1	1		Green					
-1143		EnemyBullet			1012	1	10	0.1	1	1		Yellow					
-1144		EnemyBullet			1012	1	11	0.1	1	1		Yellow					
-1145		EnemyBullet			1012	1	12	0.1	1	1		Orange					
-1146		EnemyBullet			1012	1	13	0.1	1	1		Orange					
-1147		EnemyBullet			1012	1	14	0.1	1	1		White					
-1148		EnemyBullet			1012	1	15	0.1	1	1		White					
-1149		EnemyBullet			1013	1	0	0.1	1	1		Red					
-1150		EnemyBullet			1013	1	1	0.1	1	1		Red					
-1151		EnemyBullet			1013	1	2	0.1	1	1		Purple					
-1152		EnemyBullet			1013	1	3	0.1	1	1		Purple					
-1153		EnemyBullet			1013	1	4	0.1	1	1		Blue					
-1154		EnemyBullet			1013	1	5	0.1	1	1		Blue					
-1155		EnemyBullet			1013	1	6	0.1	1	1		BlueLight					
-1156		EnemyBullet			1013	1	7	0.1	1	1		BlueLight					
-1157		EnemyBullet			1013	1	8	0.1	1	1		Green					
-1158		EnemyBullet			1013	1	9	0.1	1	1		Green					
-1159		EnemyBullet			1013	1	10	0.1	1	1		Yellow					
-1160		EnemyBullet			1013	1	11	0.1	1	1		Yellow					
-1161		EnemyBullet			1013	1	12	0.1	1	1		Orange					
-1162		EnemyBullet			1013	1	13	0.1	1	1		Orange					
-1163		EnemyBullet			1013	1	14	0.1	1	1		White					
-1164		EnemyBullet			1013	1	15	0.1	1	1		White					
-1165		EnemyBullet			1014	1	0	0.1	1	1		Red					
-1166		EnemyBullet			1014	1	1	0.1	1	1		Red					
-1167		EnemyBullet			1014	1	2	0.1	1	1		Purple					
-1168		EnemyBullet			1014	1	3	0.1	1	1		Purple					
-1169		EnemyBullet			1014	1	4	0.1	1	1		Blue					
-1170		EnemyBullet			1014	1	5	0.1	1	1		Blue					
-1171		EnemyBullet			1014	1	6	0.1	1	1		BlueLight					
-1172		EnemyBullet			1014	1	7	0.1	1	1		BlueLight					
-1173		EnemyBullet			1014	1	8	0.1	1	1		Green					
-1174		EnemyBullet			1014	1	9	0.1	1	1		Green					
-1175		EnemyBullet			1014	1	10	0.1	1	1		Yellow					
-1176		EnemyBullet			1014	1	11	0.1	1	1		Yellow					
-1177		EnemyBullet			1014	1	12	0.1	1	1		Orange					
-1178		EnemyBullet			1014	1	13	0.1	1	1		Orange					
-1179		EnemyBullet			1014	1	14	0.1	1	1		White					
-1180		EnemyBullet			1014	1	15	0.1	1	1		White					
-1181		EnemyBullet			1015	1	0	0.2	1	1		Red					
-1182		EnemyBullet			1015	1	1	0.2	1	1		Purple					
-1183		EnemyBullet			1015	1	2	0.2	1	1		Blue					
-1184		EnemyBullet			1015	1	3	0.2	1	1		BlueLight					
-1185		EnemyBullet			1015	1	4	0.2	1	1		Green					
-1186		EnemyBullet			1015	1	5	0.2	1	1		Yellow					
-1187		EnemyBullet			1015	1	6	0.2	1	1		Orange					
-1188		EnemyBullet			1015	1	7	0.2	1	1		White					
-1189	Star	EnemyBullet			1016	1	0	0.2	1	1		Red					
-1190	Star	EnemyBullet			1016	1	1	0.2	1	1		Purple					
-1191	Star	EnemyBullet			1016	1	2	0.2	1	1		Blue					
-1192	Star	EnemyBullet			1016	1	3	0.2	1	1		BlueLight					
-1193	Star	EnemyBullet			1016	1	4	0.2	1	1		Green					
-1194	Star	EnemyBullet			1016	1	5	0.2	1	1		Yellow					
-1195	Star	EnemyBullet			1016	1	6	0.2	1	1		Orange					
-1196	Star	EnemyBullet			1016	1	7	0.2	1	1		White					
-1197	Knife	EnemyBullet			1017	1	0	0.2	1	1		Red					
-1198	Knife	EnemyBullet			1017	1	1	0.2	1	1		Purple					
-1199	Knife	EnemyBullet			1017	1	2	0.2	1	1		Blue					
-1200	Knife	EnemyBullet			1017	1	3	0.2	1	1		BlueLight					
-1201	Knife	EnemyBullet			1017	1	4	0.2	1	1		Green					
-1202	Knife	EnemyBullet			1017	1	5	0.2	1	1		Yellow					
-1203	Knife	EnemyBullet			1017	1	6	0.2	1	1		Orange					
-1204	Knife	EnemyBullet			1017	1	7	0.2	1	1		White					
-1205		EnemyBullet			1018	1	0	0.1	1	1		Red					
-1206		EnemyBullet			1018	1	1	0.1	1	1		Red					
-1207		EnemyBullet			1018	1	2	0.1	1	1		Purple					
-1208		EnemyBullet			1018	1	3	0.1	1	1		Purple					
-1209		EnemyBullet			1018	1	4	0.1	1	1		Blue					
-1210		EnemyBullet			1018	1	5	0.1	1	1		Blue					
-1211		EnemyBullet			1018	1	6	0.1	1	1		BlueLight					
-1212		EnemyBullet			1018	1	7	0.1	1	1		BlueLight					
-1213		EnemyBullet			1018	1	8	0.1	1	1		Green					
-1214		EnemyBullet			1018	1	9	0.1	1	1		Green					
-1215		EnemyBullet			1018	1	10	0.1	1	1		Yellow					
-1216		EnemyBullet			1018	1	11	0.1	1	1		Yellow					
-1217		EnemyBullet			1018	1	12	0.1	1	1		Orange					
-1218		EnemyBullet			1018	1	13	0.1	1	1		Orange					
-1219		EnemyBullet			1018	1	14	0.1	1	1		White					
-1220		EnemyBullet			1018	1	15	0.1	1	1		White					
-1221		EnemyBullet			1019	1	0	0.1	1	1		Red					
-1222		EnemyBullet			1019	1	1	0.1	1	1		Red					
-1223		EnemyBullet			1019	1	2	0.1	1	1		Purple					
-1224		EnemyBullet			1019	1	3	0.1	1	1		Purple					
-1225		EnemyBullet			1019	1	4	0.1	1	1		Blue					
-1226		EnemyBullet			1019	1	5	0.1	1	1		Blue					
-1227		EnemyBullet			1019	1	6	0.1	1	1		BlueLight					
-1228		EnemyBullet			1019	1	7	0.1	1	1		BlueLight					
-1229		EnemyBullet			1019	1	8	0.1	1	1		Green					
-1230		EnemyBullet			1019	1	9	0.1	1	1		Green					
-1231		EnemyBullet			1019	1	10	0.1	1	1		Yellow					
-1232		EnemyBullet			1019	1	11	0.1	1	1		Yellow					
-1233		EnemyBullet			1019	1	12	0.1	1	1		Orange					
-1234		EnemyBullet			1019	1	13	0.1	1	1		Orange					
-1235		EnemyBullet			1019	1	14	0.1	1	1		White					
-1236		EnemyBullet			1019	1	15	0.1	1	1		White					
-1237		EnemyBullet			1020	1	0	0.1	1	1		Red					
-1238		EnemyBullet			1020	1	1	0.1	1	1		Red					
-1239		EnemyBullet			1020	1	2	0.1	1	1		Purple					
-1240		EnemyBullet			1020	1	3	0.1	1	1		Purple					
-1241		EnemyBullet			1020	1	4	0.1	1	1		Blue					
-1242		EnemyBullet			1020	1	5	0.1	1	1		Blue					
-1243		EnemyBullet			1020	1	6	0.1	1	1		BlueLight					
-1244		EnemyBullet			1020	1	7	0.1	1	1		BlueLight					
-1245		EnemyBullet			1020	1	8	0.1	1	1		Green					
-1246		EnemyBullet			1020	1	9	0.1	1	1		Green					
-1247		EnemyBullet			1020	1	10	0.1	1	1		Yellow					
-1248		EnemyBullet			1020	1	11	0.1	1	1		Yellow					
-1249		EnemyBullet			1020	1	12	0.1	1	1		Orange					
-1250		EnemyBullet			1020	1	13	0.1	1	1		Orange					
-1251		EnemyBullet			1020	1	14	0.1	1	1		White					
-1252		EnemyBullet			1020	1	15	0.1	1	1		White					
-1253		EnemyBullet			1021	1	0	0.1	1	1		Red					
-1254		EnemyBullet			1021	1	1	0.1	1	1		Red					
-1255		EnemyBullet			1021	1	2	0.1	1	1		Purple					
-1256		EnemyBullet			1021	1	3	0.1	1	1		Purple					
-1257		EnemyBullet			1021	1	4	0.1	1	1		Blue					
-1258		EnemyBullet			1021	1	5	0.1	1	1		Blue					
-1259		EnemyBullet			1021	1	6	0.1	1	1		BlueLight					
-1260		EnemyBullet			1021	1	7	0.1	1	1		BlueLight					
-1261		EnemyBullet			1021	1	8	0.1	1	1		Green					
-1262		EnemyBullet			1021	1	9	0.1	1	1		Green					
-1263		EnemyBullet			1021	1	10	0.1	1	1		Yellow					
-1264		EnemyBullet			1021	1	11	0.1	1	1		Yellow					
-1265		EnemyBullet			1021	1	12	0.1	1	1		Orange					
-1266		EnemyBullet			1021	1	13	0.1	1	1		Orange					
-1267		EnemyBullet			1021	1	14	0.1	1	1		White					
-1268		EnemyBullet			1021	1	15	0.1	1	1		White					
-1269		EnemyBullet	TRUE		1022	1	0	0.2	1	1		Red					
-1270		EnemyBullet	TRUE		1023	1	0	0.2	1	1		Blue					
-1271		EnemyBullet	TRUE		1024	1	0	0.2	1	1		Green					
-1272		EnemyBullet	TRUE		1025	1	0	0.2	1	1		Yellow					
-1273		EnemyBullet			1026	1	0	0.2	1	1		Red					
-1274		EnemyBullet			1026	1	1	0.2	1	1		Purple					
-1275		EnemyBullet			1026	1	2	0.2	1	1		Blue					
-1276		EnemyBullet			1026	1	3	0.2	1	1		BlueLight					
-1277		EnemyBullet			1026	1	4	0.2	1	1		Green					
-1278		EnemyBullet			1026	1	5	0.2	1	1		Yellow					
-1279		EnemyBullet			1026	1	6	0.2	1	1		Orange					
-1280		EnemyBullet			1026	1	7	0.2	1	1		White					
-1281		EnemyBullet			1027	1	0	0.1	1	1		Red					
-1282		EnemyBullet			1027	1	1	0.1	1	1		Purple					
-1283		EnemyBullet			1027	1	2	0.1	1	1		Blue					
-1284		EnemyBullet			1027	1	3	0.1	1	1		BlueLight					
-1285		EnemyBullet			1027	1	4	0.1	1	1		Green					
-1286		EnemyBullet			1027	1	5	0.1	1	1		Yellow					
-1287		EnemyBullet			1027	1	6	0.1	1	1		Orange					
-1288		EnemyBullet			1027	1	7	0.1	1	1		White					
-1289		EnemyBullet			1028	1	0	0.1	1	1		Red					
-1290		EnemyBullet			1028	1	1	0.1	1	1		Purple					
-1291		EnemyBullet			1028	1	2	0.1	1	1		Blue					
-1292		EnemyBullet			1028	1	3	0.1	1	1		BlueLight					
-1293		EnemyBullet			1028	1	4	0.1	1	1		Green					
-1294		EnemyBullet			1028	1	5	0.1	1	1		Yellow					
-1295		EnemyBullet			1028	1	6	0.1	1	1		Orange					
-1296		EnemyBullet			1028	1	7	0.1	1	1		White					
-1297		EnemyBullet			1029	1	0	0.2	1	1		Red					
-1298		EnemyBullet			1029	1	1	0.2	1	1		Purple					
-1299		EnemyBullet			1029	1	2	0.2	1	1		Blue					
-1300		EnemyBullet			1029	1	3	0.2	1	1		BlueLight					
-1301		EnemyBullet			1029	1	4	0.2	1	1		Green					
-1302		EnemyBullet			1029	1	5	0.2	1	1		Yellow					
-1303		EnemyBullet			1029	1	6	0.2	1	1		Orange					
-1304		EnemyBullet			1029	1	7	0.2	1	1		White					
-1305		EnemyBullet			1030	1	0	0.2	1	1		Red					
-1306		EnemyBullet			1030	1	1	0.2	1	1		Purple					
-1307		EnemyBullet			1030	1	2	0.2	1	1		Blue					
-1308		EnemyBullet			1030	1	3	0.2	1	1		BlueLight					
-1309		EnemyBullet			1030	1	4	0.2	1	1		Green					
-1310		EnemyBullet			1030	1	5	0.2	1	1		Yellow					
-1311		EnemyBullet			1030	1	6	0.2	1	1		Orange					
-1312		EnemyBullet			1030	1	7	0.2	1	1		White					
-1313		EnemyBullet			1031	1	0	0.2	1	1		Red					
-1314		EnemyBullet			1031	1	1	0.2	1	1		Purple					
-1315		EnemyBullet			1031	1	2	0.2	1	1		Blue					
-1316		EnemyBullet			1031	1	3	0.2	1	1		BlueLight					
-1317		EnemyBullet			1031	1	4	0.2	1	1		Green					
-1318		EnemyBullet			1031	1	5	0.2	1	1		Yellow					
-1319		EnemyBullet			1031	1	6	0.2	1	1		Orange					
-1320		EnemyBullet			1031	1	7	0.2	1	1		White					
-1321		EnemyBullet			1032	1	0	0.3	1	1		Red					
-1322		EnemyBullet			1032	1	1	0.3	1	1		Purple					
-1323		EnemyBullet			1032	1	2	0.3	1	1		Blue					
-1324		EnemyBullet			1032	1	3	0.3	1	1		BlueLight					
-1325		EnemyBullet			1033	1	0	0.3	1	1		Green					
-1326		EnemyBullet			1033	1	1	0.3	1	1		Yellow					
-1327		EnemyBullet			1033	1	2	0.3	1	1		Orange					
-1328		EnemyBullet			1033	1	3	0.3	1	1		White					
-1329		EnemyBullet	TRUE		1034	1	0	0.2	1	1		Red					
-1330		EnemyBullet	TRUE		1035	1	0	0.2	1	1		Yellow					
-1331		EnemyBullet	TRUE		1036	1	0	0.2	1	1		Blue					
-1332		EnemyBullet	TRUE		1037	1	0	0.2	1	1		Red					
-1333		EnemyBullet	TRUE		1038	1	0	0.2	1	1		Purple					
-1334		EnemyBullet	TRUE		1039	1	0	0.2	1	1		Yellow					
-1335		EnemyBullet	TRUE		1040	1	0	0.2	1	1		Red					
-1336		EnemyBullet	TRUE		1041	1	0	0.2	1	1		Purple					
-1337		EnemyBullet			1042	1	0	0.2	1	1		Red					
-1338		EnemyBullet			1042	1	1	0.2	1	1		Purple					
-1339		EnemyBullet			1042	1	2	0.2	1	1		Blue					
-1340		EnemyBullet			1042	1	3	0.2	1	1		BlueLight					
-1341		EnemyBullet			1042	1	4	0.2	1	1		Green					
-1342		EnemyBullet			1042	1	5	0.2	1	1		Yellow					
-1343		EnemyBullet			1042	1	6	0.2	1	1		Orange					
-1344		EnemyBullet			1042	1	7	0.2	1	1		White					
-1345		EnemyBullet			1043	1	0	0.8	1	1		Red					
-1346		EnemyBullet			1043	1	1	0.8	1	1		Purple					
-1347		EnemyBullet			1043	1	2	0.8	1	1		Blue					
-1348		EnemyBullet			1043	1	3	0.8	1	1		BlueLight					
-1349		EnemyBullet			1043	1	4	0.8	1	1		Green					
-1350		EnemyBullet			1043	1	5	0.8	1	1		Yellow					
-1351		EnemyBullet			1043	1	6	0.8	1	1		Orange					
-1352		EnemyBullet			1043	1	7	0.8	1	1		White					
-1353		EnemyBullet	TRUE		1044	1	0	0.2	1	1		Red					
-1354		EnemyBullet	TRUE		1045	1	0	0.2	1	1		Purple					
-1355		EnemyBullet	TRUE		1046	1	0	0.2	1	1		Blue					
-1356		EnemyBullet	TRUE		1047	1	0	0.2	1	1		BlueLight					
-1357		EnemyBullet	TRUE		1048	1	0	0.2	1	1		Green					
-1358		EnemyBullet	TRUE		1049	1	0	0.2	1	1		Yellow					
-1359		EnemyBullet	TRUE		1050	1	0	0.2	1	1		Orange					
-1360		EnemyBullet	TRUE		1051	1	0	0.2	1	1		White					
-1361		EnemyBullet	TRUE		1052	1	0	0.2	1	1		Red					
-1362		EnemyBullet	TRUE		1053	1	0	0.2	1	1		Purple					
-1363		EnemyBullet	TRUE		1054	1	0	0.2	1	1		Blue					
-1364		EnemyBullet	TRUE		1055	1	0	0.2	1	1		BlueLight					
-1365		EnemyBullet	TRUE		1056	1	0	0.2	1	1		Green					
-1366		EnemyBullet	TRUE		1057	1	0	0.2	1	1		Yellow					
-1367		EnemyBullet	TRUE		1058	1	0	0.2	1	1		Orange					
-1368		EnemyBullet	TRUE		1059	1	0	0.2	1	1		White					
-1369		Laser		TRUE	1060	0.4	0	0.8	1	1	1	Red					
-1370		Laser		TRUE	1060	0.4	1	0.8	1	1	1	Red					
-1371		Laser		TRUE	1060	0.4	2	0.8	1	1	1	Purple					
-1372		Laser		TRUE	1060	0.4	3	0.8	1	1	1	Purple					
-1373		Laser		TRUE	1060	0.4	4	0.8	1	1	1	Blue					
-1374		Laser		TRUE	1060	0.4	5	0.8	1	1	1	Blue					
-1375		Laser		TRUE	1060	0.4	6	0.8	1	1	1	BlueLight					
-1376		Laser		TRUE	1060	0.4	7	0.8	1	1	1	BlueLight					
-1377		Laser		TRUE	1060	0.4	8	0.8	1	1	1	Green					
-1378		Laser		TRUE	1060	0.4	9	0.8	1	1	1	Green					
-1379		Laser		TRUE	1060	0.4	10	0.8	1	1	1	Yellow					
-1380		Laser		TRUE	1060	0.4	11	0.8	1	1	1	Yellow					
-1381		Laser		TRUE	1060	0.4	12	0.8	1	1	1	Orange					
-1382		Laser		TRUE	1060	0.4	13	0.8	1	1	1	Orange					
-1383		Laser		TRUE	1060	0.4	14	0.8	1	1	1	White					
-1384		Laser		TRUE	1060	0.4	15	0.8	1	1	1	White					
-1385		Laser		TRUE	1061	0.4	0	0.8	1	1	1	Red					
-1386		Laser		TRUE	1061	0.4	1	0.8	1	1	1	Red					
-1387		Laser		TRUE	1061	0.4	2	0.8	1	1	1	Purple					
-1388		Laser		TRUE	1061	0.4	3	0.8	1	1	1	Purple					
-1389		Laser		TRUE	1061	0.4	4	0.8	1	1	1	Blue					
-1390		Laser		TRUE	1061	0.4	5	0.8	1	1	1	Blue					
-1391		Laser		TRUE	1061	0.4	6	0.8	1	1	1	BlueLight					
-1392		Laser		TRUE	1061	0.4	7	0.8	1	1	1	BlueLight					
-1393		Laser		TRUE	1061	0.4	8	0.8	1	1	1	Green					
-1394		Laser		TRUE	1061	0.4	9	0.8	1	1	1	Green					
-1395		Laser		TRUE	1061	0.4	10	0.8	1	1	1	Yellow					
-1396		Laser		TRUE	1061	0.4	11	0.8	1	1	1	Yellow					
-1397		Laser		TRUE	1061	0.4	12	0.8	1	1	1	Orange					
-1398		Laser		TRUE	1061	0.4	13	0.8	1	1	1	Orange					
-1399		Laser		TRUE	1061	0.4	14	0.8	1	1	1	White					
-1400		Laser		TRUE	1061	0.4	15	0.8	1	1	1	White					
-1401		Laser		TRUE	1062	0.4	0	0.8	1	1	1	Red					
-1402		Laser		TRUE	1062	0.4	1	0.8	1	1	1	Red					
-1403		Laser		TRUE	1062	0.4	2	0.8	1	1	1	Purple					
-1404		Laser		TRUE	1062	0.4	3	0.8	1	1	1	Purple					
-1405		Laser		TRUE	1062	0.4	4	0.8	1	1	1	Blue					
-1406		Laser		TRUE	1062	0.4	5	0.8	1	1	1	Blue					
-1407		Laser		TRUE	1062	0.4	6	0.8	1	1	1	BlueLight					
-1408		Laser		TRUE	1062	0.4	7	0.8	1	1	1	BlueLight					
-1409		Laser		TRUE	1062	0.4	8	0.8	1	1	1	Green					
-1410		Laser		TRUE	1062	0.4	9	0.8	1	1	1	Green					
-1411		Laser		TRUE	1062	0.4	10	0.8	1	1	1	Yellow					
-1412		Laser		TRUE	1062	0.4	11	0.8	1	1	1	Yellow					
-1413		Laser		TRUE	1062	0.4	12	0.8	1	1	1	Orange					
-1414		Laser		TRUE	1062	0.4	13	0.8	1	1	1	Orange					
-1415		Laser		TRUE	1062	0.4	14	0.8	1	1	1	White					
-1416		Laser		TRUE	1062	0.4	15	0.8	1	1	1	White					
-1417		Laser		TRUE	1063	0.4	0	0.8	1	1	1	Red					
-1418		Laser		TRUE	1063	0.4	1	0.8	1	1	1	Red					
-1419		Laser		TRUE	1063	0.4	2	0.8	1	1	1	Purple					
-1420		Laser		TRUE	1063	0.4	3	0.8	1	1	1	Purple					
-1421		Laser		TRUE	1063	0.4	4	0.8	1	1	1	Blue					
-1422		Laser		TRUE	1063	0.4	5	0.8	1	1	1	Blue					
-1423		Laser		TRUE	1063	0.4	6	0.8	1	1	1	BlueLight					
-1424		Laser		TRUE	1063	0.4	7	0.8	1	1	1	BlueLight					
-1425		Laser		TRUE	1063	0.4	8	0.8	1	1	1	Green					
-1426		Laser		TRUE	1063	0.4	9	0.8	1	1	1	Green					
-1427		Laser		TRUE	1063	0.4	10	0.8	1	1	1	Yellow					
-1428		Laser		TRUE	1063	0.4	11	0.8	1	1	1	Yellow					
-1429		Laser		TRUE	1063	0.4	12	0.8	1	1	1	Orange					
-1430		Laser		TRUE	1063	0.4	13	0.8	1	1	1	Orange					
-1431		Laser		TRUE	1063	0.4	14	0.8	1	1	1	White					
-1432		Laser		TRUE	1063	0.4	15	0.8	1	1	1	White					
-1433		Laser		TRUE	1064	0.4	0	0.8	1	1	1	Red					
-1434		Laser		TRUE	1064	0.4	1	0.8	1	1	1	Red					
-1435		Laser		TRUE	1064	0.4	2	0.8	1	1	1	Purple					
-1436		Laser		TRUE	1064	0.4	3	0.8	1	1	1	Purple					
-1437		Laser		TRUE	1064	0.4	4	0.8	1	1	1	Blue					
-1438		Laser		TRUE	1064	0.4	5	0.8	1	1	1	Blue					
-1439		Laser		TRUE	1064	0.4	6	0.8	1	1	1	BlueLight					
-1440		Laser		TRUE	1064	0.4	7	0.8	1	1	1	BlueLight					
-1441		Laser		TRUE	1064	0.4	8	0.8	1	1	1	Green					
-1442		Laser		TRUE	1064	0.4	9	0.8	1	1	1	Green					
-1443		Laser		TRUE	1064	0.4	10	0.8	1	1	1	Yellow					
-1444		Laser		TRUE	1064	0.4	11	0.8	1	1	1	Yellow					
-1445		Laser		TRUE	1064	0.4	12	0.8	1	1	1	Orange					
-1446		Laser		TRUE	1064	0.4	13	0.8	1	1	1	Orange					
-1447		Laser		TRUE	1064	0.4	14	0.8	1	1	1	White					
-1448		Laser		TRUE	1064	0.4	15	0.8	1	1	1	White					
-1449		EnemyBullet			1065	1	0	0.2	1	1		Red					
-1450		EnemyBullet			1065	1	1	0.2	1	1		Green					
-1451		EnemyBullet			1065	1	2	0.2	1	1		Blue					
-1452		EnemyBullet			1065	1	3	0.2	1	1		Purple					
-1453		EnemyBullet	TRUE	TRUE	1038	1	0	0.3	0.5	1.5		Purple	6	0.5			
-1454		EnemyBullet	TRUE	TRUE	1039	1	0	0.3	0.5	1.5		Yellow	6	0.5			
-1455		EnemyBullet	TRUE	TRUE	1040	1	0	0.3	0.5	1.5		Red	6	0.5			
-1456		EnemyBullet	TRUE	TRUE	1041	1	0	0.3	0.5	1.5		Purple	6	0.5			
-1457	Star_Mini	EnemyBullet			1016	0.4	0	0.2	1	1.1		Red					
-1458	Star_Mini	EnemyBullet			1016	0.4	1	0.2	1	1.1		Purple					
-1459	Star_Mini	EnemyBullet			1016	0.4	2	0.2	1	1.1		Blue					
-1460	Star_Mini	EnemyBullet			1016	0.4	3	0.2	1	1.1		BlueLight					
-1461	Star_Mini	EnemyBullet			1016	0.4	4	0.2	1	1.1		Green					
-1462	Star_Mini	EnemyBullet			1016	0.4	5	0.2	1	1.1		Yellow					
-1463	Star_Mini	EnemyBullet			1016	0.4	6	0.2	1	1.1		Orange					
-1464	Star_Mini	EnemyBullet			1016	0.4	7	0.2	1	1.1		White					
-																	
-																	
-2001	被环绕子弹	EnemyBullet			1043	1	3	0.6	0.2	3		BlueLight					
-2002	环绕子弹	EnemyBullet			1007	1	0	0.1	0.8	1.5		Red					
-																	
-2003	BigStar(无碰撞)	EnemyBullet			1016	1.2	3	0	1	1		BlueLight					
+#子弹配置										0:中心为中心 1:底部为中心 2:头部为中心				
+#		类型	序列帧子弹	资源ID	缩放	图集中的第几张图片	碰撞半径比例	透明度	亮度	中心点	爆炸特效颜色	爆炸特效ID	爆炸特效移动速度	子弹变慢且延迟销毁
+id	name	classType	isAni	resourceId	scale	spriteIdx	radius	alpha	brightness	centerPivot	EColor	bombEffectId	bombEffectSpeed	delayDestroy
+														
+#player bullet														
+1	魔理沙普攻	PlayerBullet		6	1	0	6	0.6	1	2				TRUE
+2	灵梦普攻	PlayerBullet		107	1	0	6	0.6	1	2		11	18	
+101	魔理沙导弹	PlayerBullet		7	1	0	9	0.8	1	0		4		
+102	魔理沙激光	MarisaLaser		16	1	0	-1	0.8	1	1				
+														
+														
+#enemy_bullet														
+														
+1001		EnemyBullet		1001	1	0	2	1	1		Red			
+1002		EnemyBullet		1001	1	1	2	1	1		Red			
+1003		EnemyBullet		1001	1	2	2	1	1		Purple			
+1004		EnemyBullet		1001	1	3	2	1	1		Purple			
+1005		EnemyBullet		1001	1	4	2	1	1		Blue			
+1006		EnemyBullet		1001	1	5	2	1	1		Blue			
+1007		EnemyBullet		1001	1	6	2	1	1		BlueLight			
+1008		EnemyBullet		1001	1	7	2	1	1		BlueLight			
+1009		EnemyBullet		1001	1	8	2	1	1		Green			
+1010		EnemyBullet		1001	1	9	2	1	1		Green			
+1011		EnemyBullet		1001	1	10	2	1	1		Yellow			
+1012		EnemyBullet		1001	1	11	2	1	1		Yellow			
+1013		EnemyBullet		1001	1	12	2	1	1		Orange			
+1014		EnemyBullet		1001	1	13	2	1	1		Orange			
+1015		EnemyBullet		1001	1	14	2	1	1		White			
+1016		EnemyBullet		1001	1	15	2	1	1		White			
+1017		EnemyBullet		1002	1	0	2	1	1		Red			
+1018		EnemyBullet		1002	1	1	2	1	1		Red			
+1019		EnemyBullet		1002	1	2	2	1	1		Purple			
+1020		EnemyBullet		1002	1	3	2	1	1		Purple			
+1021		EnemyBullet		1002	1	4	2	1	1		Blue			
+1022		EnemyBullet		1002	1	5	2	1	1		Blue			
+1023		EnemyBullet		1002	1	6	2	1	1		BlueLight			
+1024		EnemyBullet		1002	1	7	2	1	1		BlueLight			
+1025		EnemyBullet		1002	1	8	2	1	1		Green			
+1026		EnemyBullet		1002	1	9	2	1	1		Green			
+1027		EnemyBullet		1002	1	10	2	1	1		Yellow			
+1028		EnemyBullet		1002	1	11	2	1	1		Yellow			
+1029		EnemyBullet		1002	1	12	2	1	1		Orange			
+1030		EnemyBullet		1002	1	13	2	1	1		Orange			
+1031		EnemyBullet		1002	1	14	2	1	1		White			
+1032		EnemyBullet		1002	1	15	2	1	1		White			
+1033		EnemyBullet		1003	1	0	2	1	1		Red			
+1034		EnemyBullet		1003	1	1	2	1	1		Red			
+1035		EnemyBullet		1003	1	2	2	1	1		Purple			
+1036		EnemyBullet		1003	1	3	2	1	1		Purple			
+1037		EnemyBullet		1003	1	4	2	1	1		Blue			
+1038		EnemyBullet		1003	1	5	2	1	1		Blue			
+1039		EnemyBullet		1003	1	6	2	1	1		BlueLight			
+1040		EnemyBullet		1003	1	7	2	1	1		BlueLight			
+1041		EnemyBullet		1003	1	8	2	1	1		Green			
+1042		EnemyBullet		1003	1	9	2	1	1		Green			
+1043		EnemyBullet		1003	1	10	2	1	1		Yellow			
+1044		EnemyBullet		1003	1	11	2	1	1		Yellow			
+1045		EnemyBullet		1003	1	12	2	1	1		Orange			
+1046		EnemyBullet		1003	1	13	2	1	1		Orange			
+1047		EnemyBullet		1003	1	14	2	1	1		White			
+1048		EnemyBullet		1003	1	15	2	1	1		White			
+1049		EnemyBullet		1004	1	0	4	1	1		Red			
+1050		EnemyBullet		1004	1	1	4	1	1		Purple			
+1051		EnemyBullet		1004	1	2	4	1	1		Blue			
+1052		EnemyBullet		1004	1	3	4	1	1		BlueLight			
+1053		EnemyBullet		1004	1	4	4	1	1		Green			
+1054		EnemyBullet		1004	1	5	4	1	1		Yellow			
+1055		EnemyBullet		1004	1	6	4	1	1		Orange			
+1056		EnemyBullet		1004	1	7	4	1	1		White			
+1057		EnemyBullet		1005	1	0	4	1	1		Red			
+1058		EnemyBullet		1005	1	1	4	1	1		Purple			
+1059		EnemyBullet		1005	1	2	4	1	1		Blue			
+1060		EnemyBullet		1005	1	3	4	1	1		BlueLight			
+1061		EnemyBullet		1005	1	4	4	1	1		Green			
+1062		EnemyBullet		1005	1	5	4	1	1		Yellow			
+1063		EnemyBullet		1005	1	6	4	1	1		Orange			
+1064		EnemyBullet		1005	1	7	4	1	1		White			
+1065		EnemyBullet		1006	1	0	2	1	1		Red			
+1066		EnemyBullet		1006	1	1	2	1	1		Red			
+1067		EnemyBullet		1006	1	2	2	1	1		Purple			
+1068		EnemyBullet		1006	1	3	2	1	1		Purple			
+1069		EnemyBullet		1006	1	4	2	1	1		Blue			
+1070		EnemyBullet		1006	1	5	2	1	1		Blue			
+1071		EnemyBullet		1006	1	6	2	1	1		BlueLight			
+1072		EnemyBullet		1006	1	7	2	1	1		BlueLight			
+1073		EnemyBullet		1006	1	8	2	1	1		Green			
+1074		EnemyBullet		1006	1	9	2	1	1		Green			
+1075		EnemyBullet		1006	1	10	2	1	1		Yellow			
+1076		EnemyBullet		1006	1	11	2	1	1		Yellow			
+1077		EnemyBullet		1006	1	12	2	1	1		Orange			
+1078		EnemyBullet		1006	1	13	2	1	1		Orange			
+1079		EnemyBullet		1006	1	14	2	1	1		White			
+1080		EnemyBullet		1006	1	15	2	1	1		White			
+1081		EnemyBullet		1007	1	0	2	1	1		Red			
+1082		EnemyBullet		1007	1	1	2	1	1		Purple			
+1083		EnemyBullet		1007	1	2	2	1	1		Blue			
+1084		EnemyBullet		1007	1	3	2	1	1		BlueLight			
+1085		EnemyBullet		1007	1	4	2	1	1		Green			
+1086		EnemyBullet		1007	1	5	2	1	1		Yellow			
+1087		EnemyBullet		1007	1	6	2	1	1		Orange			
+1088		EnemyBullet		1007	1	7	2	1	1		White			
+1089		EnemyBullet		1008	1	0	1	1	1		Red			
+1090		EnemyBullet		1008	1	1	1	1	1		Red			
+1091		EnemyBullet		1008	1	2	1	1	1		Purple			
+1092		EnemyBullet		1008	1	3	1	1	1		Purple			
+1093		EnemyBullet		1008	1	4	1	1	1		Blue			
+1094		EnemyBullet		1008	1	5	1	1	1		Blue			
+1095		EnemyBullet		1008	1	6	1	1	1		BlueLight			
+1096		EnemyBullet		1008	1	7	1	1	1		BlueLight			
+1097		EnemyBullet		1008	1	8	1	1	1		Green			
+1098		EnemyBullet		1008	1	9	1	1	1		Green			
+1099		EnemyBullet		1008	1	10	1	1	1		Yellow			
+1100		EnemyBullet		1008	1	11	1	1	1		Yellow			
+1101		EnemyBullet		1008	1	12	1	1	1		Orange			
+1102		EnemyBullet		1008	1	13	1	1	1		Orange			
+1103		EnemyBullet		1008	1	14	1	1	1		White			
+1104		EnemyBullet		1008	1	15	1	1	1		White			
+1105		EnemyBullet		1009	1	0	4	1	1		Red			
+1106		EnemyBullet		1009	1	1	4	1	1		Purple			
+1107		EnemyBullet		1009	1	2	4	1	1		Blue			
+1108		EnemyBullet		1009	1	3	4	1	1		BlueLight			
+1109		EnemyBullet		1009	1	4	4	1	1		Green			
+1110		EnemyBullet		1009	1	5	4	1	1		Yellow			
+1111		EnemyBullet		1009	1	6	4	1	1		Orange			
+1112		EnemyBullet		1009	1	7	4	1	1		White			
+1113	大玉	EnemyBullet		1010	1	0	12	1	1		Red			
+1114	大玉	EnemyBullet		1010	1	1	12	1	1		Purple			
+1115	大玉	EnemyBullet		1010	1	2	12	1	1		Green			
+1116	大玉	EnemyBullet		1010	1	3	12	1	1		Yellow			
+1117		EnemyBullet		1011	1	0	2	1	1		Red			
+1118		EnemyBullet		1011	1	1	2	1	1		Red			
+1119		EnemyBullet		1011	1	2	2	1	1		Purple			
+1120		EnemyBullet		1011	1	3	2	1	1		Purple			
+1121		EnemyBullet		1011	1	4	2	1	1		Blue			
+1122		EnemyBullet		1011	1	5	2	1	1		Blue			
+1123		EnemyBullet		1011	1	6	2	1	1		BlueLight			
+1124		EnemyBullet		1011	1	7	2	1	1		BlueLight			
+1125		EnemyBullet		1011	1	8	2	1	1		Green			
+1126		EnemyBullet		1011	1	9	2	1	1		Green			
+1127		EnemyBullet		1011	1	10	2	1	1		Yellow			
+1128		EnemyBullet		1011	1	11	2	1	1		Yellow			
+1129		EnemyBullet		1011	1	12	2	1	1		Orange			
+1130		EnemyBullet		1011	1	13	2	1	1		Orange			
+1131		EnemyBullet		1011	1	14	2	1	1		White			
+1132		EnemyBullet		1011	1	15	2	1	1		White			
+1133		EnemyBullet		1012	1	0	2	1	1		Red			
+1134		EnemyBullet		1012	1	1	2	1	1		Red			
+1135		EnemyBullet		1012	1	2	2	1	1		Purple			
+1136		EnemyBullet		1012	1	3	2	1	1		Purple			
+1137		EnemyBullet		1012	1	4	2	1	1		Blue			
+1138		EnemyBullet		1012	1	5	2	1	1		Blue			
+1139		EnemyBullet		1012	1	6	2	1	1		BlueLight			
+1140		EnemyBullet		1012	1	7	2	1	1		BlueLight			
+1141		EnemyBullet		1012	1	8	2	1	1		Green			
+1142		EnemyBullet		1012	1	9	2	1	1		Green			
+1143		EnemyBullet		1012	1	10	2	1	1		Yellow			
+1144		EnemyBullet		1012	1	11	2	1	1		Yellow			
+1145		EnemyBullet		1012	1	12	2	1	1		Orange			
+1146		EnemyBullet		1012	1	13	2	1	1		Orange			
+1147		EnemyBullet		1012	1	14	2	1	1		White			
+1148		EnemyBullet		1012	1	15	2	1	1		White			
+1149		EnemyBullet		1013	1	0	2	1	1		Red			
+1150		EnemyBullet		1013	1	1	2	1	1		Red			
+1151		EnemyBullet		1013	1	2	2	1	1		Purple			
+1152		EnemyBullet		1013	1	3	2	1	1		Purple			
+1153		EnemyBullet		1013	1	4	2	1	1		Blue			
+1154		EnemyBullet		1013	1	5	2	1	1		Blue			
+1155		EnemyBullet		1013	1	6	2	1	1		BlueLight			
+1156		EnemyBullet		1013	1	7	2	1	1		BlueLight			
+1157		EnemyBullet		1013	1	8	2	1	1		Green			
+1158		EnemyBullet		1013	1	9	2	1	1		Green			
+1159		EnemyBullet		1013	1	10	2	1	1		Yellow			
+1160		EnemyBullet		1013	1	11	2	1	1		Yellow			
+1161		EnemyBullet		1013	1	12	2	1	1		Orange			
+1162		EnemyBullet		1013	1	13	2	1	1		Orange			
+1163		EnemyBullet		1013	1	14	2	1	1		White			
+1164		EnemyBullet		1013	1	15	2	1	1		White			
+1165		EnemyBullet		1014	1	0	2	1	1		Red			
+1166		EnemyBullet		1014	1	1	2	1	1		Red			
+1167		EnemyBullet		1014	1	2	2	1	1		Purple			
+1168		EnemyBullet		1014	1	3	2	1	1		Purple			
+1169		EnemyBullet		1014	1	4	2	1	1		Blue			
+1170		EnemyBullet		1014	1	5	2	1	1		Blue			
+1171		EnemyBullet		1014	1	6	2	1	1		BlueLight			
+1172		EnemyBullet		1014	1	7	2	1	1		BlueLight			
+1173		EnemyBullet		1014	1	8	2	1	1		Green			
+1174		EnemyBullet		1014	1	9	2	1	1		Green			
+1175		EnemyBullet		1014	1	10	2	1	1		Yellow			
+1176		EnemyBullet		1014	1	11	2	1	1		Yellow			
+1177		EnemyBullet		1014	1	12	2	1	1		Orange			
+1178		EnemyBullet		1014	1	13	2	1	1		Orange			
+1179		EnemyBullet		1014	1	14	2	1	1		White			
+1180		EnemyBullet		1014	1	15	2	1	1		White			
+1181		EnemyBullet		1015	1	0	4	1	1		Red			
+1182		EnemyBullet		1015	1	1	4	1	1		Purple			
+1183		EnemyBullet		1015	1	2	4	1	1		Blue			
+1184		EnemyBullet		1015	1	3	4	1	1		BlueLight			
+1185		EnemyBullet		1015	1	4	4	1	1		Green			
+1186		EnemyBullet		1015	1	5	4	1	1		Yellow			
+1187		EnemyBullet		1015	1	6	4	1	1		Orange			
+1188		EnemyBullet		1015	1	7	4	1	1		White			
+1189	Star	EnemyBullet		1016	1	0	4	1	1		Red			
+1190	Star	EnemyBullet		1016	1	1	4	1	1		Purple			
+1191	Star	EnemyBullet		1016	1	2	4	1	1		Blue			
+1192	Star	EnemyBullet		1016	1	3	4	1	1		BlueLight			
+1193	Star	EnemyBullet		1016	1	4	4	1	1		Green			
+1194	Star	EnemyBullet		1016	1	5	4	1	1		Yellow			
+1195	Star	EnemyBullet		1016	1	6	4	1	1		Orange			
+1196	Star	EnemyBullet		1016	1	7	4	1	1		White			
+1197	Knife	EnemyBullet		1017	1	0	4	1	1		Red			
+1198	Knife	EnemyBullet		1017	1	1	4	1	1		Purple			
+1199	Knife	EnemyBullet		1017	1	2	4	1	1		Blue			
+1200	Knife	EnemyBullet		1017	1	3	4	1	1		BlueLight			
+1201	Knife	EnemyBullet		1017	1	4	4	1	1		Green			
+1202	Knife	EnemyBullet		1017	1	5	4	1	1		Yellow			
+1203	Knife	EnemyBullet		1017	1	6	4	1	1		Orange			
+1204	Knife	EnemyBullet		1017	1	7	4	1	1		White			
+1205		EnemyBullet		1018	1	0	2	1	1		Red			
+1206		EnemyBullet		1018	1	1	2	1	1		Red			
+1207		EnemyBullet		1018	1	2	2	1	1		Purple			
+1208		EnemyBullet		1018	1	3	2	1	1		Purple			
+1209		EnemyBullet		1018	1	4	2	1	1		Blue			
+1210		EnemyBullet		1018	1	5	2	1	1		Blue			
+1211		EnemyBullet		1018	1	6	2	1	1		BlueLight			
+1212		EnemyBullet		1018	1	7	2	1	1		BlueLight			
+1213		EnemyBullet		1018	1	8	2	1	1		Green			
+1214		EnemyBullet		1018	1	9	2	1	1		Green			
+1215		EnemyBullet		1018	1	10	2	1	1		Yellow			
+1216		EnemyBullet		1018	1	11	2	1	1		Yellow			
+1217		EnemyBullet		1018	1	12	2	1	1		Orange			
+1218		EnemyBullet		1018	1	13	2	1	1		Orange			
+1219		EnemyBullet		1018	1	14	2	1	1		White			
+1220		EnemyBullet		1018	1	15	2	1	1		White			
+1221		EnemyBullet		1019	1	0	2	1	1		Red			
+1222		EnemyBullet		1019	1	1	2	1	1		Red			
+1223		EnemyBullet		1019	1	2	2	1	1		Purple			
+1224		EnemyBullet		1019	1	3	2	1	1		Purple			
+1225		EnemyBullet		1019	1	4	2	1	1		Blue			
+1226		EnemyBullet		1019	1	5	2	1	1		Blue			
+1227		EnemyBullet		1019	1	6	2	1	1		BlueLight			
+1228		EnemyBullet		1019	1	7	2	1	1		BlueLight			
+1229		EnemyBullet		1019	1	8	2	1	1		Green			
+1230		EnemyBullet		1019	1	9	2	1	1		Green			
+1231		EnemyBullet		1019	1	10	2	1	1		Yellow			
+1232		EnemyBullet		1019	1	11	2	1	1		Yellow			
+1233		EnemyBullet		1019	1	12	2	1	1		Orange			
+1234		EnemyBullet		1019	1	13	2	1	1		Orange			
+1235		EnemyBullet		1019	1	14	2	1	1		White			
+1236		EnemyBullet		1019	1	15	2	1	1		White			
+1237		EnemyBullet		1020	1	0	2	1	1		Red			
+1238		EnemyBullet		1020	1	1	2	1	1		Red			
+1239		EnemyBullet		1020	1	2	2	1	1		Purple			
+1240		EnemyBullet		1020	1	3	2	1	1		Purple			
+1241		EnemyBullet		1020	1	4	2	1	1		Blue			
+1242		EnemyBullet		1020	1	5	2	1	1		Blue			
+1243		EnemyBullet		1020	1	6	2	1	1		BlueLight			
+1244		EnemyBullet		1020	1	7	2	1	1		BlueLight			
+1245		EnemyBullet		1020	1	8	2	1	1		Green			
+1246		EnemyBullet		1020	1	9	2	1	1		Green			
+1247		EnemyBullet		1020	1	10	2	1	1		Yellow			
+1248		EnemyBullet		1020	1	11	2	1	1		Yellow			
+1249		EnemyBullet		1020	1	12	2	1	1		Orange			
+1250		EnemyBullet		1020	1	13	2	1	1		Orange			
+1251		EnemyBullet		1020	1	14	2	1	1		White			
+1252		EnemyBullet		1020	1	15	2	1	1		White			
+1253		EnemyBullet		1021	1	0	2	1	1		Red			
+1254		EnemyBullet		1021	1	1	2	1	1		Red			
+1255		EnemyBullet		1021	1	2	2	1	1		Purple			
+1256		EnemyBullet		1021	1	3	2	1	1		Purple			
+1257		EnemyBullet		1021	1	4	2	1	1		Blue			
+1258		EnemyBullet		1021	1	5	2	1	1		Blue			
+1259		EnemyBullet		1021	1	6	2	1	1		BlueLight			
+1260		EnemyBullet		1021	1	7	2	1	1		BlueLight			
+1261		EnemyBullet		1021	1	8	2	1	1		Green			
+1262		EnemyBullet		1021	1	9	2	1	1		Green			
+1263		EnemyBullet		1021	1	10	2	1	1		Yellow			
+1264		EnemyBullet		1021	1	11	2	1	1		Yellow			
+1265		EnemyBullet		1021	1	12	2	1	1		Orange			
+1266		EnemyBullet		1021	1	13	2	1	1		Orange			
+1267		EnemyBullet		1021	1	14	2	1	1		White			
+1268		EnemyBullet		1021	1	15	2	1	1		White			
+1269		EnemyBullet	TRUE	1022	1	0	4	1	1		Red			
+1270		EnemyBullet	TRUE	1023	1	0	4	1	1		Blue			
+1271		EnemyBullet	TRUE	1024	1	0	4	1	1		Green			
+1272		EnemyBullet	TRUE	1025	1	0	4	1	1		Yellow			
+1273		EnemyBullet		1026	1	0	4	1	1		Red			
+1274		EnemyBullet		1026	1	1	4	1	1		Purple			
+1275		EnemyBullet		1026	1	2	4	1	1		Blue			
+1276		EnemyBullet		1026	1	3	4	1	1		BlueLight			
+1277		EnemyBullet		1026	1	4	4	1	1		Green			
+1278		EnemyBullet		1026	1	5	4	1	1		Yellow			
+1279		EnemyBullet		1026	1	6	4	1	1		Orange			
+1280		EnemyBullet		1026	1	7	4	1	1		White			
+1281		EnemyBullet		1027	1	0	2	1	1		Red			
+1282		EnemyBullet		1027	1	1	2	1	1		Purple			
+1283		EnemyBullet		1027	1	2	2	1	1		Blue			
+1284		EnemyBullet		1027	1	3	2	1	1		BlueLight			
+1285		EnemyBullet		1027	1	4	2	1	1		Green			
+1286		EnemyBullet		1027	1	5	2	1	1		Yellow			
+1287		EnemyBullet		1027	1	6	2	1	1		Orange			
+1288		EnemyBullet		1027	1	7	2	1	1		White			
+1289		EnemyBullet		1028	1	0	2	1	1		Red			
+1290		EnemyBullet		1028	1	1	2	1	1		Purple			
+1291		EnemyBullet		1028	1	2	2	1	1		Blue			
+1292		EnemyBullet		1028	1	3	2	1	1		BlueLight			
+1293		EnemyBullet		1028	1	4	2	1	1		Green			
+1294		EnemyBullet		1028	1	5	2	1	1		Yellow			
+1295		EnemyBullet		1028	1	6	2	1	1		Orange			
+1296		EnemyBullet		1028	1	7	2	1	1		White			
+1297		EnemyBullet		1029	1	0	4	1	1		Red			
+1298		EnemyBullet		1029	1	1	4	1	1		Purple			
+1299		EnemyBullet		1029	1	2	4	1	1		Blue			
+1300		EnemyBullet		1029	1	3	4	1	1		BlueLight			
+1301		EnemyBullet		1029	1	4	4	1	1		Green			
+1302		EnemyBullet		1029	1	5	4	1	1		Yellow			
+1303		EnemyBullet		1029	1	6	4	1	1		Orange			
+1304		EnemyBullet		1029	1	7	4	1	1		White			
+1305		EnemyBullet		1030	1	0	4	1	1		Red			
+1306		EnemyBullet		1030	1	1	4	1	1		Purple			
+1307		EnemyBullet		1030	1	2	4	1	1		Blue			
+1308		EnemyBullet		1030	1	3	4	1	1		BlueLight			
+1309		EnemyBullet		1030	1	4	4	1	1		Green			
+1310		EnemyBullet		1030	1	5	4	1	1		Yellow			
+1311		EnemyBullet		1030	1	6	4	1	1		Orange			
+1312		EnemyBullet		1030	1	7	4	1	1		White			
+1313		EnemyBullet		1031	1	0	4	1	1		Red			
+1314		EnemyBullet		1031	1	1	4	1	1		Purple			
+1315		EnemyBullet		1031	1	2	4	1	1		Blue			
+1316		EnemyBullet		1031	1	3	4	1	1		BlueLight			
+1317		EnemyBullet		1031	1	4	4	1	1		Green			
+1318		EnemyBullet		1031	1	5	4	1	1		Yellow			
+1319		EnemyBullet		1031	1	6	4	1	1		Orange			
+1320		EnemyBullet		1031	1	7	4	1	1		White			
+1321		EnemyBullet		1032	1	0	6	1	1		Red			
+1322		EnemyBullet		1032	1	1	6	1	1		Purple			
+1323		EnemyBullet		1032	1	2	6	1	1		Blue			
+1324		EnemyBullet		1032	1	3	6	1	1		BlueLight			
+1325		EnemyBullet		1033	1	0	6	1	1		Green			
+1326		EnemyBullet		1033	1	1	6	1	1		Yellow			
+1327		EnemyBullet		1033	1	2	6	1	1		Orange			
+1328		EnemyBullet		1033	1	3	6	1	1		White			
+1329		EnemyBullet	TRUE	1034	1	0	4	1	1		Red			
+1330		EnemyBullet	TRUE	1035	1	0	4	1	1		Yellow			
+1331		EnemyBullet	TRUE	1036	1	0	4	1	1		Blue			
+1332		EnemyBullet	TRUE	1037	1	0	4	1	1		Red			
+1333		EnemyBullet	TRUE	1038	1	0	4	1	1		Purple			
+1334		EnemyBullet	TRUE	1039	1	0	4	1	1		Yellow			
+1335		EnemyBullet	TRUE	1040	1	0	4	1	1		Red			
+1336		EnemyBullet	TRUE	1041	1	0	4	1	1		Purple			
+1337		EnemyBullet		1042	1	0	4	1	1		Red			
+1338		EnemyBullet		1042	1	1	4	1	1		Purple			
+1339		EnemyBullet		1042	1	2	4	1	1		Blue			
+1340		EnemyBullet		1042	1	3	4	1	1		BlueLight			
+1341		EnemyBullet		1042	1	4	4	1	1		Green			
+1342		EnemyBullet		1042	1	5	4	1	1		Yellow			
+1343		EnemyBullet		1042	1	6	4	1	1		Orange			
+1344		EnemyBullet		1042	1	7	4	1	1		White			
+1345	大玉	EnemyBullet		1043	1	0	12	1	1		Red			
+1346	大玉	EnemyBullet		1043	1	1	12	1	1		Purple			
+1347	大玉	EnemyBullet		1043	1	2	12	1	1		Blue			
+1348	大玉	EnemyBullet		1043	1	3	12	1	1		BlueLight			
+1349	大玉	EnemyBullet		1043	1	4	12	1	1		Green			
+1350	大玉	EnemyBullet		1043	1	5	12	1	1		Yellow			
+1351	大玉	EnemyBullet		1043	1	6	12	1	1		Orange			
+1352	大玉	EnemyBullet		1043	1	7	12	1	1		White			
+1353		EnemyBullet	TRUE	1044	1	0	4	1	1		Red			
+1354		EnemyBullet	TRUE	1045	1	0	4	1	1		Purple			
+1355		EnemyBullet	TRUE	1046	1	0	4	1	1		Blue			
+1356		EnemyBullet	TRUE	1047	1	0	4	1	1		BlueLight			
+1357		EnemyBullet	TRUE	1048	1	0	4	1	1		Green			
+1358		EnemyBullet	TRUE	1049	1	0	4	1	1		Yellow			
+1359		EnemyBullet	TRUE	1050	1	0	4	1	1		Orange			
+1360		EnemyBullet	TRUE	1051	1	0	4	1	1		White			
+1361		EnemyBullet	TRUE	1052	1	0	4	1	1		Red			
+1362		EnemyBullet	TRUE	1053	1	0	4	1	1		Purple			
+1363		EnemyBullet	TRUE	1054	1	0	4	1	1		Blue			
+1364		EnemyBullet	TRUE	1055	1	0	4	1	1		BlueLight			
+1365		EnemyBullet	TRUE	1056	1	0	4	1	1		Green			
+1366		EnemyBullet	TRUE	1057	1	0	4	1	1		Yellow			
+1367		EnemyBullet	TRUE	1058	1	0	4	1	1		Orange			
+1368		EnemyBullet	TRUE	1059	1	0	4	1	1		White			
+1369		Laser		1060	1	0	18	1	1	1	Red			
+1370		Laser		1060	1	1	18	1	1	1	Red			
+1371		Laser		1060	1	2	18	1	1	1	Purple			
+1372		Laser		1060	1	3	18	1	1	1	Purple			
+1373		Laser		1060	1	4	18	1	1	1	Blue			
+1374		Laser		1060	1	5	18	1	1	1	Blue			
+1375		Laser		1060	1	6	18	1	1	1	BlueLight			
+1376		Laser		1060	1	7	18	1	1	1	BlueLight			
+1377		Laser		1060	1	8	18	1	1	1	Green			
+1378		Laser		1060	1	9	18	1	1	1	Green			
+1379		Laser		1060	1	10	18	1	1	1	Yellow			
+1380		Laser		1060	1	11	18	1	1	1	Yellow			
+1381		Laser		1060	1	12	18	1	1	1	Orange			
+1382		Laser		1060	1	13	18	1	1	1	Orange			
+1383		Laser		1060	1	14	18	1	1	1	White			
+1384		Laser		1060	1	15	18	1	1	1	White			
+1385		Laser		1061	1	0	18	1	1	1	Red			
+1386		Laser		1061	1	1	18	1	1	1	Red			
+1387		Laser		1061	1	2	18	1	1	1	Purple			
+1388		Laser		1061	1	3	18	1	1	1	Purple			
+1389		Laser		1061	1	4	18	1	1	1	Blue			
+1390		Laser		1061	1	5	18	1	1	1	Blue			
+1391		Laser		1061	1	6	18	1	1	1	BlueLight			
+1392		Laser		1061	1	7	18	1	1	1	BlueLight			
+1393		Laser		1061	1	8	18	1	1	1	Green			
+1394		Laser		1061	1	9	18	1	1	1	Green			
+1395		Laser		1061	1	10	18	1	1	1	Yellow			
+1396		Laser		1061	1	11	18	1	1	1	Yellow			
+1397		Laser		1061	1	12	18	1	1	1	Orange			
+1398		Laser		1061	1	13	18	1	1	1	Orange			
+1399		Laser		1061	1	14	18	1	1	1	White			
+1400		Laser		1061	1	15	18	1	1	1	White			
+1401		Laser		1062	1	0	18	1	1	1	Red			
+1402		Laser		1062	1	1	18	1	1	1	Red			
+1403		Laser		1062	1	2	18	1	1	1	Purple			
+1404		Laser		1062	1	3	18	1	1	1	Purple			
+1405		Laser		1062	1	4	18	1	1	1	Blue			
+1406		Laser		1062	1	5	18	1	1	1	Blue			
+1407		Laser		1062	1	6	18	1	1	1	BlueLight			
+1408		Laser		1062	1	7	18	1	1	1	BlueLight			
+1409		Laser		1062	1	8	18	1	1	1	Green			
+1410		Laser		1062	1	9	18	1	1	1	Green			
+1411		Laser		1062	1	10	18	1	1	1	Yellow			
+1412		Laser		1062	1	11	18	1	1	1	Yellow			
+1413		Laser		1062	1	12	18	1	1	1	Orange			
+1414		Laser		1062	1	13	18	1	1	1	Orange			
+1415		Laser		1062	1	14	18	1	1	1	White			
+1416		Laser		1062	1	15	18	1	1	1	White			
+1417		Laser		1063	1	0	18	1	1	1	Red			
+1418		Laser		1063	1	1	18	1	1	1	Red			
+1419		Laser		1063	1	2	18	1	1	1	Purple			
+1420		Laser		1063	1	3	18	1	1	1	Purple			
+1421		Laser		1063	1	4	18	1	1	1	Blue			
+1422		Laser		1063	1	5	18	1	1	1	Blue			
+1423		Laser		1063	1	6	18	1	1	1	BlueLight			
+1424		Laser		1063	1	7	18	1	1	1	BlueLight			
+1425		Laser		1063	1	8	18	1	1	1	Green			
+1426		Laser		1063	1	9	18	1	1	1	Green			
+1427		Laser		1063	1	10	18	1	1	1	Yellow			
+1428		Laser		1063	1	11	18	1	1	1	Yellow			
+1429		Laser		1063	1	12	18	1	1	1	Orange			
+1430		Laser		1063	1	13	18	1	1	1	Orange			
+1431		Laser		1063	1	14	18	1	1	1	White			
+1432		Laser		1063	1	15	18	1	1	1	White			
+1433		Laser		1064	1	0	18	1	1	1	Red			
+1434		Laser		1064	1	1	18	1	1	1	Red			
+1435		Laser		1064	1	2	18	1	1	1	Purple			
+1436		Laser		1064	1	3	18	1	1	1	Purple			
+1437		Laser		1064	1	4	18	1	1	1	Blue			
+1438		Laser		1064	1	5	18	1	1	1	Blue			
+1439		Laser		1064	1	6	18	1	1	1	BlueLight			
+1440		Laser		1064	1	7	18	1	1	1	BlueLight			
+1441		Laser		1064	1	8	18	1	1	1	Green			
+1442		Laser		1064	1	9	18	1	1	1	Green			
+1443		Laser		1064	1	10	18	1	1	1	Yellow			
+1444		Laser		1064	1	11	18	1	1	1	Yellow			
+1445		Laser		1064	1	12	18	1	1	1	Orange			
+1446		Laser		1064	1	13	18	1	1	1	Orange			
+1447		Laser		1064	1	14	18	1	1	1	White			
+1448		Laser		1064	1	15	18	1	1	1	White			
+1449		EnemyBullet		1065	1	0	4	1	1		Red			
+1450		EnemyBullet		1065	1	1	4	1	1		Green			
+1451		EnemyBullet		1065	1	2	4	1	1		Blue			
+1452		EnemyBullet		1065	1	3	4	1	1		Purple			
+1457	Star_Mini	EnemyBullet		1016	0.4	0	4	1	1.1		Red			
+1458	Star_Mini	EnemyBullet		1016	0.4	1	4	1	1.1		Purple			
+1459	Star_Mini	EnemyBullet		1016	0.4	2	4	1	1.1		Blue			
+1460	Star_Mini	EnemyBullet		1016	0.4	3	4	1	1.1		BlueLight			
+1461	Star_Mini	EnemyBullet		1016	0.4	4	4	1	1.1		Green			
+1462	Star_Mini	EnemyBullet		1016	0.4	5	4	1	1.1		Yellow			
+1463	Star_Mini	EnemyBullet		1016	0.4	6	4	1	1.1		Orange			
+1464	Star_Mini	EnemyBullet		1016	0.4	7	4	1	1.1		White			
+														
+														
+2001	被环绕子弹	EnemyBullet		1043	1	3	12	0.2	3		BlueLight			
+2002	环绕子弹	EnemyBullet		1007	1	0	2	0.8	1.5		Red			
+														
+2003	BigStar(无碰撞)	EnemyBullet		1016	1.2	3	0	1	1		BlueLight			

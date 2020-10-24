@@ -58,8 +58,11 @@ public class UIDebugBulletLib : UiInstance
             yield return new WaitUntil(() => bullet != null);
 
             var localScale = bullet.Renderer.transform.localScale;
-            var ratio = localScale.x * 100;
-            if (ratio > 100) ratio = 96f / localScale.x;
+            var ratio = 3f;
+            if(localScale.x * 5f > 96)
+            {
+                ratio = 96f / localScale.x;
+            }
 
             bullet.Renderer.sortingLayerID = soringLayerId;
             bullet.transform.localScale = Vector3.one * ratio;
@@ -72,7 +75,7 @@ public class UIDebugBulletLib : UiInstance
             col.AddComponent<MeshFilter>().sharedMesh = GameSystem.DefaultRes.QuadMesh;
             col.layer = Layers.Ui;
 
-            var material = new Material(GameSystem.DefaultRes.CommonShader);
+            var material = new Material(GameSystem.DefaultRes.AlphaBlended);
             material.SetColor("_TintColor", Color.red);
             material.SetFloat("_AlphaScale", deploy.alpha);
 

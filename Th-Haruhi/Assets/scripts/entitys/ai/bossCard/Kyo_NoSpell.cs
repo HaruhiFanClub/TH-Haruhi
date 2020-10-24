@@ -130,7 +130,7 @@ public class Kyo_NoSpell: BossCardBase
         LuaStg.ShootEnemyBullet(RedBulletId, father.Pos.x, father.Pos.y, shootEffectScale: 0f, onCreate: bullet =>
         {
             bullet.SetFather(father);
-            bullet.SetHighLight();
+            bullet.SetShaderAdditive();
             bullet.SetBoundDestroy(false);
 
             var task = bullet.CreateTask();

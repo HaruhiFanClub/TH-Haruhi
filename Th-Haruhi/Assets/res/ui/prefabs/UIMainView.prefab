@@ -3342,7 +3342,7 @@ GameObject:
   - component: {fileID: 6722555241914015934}
   - component: {fileID: 6722555241914015928}
   - component: {fileID: 5157780001076755089}
-  - component: {fileID: 6629621745313047470}
+  - component: {fileID: 9210337122775089129}
   m_Layer: 5
   m_Name: UIMainView
   m_TagString: Untagged
@@ -3392,7 +3392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 905b05d2f0046744ab9bfdb2c1be1cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animator: {fileID: 6629621745313047470}
+  Animator: {fileID: 9210337122775089129}
   Menu: {fileID: 603818349515989471}
   Btn_GameStart: {fileID: 872126042332987895}
   Btn_ExtraStart: {fileID: 1978278404501095249}
@@ -3411,7 +3411,7 @@ MonoBehaviour:
   R960: {fileID: 5219474668732983217}
   R720: {fileID: 2546832984115443463}
   R480: {fileID: 5056694810591297791}
---- !u!95 &6629621745313047470
+--- !u!95 &9210337122775089129
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -3421,7 +3421,7 @@ Animator:
   m_GameObject: {fileID: 6722555241914015935}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9e044f4889c34294b98f12e0ac4f8ca8, type: 2}
+  m_Controller: {fileID: 9100000, guid: 7e010e65382754a45b04e997f54905cc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -84,7 +84,7 @@ public class Kyo_NoSpell4 : BossCardBase
 
             task.AddWait(40, ()=>
             {
-                bullet.SetHighLight();
+                bullet.SetShaderAdditive();
             });
             task.AddRepeat(120, 1, () => TaskParms.New("VE", 1, 0.02F), p =>
             {
@@ -136,7 +136,7 @@ public class Kyo_NoSpell4 : BossCardBase
         LuaStg.ShootEnemyBullet(RedBulletId, father.Pos.x, father.Pos.y, shootEffectScale: 0f, onCreate: bullet =>
         {
             bullet.SetFather(father);
-            bullet.SetHighLight();
+            bullet.SetShaderAdditive();
             bullet.SetBoundDestroy(false);
 
             var task = bullet.CreateTask();

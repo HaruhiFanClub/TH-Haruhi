@@ -14,9 +14,9 @@ public class PlayerBullet : Bullet
         _bHitEnemy = false;
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        base.Update();
+        base.OnUpdate();
         CheckHitEnemy();
     }
 

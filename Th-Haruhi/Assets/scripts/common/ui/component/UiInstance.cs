@@ -19,13 +19,7 @@ public abstract class UiInstance : UiGameObject
         {
             ui.UiInfo = uiInfo;
             ui.OnLoadFinish();
-           
             UiManager.ShowUiView(ui, uiInfo.Layer);
-            ui.CanvasGroup.SetActiveByCanvasGroup(false);
-
-            //等一帧callback
-            yield return 0;
-            ui.CanvasGroup.SetActiveByCanvasGroup(true);
             notify(ui);
         }
         else

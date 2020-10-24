@@ -17,10 +17,10 @@ public class Boss : Enemy
     private const string BossHpCircle = "ui/prefabs/battle/UIBossCircle.prefab";
 
     //上方中心位置
-    public static Vector3 BossUpCenter = Vector2Fight.NewWorld(0f, 144f);
+    public static Vector3 BossUpCenter = new Vector3(0f, 144f);
 
     //中心位置
-    public static Vector3 BossMidCenter = Vector2Fight.NewWorld(0f, 0f);
+    public static Vector3 BossMidCenter = new Vector3(0f, 0f);
 
     //boss符卡管理器
     private BossCardMgr CardMgr;
@@ -32,7 +32,6 @@ public class Boss : Enemy
     public override IEnumerator Init(EnemyDeploy deploy)
     {
         yield return base.Init(deploy);
-
 
         //血条
         var asyncHp = new AsyncResource();
@@ -178,7 +177,6 @@ public class Boss : Enemy
         {
             var effect = ResourceMgr.Instantiate(obj);
             effect.SetRendererOrderSort(SortingOrder.Top);
-
             var e = effect.AddComponent<EffectMono>();
             e.transform.SetParent(transform, false);
             e.AutoDestory();
@@ -197,7 +195,7 @@ public class Boss : Enemy
         var pos = transform.position; 
         EffectFactory.CreateEffect("effects_tex/prefab/bossStart.prefab", eff =>
         {
-            if(gameObject == null)
+            if (gameObject == null)
             {
                 eff.transform.position = pos;
             }
@@ -273,16 +271,16 @@ public class Boss : Enemy
         Destroy(gameObject);
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        base.Update();
+        base.OnUpdate();
         UpdateHpHud();
         UIBattle.SetBossMarkPos(transform.position);
     }
 
-    protected override void FixedUpdate()
+    protected override void OnFixedUpdate()
     {
-        base.FixedUpdate();
+        base.OnFixedUpdate();
         CardMgr?.OnFixedUpdate();
     }
 

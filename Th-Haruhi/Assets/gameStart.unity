@@ -1827,7 +1827,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   QuadMesh: {fileID: 4300000, guid: 32b4f96e8808e3c459531f6ec1d482f1, type: 2}
-  CommonShader: {fileID: 4800000, guid: f11216b0cf85a9148a56c29fb1776e89, type: 3}
+  AlphaBlended: {fileID: 4800000, guid: e7edfe3a6edfce045a304dc5e3b99a3b, type: 3}
+  AlphaAdditive: {fileID: 4800000, guid: 031188c57b285694697ffa4a74664185, type: 3}
   UiGray: {fileID: 2100000, guid: 53ba1bab2d092954896be0389146e82f, type: 2}
   UiTop: {fileID: 2100000, guid: bf115b2b2e663364e9d6cd310d4eba6f, type: 2}
   CircleTexture: {fileID: 2800000, guid: c89fac3508295eb46b9b21c5fa7f6c08, type: 3}

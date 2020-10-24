@@ -74,8 +74,6 @@ public class Enemy : EntityBase
 
         _aniStyle = EnemyMoveStyle.Idle;
 
-        this.AddRigidBody(); 
-
         if(!string.IsNullOrEmpty(deploy.AIScript))
         {
             AIMoudle = Common.CreateInstance(deploy.AIScript) as AI_Base;
@@ -87,9 +85,9 @@ public class Enemy : EntityBase
         yield break;
     }
    
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        base.Update();
+        base.OnUpdate();
         UpdateHitBrightness();
 
         if (GamePause.InPause != false) 
@@ -99,9 +97,9 @@ public class Enemy : EntityBase
         UpdateAnimation();
     }
 
-    protected override void FixedUpdate()
+    protected override void OnFixedUpdate()
     {
-        base.FixedUpdate();
+        base.OnFixedUpdate();
 
         if (GamePause.InPause != false)
             return;
@@ -236,6 +234,35 @@ public class Enemy : EntityBase
         _nextAnimationFrame = GameSystem.FixedFrameCount + Deploy.frameSpeed[(int)AniStyle];
     }
 
+
+    //碰撞伤害判定
+    protected override void OnLateUpdate()
+    {
+        base.OnLateUpdate();
+        CheckCircleColliderHit(CacheTransform.position);
+    }
+
+    private void CheckCircleColliderHit(Vector3 center)
+    {
+        //无碰撞子弹不处理
+        var rasius = Deploy.radius;
+        if (rasius <= 0 || InHidden || InBanCollision) return;
+
+        var mainPlayer = StageMgr.MainPlayer;
+        if (mainPlayer != null)
+        {
+            var hitDist = rasius + mainPlayer.Deploy.radius;
+            var sqrDist = MathUtility.SqrDistance(center, mainPlayer.transform.position);
+
+            //伤害判定
+            if (sqrDist < hitDist * hitDist)
+            {
+                mainPlayer.OnPlayerHit();
+            }
+        }
+    }
+
+
     protected override void OnDestroy()
     {
         if (AIMoudle != null)
@@ -260,7 +287,7 @@ public class Enemy : EntityBase
         var model = new GameObject(deploy.name + "_model");
         var mainSprite = model.AddComponent<SpriteRenderer>();
         mainSprite.sortingOrder = SortingOrder.Enemy;
-        mainSprite.material = new Material(GameSystem.DefaultRes.CommonShader);
+        mainSprite.material = new Material(GameSystem.DefaultRes.AlphaBlended);
         model.transform.SetParent(gameObj.transform, false);
         yield return Yielders.Frame;
 
@@ -275,14 +302,12 @@ public class Enemy : EntityBase
             });
         }
 
-        //Collider
+ 		//Collider
         var collider = gameObj.AddComponent<CircleCollider2D>();
         collider.radius = deploy.radius;
-        collider.isTrigger = true;
-
-        //init
+        collider.isTrigger = true;        //init
         gameObj.SetActiveSafe(true);
-        enemy.transform.position = Vector2Fight.NewWorld(bornX, bornY);
+        enemy.transform.position = new Vector3(bornX, bornY);
         enemy.SetRenderer(mainSprite);
         yield return enemy.Init(deploy);
     }

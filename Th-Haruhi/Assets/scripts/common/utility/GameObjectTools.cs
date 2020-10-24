@@ -233,19 +233,21 @@ public static class GameObjectTools
                 q = _list[i].renderQueue;
         return q;
     }
-    public static GameObject AddInstantiateObj(GameObject obj, Transform p)
+    public static GameObject AddInstantiateObj(this GameObject obj, Transform parent)
     {
-        GameObject o = GameObjectTools.InstantiateGO(obj);
-        o.SetActive(true);
-        if(p)
-            o.transform.SetParent(p);
+        GameObject o = InstantiateGO(obj);
+        o.SetActiveSafe(true);
+        if (parent)
+        {
+            o.transform.SetParent(parent);
+        }
         o.transform.localScale = Vector3.one;
         o.transform.localPosition = Vector3.zero;
         o.transform.localRotation = Quaternion.identity;
         return o;
     }
 
-    public static GameObject Instantiate(Object _object, params System.Type[] components)
+    public static GameObject Instantiate(this Object _object, params System.Type[] components)
     {
         GameObject gameObject = InstantiateGO(_object);
         if (gameObject && components != null)
@@ -254,7 +256,7 @@ public static class GameObjectTools
         return gameObject;
     }
 
-    public static T Instantiate<T>(Object _object) where T : Component
+    public static T Instantiate<T>(this Object _object) where T : Component
     {
         GameObject gameObject = InstantiateGO(_object);
         return gameObject.AddComponent<T>();
@@ -439,31 +441,5 @@ public static class GameObjectTools
                 renderers[i].sortingOrder = order;
             }
         }
-    }
-
-    public static Rigidbody2D AddRigidBody(this EntityBase entity)
-    {
-        var r = entity.GetComponent<Rigidbody2D>();
-        if (r == null) 
-        {
-            r = entity.gameObject.AddComponent<Rigidbody2D>();
-        }
-
-        if (entity.EntityType == EEntityType.Player)
-        {
-            r.bodyType = RigidbodyType2D.Dynamic;
-            r.simulated = true;
-            r.useAutoMass = false;
-            r.mass = 10;
-            r.drag = 30;
-            r.gravityScale = 0f;
-            r.angularDrag = 0f;
-        }
-        else
-        {
-            r.bodyType = RigidbodyType2D.Kinematic;
-        }
-        r.freezeRotation = true;
-        return r;
     }
 }

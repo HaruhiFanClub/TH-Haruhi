@@ -19,7 +19,7 @@ public class LuaStgInfo
 
 public static class LuaStg 
 {
-    public const float LuaStgSpeedChange = 2.2f;
+    //public const float LuaStgSpeedChange = 2.2f;
 
     public static void LoadLuaSTG(string name)
     {
@@ -87,7 +87,7 @@ public static class LuaStg
     {
         if (BulletExplosion.InExplosion) return;
 
-        var pos = Vector2Fight.NewWorld(x, y);
+        var pos = new Vector3(x, y);
         BulletFactory.CreateBullet(id, pos, Layers.EnemyBullet, bullet =>
         {
             bullet.OnDestroyCallBack = onDestroy;
@@ -101,15 +101,18 @@ public static class LuaStg
     {
         if (BulletExplosion.InExplosion) return;
 
-        var pos = Vector2Fight.NewWorld(x, y);
+        var pos = new Vector3(x, y);
 
         BulletFactory.CreateBullet(id, pos, Layers.EnemyBullet, bullet =>
         {
             var laser = (Laser)bullet;
-            laser.transform.localScale = Vector2Fight.NewLocal(width, length);
+
+            laser.SetBoxSize(width, length);
+
             laser.OnDestroyCallBack = onDestroy;
-            laser.TurnOn(turnOnFrame);
             onCreate?.Invoke(laser);
+
+            laser.TurnOn(turnOnFrame);
         });
     }
 }

@@ -9,7 +9,7 @@ public class Kyo_Telephone : BossCardBase
 
     public override float TotalTime => 35f;
 
-    public override Vector3 StartPos => Vector2Fight.NewWorld(0, 110);
+    public override Vector3 StartPos => new Vector3(0, 110);
 
 
     protected override void InitPhase()
@@ -120,12 +120,12 @@ public class Kyo_Telephone : BossCardBase
         LuaStg.ShootEnemyBullet(bulletId, pos.x, pos.y, onCreate: bullet =>
          {
              bullet.Rot = an + an2;
-             bullet.SetHighLight();
+             bullet.SetShaderAdditive();
 
              var task = bullet.CreateTask();
              task.AddWait(150 + t, () =>
              {
-                 bullet.RevertHighLight();
+                 bullet.RevertShader();
              });
 
              task.AddRepeat(60, 3, () => TaskParms.New("yjsh", 0, 2), p =>

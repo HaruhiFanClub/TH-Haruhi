@@ -280,7 +280,7 @@ public class TaskTools
             //moveto
             case ActionType.MoveTo:
                 var md = e.MoveToData;
-                yield return Master.MoveTo(Vector2Fight.NewWorld(md.X, md.Y), md.nFrame, md.MovementMode, md.SetRotation);
+                yield return Master.MoveTo(new Vector3(md.X, md.Y), md.nFrame, md.MovementMode, md.SetRotation);
                 break;
 
             //playsound noWait
@@ -366,10 +366,10 @@ public class TaskTools
         var wanderData = new TaskWander
         {
             nFrame = frame,
-            xRange = Vector2Fight.NewLocal(xMin, xMax),
-            yRange = Vector2Fight.NewLocal(yMin, yMax),
-            xAmplitude = Vector2Fight.NewLocal(xAmpMin, xAmpMax),
-            yAmplitude = Vector2Fight.NewLocal(yAmpMin, yAmpMax),
+            xRange = new Vector3(xMin, xMax),
+            yRange = new Vector3(yMin, yMax),
+            xAmplitude = new Vector3(xAmpMin, xAmpMax),
+            yAmplitude = new Vector3(yAmpMin, yAmpMax),
             MovementMode = mMode,
             DirectionMode = dMode
         };

@@ -6,7 +6,8 @@ public class DefaultRes : MonoBehaviour
 {
     public Mesh QuadMesh;
 
-    public Shader CommonShader;
+    public Shader AlphaBlended;
+    public Shader AlphaAdditive;
     public Material UiGray;
     public Material UiTop;
 

@@ -25,7 +25,7 @@ public class UIBattle : UiInstance
     {
         if(Instance)
         {
-            var uiPos = Vector2Fight.WordPosToUIPos(bossPos);
+            var uiPos = Vector2Fight.FightPosToUiPos(bossPos);
             var pos = Instance._bind.EnemyMark.anchoredPosition;
             pos.x = uiPos.x;
             Instance._bind.EnemyMark.anchoredPosition = pos;
