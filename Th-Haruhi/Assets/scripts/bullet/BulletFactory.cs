@@ -92,7 +92,7 @@ public static class BulletFactory
 
     private static void CreateNewBullet(int id, int layer, BulletDeploy deploy, Vector3 pos, CreatedNotify notify)
     {
-        GameSystem.CoroutineStart(TextureUtility.LoadResourceById(deploy.resourceId, spriteList =>
+        GameSystem.Start(TextureUtility.LoadResourceById(deploy.resourceId, spriteList =>
         {
             int spriteIdx = deploy.spriteIdx;
             if(deploy.spriteIdx > spriteList.Count)

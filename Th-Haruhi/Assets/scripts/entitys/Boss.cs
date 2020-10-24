@@ -13,7 +13,6 @@ using System.Collections;
 /// </summary>
 public class Boss : Enemy
 {
-    private const string BossBottomMark = "ui/prefabs/battle/UIBossBottomMark.prefab";
     private const string BossHpBar = "ui/prefabs/battle/UIBossHpHud.prefab";
     private const string BossHpCircle = "ui/prefabs/battle/UIBossCircle.prefab";
 
@@ -30,9 +29,29 @@ public class Boss : Enemy
     private bool _initedHpBar;
 
 
-    public override void Init(EnemyDeploy deploy)
+    public override IEnumerator Init(EnemyDeploy deploy)
     {
-        base.Init(deploy);
+        yield return base.Init(deploy);
+
+
+        //血条
+        var asyncHp = new AsyncResource();
+
+        yield return ResourceMgr.LoadObjectWait(BossHpBar, asyncHp);
+        var bossHpHudObj = ResourceMgr.Instantiate(asyncHp.Object);
+        bossHpHudObj.transform.SetParent(gameObject.transform, false);
+        _bossHpHud = bossHpHudObj.GetComponent<UIBossHpComponent>();
+        _bossHpHud.SetActiveSafe(false);
+
+        //boss背景
+        var asyncBg = new AsyncResource();
+        yield return ResourceMgr.LoadObjectWait(BossHpCircle, asyncBg); 
+        var circle = ResourceMgr.Instantiate(asyncBg.Object);
+        circle.transform.SetParent(gameObject.transform, false);
+        _bossCircle = circle.GetComponent<UIBossCircleComponent>();
+        _bossCircle.SetActiveSafe(false);
+
+
 
         CardMgr = new BossCardMgr();
         CardMgr.Init(this, HPMax);
@@ -81,20 +100,16 @@ public class Boss : Enemy
             PlayShirnkEffect(true);
         }
 
-        //bossMark显示
-        UIBattle.SetBossMarkActive(true);
-
-        //血条
-        var bossHpHudObj = ResourceMgr.Instantiate(ResourceMgr.LoadImmediately(BossHpBar));
-        bossHpHudObj.transform.SetParent(gameObject.transform, false);
-        _bossHpHud = bossHpHudObj.GetComponent<UIBossHpComponent>();
+        //显示血条
         _bossHpHud.Canvas.sortingOrder = SortingOrder.EnemyBullet + 1;
         _bossHpHud.Canvas.worldCamera = StageCamera2D.Instance.MainCamera;
 
-        //boss背景
-        var circle = ResourceMgr.Instantiate(ResourceMgr.LoadImmediately(BossHpCircle));
-        circle.transform.SetParent(gameObject.transform, false);
-        _bossCircle = circle.GetComponent<UIBossCircleComponent>();
+        //圆圈
+        _bossCircle.TurnOn();
+
+        //bossMark显示
+        UIBattle.SetBossMarkActive(true);
+
 
         //bossCard
         DOVirtual.DelayedCall(1F, CardMgr.OnStartFight, false);
@@ -120,31 +135,30 @@ public class Boss : Enemy
         }
     }
 
-    //显示隐藏血条上的标志点
-    public void SetHpHudPointActive(bool b)
+    public void ShowHpCircle(bool playFullAni, bool showPoint)
     {
-        if (_bossHpHud)
+        if (!_bossHpHud)
         {
-            _bossHpHud.Point.SetActiveByCanvasGroup(b);
+            Debug.LogError("ShowHpCircle Error, BossHpHud = null");
+            return;
+        }
+        _bossHpHud.SetActiveSafe(true);
+        _bossHpHud.Point.SetActiveByCanvasGroup(showPoint);
+        if (playFullAni)
+        {
+            _bossHpHud.Bar.fillAmount = 0f;
+            _bossHpHud.Bar.DOFillAmount(1f, 1f).onComplete = () => { _initedHpBar = true; };
         }
     }
 
-    //显示隐藏血条
-    public void SetHpHudActive(bool b)
+    public void HideHpCircle()
     {
-        if(_bossHpHud)
+        if (!_bossHpHud)
         {
-            if (b) 
-            {
-                _bossHpHud.SetActiveSafe(true);
-                _bossHpHud.Bar.fillAmount = 0f;
-                _bossHpHud.Bar.DOFillAmount(1f, 1f).onComplete = () => { _initedHpBar = true; };
-            }
-            else
-            {
-                _bossHpHud.SetActiveSafe(false);
-            }
+            Debug.LogError("HideHpCircle Error, BossHpHud = null");
+            return;
         }
+        _bossHpHud.SetActiveSafe(false);
     }
 
     private void UpdateHpHud()
@@ -160,17 +174,21 @@ public class Boss : Enemy
         //音效
         Sound.PlayTHSound("power3", true, 0.8f);
 
-        var effect = ResourceMgr.Instantiate(ResourceMgr.LoadImmediately("effects_tex/prefab/bossStart2.prefab"));
-        effect.SetRendererOrderSort(SortingOrder.Top);
+        ResourceMgr.LoadObject("effects_tex/prefab/bossStart2.prefab", obj =>
+        {
+            var effect = ResourceMgr.Instantiate(obj);
+            effect.SetRendererOrderSort(SortingOrder.Top);
 
-        var e = effect.AddComponent<EffectMono>();
-        e.transform.SetParent(transform, false);
-        e.AutoDestory();
+            var e = effect.AddComponent<EffectMono>();
+            e.transform.SetParent(transform, false);
+            e.AutoDestory();
+        });
 
-        if (bPlayAmplify) 
+        if (bPlayAmplify)
         {
             StartCoroutine(PlayAmplifyEffect(1.2f));
         }
+
     }
 
     public IEnumerator PlayAmplifyEffect(float sec)
@@ -197,7 +215,7 @@ public class Boss : Enemy
     protected override void CalculateHp(int atk)
     {
         //改为扣符卡血量
-        CardMgr.CalculateHp(atk);
+        CardMgr?.CalculateHp(atk);
     }
 
     protected override void OnDead()
@@ -211,7 +229,7 @@ public class Boss : Enemy
         var dialogDeploy = DialogMgr.GetBossDialog(StageMgr.MainPlayer.Deploy.id, Deploy.id, false);
 
         //隐藏血条
-        SetHpHudActive(false);
+        HideHpCircle();
 
         //bossMark隐藏
         UIBattle.SetBossMarkActive(false);

@@ -362,7 +362,11 @@ public static class Sound
             yield break;
         }
 
-        var soundObj = ResourceMgr.LoadImmediately(soundName);
+        var async = new AsyncResource();
+        yield return ResourceMgr.LoadObjectWait(soundName, async);
+
+
+        var soundObj = async.Object;
         var resource = soundObj as AudioClip;
         if (!resource)
         {
@@ -373,7 +377,6 @@ public static class Sound
             if (!CachePool.ContainsKey(soundName))
                 CachePool.Add(soundName, resource);
         }
-        yield return Yielders.Frame;
     }
 
     private static void LoadSoundResourceImpl(string soundName, Action<AudioClip> notify)

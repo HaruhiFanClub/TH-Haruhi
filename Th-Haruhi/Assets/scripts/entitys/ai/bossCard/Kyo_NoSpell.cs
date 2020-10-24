@@ -13,7 +13,7 @@ public class Kyo_NoSpell: BossCardBase
 
     protected override void InitPhase()
     {
-        Phase = EBossCardPhase.Single;
+        Phase = EBossCardPhase.One;
     }
 
     public int BulletId = 1008;

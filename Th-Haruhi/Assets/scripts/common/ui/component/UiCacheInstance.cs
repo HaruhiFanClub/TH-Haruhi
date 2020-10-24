@@ -156,10 +156,12 @@ public abstract class UiCacheInstance : UiInstance
     private static void CacheNew<T>() where T : UiCacheInstance
     {
         var caches = GetCachePool(typeof(T));
-        var v = UiManager.ImmediatelyShow<T>();
-        v.InCache = true;
-        v.SetActiveByCanvasGroup(false);
-        caches.Add(v);
+        UiManager.Show<T>(v => 
+        {
+            v.InCache = true;
+            v.SetActiveByCanvasGroup(false);
+            caches.Add(v);
+        });
     }
 
     public static void BackAllToPool()

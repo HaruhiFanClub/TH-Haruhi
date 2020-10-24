@@ -1,58 +1,37 @@
 ﻿
 
 using System;
-using System.Collections;
 using UnityEngine;
-
-
+using System.Collections;
 
 public abstract class UiInstance : UiGameObject
 {
-    public static UiInstance ShowImmediately(string resource, Type typeUi)
+    public static IEnumerator LoadUi(UiInfo uiInfo, string resource, Type typeUi, Action<UiInstance> notify)
     {
-        var obj = ResourceMgr.LoadImmediately(resource);
-        var uiObject = ResourceMgr.Instantiate(obj);
-        if (uiObject)
+        var async = new AsyncResource();
+        yield return ResourceMgr.LoadObjectWait(resource, async);
+
+        var uiObject = ResourceMgr.Instantiate(async.Object);
+        uiObject.SetActiveSafe(true);
+        var script = GameObjectTools.AddComponent(uiObject, typeUi);
+        UiInstance ui = script as UiInstance;
+        if (ui)
         {
-            uiObject.SetActiveSafe(true);
-            var script = GameObjectTools.AddComponent(uiObject, typeUi);
-            UiInstance ui = script as UiInstance;
-            if (ui)
-            {
-                ui.OnLoadFinish();
-                return ui;
-            }
-            Debug.LogError(string.Format("Load UI fail ui == null resource{0}", resource));
+            ui.UiInfo = uiInfo;
+            ui.OnLoadFinish();
+           
+            UiManager.ShowUiView(ui, uiInfo.Layer);
+            ui.CanvasGroup.SetActiveByCanvasGroup(false);
+
+            //等一帧callback
+            yield return 0;
+            ui.CanvasGroup.SetActiveByCanvasGroup(true);
+            notify(ui);
         }
         else
         {
-            Debug.LogError(string.Format("Load UI fail gameObject == null resource{0}", resource));
+            Debug.LogError(string.Format("Load UI fail ui == null resource{0}", resource));
         }
-        return null;
-    }
-
-
-    public static void LoadUi(UiInfo uiInfo, string resource, Type typeUi, Action<UiInstance> notify)
-    {
-        ResourceMgr.Load(resource, obj =>
-        {
-            ResourceMgr.InstantiateX(obj, uiObject =>
-            {
-                uiObject.SetActiveSafe(true);
-                var script = GameObjectTools.AddComponent(uiObject, typeUi);
-                UiInstance ui = script as UiInstance;
-                if (ui)
-                {
-                    ui.UiInfo = uiInfo;
-                    ui.OnLoadFinish();
-                    notify(ui);
-                }
-                else
-                {
-                    Debug.LogError(string.Format("Load UI fail ui == null resource{0}", resource));
-                }
-            });
-        });
     }
 
     public UiInfo UiInfo;

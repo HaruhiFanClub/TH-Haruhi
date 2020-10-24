@@ -161,7 +161,7 @@ public static class UiManager
         }
     }
 
-    private static void ShowUiView(UiInstance view, UiLayer layerName)
+    public static void ShowUiView(UiInstance view, UiLayer layerName)
     {
         if (view == null)
         {
@@ -213,55 +213,6 @@ public static class UiManager
         enumerator.Dispose();
     }
 
-    private static T CacheShowInstanceUi<T>(UiInfo uiInfo, bool fromBack, Type classType = null) where T : UiInstance
-    {
-        Type typeKey = classType ?? typeof(T);
-
-        //存在缓存
-        if (InstDic.ContainsKey(typeKey))
-        {
-            UiInstance inst = InstDic[typeKey];
-            if (inst != null)
-            {
-                AfterLoadInstanceNoCallBack<T>(inst, fromBack, uiInfo);
-                return inst as T;
-            }
-            else
-            {
-                Debug.LogError("存在缓存情况 CacheShowInstanceUi inst is null, :" + uiInfo.ViewPath);
-            }
-
-        }
-        else
-        {
-            //已经在加载中
-            bool bLoading;
-            if (InstLoadState.TryGetValue(uiInfo.ViewPath, out bLoading) && bLoading)
-            {
-                //do noting
-            }
-            else
-            {
-                //加载
-                InstLoadState[uiInfo.ViewPath] = true;
-
-                var inst = UiInstance.ShowImmediately(uiInfo.ViewPath, typeKey);
-                if (inst != null)
-                {
-                    InstLoadState[uiInfo.ViewPath] = false;
-                    InstDic[typeKey] = inst;
-                    AfterLoadInstanceNoCallBack<T>(inst, fromBack, uiInfo);
-                    return inst as T;
-                }
-                else
-                {
-                    Debug.LogError("新加载情况 CacheShowInstanceUi inst is null, :" + uiInfo.ViewPath);
-                }
-            }
-        }
-        return null;
-    }
-
     private static void ShowInstanceUi<T>(UiInfo uiInfo, bool fromBack, Action<T> notify = null, Type classType = null) where T : UiInstance
     {
         Type typeKey = classType ?? typeof(T);
@@ -284,29 +235,21 @@ public static class UiManager
             {
                 //加载
                 InstLoadState[uiInfo.ViewPath] = true;
-                UiInstance.LoadUi(uiInfo, uiInfo.ViewPath, typeKey, inst =>
+
+                GameSystem.Start(UiInstance.LoadUi(uiInfo, uiInfo.ViewPath, typeKey, inst =>
                 {
                     InstLoadState[uiInfo.ViewPath] = false;
                     InstDic[typeKey] = inst;
                     AfterLoadInstance(inst, uiInfo, fromBack, notify);
-                });
+                }));
             }
         }
     }
 
     private static void AfterLoadInstance<T>(UiInstance inst, UiInfo uiInfo, bool fromBack, Action<T> notify) where T : UiInstance
     {
-        inst.UiInfo = uiInfo;
-        ShowUiView(inst, uiInfo.Layer);
         inst.AfterOnShow(fromBack);
         if (notify != null) notify.Invoke(inst as T);
-    }
-
-    private static void AfterLoadInstanceNoCallBack<T>(UiInstance inst, bool fromBack, UiInfo uiInfo) where T : UiInstance
-    {
-        inst.UiInfo = uiInfo;
-        ShowUiView(inst, uiInfo.Layer);
-        inst.AfterOnShow(fromBack);
     }
 
 
@@ -320,35 +263,6 @@ public static class UiManager
         UiInstance ins;
         InstDic.TryGetValue(typeof(T), out ins);
         return (ins as T);
-    }
-
-    /// <summary>
-    /// 显示界面
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="notify"></param>
-    public static T ImmediatelyShow<T>(bool fromBack = false) where T : UiInstance
-    {
-        var uiInfo = GetUiInfo<T>();
-        if (uiInfo == null)
-        {
-            Debug.LogError("UI未注册，请在XUI_LIST.cs中注册:" + typeof(T).FullName);
-            return null;
-        }
-
-        //单例UI
-        if (uiInfo.LoadType == UiLoadType.Single)
-        {
-            return CacheShowInstanceUi<T>(uiInfo, fromBack);
-        }
-
-        //非单例
-        var inst = UiInstance.ShowImmediately(uiInfo.ViewPath, typeof(T));
-
-        inst.UiInfo = uiInfo;
-        ShowUiView(inst, uiInfo.Layer);
-        inst.AfterOnShow(fromBack);
-        return inst as T;
     }
 
     public static void ShowUIFromBack(Type type, Action<UiInstance> notify)
@@ -368,14 +282,11 @@ public static class UiManager
         //非单例
         else
         {
-            UiInstance.LoadUi(uiInfo, uiInfo.ViewPath, type, inst =>
+            GameSystem.Start(UiInstance.LoadUi(uiInfo, uiInfo.ViewPath, type, inst =>
             {
-                inst.UiInfo = uiInfo;
-                ShowUiView(inst, uiInfo.Layer);
                 if (notify != null) notify.Invoke(inst);
-
                 inst.AfterOnShow(true);
-            });
+            }));
         }
     }
 
@@ -401,15 +312,12 @@ public static class UiManager
         //非单例
         else
         {
-            UiInstance.LoadUi(uiInfo, uiInfo.ViewPath, typeof(T), inst =>
+            GameSystem.Start(UiInstance.LoadUi(uiInfo, uiInfo.ViewPath, typeof(T), inst =>
             {
-                inst.UiInfo = uiInfo;
-                ShowUiView(inst, uiInfo.Layer);
                 if (notify != null) notify.Invoke(inst as T);
                 inst.AfterOnShow();
-            });
+            }));
         }
-
     }
 
     /// <summary>

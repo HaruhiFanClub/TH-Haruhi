@@ -15,7 +15,7 @@ public class SpriteAtlasMgr : MonoBehaviour
 
     private void OnAtlasRequested(string t, Action<SpriteAtlas> action)
     {
-        LoadSprite(t, action);
+        StartCoroutine(LoadSprite(t, action));
     }
 
     public static void ClearCache()
@@ -33,21 +33,25 @@ public class SpriteAtlasMgr : MonoBehaviour
     }
 
     public static Dictionary<string, SpriteAtlas> SpriteCache = new Dictionary<string, SpriteAtlas>();
-    public static void LoadSprite(string t, Action<SpriteAtlas> action)
+    public static IEnumerator LoadSprite(string t, Action<SpriteAtlas> action)
     {
+        yield return new WaitUntil(() => AssetBundleManager.Inited);
 
         //缓存有，直接取缓存中的
         SpriteAtlas spiritList;
         if (SpriteCache.TryGetValue(t, out spiritList))
         {
             action(spiritList);
-            return;
+            yield break;
         }
 
         //读取图集
         string fullPath = string.Format("atlas/{0}/{1}.spriteatlas", t, t);
-        var obj = ResourceMgr.LoadImmediately(fullPath);
-        SpriteAtlas sa = obj as SpriteAtlas;
+
+        var async = new AsyncResource();
+        yield return ResourceMgr.LoadObjectWait(fullPath, async); 
+
+        SpriteAtlas sa = async.Object as SpriteAtlas;
         SpriteCache[t] = sa;
         action(sa);
     }

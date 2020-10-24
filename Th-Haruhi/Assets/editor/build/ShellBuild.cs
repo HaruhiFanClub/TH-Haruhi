@@ -37,7 +37,7 @@ public static class ShellBuild
 	{
 		buildOutPath = PathUtility.ProjectPath + "/build";
         buildOutWindows = buildOutPath + "/standalone";
-        buildOutWebGL = buildOutPath + "/standalone";
+        buildOutWebGL = buildOutPath + "/web";
 
         buidPathIOS = buildOutPath + "/ios";
 		buidPathAndroid = buildOutPath + "/android";
@@ -86,8 +86,8 @@ public static class ShellBuild
         if (bDebug)
 		{
 			buildOption |= BuildOptions.Development;
-			buildOption |= BuildOptions.AllowDebugging;
-			buildOption |= BuildOptions.ConnectWithProfiler;
+			//buildOption |= BuildOptions.AllowDebugging;
+			//buildOption |= BuildOptions.ConnectWithProfiler;
 		}
 	    buildOption |= BuildOptions.CompressWithLz4HC;
     }
@@ -109,12 +109,21 @@ public static class ShellBuild
         FastBuild(buidPathWindows, BuildTarget.StandaloneWindows64, BuildTargetGroup.Standalone);
     }
 
-    [MenuItem("Haruhi/Build/BuildWebGL", false, 1)]
+    [MenuItem("Haruhi/Build/BuildWebGL_Release", false, 1)]
     public static void BuildWebGL()
     {
         SetBuildSetting(false);
         AssetDatabase.Refresh();
-        FastBuild(buidPathWindows, BuildTarget.WebGL, BuildTargetGroup.WebGL);
+        FastBuild(buidPathWebGL, BuildTarget.WebGL, BuildTargetGroup.WebGL);
+    }
+
+
+    [MenuItem("Haruhi/Build/BuildWebGL_Debug", false, 1)]
+    public static void BuildWebGLDebug()
+    {
+        SetBuildSetting(true);
+        AssetDatabase.Refresh();
+        FastBuild(buidPathWebGL, BuildTarget.WebGL, BuildTargetGroup.WebGL);
     }
 
     /*

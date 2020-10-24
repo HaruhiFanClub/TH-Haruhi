@@ -39,7 +39,7 @@ public class PathUtility
     {
         AssetsPath = FormatPath(Application.dataPath);
         ResourcesPath = AssetsPath + "/res";
-        AssetBundlePath = FormatPath(Application.streamingAssetsPath).Replace("StreamingAssets", "streamingassets"); ;
+        AssetBundlePath = FormatPath(Application.streamingAssetsPath).ToLower();
 
         var serializablePath = FormatPath(Application.persistentDataPath);
 
@@ -182,7 +182,6 @@ public class PathUtility
         {
             return abName.ToLower();
         }
-
 
         //默认的情况，则按照目录名命名assetbundleName
         path = ProjectPathToResourcesPath(path);

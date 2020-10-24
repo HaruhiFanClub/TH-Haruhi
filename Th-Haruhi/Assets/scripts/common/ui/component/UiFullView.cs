@@ -35,7 +35,7 @@ public abstract class UiFullView : UiInstance
         {
             if (prevViewType == typeof(UIMainView))
             {
-                UIMainView.Show(false);
+                UIMainView.Show(false, false);
             }
             else
             {

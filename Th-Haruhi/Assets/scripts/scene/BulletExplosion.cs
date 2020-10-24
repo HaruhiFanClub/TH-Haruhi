@@ -36,6 +36,6 @@ public class BulletExplosion
 
     public static void Create(Vector3 pos, float delay)
     {
-        GameSystem.CoroutineStart(DoCreate(pos, delay));
+        GameSystem.Start(DoCreate(pos, delay));
     }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 
 public enum EBossCardPhase
 {
+    None,
     One,
     Two,
-    Single
 }
 
 public class BossCardMgr
@@ -32,7 +32,7 @@ public class BossCardMgr
             var strClass = deploy.BossCard[i];
             if (!string.IsNullOrEmpty(strClass))
             {
-                var card = Common.CreateInstance(strClass) as BossCardBase;
+                BossCardBase card = Common.CreateInstance(strClass) as BossCardBase;
                 if (card != null)
                 {
                     card.Init(Master, perCardHp);
@@ -41,61 +41,28 @@ public class BossCardMgr
             }
         }
 
-        if(_cardList.Count >= 2)
+        //设置前后符卡的状态信息
+        for(int i = 0; i < _cardList.Count; i++)
         {
-            for (int i = 0; i < _cardList.Count - 1; i++)
+            var prev = EBossCardPhase.None;
+            var next = EBossCardPhase.None;
+            if (i > 0) 
             {
-                var card1 = _cardList[i];
-                var card2 = _cardList[i + 1];
-                if(card2.Phase == EBossCardPhase.Two)
-                {
-                    if (card1.Phase == EBossCardPhase.Single)
-                    {
-                        card1.Phase = EBossCardPhase.One;
-                    }
-                }
+                prev = _cardList[i - 1].Phase;
             }
-        }
-
-        /*
-        if(_cardList.Count == 1)
-        {
-            _cardList[0].Phase = EBossCardPhase.Single;
-        }
-        else
-        {
-            for (int i = 0; i < _cardList.Count; i++) 
+            if (i < _cardList.Count - 1) 
             {
-                _cardList[i].Phase = i % 2 == 0 ? EBossCardPhase.One : EBossCardPhase.Two;
+                next = _cardList[i + 1].Phase;
             }
-        }*/
-
-
-        GameEventCenter.AddListener(GameEvent.OnPlayerDead, OnPlayerDead);
+            _cardList[i].PrevCardPhase = prev;
+            _cardList[i].NextCardPhase = next;
+        }
     }
 
     public bool IsSingleCard()
     {
         return _cardList.Count == 1;
     }   
-
-    private void OnPlayerDead(object o)
-    {
-        if (_currCard != null)
-        {
-            _currCard.BanShoot = true;
-            Master.StartCoroutine(ResetBanShoot());
-        }
-    }
-
-    private IEnumerator ResetBanShoot()
-    {
-        yield return new WaitForSeconds(2f);
-        if (_currCard != null)
-        {
-            _currCard.BanShoot = false;
-        }
-    }
 
     public void CalculateHp(int atk)
     {
@@ -113,18 +80,31 @@ public class BossCardMgr
     {
         if (_currCard != null)
         {
-           
             switch (_currCard.Phase)
             {
                 case EBossCardPhase.One:
-                    //第一阶段显示80%
-                    return 0.2f + (_currCard.CurrentHp / (float)_currCard.MaxHp) * 0.8f;
+
+                    if(_currCard.NextCardPhase != EBossCardPhase.Two)
+                    {
+                        return _currCard.CurrentHp / (float)_currCard.MaxHp;
+                    }
+                    else
+                    {
+                        //第一阶段显示80%
+                        return 0.2f + (_currCard.CurrentHp / (float)_currCard.MaxHp) * 0.8f;
+                    }
+                    
                 case EBossCardPhase.Two:
-                    //第二阶段显示后面20%
-                    return (_currCard.CurrentHp / (float)_currCard.MaxHp) * 0.2f;
-                case EBossCardPhase.Single:
-                    //如果boss总共就1个阶段，直接显示
-                    return _currCard.CurrentHp / (float)_currCard.MaxHp;
+
+                    if(_currCard.PrevCardPhase != EBossCardPhase.One)
+                    {
+                        return _currCard.CurrentHp / (float)_currCard.MaxHp;
+                    }
+                    else
+                    {
+                        //第二阶段显示后面20%
+                        return (_currCard.CurrentHp / (float)_currCard.MaxHp) * 0.2f;
+                    }
             }
         }
         return 1f;
@@ -139,6 +119,7 @@ public class BossCardMgr
     {
         //销毁当前Card
         var isFirstCard = true;
+        EBossCardPhase _prevCardPhase = EBossCardPhase.None;
         if(_currCard != null)
         {
             //销毁子弹
@@ -148,6 +129,7 @@ public class BossCardMgr
             //todo
             Sound.PlayTHSound("cardget");
 
+            _prevCardPhase = _currCard.Phase;
             _currCard.OnDisable();
             _currCard.OnDestroy();
             _currCard = null;
@@ -202,6 +184,5 @@ public class BossCardMgr
         _cardList.Clear();
         _currCard?.OnDestroy();
         _currCard = null;
-        GameEventCenter.RemoveListener(GameEvent.OnPlayerDead, OnPlayerDead);
     }
 }

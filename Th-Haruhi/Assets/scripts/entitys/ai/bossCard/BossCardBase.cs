@@ -11,7 +11,9 @@ public abstract class BossCardBase
     public abstract float TotalTime { get; }
 
     //符卡状态阶段
-    public EBossCardPhase Phase = EBossCardPhase.Single;
+    public EBossCardPhase Phase = EBossCardPhase.One;
+    public EBossCardPhase PrevCardPhase = EBossCardPhase.None;
+    public EBossCardPhase NextCardPhase = EBossCardPhase.None;
 
     //难度设置
     protected abstract void InitDifficult(ELevelDifficult diff);
@@ -22,20 +24,9 @@ public abstract class BossCardBase
     public int CurrentHp { set;  get; }
     public int MaxHp { set; get; }
 
-    public bool BanShoot;
     public bool Inited { private set; get; }
     
     protected Boss Master;
-
-    public bool CanShoot 
-    {
-        get
-        {
-            return !BanShoot && Inited;
-        }
-    }
-
-    protected int ShootIdx { private set; get; }
 
     public virtual void Init(Boss enemy, int maxHp)
     {
@@ -66,16 +57,13 @@ public abstract class BossCardBase
         switch (Phase)
         {
             case EBossCardPhase.One:
-                Master.SetHpHudPointActive(true);
-                Master.SetHpHudActive(true);
+                Master.ShowHpCircle(true, NextCardPhase == EBossCardPhase.Two);
                 break;
+
             case EBossCardPhase.Two:
                 UIBossBg.Show(Master.Deploy.BossDraw);
                 UIBattle.ShowBossCard(CardName);
-                Master.SetHpHudPointActive(false);
-                break;
-            case EBossCardPhase.Single:
-                Master.SetHpHudActive(true);
+                Master.ShowHpCircle(PrevCardPhase != EBossCardPhase.One , PrevCardPhase == EBossCardPhase.One);
                 break;
         }
 
@@ -93,20 +81,12 @@ public abstract class BossCardBase
 
     public void OnDisable()
     {
-        if(Phase == EBossCardPhase.One)
-        {
-            Master.SetHpHudPointActive(false);
-        }
-        else
-        {
-            Master.SetHpHudActive(false);
-        }
+        Master.HideHpCircle();
         Master.RemoveAllTask();
         Master.ShowCircleRaoDong(false);
         UIBossBg.FadeOut();
         UIBattle.ShowBossTime(false);
         UIBattle.HideBossCard();
-
         Stop();
     }
 
@@ -122,11 +102,7 @@ public abstract class BossCardBase
 
     public virtual void OnFixedUpdate()
     {
-        ShootIdx++;
-        if (ShootIdx > 10000000)
-            ShootIdx = 0;
-
-        if (!CanShoot || Master.IsDead) return;
+       
     }
 
     public virtual void OnDestroy()

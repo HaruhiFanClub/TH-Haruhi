@@ -44,8 +44,9 @@ public static class TextureUtility
         }
         else
         {
-            var obj = ResourceMgr.LoadImmediately(url);
-            callBack(obj as Texture2D);
+            var async = new AsyncResource();
+            yield return ResourceMgr.LoadObjectWait(url, async);
+            callBack(async.Object as Texture2D);
         }
     }
 

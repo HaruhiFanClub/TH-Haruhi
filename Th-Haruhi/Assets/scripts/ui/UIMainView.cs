@@ -6,10 +6,12 @@ public class UIMainView : UiFullView
 {
     public static int PrevSelected = 0;
 
-    public static void Show(bool isFirst)
+    public static void Show(bool showAni, bool playBgm)
     {
-        var view = UiManager.ImmediatelyShow<UIMainView>(!isFirst);
-        view.DoOpen(isFirst);
+        UiManager.Show<UIMainView>(view=> 
+        {
+            view.StartCoroutine(view.DoOpen(showAni, playBgm));
+        });
     }
 
     private UIMainViewCompoent _compent;
@@ -36,30 +38,24 @@ public class UIMainView : UiFullView
         InitDebug();
     }
 
-    private void DoOpen(bool bFisstOpen)
+    private IEnumerator DoOpen(bool showAni, bool playBgm)
     {
         _compent.Menu.Enable = false;
         UiManager.BackGround.BgMask.Alpha = 0f;
+        _compent.Animator.Play(showAni ? "FirstOpen" : "ReOpen");
 
-        if (bFisstOpen)
+        if (playBgm)
         {
-            _compent.Animator.Play("FirstOpen");
-            StartCoroutine(FirstOpen());
+            yield return Sound.CacheSound(1);
+            Sound.PlayMusic(1);
         }
-        else
-        {
-            _compent.Animator.Play("ReOpen");
-            //Sound.PlayMusic(1);
-        }
-    }
 
-    private IEnumerator FirstOpen()
-    {
-        yield return Sound.CacheSound(1);
-        Sound.PlayMusic(1);
-        UiManager.BackGround.FadeBg(3f);
-        yield return new WaitForSeconds(3f);
-        UiManager.BackGround.EnableEffect(true);
+        if (showAni)
+        {
+            UiManager.BackGround.FadeBg(3f);
+            yield return new WaitForSeconds(3f);
+            UiManager.BackGround.EnableEffect(true);
+        }
     }
 
     protected override void OnOpenOver()

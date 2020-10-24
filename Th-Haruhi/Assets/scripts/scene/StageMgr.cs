@@ -62,7 +62,7 @@ public static class StageMgr
     //从第一关开始游戏
     public static void StartGame()
     {
-        GameSystem.CoroutineStart(EnterMission());
+        GameSystem.Start(EnterMission());
     }
 
     //加载关卡
@@ -112,7 +112,7 @@ public static class StageMgr
         if (Data.LeftLifeCount > 0)
         {
             //1秒后复活
-            GameSystem.CoroutineStart(PlayerReborn());
+            GameSystem.Start(PlayerReborn());
         }
         else
         {
@@ -141,7 +141,7 @@ public static class StageMgr
     public static void Retry()
     {
         //1秒后复活
-        GameSystem.CoroutineStart(PlayerReborn(0.2f));
+        GameSystem.Start(PlayerReborn(0.2f));
         Data.LeftLifeCount = Data.DefaultLifeCount;
     }
 

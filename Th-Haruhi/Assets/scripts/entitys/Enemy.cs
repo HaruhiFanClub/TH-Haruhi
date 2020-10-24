@@ -61,7 +61,7 @@ public class Enemy : EntityBase
         MainRenderer = (SpriteRenderer)r;
     }
 
-    public virtual void Init(EnemyDeploy deploy)
+    public virtual IEnumerator Init(EnemyDeploy deploy)
     {
         transform.SetLayer(Layers.Enemy);
 
@@ -84,6 +84,7 @@ public class Enemy : EntityBase
                 AIMoudle.Init(this);
             }
         }
+        yield break;
     }
    
     protected override void Update()
@@ -283,7 +284,7 @@ public class Enemy : EntityBase
         gameObj.SetActiveSafe(true);
         enemy.transform.position = Vector2Fight.NewWorld(bornX, bornY);
         enemy.SetRenderer(mainSprite);
-        enemy.Init(deploy);
+        yield return enemy.Init(deploy);
     }
 }
 

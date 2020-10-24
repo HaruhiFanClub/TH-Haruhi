@@ -44,7 +44,7 @@ public static class UIUtility
     }
 
 
-    public static void SetRawImageTexture(this RawImage rawImage, string path, bool resetAlpha = true)
+    public static void SetRawImageTexture(this RawImage rawImage, string path, Action<RawImage> onFinished)
     {
         if (!rawImage) return;
         if (string.IsNullOrEmpty(path))
@@ -52,17 +52,14 @@ public static class UIUtility
             return;
         }
 
-        var o = ResourceMgr.LoadImmediately(path);
-        var texture = o as Texture;
-        if (texture)
+        ResourceMgr.LoadObject(path, o =>
         {
-            rawImage.texture = texture;
-            if (resetAlpha)
+            var texture = o as Texture;
+            if (texture)
             {
-                var c = rawImage.color;
-                c.a = 1f;
-                rawImage.color = c;
+                rawImage.texture = texture;
+                onFinished.Invoke(rawImage);
             }
-        }
+        });
     }
 }

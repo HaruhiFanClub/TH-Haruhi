@@ -300,7 +300,7 @@ public abstract class EntityBase : MonoBehaviour
     public virtual void DoFadeOut(int frame)
     {
         _bChangedMaterial = true;
-        _turnOffTween?.onKill();
+        _turnOffTween?.Kill();
         _turnOffTween = Renderer.material.DOFloat(0f, "_AlphaScale", frame * 0.01666f);
         _turnOffTween.onComplete = () =>
         {
@@ -447,7 +447,7 @@ public abstract class EntityBase : MonoBehaviour
         Navi = false;
         MoveTarget = Vector3.zero;
 
-        _turnOffTween?.onKill();
+        _turnOffTween?.Kill();
         _turnOffTween = null;
 
         DestoryAllSons();

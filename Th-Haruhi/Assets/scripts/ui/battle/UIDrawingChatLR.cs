@@ -133,18 +133,20 @@ public class UIDrawingChatLR : MonoBehaviour
     private void SetDrawImage(RawImage image, DialogDeploy info)
     {
         //读取立绘
-        image.SetRawImageTexture(info.drawing);
-        image.SetNativeSize();
+        image.SetRawImageTexture(info.drawing, r => 
+        {
+            image.SetNativeSize();
 
-        var h = 584;
-        var size = image.rectTransform.sizeDelta;
-        var xRatio = h / size.y;
-        image.rectTransform.sizeDelta = new Vector2(size.x * xRatio, h);
+            var h = 584;
+            var size = image.rectTransform.sizeDelta;
+            var xRatio = h / size.y;
+            image.rectTransform.sizeDelta = new Vector2(size.x * xRatio, h);
 
 
-        var euler = Draw.transform.eulerAngles;
-        euler.y = info.revertImage ? 180 : 0;
-        Draw.transform.eulerAngles = euler;
+            var euler = Draw.transform.eulerAngles;
+            euler.y = info.revertImage ? 180 : 0;
+            Draw.transform.eulerAngles = euler;
+        });
     }
 
 }

@@ -89,7 +89,7 @@ public static class TextureEffectFactroy
 
     private static void CreateNewEffect(int id, int sortingOrder, TextureEffectDeploy deploy, CreatedNotify notify)
     {
-        GameSystem.CoroutineStart(TextureUtility.LoadResourceById(deploy.resourceId, spriteList =>
+        GameSystem.Start(TextureUtility.LoadResourceById(deploy.resourceId, spriteList =>
         {
             Holder holder;
             if (!CachePool.TryGetValue(id, out holder))

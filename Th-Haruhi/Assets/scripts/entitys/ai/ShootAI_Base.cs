@@ -10,7 +10,7 @@ public abstract class AI_Base
     public virtual void Init(Enemy enemy)
     {
         Master = enemy;
-        GameSystem.CoroutineStart(SetCanShoot());
+        GameSystem.Start(SetCanShoot());
     }
 
     private IEnumerator SetCanShoot()

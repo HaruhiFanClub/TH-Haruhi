@@ -54,13 +54,14 @@ public class UIBossBg : UiInstance
         _bind.BossDrawing.rectTransform.anchoredPosition = DrawingStartPos;
         _bind.BossDrawing.SetActiveSafe(true);
 
-        _bind.BossDrawing.SetRawImageTexture(drawingPath);
-        _bind.BossDrawing.SetNativeSize();
-
-        var h = 900f;
-        var size = _bind.BossDrawing.rectTransform.sizeDelta;
-        var xRatio = h / size.y;
-        _bind.BossDrawing.rectTransform.sizeDelta = new Vector2(size.x * xRatio, h);
+        _bind.BossDrawing.SetRawImageTexture(drawingPath, r =>
+        {
+            var h = 900f;
+            var size = _bind.BossDrawing.rectTransform.sizeDelta;
+            var xRatio = h / size.y;
+            _bind.BossDrawing.SetNativeSize();
+            _bind.BossDrawing.rectTransform.sizeDelta = new Vector2(size.x * xRatio, h);
+        });
 
         StartCoroutine(DelayHideAtkText());
 

@@ -8,9 +8,12 @@ public class UILogo : UiInstance
     private Action _onClose;
     public static void Show(Action onClose)
     {
-        var view = UiManager.ImmediatelyShow<UILogo>();
-        view._onClose = onClose;
+        UiManager.Show<UILogo>( view =>
+        {
+            view._onClose = onClose;
+        });
     }
+
     protected override void OnLoadFinish()
     {
         base.OnLoadFinish();

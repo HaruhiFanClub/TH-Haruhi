@@ -415,16 +415,18 @@ public class Player : EntityBase
         collider.radius = deploy.radius;
 
         //判定点
-        var pointObj = ResourceMgr.LoadImmediately("player/point.prefab");
-        var point = ResourceMgr.Instantiate(pointObj);
-        point.transform.SetParent(playerObject.transform, false);
-        var script = point.GetComponent<SlowPoint>();
+        ResourceMgr.LoadObject("player/point.prefab", pointObj =>
+        {
+            var point = ResourceMgr.Instantiate(pointObj);
+            point.transform.SetParent(playerObject.transform, false);
+            var script = point.GetComponent<SlowPoint>();
 
-        playerObject.SetActiveSafe(true);
-        player.SetRenderer(mainSprite);
-        player.Init(script, deploy);
-        callBack(player);
-        player.AfterInit();
+            playerObject.SetActiveSafe(true);
+            player.SetRenderer(mainSprite);
+            player.Init(script, deploy);
+            callBack(player);
+            player.AfterInit();
+        });
     }
 }
 

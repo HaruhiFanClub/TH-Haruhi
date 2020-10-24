@@ -1,5 +1,4 @@
-﻿using CameraTransitions;
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 
@@ -7,12 +6,11 @@ public class GameSystem : MonoBehaviour
 {
     public static int FixedFrameCount;
 
-    public static GameSystem Instance;
     private static bool _inited;
 
     public delegate Coroutine StartCoroutineFunc(IEnumerator routine);
 
-    public static StartCoroutineFunc CoroutineStart;
+    public static StartCoroutineFunc Start;
 
     public static DefaultRes DefaultRes;
 
@@ -23,17 +21,18 @@ public class GameSystem : MonoBehaviour
             return;
         }
 
-        Instance = this;
+        StartCoroutine(Init());
+    }
 
-#if !UNITY_EDITOR
-	    AssetBundleManager.Initialize();
-#endif
-
+    private IEnumerator Init()
+    {
         var spriteMgr = Resources.FindObjectsOfTypeAll<SpriteAtlasMgr>();
         if (spriteMgr.Length == 0)
         {
             gameObject.AddComponent<SpriteAtlasMgr>();
         }
+
+        yield return AssetBundleManager.Initialize();
 
         //读取存档
         SaveDataMgr.PreloadGameData();
@@ -47,8 +46,7 @@ public class GameSystem : MonoBehaviour
         //初始化资源管理器
         ResourceMgr.InitInstance();
 
-
-        CoroutineStart = StartCoroutine;
+        Start = StartCoroutine;
         DefaultRes = GetComponent<DefaultRes>();
 
         //初始化UI
@@ -60,32 +58,31 @@ public class GameSystem : MonoBehaviour
 
         //清理缓存
         Caching.ClearCache();
-        
 
-        UnityEngine.Random.InitState(DateTime.Now.Second);
+        //android neversloop
+        if (Platform.Plat == EPlatform.UNITY_ANDROID)
+        {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        }
 
-#if !UNITY_EDITOR && UNITY_ANDROID
-		Screen.sleepTimeout = SleepTimeout.NeverSleep;
-#endif
-        _inited = true;
-
-
+         _inited = true;
         FirstStartGame();
     }
+
 
     private void FirstStartGame()
     {
         UILogo.Show(() =>
         {
-            ShowTitle();
+            ShowTitle(true);
 			UiManager.Show<UIFps>();
         });
     }
 
-    public static void ShowTitle()
+    public static void ShowTitle(bool isFirst = false)
     {
         GamePause.DoContionueGame(EPauseFrom.Esc);
-        CoroutineStart(ShowTitleImpl());
+        Start(ShowTitleImpl(isFirst));
     }
 
     public static bool InLoading { private set; get; }
@@ -101,7 +98,7 @@ public class GameSystem : MonoBehaviour
         InLoading = false;
     }
 
-    private static IEnumerator ShowTitleImpl()
+    private static IEnumerator ShowTitleImpl(bool showAni)
     {  
         //加载Loading
         yield return ShowLoading();
@@ -112,7 +109,7 @@ public class GameSystem : MonoBehaviour
 
 
         //显示主界面
-        UIMainView.Show(true);
+        UIMainView.Show(showAni, true);
 
         yield return new WaitForSeconds(0.2f);
 

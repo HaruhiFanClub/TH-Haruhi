@@ -9,8 +9,10 @@ public class UiTips : UiInstance
     private UiTipsCompoent _compoent;
     public static void Show(string str)
     {
-        var view = UiManager.ImmediatelyShow<UiTips>();
-        view.ShowTips(str);
+        UiManager.Show<UiTips>(view => 
+        {
+            view.ShowTips(str);
+        });
     }
 
     protected override void OnLoadFinish()

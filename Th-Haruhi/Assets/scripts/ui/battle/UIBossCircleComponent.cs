@@ -14,12 +14,18 @@ public class UIBossCircleComponent : MonoBehaviour
     public float TurnSpeed = 30f;
     public float TurnSpeedX = 10f;
 
+    private Vector3 _originScale;
 
     private void Awake()
     {
-        var originScale = transform.localScale;
+        _originScale = transform.localScale;
+    }
+
+    public void TurnOn()
+    {
+        gameObject.SetActiveSafe(true);
         transform.localScale = Vector3.zero;
-        transform.DOScale(originScale, 1f);
+        transform.DOScale(_originScale, 1f);
     }
 
     private void Update()

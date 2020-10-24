@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 
 // Loaded assetBundle contains the references count which can be used to unload dependent assetBundles automatically.
@@ -18,21 +19,21 @@ public class LoadedAssetBundle
     }
 }
 
+
 // Class takes care of loading assetBundle and its dependencies automatically, loading variants automatically.
 public class AssetBundleManager
 {
     public static AssetBundle ShadersBundle;
+    public static bool Inited;
     private static AssetBundleManifest _assetBundleManifest;
 
     private static readonly Dictionary<string, LoadedAssetBundle> LoadedAssetBundles = new Dictionary<string, LoadedAssetBundle>();
-
-    //private static readonly List<AssetBundleLoadOperation> InProgressOperations = new List<AssetBundleLoadOperation>();
-
+    private static readonly Dictionary<string, bool> Loadings = new Dictionary<string, bool>();
     private static readonly Dictionary<string, string[]> Dependencies = new Dictionary<string, string[]>();
 
 
     // Get loaded AssetBundle, only return vaild object when all the dependencies are downloaded successfully.
-    public static LoadedAssetBundle GetLoadedAssetBundle(string assetBundleName)
+    private static LoadedAssetBundle GetLoadedAssetBundle(string assetBundleName)
     {
         LoadedAssetBundle bundle;
         LoadedAssetBundles.TryGetValue(assetBundleName, out bundle);
@@ -58,80 +59,140 @@ public class AssetBundleManager
     }
 
 
-    public static void Initialize()
+    //初始化assetbundle
+    public static IEnumerator Initialize()
     {
+#if UNITY_EDITOR && !STANDALONE_BUNDLE
+        yield break;
+#endif
         string abName = "streamingassets.haruhi";
         if (_assetBundleManifest == null)
         {
             LoadedAssetBundles.Clear();
-            var asset = LoadAsset(abName);
-            _assetBundleManifest = asset.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
 
-            ShadersBundle = LoadAsset(PathUtility.ShaderBundleName);
+            var maniAsync = new AsyncResource();
+            yield return RequsetAssetBundle(abName, maniAsync);
+
+            _assetBundleManifest = maniAsync.AssetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+
+            var shaderAsync = new AsyncResource();
+            yield return RequsetAssetBundle(PathUtility.ShaderBundleName, shaderAsync);
+
+            ShadersBundle = shaderAsync.AssetBundle;
             LoadedAssetBundles[PathUtility.ShaderBundleName] = new LoadedAssetBundle(ShadersBundle);
             Debug.Log("shader bundle load finished!" + ShadersBundle.name);
+
+            yield return 0;
+            Inited = true;
         }
     }
 
 
     // Load AssetBundle and its dependencies.
-    protected static void LoadAssetBundle(string assetBundleName)
+    private static IEnumerator LoadAssetBundle(string assetBundleName)
     {
         if (_assetBundleManifest == null)
         {
-            Debug.LogError("Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()");
-            return;
+            Debug.LogError("Assetbundle未初始化，是否未调用 AssetBundleManager.Initialize()");
+            yield break;
         }
 
-
         // Check if the assetBundle has already been processed.
-        if (!LoadAssetBundleInternal(assetBundleName))
-            LoadDependencies(assetBundleName);
+        var needLoadDepend = false;
+
+        yield return LoadAssetBundleInternal(assetBundleName, b =>
+        {
+            needLoadDepend = b;
+        });
+
+        if (needLoadDepend)
+        {
+            yield return LoadDependencies(assetBundleName);
+        }
     }
 
 
-    public static AssetBundle LoadAsset(string assetBundleName)
+    private static IEnumerator RequsetAssetBundle(string assetBundleName, AsyncResource async)
     {
-        return AssetBundle.LoadFromFile(PathUtility.GetAbPath(assetBundleName));
+        var url = PathUtility.GetAbPath(assetBundleName);
+
+        //webgl要用request加载
+        if(Platform.Plat == EPlatform.UNITY_WEBGL)
+        {
+            var request = UnityWebRequest.Get(url);
+            request.downloadHandler = new DownloadHandlerAssetBundle(url, 0);
+
+            yield return request.SendWebRequest();
+
+            if (request.isHttpError || request.isNetworkError)
+            {
+                Debug.LogError("LoadAsset Error:" + request.error + " url:" + url);
+                yield break;
+            }
+
+            var asset = DownloadHandlerAssetBundle.GetContent(request);
+            async.AssetBundle = asset;
+        }
+        //从本地加载
+        else
+        {   
+            var asset = AssetBundle.LoadFromFile(url);
+            async.AssetBundle = asset;
+        }
     }
 
-    protected static bool LoadAssetBundleInternal(string assetBundleName)
+    private static IEnumerator LoadAssetBundleInternal(string assetBundleName, Action<bool> callBack = null)
     {
         // Already loaded.
-        LoadedAssetBundle bundle;
-        LoadedAssetBundles.TryGetValue(assetBundleName, out bundle);
+        LoadedAssetBundles.TryGetValue(assetBundleName, out var bundle);
         if (bundle != null)
         {
             bundle.ReferencedCount++;
-            return true;
+            callBack?.Invoke(false);
+            yield break;
         }
 
+        if(Loadings.TryGetValue(assetBundleName, out var inLoading))
+        {
+            if(inLoading)
+            {
+                yield break;
+            }
+        }
 
-        string url = PathUtility.GetAbPath(assetBundleName); //PathUtility.GetDivPlatformNativeUrlPath(PathUtility.NativePath) + assetBundleName;
-        var b = AssetBundle.LoadFromFile(url);
-        LoadedAssetBundles[assetBundleName] = new LoadedAssetBundle(b);
-        return false;
+        Loadings[assetBundleName] = true;
+
+        var async = new AsyncResource();
+        yield return RequsetAssetBundle(assetBundleName, async);
+
+        Loadings[assetBundleName] = false;
+        LoadedAssetBundles[assetBundleName] = new LoadedAssetBundle(async.AssetBundle);
+        callBack?.Invoke(true);
     }
 
 
     // Where we get all the dependencies and load them all.
-    protected static void LoadDependencies(string assetBundleName)
+    protected static IEnumerator LoadDependencies(string assetBundleName)
     {
         if (_assetBundleManifest == null)
         {
             Debug.LogError("Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()");
-            return;
+            yield break;
         }
 
         // Get dependecies from the AssetBundleManifest object..
         string[] dependencies = _assetBundleManifest.GetAllDependencies(assetBundleName);
         if (dependencies.Length == 0)
-            return;
+        {
+            yield break;
+        }
 
         // Record and load all dependencies.
         Dependencies.Add(assetBundleName, dependencies);
         for (int i = 0; i < dependencies.Length; i++)
-            LoadAssetBundleInternal(dependencies[i]);
+        {
+            yield return LoadAssetBundleInternal(dependencies[i]);
+        }
     }
 
     // Unload assetbundle and its dependencies.
@@ -174,21 +235,24 @@ public class AssetBundleManager
         }
     }
 
+
     // Load asset from the given assetBundle.
-    public static UnityEngine.Object LoadAsset(string assetBundleName, string assetName)
+    public static IEnumerator LoadAsset(string assetBundleName, string assetName, AsyncResource async)
     {
         //Debug.LogError("Loading " + assetName + " from " + assetBundleName + " bundle");
-        LoadAssetBundle(assetBundleName);
+
+        yield return LoadAssetBundle(assetBundleName);
+
         LoadedAssetBundle bundle = GetLoadedAssetBundle(assetBundleName);
         var obj = bundle.AssetBundle.LoadAsset(PathUtility.GetAssetNamePath(assetName));
-        return obj;
+        async.Object = obj;
     }
 
     // Load level from the given assetBundle.
     public static IEnumerator LoadLevelAsync(string levelName, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
         string assetBundleName = PathUtility.GetAbName(levelName);
-        LoadAssetBundle(assetBundleName);
+        yield return LoadAssetBundle(assetBundleName);
 
         var sceneName = PathUtility.GetAssetNamePath(levelName);
         yield return SceneManager.LoadSceneAsync(sceneName, loadSceneMode);

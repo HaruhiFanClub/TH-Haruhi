@@ -8,9 +8,17 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
+
+public class AsyncResource
+{
+    public Object Object;
+    public AssetBundle AssetBundle;
+}
+
 public class ResourceMgr : MonoBehaviour
 {
     private static ResourceMgr _instance;
+
     public static void InitInstance()   
     {
         if (_instance != null) return;
@@ -19,42 +27,18 @@ public class ResourceMgr : MonoBehaviour
         _instance = gameObj.AddComponent<ResourceMgr>();
     }
 
-    public class LoadInfo : IPool
+    private class LoadInfo
     {
         public string Resource;
         public Action<Object> Notify;
         public bool IsDone;
-        public override void Init() { }
-        public override void Reset()
-        {
-            Resource = "";
-            Notify = null;
-            IsDone = false;
-        }
-
-        public override void Recycle() { }
-
-        public override void OnDestroy() { }
     }
 
-    public class InstantiateInfo : IPool
+    private class InstantiateInfo
     {
         public Object Source;
         public Action<GameObject> CallBack;
-        public override void Init() { }
-
-        public override void Reset() { }
-
-        public override void Recycle()
-        {
-            Source = null;
-            CallBack = null;
-        }
-
-        public override void OnDestroy()
-        {
-
-        }
+     
     }
 
     private static List<InstantiateInfo> instantiateList = new List<InstantiateInfo>();
@@ -65,7 +49,7 @@ public class ResourceMgr : MonoBehaviour
             Debug.LogError("Want InstantiateX SourceObject Is Null!");
             return;
         }
-        var info = Pool.New<InstantiateInfo>() as InstantiateInfo;
+        var info = new InstantiateInfo();
         info.Source = _object;
         info.CallBack = callBack;
         instantiateList.Add(info);
@@ -86,9 +70,9 @@ public class ResourceMgr : MonoBehaviour
         instantiateList.RemoveAt(0);
         if (info.Source == null)
         {
-            Pool.Free(info);
             return;
         }
+
         GameObject result = Object.Instantiate(info.Source, null) as GameObject;
         if (result == null)
         {
@@ -98,7 +82,6 @@ public class ResourceMgr : MonoBehaviour
         {
             info.CallBack(result);
         }
-        Pool.Free(info);
     }
 
     private static readonly List<LoadInfo> LoadingList = new List<LoadInfo>();
@@ -115,7 +98,6 @@ public class ResourceMgr : MonoBehaviour
         {
             if (LoadingList[0].IsDone)
             {
-                Pool.Free(LoadingList[0]);
                 LoadingList.RemoveAt(0);
             }
             return;
@@ -129,24 +111,35 @@ public class ResourceMgr : MonoBehaviour
         var info = ToLoadList[0];
         ToLoadList.RemoveAt(0);
         LoadingList.Add(info);
-        var obj = LoadImmediately(info.Resource);
-        info.IsDone = true;
-        info.Notify(obj);
+
+        LoadObject(info.Resource, obj =>
+        {
+            info.IsDone = true;
+            info.Notify(obj);
+        });
     }
 
-    public static Object LoadImmediately(string resource)
+    public static void LoadObject(string resource, Action<Object> callBack)
     {
-        Object loadObject = null;
-#if UNITY_EDITOR
-        loadObject = LoadImpl(resource);
+        _instance.StartCoroutine(LoadObjectAsync(resource, callBack));
+    }
+
+    private static IEnumerator LoadObjectAsync(string resource, Action<Object> callBack)
+    {
+        var async = new AsyncResource();
+        yield return LoadObjectWait(resource, async);
+        callBack(async.Object);
+    }
+
+    public static IEnumerator LoadObjectWait(string resource, AsyncResource async)
+    {
+
+#if UNITY_EDITOR && !STANDALONE_BUNDLE
+        async.Object = LoadImpl(resource);
+        yield break;
 #else
-        loadObject = LoadAsset(resource);
+        yield return LoadAssetBundleObject(resource, async);
 #endif
-        if (loadObject == null)
-        {
-            Debug.LogError("加载的资源失败 resource:" + resource);
-        }
-        return loadObject;
     }
 
     public static void Load(string resource, Action<Object> notify = null)
@@ -156,32 +149,31 @@ public class ResourceMgr : MonoBehaviour
             Debug.LogError("resource path is null");
 		    return;
 	    }
-        var loadInfo = Pool.New<LoadInfo>() as LoadInfo;
+        var loadInfo = new LoadInfo();
         loadInfo.Resource = resource;
         loadInfo.Notify = notify;
         loadInfo.IsDone = false;
         ToLoadList.Add(loadInfo);
     }
 
-    public static Object LoadAsset(string assetName)
+    private static IEnumerator LoadAssetBundleObject(string assetName, AsyncResource async)
     {
-        // This is simply to get the elapsed time for this phase of AssetLoading.
         string assetBundleName = PathUtility.GetAbName(assetName);
 
         //shader特殊处理
         if (assetBundleName == PathUtility.ShaderBundleName)
         {
             var shaderObj = AssetBundleManager.ShadersBundle.LoadAsset(assetName);
-            return shaderObj;
+            async.Object = shaderObj;
+            yield break;
         }
 
-        var obj = AssetBundleManager.LoadAsset(assetBundleName, assetName);
-        if (obj == null)
+        yield return AssetBundleManager.LoadAsset(assetBundleName, assetName, async);
+
+        if (async.Object == null)
         {
             Debug.LogError("LoadAsset request.asset Object == null, assetBundleName:" + assetBundleName + " assetName:" + assetName);
         }
-
-        return obj;
     }
 
     public static IEnumerator LoadScene(string levelName, LoadSceneMode mode = LoadSceneMode.Single)
@@ -190,7 +182,7 @@ public class ResourceMgr : MonoBehaviour
     }
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !STANDALONE_BUNDLE
     private static Object LoadImpl(string resource)
     {
         Object mainObject = null;
