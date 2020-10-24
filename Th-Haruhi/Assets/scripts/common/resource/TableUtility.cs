@@ -13,7 +13,7 @@ using UnityEngine;
 
 public static class TableUtility
 {
-    private static void InitTableUrl()
+    public static void Init()
     {
         _(typeof(SoundDeploy), "sound");
         _(typeof(PlayerDeploy), "player");
@@ -134,7 +134,7 @@ public static class TableUtility
         return 0;
     }
     //--------------------------------------------------------------------------------------------------//
-    private static readonly Dictionary<Type, string> Paths = new Dictionary<Type, string>();
+    public static readonly Dictionary<Type, string> Paths = new Dictionary<Type, string>();
 
     public static T GetDeploy<T>(object id) where T: Conditionable
     {
@@ -166,10 +166,5 @@ public static class TableUtility
     static void _(Type type, string url)
     {
         Paths[type] = url;
-    }
-
-    static TableUtility()
-    {
-        InitTableUrl();
     }
 }

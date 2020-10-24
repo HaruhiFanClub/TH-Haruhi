@@ -396,18 +396,18 @@ public class Player : EntityBase
 
 
         //判定点
-        ResourceMgr.LoadObject("player/point.prefab", pointObj =>
-        {
-            var point = ResourceMgr.Instantiate(pointObj);
-            point.transform.SetParent(playerObject.transform, false);
-            var script = point.GetComponent<SlowPoint>();
+        var async = new AsyncResource();
+        yield return ResourceMgr.LoadObjectWait("player/point.prefab", async);
 
-            playerObject.SetActiveSafe(true);
-            player.SetRenderer(mainSprite);
-            player.Init(script, deploy);
-            callBack(player);
-            player.AfterInit();
-        });
+        var point = ResourceMgr.Instantiate(async.Object);
+        point.transform.SetParent(playerObject.transform, false);
+        var script = point.GetComponent<SlowPoint>();
+
+        playerObject.SetActiveSafe(true);
+        player.SetRenderer(mainSprite);
+        player.Init(script, deploy);
+        callBack(player);
+        player.AfterInit();
     }
 }
 

@@ -32,7 +32,11 @@ public class GameSystem : MonoBehaviour
             gameObject.AddComponent<SpriteAtlasMgr>();
         }
 
+        //初始化assetbundle
         yield return AssetBundleManager.Initialize();
+
+        //加载配置文件
+        yield return ResourceMgr.CacheAllTable();
 
         //读取存档
         SaveDataMgr.PreloadGameData();
@@ -74,6 +78,7 @@ public class GameSystem : MonoBehaviour
     {
         UILogo.Show(() =>
         {
+            Sound.Init();
             ShowTitle(true);
 			UiManager.Show<UIFps>();
         });
@@ -154,6 +159,7 @@ public class GameSystem : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!_inited) return;
         Sound.LateUpdate();
     }
 

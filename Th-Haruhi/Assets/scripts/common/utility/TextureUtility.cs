@@ -38,11 +38,11 @@ public static class TextureUtility
     public static IEnumerator LoadTexture(string url, Action<Texture2D> callBack)
     {
         var path = PathUtility.ImagesPath + url;
-        if (File.Exists(path))
-        {
-            yield return LoadExternalTexture(path, callBack);
-        }
-        else
+        //if (File.Exists(path))
+        //{
+            //yield return LoadExternalTexture(path, callBack);
+        //}
+        //else
         {
             var async = new AsyncResource();
             yield return ResourceMgr.LoadObjectWait(url, async);

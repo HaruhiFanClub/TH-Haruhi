@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: bossStartCircle
-  m_Shader: {fileID: 4800000, guid: f11216b0cf85a9148a56c29fb1776e89, type: 3}
+  m_Shader: {fileID: 4800000, guid: e7edfe3a6edfce045a304dc5e3b99a3b, type: 3}
   m_ShaderKeywords: _DISSOLVE_ON_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0

@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 using System;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.Networking;
 
 public class AsyncResource
 {
@@ -197,59 +197,77 @@ public class ResourceMgr : MonoBehaviour
 #endif
 
 
-    public static byte[] GetTableData(string resource)
+    //table
+    public static IEnumerator CacheAllTable()
     {
-        byte[] data = null;
-#if UNITY_EDITOR
-        string path = PathUtility.TablePath + resource;
-#else
-        string path = PathUtility.TablePath + PathUtility.GetUniquePath(resource) + ".haruhi_table";
-#endif
-        if (File.Exists(path))
+        TableUtility.Init();
+        var tables = TableUtility.Paths;
+        foreach(var d in tables)
         {
-            try
+            yield return RequestTableText(d.Value, tableStr => 
             {
-                data = FileUtility.ReadAllBytes(path);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError("GetResourceData the resource is " + resource);
-                Debug.LogError(e);
-            }
-            if (data != null)
-            {
-                return data;
-            }
+                TableDatabase.CacheTable(d.Key, d.Value, tableStr);
+            });
         }
-        return data;
     }
 
-
-    public static string GetResourceText(string resource)
+    public static IEnumerator RequestTableText(string resource, Action<string> callBack)
     {
-#pragma warning disable
-        Encoding encoding = null;
-#pragma warning restore
-
-        byte[] buffer = GetTableData(resource);
-        if (buffer != null)
+        yield return RequsetTableData(resource, buffer => 
         {
-            //buffer = FileUtility.CopyTo(buffer);	//尝试解密
-            Encoding encode = Encoding.GetEncoding("GBK");
-            if (buffer.Length >= 3 && buffer[0] == 0xEF && buffer[1] == 0xBB && buffer[2] == 0xBF)
-                encode = Encoding.UTF8;
-            else if (buffer.Length >= 2 && buffer[0] == 0xFF && buffer[1] == 0xFE)
-                encode = Encoding.Unicode;
-            byte[] result = Encoding.Convert(encode, Encoding.UTF8, buffer);
-            string text;
-            if (result.Length >= 3 && result[0] == 0xEF && result[1] == 0xBB && result[2] == 0xBF)
-                text = Encoding.UTF8.GetString(result, 3, result.Length - 3);
+            if (buffer != null)
+            {
+                //buffer = FileUtility.CopyTo(buffer);	//尝试解密
+                Encoding encode = Encoding.GetEncoding("GBK");
+                if (buffer.Length >= 3 && buffer[0] == 0xEF && buffer[1] == 0xBB && buffer[2] == 0xBF)
+                {
+                    encode = Encoding.UTF8;
+                }
+                else if (buffer.Length >= 2 && buffer[0] == 0xFF && buffer[1] == 0xFE)
+                {
+                    encode = Encoding.Unicode;
+                }
+                byte[] result = Encoding.Convert(encode, Encoding.UTF8, buffer);
+                string text;
+                if (result.Length >= 3 && result[0] == 0xEF && result[1] == 0xBB && result[2] == 0xBF)
+                    text = Encoding.UTF8.GetString(result, 3, result.Length - 3);
+                else
+                    text = Encoding.UTF8.GetString(result);
+
+                callBack(text);
+            }
             else
-                text = Encoding.UTF8.GetString(result);
-            return text;
-        }
-        return "";
+            {
+                Debug.LogError("GetResourceText Error, text = null" + resource);
+                callBack("");
+            }
+        });
+        
     }
+
+    public static IEnumerator RequsetTableData(string resource, Action<byte[]> callBack)
+    {
+#if UNITY_EDITOR
+        string path = PathUtility.TablePath + resource + ".sos";
+#else
+        string path = PathUtility.TablePath + PathUtility.GetUniquePath(resource) + ".sos.haruhi_table";
+#endif
+
+        var request = UnityWebRequest.Get(path);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        yield return request.SendWebRequest();
+
+        if (request.isHttpError || request.isNetworkError)
+        {
+            Debug.LogError("RequsetTableData Error:" + request.error + " url:" + path);
+        }
+        else
+        {
+            var data = request.downloadHandler.data;
+            callBack(data);
+        }
+    }
+
 
     public static void ManualGC()
     {

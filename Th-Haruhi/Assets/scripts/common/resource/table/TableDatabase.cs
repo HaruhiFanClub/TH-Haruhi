@@ -125,7 +125,7 @@ public static class TableDatabase
         return table;
     }
 
-    public static Table Load(Type type, string tableName, bool mainThread = true)
+    public static Table Load(string tableName)
     {
         Object cacheObj = hashTables[tableName];
         Table table = null;
@@ -137,20 +137,7 @@ public static class TableDatabase
         }
         try
         {
-            string tabPath =  tableName + tableExtension;
-            string code = ResourceMgr.GetResourceText(tabPath);
-            string k = (tableName).Replace("/", "_") + ".sos";
-
-            if (code != null)
-            {
-                code = RemoveComment(code);
-                table = LoadByString(type, code, tableName);
-                hashTables[tableName] = table;
-            }
-            else
-            {
-                UnityEngine.Debug.LogError("GetTextResource failed:" + tabPath);
-            }
+            UnityEngine.Debug.LogError("读取配置失败，配置是否未提前缓存?   " + tableName);
         }
         catch (System.Exception e)
         {
@@ -159,9 +146,27 @@ public static class TableDatabase
         return table;
     }
 
+    public static Table CacheTable(Type type, string tableName, string code)
+    {
+        string tabPath = tableName + tableExtension;
+        if (code != null)
+        {
+            code = RemoveComment(code);
+            var table = LoadByString(type, code, tableName);
+            hashTables[tableName] = table;
+            return table;
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("GetTextResource failed:" + tabPath);
+        }
+        return null;
+    }
+
+
     public static TableT<T> Load<T>(string tableName) where T : class
     {
-        Table table = Load(typeof(T), tableName);
+        Table table = Load(tableName);
         var t = table ? new TableT<T>(table) : null; 
         if(t == null)
         {

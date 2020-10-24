@@ -86,6 +86,11 @@ public static class Sound
         _environmentVolume = 1f;
         GlobalMusicVolume = 1f;
         GlobalAudioVolume = 1f;
+      
+    }
+
+    public static void Init()
+    {
         _soundTableT = TableUtility.GetTable<SoundDeploy>();
     }
 
