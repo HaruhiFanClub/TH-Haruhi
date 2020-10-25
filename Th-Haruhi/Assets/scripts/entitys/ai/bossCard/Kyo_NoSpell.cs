@@ -100,6 +100,7 @@ public class Kyo_NoSpell: BossCardBase
         {
             bullet.SetVelocity(3, ang + bullet.Rot, true, true);
             bullet.SetBoundDestroy(false);
+            bullet.SetShaderAdditive();
 
             var taskRot = bullet.CreateTask();
             taskRot.AddWait(60);

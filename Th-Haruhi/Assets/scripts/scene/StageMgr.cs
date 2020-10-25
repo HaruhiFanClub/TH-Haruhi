@@ -149,9 +149,9 @@ public static class StageMgr
     //从头开始
     public static void ReStart()
     {
-        Data.CurLevelId = 1;
         Data.TotalScore = 0;
         Data.LeftLifeCount = Data.DefaultLifeCount;
+        StartGame();
     }
 
 }

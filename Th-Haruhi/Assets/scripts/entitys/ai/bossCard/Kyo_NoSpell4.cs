@@ -101,7 +101,7 @@ public class Kyo_NoSpell4 : BossCardBase
         {
             bullet.SetVelocity(3, ang + bullet.Rot, true, true);
             bullet.SetBoundDestroy(false);
-
+            bullet.SetShaderAdditive();
             var taskDestroy = bullet.CreateTask();
             taskDestroy.AddWait(350);
             taskDestroy.AddCustom(() =>

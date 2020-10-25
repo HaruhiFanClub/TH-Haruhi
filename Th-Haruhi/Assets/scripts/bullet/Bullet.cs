@@ -16,7 +16,7 @@ public class Bullet : EntityBase
     }
 
     //擦弹判定距离
-    public const float GrizeDistance = 0.25f;
+    public const float GrizeDistance = 6;
 
     //碰撞信息
     public ColliderInfo CollisionInfo;

@@ -463,17 +463,17 @@ id	name	classType	isAni	resourceId	scale	spriteIdx	radius	alpha	brightness	cente
 1450		EnemyBullet		1065	1	1	4	1	1		Green			
 1451		EnemyBullet		1065	1	2	4	1	1		Blue			
 1452		EnemyBullet		1065	1	3	4	1	1		Purple			
-1457	Star_Mini	EnemyBullet		1016	0.4	0	4	1	1.1		Red			
-1458	Star_Mini	EnemyBullet		1016	0.4	1	4	1	1.1		Purple			
-1459	Star_Mini	EnemyBullet		1016	0.4	2	4	1	1.1		Blue			
-1460	Star_Mini	EnemyBullet		1016	0.4	3	4	1	1.1		BlueLight			
-1461	Star_Mini	EnemyBullet		1016	0.4	4	4	1	1.1		Green			
-1462	Star_Mini	EnemyBullet		1016	0.4	5	4	1	1.1		Yellow			
-1463	Star_Mini	EnemyBullet		1016	0.4	6	4	1	1.1		Orange			
-1464	Star_Mini	EnemyBullet		1016	0.4	7	4	1	1.1		White			
+1457	Star_Mini	EnemyBullet		1016	0.4	0	4	1	1		Red			
+1458	Star_Mini	EnemyBullet		1016	0.4	1	4	1	1		Purple			
+1459	Star_Mini	EnemyBullet		1016	0.4	2	4	1	1		Blue			
+1460	Star_Mini	EnemyBullet		1016	0.4	3	4	1	1		BlueLight			
+1461	Star_Mini	EnemyBullet		1016	0.4	4	4	1	1		Green			
+1462	Star_Mini	EnemyBullet		1016	0.4	5	4	1	1		Yellow			
+1463	Star_Mini	EnemyBullet		1016	0.4	6	4	1	1		Orange			
+1464	Star_Mini	EnemyBullet		1016	0.4	7	4	1	1		White			
 														
 														
-2001	被环绕子弹	EnemyBullet		1043	1	3	12	0.2	3		BlueLight			
-2002	环绕子弹	EnemyBullet		1007	1	0	2	0.8	1.5		Red			
+2001	被环绕子弹	EnemyBullet		1043	1	3	12	1	1		BlueLight			
+2002	环绕子弹	EnemyBullet		1007	1	0	2	1	1		Red			
 														
 2003	BigStar(无碰撞)	EnemyBullet		1016	1.2	3	0	1	1		BlueLight			

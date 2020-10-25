@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameSetting
 {
+    public static bool ShowDebugBtn;
+
     //memory setting 
     public static bool CacheSound = true;
     public static bool CacheAtlas = true;

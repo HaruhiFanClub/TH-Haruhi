@@ -39,7 +39,8 @@ public class UIDeadView : UiInstance
     //从头开始
     private void BtnRestart()
     {
-
+        this.Close();
+        StageMgr.ReStart();
     }
 
     public override void OnClose(Action<UiInstance> notify)

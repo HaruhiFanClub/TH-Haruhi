@@ -241,7 +241,7 @@ public class Player : EntityBase
 
         var targetPos = transform.position + dir  * moveSpeed * (Time.deltaTime / 0.0166666f);
         var xLimit = 15f;
-        var yLimit = 25f;
+        var yLimit = 18f;
         targetPos.x = Mathf.Clamp(targetPos.x, Vector2Fight.Left + xLimit, Vector2Fight.Right - xLimit);
         targetPos.y = Mathf.Clamp(targetPos.y, Vector2Fight.Down + yLimit, Vector2Fight.Up - yLimit);
 

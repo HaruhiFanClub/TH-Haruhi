@@ -12,6 +12,7 @@ public class UIPauseView : UiInstance
         _bind = GetComponent<UIPauseViewComponent>();
         _bind.BtnUnpause.onClick.AddListener(BtnUnpause);
         _bind.BtnBack.onClick.AddListener(BtnBack);
+        _bind.BtnRestart.onClick.AddListener(BtnRestart);
     }
 
     private void BtnUnpause()
@@ -23,6 +24,12 @@ public class UIPauseView : UiInstance
     {
         //this.Close();
         GameSystem.ShowTitle();
+    }
+
+    private void BtnRestart()
+    {
+        this.Close();
+        StageMgr.ReStart();
     }
 
     protected override void OnShow()

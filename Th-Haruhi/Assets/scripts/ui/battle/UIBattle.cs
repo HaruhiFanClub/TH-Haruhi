@@ -260,13 +260,11 @@ public class UIBattle : UiInstance
 
     private void InitDebug()
     {
-        /*
-        if (!Debug.isDebugBuild)
+        if(!GameSetting.ShowDebugBtn)
         {
             _bind.DebugWudi.SetActiveSafe(false);
             return;
         }
-        */
 
         RefreshDebugBtn();
         _bind.DebugTest.onClick.AddListener(() =>
