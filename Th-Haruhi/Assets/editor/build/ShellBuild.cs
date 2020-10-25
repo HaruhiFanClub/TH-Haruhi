@@ -87,7 +87,7 @@ public static class ShellBuild
 		{
 			buildOption |= BuildOptions.Development;
 			//buildOption |= BuildOptions.AllowDebugging;
-			//buildOption |= BuildOptions.ConnectWithProfiler;
+			buildOption |= BuildOptions.ConnectWithProfiler;
 		}
 	    buildOption |= BuildOptions.CompressWithLz4HC;
     }

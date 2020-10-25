@@ -64,6 +64,8 @@ public class GameSystem : MonoBehaviour
         Caching.ClearCache();
 
         //android neversloop
+        Application.runInBackground = Platform.Plat == EPlatform.UNITY_STANDALONE;
+
         if (Platform.Plat == EPlatform.UNITY_ANDROID)
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;

@@ -59,10 +59,10 @@ public static class ResourcesBuilder
 
         if (assetManifest != null)
         {
-            if (File.Exists(_assetPath + "/streamingassets"))
+            if (File.Exists(_assetPath + "/StreamingAssets"))
             {
-                FileInfo file = new FileInfo(_assetPath + "/streamingassets");
-                string path = _assetPath + "/streamingassets.haruhi";
+                FileInfo file = new FileInfo(_assetPath + "/StreamingAssets");
+                string path = _assetPath + "/StreamingAssets.haruhi";
                 if (File.Exists(path))
                     File.Delete(path);
                 file.MoveTo(path);

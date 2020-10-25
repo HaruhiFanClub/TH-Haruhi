@@ -66,7 +66,7 @@ public class AssetBundleManager
         Inited = true;
         yield break;
 #else
-        string abName = "streamingassets.haruhi";
+        string abName = "StreamingAssets.haruhi";
         if (_assetBundleManifest == null)
         {
             LoadedAssetBundles.Clear();
